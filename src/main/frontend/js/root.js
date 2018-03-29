@@ -1,26 +1,17 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
+import React from "react";
+import ReactDOM from "react-dom";
+import {Provider} from "react-redux";
 
-
-
-class Root extends React.Component {
-
-	constructor(props) {
-		super(props);
-		this.state = {employees: []};
-	}
-
-
-	render() {
-		return (
-			<h1> Hello world</h1>
-		)
-	}
-}
+import App from "./components/App.js";
+import store from "./store";
 
 
 
 ReactDOM.render(
-	<Root />,
-	document.getElementById('root')
-)
+   <Provider store={store}>
+       <App />
+   </Provider>,
+  document.getElementById('root')
+);
+
+
