@@ -1,25 +1,21 @@
 var path = require('path');
 
 module.exports = {
-    entry: './src/main/frontend/js/root.js',
-    devtool: 'sourcemaps',
-    cache: true,
-    debug: true,
+    entry: '/home/george/Documents/lab/src/main/frontend/js/root.js',
+   devtool: 'sourcemaps',
     output: {
-        path: __dirname,
-        filename: './src/main/resources/static/built/bundle.js'
-    },
+		path: path.resolve(__dirname, './target/classes/static'),
+        filename: 'built/bundle.js'
+    }, 
     module: {
-        loaders: [
-            {
-                test: path.join(__dirname, '.'),
-                exclude: /(node_modules)/,
-                loader: 'babel',
-                query: {
-                    cacheDirectory: true,
-                    presets: ['es2015', 'react']
-                }
-            }
-        ]
-    }
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
+        }
+      }
+    ]
+  }
 };

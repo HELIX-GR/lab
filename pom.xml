@@ -50,15 +50,6 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
-
     <developers>
         <developer>
             <id>gkostoulas</id>
@@ -70,4 +61,23 @@
 		<name>IMIS, Institute for the Management of Information Systems</name>
 		<url>http://www.imsi.athenarc.gr/en</url>
 	</organization>
+
+
+    <build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>1.2</version>
+				<configuration>
+					<installDirectory>target</installDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

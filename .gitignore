@@ -1,4 +1,9 @@
-target/
+/logs/
+/target/
+/data/
+/secrets/
+/.secrets/
+
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
@@ -23,3 +28,13 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+npm-debug.log
+node_modules/
+node/
+built/
+
+
+.settings/
+.project
+.classpath
