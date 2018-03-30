@@ -1,5 +1,5 @@
 import React from "react";
-import { LoginForm } from './login';
+import LoginForm  from './login';
 
 export const ModalLoginBtn = () => (
 <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
@@ -19,7 +19,7 @@ export const ModalLogin = () => (
         </button>
       </div>
       <div className="modal-body">
-        <LoginForm/>
+      <LoginForm />
       </div>
     </div>
   </div>

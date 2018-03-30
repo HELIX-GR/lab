@@ -11,7 +11,7 @@ export const LabHeader = () => (
       {/*  <img src="images/lablogo.png" width="130" height="45" class="d-inline-block align-top" alt=""/> */}
         Notebooks <small>Preview</small>
       </a>
-      <a className="nav-link active justify-content-end" href="#">Sign In</a>
+      <a className="nav-link active justify-content-end" href="#" data-toggle="modal" data-target="#exampleModalCenter">Sign In</a>
       </div>
     </nav>
     <div className="bg-dark">
