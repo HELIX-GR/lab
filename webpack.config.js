@@ -7,6 +7,10 @@ module.exports = {
 		path: path.resolve(__dirname, './target/classes/static'),
         filename: 'built/bundle.js'
     }, 
+     node: {
+        net: 'empty',
+        dns: 'empty'
+      },
     module: {
     rules: [
       {
