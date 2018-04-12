@@ -65,12 +65,12 @@ export const login = (username, password) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
   dispatch(requestLogin(username));
   return userService.login(username, password, token).then(
-    (r) => {  console.log(r);
+    (r) => {  console.log("edw");
 
       var t = moment().valueOf();
       dispatch(loggedIn(username, r.csrfToken, t));
     },
-    (err) => {
+    (err) => {console.log(err);
       console.error('Failed login: ' + err.message);
       throw err;
     });

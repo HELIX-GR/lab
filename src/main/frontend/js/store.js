@@ -1,4 +1,5 @@
 const Redux = require('redux');
+import { createLogger } from 'redux-logger'
 const ReduxLogger = require('redux-logger');
 const ReduxThunk = require('redux-thunk');
 

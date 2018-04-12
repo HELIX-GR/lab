@@ -6,12 +6,13 @@ import App from "./components/App.js";
 import store from "./store";
 
 
+var renderRoot = function (placeholder) {
+    ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    placeholder);
+};
 
-ReactDOM.render(
-   <Provider store={store}>
-       <App />
-   </Provider>,
-  document.getElementById('root')
-);
-
+module.exports = { renderRoot };
 

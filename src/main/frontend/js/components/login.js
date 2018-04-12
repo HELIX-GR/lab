@@ -92,11 +92,10 @@ const mapStateToProps = null;
 const mapDispatchToProps = (dispatch) => ({
   submit: (username, password) => (
     dispatch(login(username, password))
-     // .then(() => dispatch(getConfiguration()))
+      //.then(() => dispatch(getConfiguration()))
      // .then(() => dispatch(refreshProfile()))
       .then(() => toast.dismiss(),
         () => {
-          console.log("hello")
           toast.dismiss();
           toast.error(<FormattedMessage id="login.failure" defaultMessage="The username or password is incorrect." />);
         })

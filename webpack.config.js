@@ -1,7 +1,7 @@
 var path = require('path');
 
 module.exports = {
-    entry: '/home/george/Documents/lab/src/main/frontend/js/root.js',
+    entry: '/home/george/Documents/lab/src/main/frontend/js/main.js',
    devtool: 'sourcemaps',
     output: {
 		path: path.resolve(__dirname, './target/classes/static'),
