@@ -1,7 +1,7 @@
 import React from "react";
+import { Link } from 'react-router-dom'
 
-
-export const LabHeader = () => (
+export const LabHeader = ({onclicks, username}) => (
   <div>
     <nav className="navbar navbar-dark bg-dark fized-top">
       <div className="container">
@@ -11,7 +11,7 @@ export const LabHeader = () => (
       {/*  <img src="images/lablogo.png" width="130" height="45" class="d-inline-block align-top" alt=""/> */}
         Notebooks <small>Preview</small>
       </a>
-      <a className="nav-link active justify-content-end" href="#" data-toggle="modal" data-target="#exampleModalCenter">Sign In</a>
+      <a className="nav-link active justify-content-end"  href='#' onClick={() =>(onclicks(true))} > { username ? username : 'Sign in' } </a>
       </div>
     </nav>
     <div className="bg-dark">
@@ -20,13 +20,13 @@ export const LabHeader = () => (
         <a className="nav-link active" href="#">Notebooks</a>
       </li>
       <li className="nav-item">
-        <a className="nav-link" href="#">Get Started</a>
+        <Link  className="nav-link" to={'/filesystem'}> My Files </Link>
       </li>
       <li className="nav-item">
-        <a className="nav-link" href="#">About</a>
+        <Link  className="nav-link" to={'/abouthelix'}> About </Link>
       </li>
       <li className="nav-item">
-        <a className="nav-link disabled" href="#">Soon</a>
+        <Link  className="nav-link disabled"  onClick={e => e.preventDefault()} to={'/soon'}> Soon </Link>
       </li>
     </ul>
     </div>

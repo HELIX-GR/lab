@@ -6,12 +6,13 @@ export const LOGIN = 'user/LOGIN';
 export const LOGOUT = 'user/LOGOUT';
 const REQUEST_LOGIN = 'user/REQUEST_LOGIN';
 const REQUEST_LOGOUT = 'user/REQUEST_LOGOUT';
-
+export const SHOW_LOGIN_MODAL = 'user/SHOW_LOGIN_MODAL';
 
 const initialState = {
   username: null,
   loggedIn: null,
   profile: null,
+  show_login: false,
 };
 
 export default (state = initialState, action) => {
@@ -23,7 +24,12 @@ export default (state = initialState, action) => {
         username: action.username,
         loggedIn: action.timestamp,
         profile: null,
+        show_login: false,
       };
+    case SHOW_LOGIN_MODAL:
+      return { ...state,
+        show_login:action.show_login*!(state.loggedIn),
+      }
     case REQUEST_LOGOUT:
       return state; // no-op  
     case LOGOUT:
@@ -57,6 +63,11 @@ const loggedOut = (token, timestamp) => ({
   timestamp,
 });
 
+export const modalLoginAction = (show_login) => ({
+  type: SHOW_LOGIN_MODAL,
+  show_login,
+});
+
 
 
 
@@ -65,8 +76,7 @@ export const login = (username, password) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
   dispatch(requestLogin(username));
   return userService.login(username, password, token).then(
-    (r) => {  console.log("edw");
-
+    (r) => { 
       var t = moment().valueOf();
       dispatch(loggedIn(username, r.csrfToken, t));
     },
