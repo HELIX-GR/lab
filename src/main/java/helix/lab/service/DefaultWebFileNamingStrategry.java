@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service("defaultWebFileNamingStrategry")
 public class DefaultWebFileNamingStrategry extends DefaultFileNamingStrategy implements WebFileNamingStrategy {
 
-    @Value("#{T(java.nio.file.Paths).get('${slipo.rpc-server.workflows.data-dir}')}")
+    @Value("/data/")
     private Path workflowDataDir;
 
     @Override

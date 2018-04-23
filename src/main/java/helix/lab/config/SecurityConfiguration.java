@@ -43,11 +43,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
         security.authorizeRequests()
             .antMatchers(
                     "/", "/index",
-                    "/login", "/logged-out")
+                    "/login", "/logged-out", "/filesystem","/action/**")
                 .permitAll()
             .antMatchers(
-                    "/logged-in", "/logout",
-                    "/action/**")
+                    "/logged-in", "/logout")
                 .authenticated()
             .antMatchers(
                     "/admin/**")

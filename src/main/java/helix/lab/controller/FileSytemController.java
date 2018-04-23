@@ -11,6 +11,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,10 +40,10 @@ public class FileSytemController extends BaseController {
 
     private long maxUserSpace;
 
-    //@Value("${slipo.user.max-space:20971520}")
-    //public void setDefaultLocale(String maxUserSpace) {
-   //     this.maxUserSpace = this.parseSize(maxUserSpace);
-    //}
+    @Value("20971520")
+    public void setDefaultLocale(String maxUserSpace) {
+        this.maxUserSpace = this.parseSize(maxUserSpace);
+    }
 
 
     /**
