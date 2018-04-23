@@ -1,46 +1,62 @@
 import React from "react";
+import _ from 'lodash';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { FileSelect } from './helpers/file-select';
+import { Route } from 'react-router-dom';
+import { getFilesystem } from '../ducks/config';
 
-import {  Route } from 'react-router-dom';
 
 class Filesystem extends React.Component {
   constructor(props) {
     super(props);
     
 		this.state = {
-      username:null,
+      user:"totos2",
       show_login:false,
     };
   }
+  componentWillMount() {
+    if (this.props.user == null) {
+      this._getFileSystem();
+    }
+  }
+
   
-  
+  componentWillReceiveProps(nextProps) {
+    if (this.props.user == null && nextProps.user != null) {
+      this._getFileSystem();
+    }
+  }
+  _getFileSystem() {
+    this.props.getFilesystem('');
+  }
 
   render() {
 
-    if (!this.props.username){
-      var start_now = () => {this.props.modalLoginAction(true)};
-    }else{
-      var start_now = this.props.startNowAction;
-    }
     return   (
-    <div >
-     
+      <div>
+        <h2>hello </h2>
+      <FileSelect
+        {...this.props}
+        id="My Files "
+        label="File system resource"
+        help="Click on resource to select"
+        style={{ height: '40vh' }}
+      /> 
     </div>)
 }
 }
+
 function mapStateToProps(state) {
   return {
-    username: state.users.username,
-    show_login: state.users.show_login,
-    target: state.app.target,
+    filesystem: state.config.filesystem,
   };
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ }, dispatch);
-
-
+const mapDispatchToProps = (dispatch) => bindActionCreators({ getFilesystem }, dispatch);
 
 
 

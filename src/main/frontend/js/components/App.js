@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { LabHeader } from './header';
-import  CardLab  from '../helpers/cardLab';
+import CardLab from '../helpers/cardLab';
 import ModalLogin from './modal-login';
 import LoginForm from './login';
 import { modalLoginAction } from '../ducks/users';
@@ -10,7 +10,7 @@ import { startNowAction } from '../ducks/app';
 import { Carousel } from './landing/carousel';
 import { JumpotronLab } from './landing/jumbotron';
 import {  Route } from 'react-router-dom';
-import { Filesystem } from './filesystem'
+import  Filesystem  from './filesystem';
 
 
 class App extends React.Component {
@@ -39,16 +39,20 @@ class App extends React.Component {
         <div>
           <Carousel/>
           <JumpotronLab startnow={start_now} target={this.props.target}/>
-      </div>)} />
-      <Route  path="/filesystem/" component={Filesystem}/>
+          <div className="card-deck container centered">
+            <CardLab title='Introduction to Python 2.7' text='Learn the basics of Python 3 in Lab Notebooks. Learn Python syntax, standard data types, as well as how to write a simple program.' imagesrc='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/480px-Python-logo-notext.svg.png'/>
+            <CardLab title='Introduction to R' text='Get a brief introduction to charting and graphing capabilities of R in the Jupyter Notebook. You will learn how to make line charts, pie charts and scatter plots.' imagesrc='https://www.r-project.org/logo/Rlogo.png' />
+            <CardLab title='Introduction to  Python3.5' text='Learn the basics of Python 3 in Lab Notebooks. Learn Python syntax, standard data types, as well as how to write a simple program.' imagesrc ='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/480px-Python-logo-notext.svg.png'/>
+            <CardLab title='Introduction to  Julia' text='Learn the basics of Julia in Lab Notebooks. Julia is a high-level, high-performance dynamic programming language for numerical computing.' imagesrc ='https://raw.githubusercontent.com/JuliaGraphics/julia-logo-graphics/master/images/three-balls.png'/>
+          </div>
+        </div>)} />
+      <Route  path="/filesystem" render= {() => (
+        <div>
+         <Filesystem/>
+        </div>)}/>
       <ModalLogin showIt={this.props.modalLoginAction}/>
       
-      <div className="card-deck container centered">
-        <CardLab title='Introduction to Python 2.7' text='Learn the basics of Python 3 in Lab Notebooks. Learn Python syntax, standard data types, as well as how to write a simple program.' imagesrc='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/480px-Python-logo-notext.svg.png'/>
-        <CardLab title='Introduction to R' text='Get a brief introduction to charting and graphing capabilities of R in the Jupyter Notebook. You will learn how to make line charts, pie charts and scatter plots.' imagesrc='https://www.r-project.org/logo/Rlogo.png' />
-        <CardLab title='Introduction to  Python3.5' text='Learn the basics of Python 3 in Lab Notebooks. Learn Python syntax, standard data types, as well as how to write a simple program.' imagesrc ='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/480px-Python-logo-notext.svg.png'/>
-        <CardLab title='Introduction to  Julia' text='Learn the basics of Julia in Lab Notebooks. Julia is a high-level, high-performance dynamic programming language for numerical computing.' imagesrc ='https://raw.githubusercontent.com/JuliaGraphics/julia-logo-graphics/master/images/three-balls.png'/>
-      </div>
+     
       
 
       <footer className="text-muted bg-dark">
