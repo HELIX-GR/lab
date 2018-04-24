@@ -6,7 +6,7 @@ module.exports = {
     devtool: 'sourcemaps',
     output: {
 		path: path.resolve(__dirname, './target/classes/static'),
-        filename: 'built/bundle.js'
+        filename: 'js/bundle.js'
     }, 
      node: {
         net: 'empty',
