@@ -1,7 +1,5 @@
 package helix.lab.controller;
 
-
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.AuthenticationException;
@@ -17,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import helix.lab.model.BasicErrorCode;
 import helix.lab.model.Error;
 import helix.lab.model.RestResponse;
-
-
-
 
 @RestController
 @RequestMapping(produces = "application/json")
@@ -42,9 +37,6 @@ public class LoginController
         }
     }
 
-
-   
-
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public RestResponse<Void> login(HttpSession session, @RequestParam(required = false) String error)
     {
@@ -56,18 +48,16 @@ public class LoginController
         }
         return RestResponse.result(null);
     }
+    
     @RequestMapping(value = "/logged-in", method = RequestMethod.GET)
     public RestResponse<Token> loggedIn(HttpSession session, CsrfToken token)
     {
         return RestResponse.result(new Token(token));
     }
 
-
     @RequestMapping(value = "/logged-out", method = RequestMethod.GET)
     public RestResponse<Token> loggedOut(HttpSession session, CsrfToken token)
     {
         return RestResponse.result(new Token(token));
     }
-
-
 }

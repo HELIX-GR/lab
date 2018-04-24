@@ -3,7 +3,6 @@ package helix.lab.controller;
 
 import javax.servlet.http.HttpSession;
 
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,26 +21,6 @@ import helix.lab.service.JupyterApi;
 @RequestMapping(produces = "application/json")
 public class JupyterControler
 {
-
-    private static class Token
-    {
-        private final CsrfToken token;
-
-        public Token(CsrfToken token)
-        {
-            this.token = token;
-        }
-
-        @JsonProperty("csrfToken")
-        public String getToken()
-        {
-            return token.getToken();
-        }
-    }
-
-
-   
-
     @RequestMapping(value = "/action/start", method = RequestMethod.GET)
     public RestResponse<Object> login(HttpSession session, @RequestParam(required = false) String error) 
     {

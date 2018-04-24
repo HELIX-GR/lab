@@ -5,7 +5,7 @@ import java.util.Locale;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-public interface IAuthenticationFacade {
+public interface AuthenticationFacade {
 
     /**
      * Get the current {@link Authentication} object from the {@link SecurityContextHolder}
