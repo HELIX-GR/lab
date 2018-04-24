@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 
-@Entity
+//@Entity
 public class LabUser {
 	
 	private @Id @GeneratedValue Long id;
