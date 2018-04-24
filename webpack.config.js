@@ -1,8 +1,9 @@
 var path = require('path');
 
 module.exports = {
-    entry: '/home/george/Documents/lab/src/main/frontend/js/main.js',
-   devtool: 'sourcemaps',
+    entry: './src/main/frontend/js/main.js',
+    mode: 'development',
+    devtool: 'sourcemaps',
     output: {
 		path: path.resolve(__dirname, './target/classes/static'),
         filename: 'built/bundle.js'
