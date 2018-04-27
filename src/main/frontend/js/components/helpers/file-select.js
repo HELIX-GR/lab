@@ -5,29 +5,31 @@ import { FormattedTime } from 'react-intl';
 import { Row, Button } from 'reactstrap';
 
 import decorateField from './form-field';
-
+import  formatFileSize  from '../../util/file-size';
 const fileColumns = [
   {
     Header: '',
     accessor: 'type',
-    maxWidth: 30,
+    maxWidth: 33,
     Cell: props => props.value === 'folder' ?
       <i className="fa fa-folder" />
-      :
+      : props.value === 'file'?
       <i className="fa fa-file" />
+      :<i className="fa fa-file-code" />
   },
   {
     Header: 'File Name',
     accessor: 'name',
+    width: 700,
   },
   {
-    Header: 'File Path',
-    accessor: 'path',
+    Header: 'File type',
+    accessor: 'type',
   },
   {
     Header: 'File Size',
     id: 'size',
-    accessor: r => r.size,
+    accessor: r => (r.size? formatFileSize(r.size): " "),
   },
   {
     Header: 'Created',
@@ -36,6 +38,7 @@ const fileColumns = [
     Cell: props => (
       <FormattedTime value={props.value} day='numeric' month='numeric' year='numeric' />
     ),
+    width: 150,
   },
 ];
 
@@ -59,7 +62,7 @@ export class FileSelect extends React.Component {
     const { folder } = this.state;
     const data = [
       ...folder.folders.map(f => ({ ...f, type: 'folder' })),
-      ...folder.files.map(f => ({ ...f, type: 'file' })),
+      ...folder.files.map(f => ({type: 'file', ...f })),
     ];
     const path = folder.path.split('/').slice(0, -1).map((name, level) => level === 0 ? ({ name: '..', folder: this.props.filesystem }) : ({ name, folder: this._getParentDir(level) }));
 
@@ -87,13 +90,13 @@ export class FileSelect extends React.Component {
           name={this.props.id}
           id={this.props.id}
           getTrProps={(state, rowInfo) => ({
-            /*onClick: (e) => {
+            onClick: (e) => {
               if (rowInfo.row.type === 'file') {
                 this.props.onChange(rowInfo.row);
               } else if (rowInfo.row.type === 'folder') {
                 this.setState({ folder: folder.folders[rowInfo.index] });
               }
-            },*/
+            },
             style: {
               background: this.props.value && rowInfo && rowInfo.row.type === 'file' && rowInfo.row.path === this.props.value.path ? '#20a8d8' : null,
             }
@@ -115,5 +118,5 @@ FileSelect.propTypes = {
   id: PropTypes.string.isRequired,
   filesystem: PropTypes.object.isRequired,
   value: PropTypes.any,
- // onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 };

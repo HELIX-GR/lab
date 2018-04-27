@@ -12,20 +12,15 @@ const RECEIVE_FILESYSTEM = 'config/RECEIVE_FILESYSTEM';
 
 const initialState = {
   filesystem: {
-    count: 4,
+    count: 2,
     files: [
-      {size: 85262, path: "/File 1", name: "File 1", createdOn: 1524495477119},
-      {size: 959050, path: "/File 2", name: "File 2", createdOn: 1524495477119},
+      { size: 46411, path: "/File 1", name: "File 1", createdOn: 1524736369060 },
+      { size: 970797, path: "/File 2", name: "File 2", createdOn: 1524736369060 },
     ],
     folders: [
-      {size: 0, path: "/Folder 1/", name: "Folder 1", createdOn: 1524495477118, files: [], folders: []},
-      {size: 0, path: "/Folder 2/", name: "Folder 2", createdOn: 1524495477118, files: [], folders: []}
-    
-    ],
-    name:"",
-    path:"/",
-    size:4232881,
-    createdOn:1524495477119,
+      { size: 0, path: "/Folder 1/", name: "Folder 1", createdOn: 1524736369059 }],
+    name: "",
+    path: "/",
   },
 };
 

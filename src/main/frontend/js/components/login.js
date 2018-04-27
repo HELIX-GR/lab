@@ -11,9 +11,8 @@ import {
 } from 'react-toastify';
 
 import { login } from '../ducks/users';
-//
-// Presentational component
-//
+import { getFilesystem } from '../ducks/config';
+
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -94,6 +93,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(login(username, password))
       //.then(() => dispatch(getConfiguration()))
      // .then(() => dispatch(refreshProfile()))
+      .then(() => dispatch(getFilesystem()))
       .then(() => toast.dismiss(),
         () => {
           toast.dismiss();
@@ -103,6 +103,5 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-LoginForm = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+export default LoginForm = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(LoginForm);
 
-module.exports = LoginForm;

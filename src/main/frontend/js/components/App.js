@@ -10,7 +10,7 @@ import { startNowAction } from '../ducks/app';
 import { Carousel } from './landing/carousel';
 import { JumpotronLab } from './landing/jumbotron';
 import {  Route } from 'react-router-dom';
-import  Filesystem  from './filesystem';
+import  Filesystem  from './filesystem/filesystem';
 
 
 class App extends React.Component {
@@ -39,7 +39,7 @@ class App extends React.Component {
         <div>
           <Carousel/>
           <JumpotronLab startnow={start_now} target={this.props.target}/>
-          <div className="card-deck container centered">
+          <div className="card-deck container-fluid centered">
             <CardLab title='Introduction to Python 2.7' text='Learn the basics of Python 3 in Lab Notebooks. Learn Python syntax, standard data types, as well as how to write a simple program.' imagesrc='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/480px-Python-logo-notext.svg.png'/>
             <CardLab title='Introduction to R' text='Get a brief introduction to charting and graphing capabilities of R in the Jupyter Notebook. You will learn how to make line charts, pie charts and scatter plots.' imagesrc='https://www.r-project.org/logo/Rlogo.png' />
             <CardLab title='Introduction to  Python3.5' text='Learn the basics of Python 3 in Lab Notebooks. Learn Python syntax, standard data types, as well as how to write a simple program.' imagesrc ='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/480px-Python-logo-notext.svg.png'/>
@@ -56,7 +56,7 @@ class App extends React.Component {
       
 
       <footer className="text-muted bg-dark">
-        <div className="container">
+        <div>
           <p className="float-right">
             <a href="#">Back to top</a>
           </p>

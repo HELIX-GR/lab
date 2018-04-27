@@ -1,24 +1,28 @@
 import React from "react";
-import LoginForm  from './login';
+import LoginForm from './login';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 
-
-class ModalLogin extends React.Component{
+class ModalLogin extends React.Component {
   constructor(props) {
     super(props);
 
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
-		this.state = {
+    this.state = {
       show_login: false
     };
+  }
+  componentWillMount() {
+    this.state.show_login = this.props.show_login;
   }
 
   handleClose() {
     this.props.showIt(false);
-    
+
   }
 
   handleShow() {
@@ -26,28 +30,25 @@ class ModalLogin extends React.Component{
   }
 
 
-  render(){
-    if (this.props.show_login){
-      return(
-        <div className="modal fade show" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style={{display: 'block', paddingRight: 15+'px'}}>
-          <div className="modal-dialog modal-dialog-centered" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLongTitle">Sign In</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.handleClose}>
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-              <LoginForm />
-              </div>
-            </div>
-          </div>
+  render() {
+     if (this.props.show_login){
+      this.state.show_login=true;
+     }else{
+      this.state.show_login=false;
+     }
+    return (
+      <Dialog
+        title="Sign In"
+        //actions={actions}
+        modal={false}
+        open={this.state.show_login}
+        onRequestClose={this.handleClose}
+      >
+        <div>
+          <LoginForm />
         </div>
-      );
-    }else {
-      return (null);
-    }
+      </Dialog>
+    );
   }
 }
 
@@ -59,9 +60,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions : bindActionCreators(Object.assign({}, {}) , dispatch)
+    actions: bindActionCreators(Object.assign({}, {}), dispatch)
   };
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModalLogin);
+export default ModalLogin = connect(mapStateToProps, mapDispatchToProps)(ModalLogin);
