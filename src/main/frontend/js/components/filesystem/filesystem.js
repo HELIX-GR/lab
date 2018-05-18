@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { FileSelect } from '../helpers/file-select';
 import { Route } from 'react-router-dom';
-import { getFilesystem, createFolder } from '../../ducks/config';
+import { getFilesystem, createFolder, setTablePath } from '../../ducks/config';
 import TableToolbar from './table-toolbar';
-
+import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
 
 
 import FileSelect2 from './file-select2';
@@ -39,7 +40,6 @@ class Filesystem extends React.Component {
   }
   _getFileSystem() {
     this.props.getFilesystem('');
-    this.render();
   }
 
   render() {
@@ -49,17 +49,18 @@ class Filesystem extends React.Component {
     };
     return (
       <div>
-        <div className="jumbotron faq-header info-page-header jumbotron-with-breadcrumb-below">
-          <div >
+        <div className="jumbotron faq-header info-page-header jumbotron-with-breadcrumb-below row">
+          <div className="col" >
             <h1 className="clip-text header-with-icon">
               <span className="fas fa-archive"></span>
               <span className="header-text">My Files</span>
             </h1>
           </div>
+          <FlatButton label="Jupyter Lab" subtitle="Next-generation web-based user interface for Project Jupyter" target="_blank" href={this.props.target + "/lab"} />
         </div>
 
         <TableToolbar onclick={this._getFileSystem} />
-        <FileSelect2 filesystem={this.props.filesystem} />
+        <FileSelect2 />
 
         {/* <FileSelect
           {...this.props}
@@ -76,11 +77,12 @@ class Filesystem extends React.Component {
 function mapStateToProps(state) {
   return {
     filesystem: state.config.filesystem,
+    target: state.app.target,
   };
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ getFilesystem, createFolder }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ getFilesystem, createFolder, setTablePath }, dispatch);
 
 
 

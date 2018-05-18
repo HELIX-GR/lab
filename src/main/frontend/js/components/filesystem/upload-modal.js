@@ -8,6 +8,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import formatFileSize from '../../util/file-size'
 import FileUpload from 'material-ui/svg-icons/file/file-upload';
 import { uploadFile } from '../../ducks/config';
+import CircularProgress from 'material-ui/CircularProgress';
 
 /**
  * A modal dialog can only be closed by selecting one of the actions.
@@ -16,6 +17,9 @@ class UploadModal extends React.Component {
   state = {
     open: false,
     file: null,
+    newFolderName: '',
+    isUploading: false,
+    path: this.props.table_path,
   };
 
   handleOpen = () => {
@@ -23,7 +27,40 @@ class UploadModal extends React.Component {
   };
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({
+      open: false,
+      file: null,
+      newFolderName: '',
+      isUploading: false,
+    });
+  };
+
+
+  handleUpload = () => {
+
+    let path = this.props.table_path;
+    if (path.startsWith('/')) {
+      path = path.slice(1);
+    }
+    console.log("path : ", path);
+    this.setState({
+      isUploading: true,
+    });
+    let file = this.state.file;
+    this.props.uploadFile({ path, filename: file.name, }, file, )
+      .then(fs => {
+        console.log(fs);
+        this.setState({
+          newFolderName: '',
+          isUploading: false,
+          open: false,
+        });
+      })
+      .catch(err => {
+        this.setState({
+          isUploading: false,
+        });
+      });
   };
 
   render() {
@@ -37,7 +74,7 @@ class UploadModal extends React.Component {
         label="Upload"
         primary={true}
         disabled={false}
-        onClick={this.handleClose}
+        onClick={this.handleUpload}
       />,
     ];
     const dzstyle = {
@@ -47,8 +84,6 @@ class UploadModal extends React.Component {
       border: '1px dotted #656565'
     }
 
-    const { uploadFile } = this.props;
-    console.log(uploadFile);
 
     return (
       <FloatingActionButton
@@ -65,24 +100,39 @@ class UploadModal extends React.Component {
         >
           <div>
             <Dropzone
-              style={dzstyle}
               onDrop={(accepted, rejected) => {
                 if (rejected.length) {
                   console.error('rejected file:', rejected);
                 }
                 const file = accepted && accepted.length && accepted[0];
-                this.setState({ file });
-                if (typeof uploadFile === 'function') {
-                  console.log("upload", file);
-                  uploadFile(file);
-                }
+                console.log(file);
+                this.setState({
+                  file: file,
+                  isUploading: false,
+                });
 
+
+              }}
+              style={{
+                textAlign: 'center',
+                fontSize: '3em',
+                color: '#656565',
+                border: '1px dotted #656565',
+                height: '12rem',
               }}
               disableClick={false}
               multiple={false}
+              disabled={this.state.isUploading}
             >
-              <i className="fas fa-cloud-upload-alt"></i>
-
+              {this.state.isUploading ?
+                <div style={{ paddingTop: '3rem' }}>
+                  <CircularProgress size={80} thickness={5} />
+                </div>
+                :
+                <div>
+                  <i className="fas fa-cloud-upload fa-4x"></i>
+                </div>
+              }
             </Dropzone>
             {this.state.file && this.state.file.name}
             {this.state.file && ` (${formatFileSize(this.state.file.size)})`}
@@ -96,6 +146,8 @@ class UploadModal extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    filesystem: state.config.filesystem,
+    table_path: state.config.table_path,
   };
 }
 
