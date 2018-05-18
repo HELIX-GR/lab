@@ -2,11 +2,12 @@ const appService = require('../api/app');
 
 export const START_NOW = 'app/START_NOW';
 const GOT_SERVER= 'app/GOT_SERVER';
+const GOT_STATUS= 'app/GOT_STATUS';
 
 var initialState = {
   success: null,
   error: null,
-  loading: null,
+  status: null,
   statistics: null,
   target:null,
 };
@@ -20,6 +21,12 @@ export default (state = initialState, action) => {
         ...state,
         target:action.target,  
       }
+      case GOT_STATUS:
+      return {
+        ...state,
+        status:action.status,  
+      }
+
 
     default:
       return state;
@@ -29,6 +36,11 @@ export default (state = initialState, action) => {
 const got_server = (r,t) => ({
   type: GOT_SERVER,
   target: r,
+
+});
+const got_status = (r,t) => ({
+  type: GOT_STATUS,
+  status: r,
 
 });
 
@@ -45,3 +57,14 @@ export const startNowAction = (username, password) => (dispatch, getState) => {
     });
 };
 
+export const getUserInfoAction = () => (dispatch, getState) => {
+  var { meta: { csrfToken: token } } = getState();
+  return appService.getUserServerInfo().then(
+    (r) => { console.log(r);
+      dispatch(got_status(r));
+    },
+    (err) => {
+      console.error('Failed login: ' + err.message);
+      throw err;
+    });
+};

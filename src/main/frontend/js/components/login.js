@@ -11,7 +11,7 @@ import {
 } from 'react-toastify';
 
 import { login } from '../ducks/users';
-import { getFilesystem } from '../ducks/config';
+import { getFilesystem, getConfiguration } from '../ducks/config';
 
 
 class LoginForm extends React.Component {
@@ -91,7 +91,7 @@ const mapStateToProps = null;
 const mapDispatchToProps = (dispatch) => ({
   submit: (username, password) => (
     dispatch(login(username, password))
-      //.then(() => dispatch(getConfiguration()))
+      .then(() => dispatch(getConfiguration()))
      // .then(() => dispatch(refreshProfile()))
       .then(() => dispatch(getFilesystem()))
       .then(() => toast.dismiss(),

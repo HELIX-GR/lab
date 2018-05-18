@@ -17,12 +17,15 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.json.JSONObject;
+import org.springframework.boot.json.JsonParser;
 import org.springframework.http.MediaType;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import helix.lab.HubUserCreate;
+
 
 
 public class JupyterApi {
@@ -40,10 +43,10 @@ public class JupyterApi {
 		HttpURLConnection con;
 
 	try {
-		URL url = new URL("http://127.0.0.1:8081/hub/api/"+path);
+		URL url = new URL("http://192.168.10.163:8081/hub/api/"+path);
 		con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod(method);
-		con.setRequestProperty ("Authorization", "token 8f972f5d7d5244fda516f2e19298f3a4");
+		con.setRequestProperty ("Authorization", "token d53abbe07ec94f23811fd6f70544621a");
 		if (method=="POST") {	
 			String message = mapper.writeValueAsString(query);
 		  	System.out.println(message.toString());
@@ -100,7 +103,9 @@ public class JupyterApi {
 		    System.out.println(key + " => "+ field);
 		}
 		//==================================================================
-		return values;
+		
+		
+		return actualObj;
 
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
@@ -118,7 +123,7 @@ public class JupyterApi {
 
         URI uri = new URIBuilder()
             .setScheme("http")
-            .setHost("http://127.0.0.1:8081/hub/api/")
+            .setHost("http://192.168.10.163:8081/hub/api/")
             .setPort(8081)
             .setPath(String.format("/hub/api/", path))
             .build();

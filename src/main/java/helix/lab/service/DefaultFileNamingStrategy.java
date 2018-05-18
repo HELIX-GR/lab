@@ -79,12 +79,15 @@ public class DefaultFileNamingStrategy implements FileNamingStrategy
         final DirectoryInfo di = new DirectoryInfo(name, relativePath, toZonedDateTime(file.lastModified()));
 
         for (File f : file.listFiles()) {
+        	if (!f.getName().startsWith(".")) {// Hidden files.
+        		
+        	
             if (f.isDirectory()) {
                 di.addFolder(createDirectoryInfo(f.getName(), f.toPath(), relativePath + f.getName() + "/"));
             }
             if (f.isFile()) {
                 di.addFile(createFileInfo(f, relativePath));
-            }
+            }}
         }
 
         return di;

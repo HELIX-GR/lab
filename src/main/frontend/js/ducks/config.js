@@ -8,20 +8,20 @@ const LOAD_CONFIGURATION = 'config/LOAD_CONFIGURATION';
 
 const REQUEST_FILESYSTEM = 'config/REQUEST_FILESYSTEM';
 const RECEIVE_FILESYSTEM = 'config/RECEIVE_FILESYSTEM';
-
+const SET_TABEL_PATH = 'config/SET_TABEL_PATH';
+const SET_NEW_FOLDER = 'config/SET_NEW_FOLDER';
 
 const initialState = {
   filesystem: {
-    count: 2,
-    files: [
-      { size: 46411, path: "/File 1", name: "File 1", createdOn: 1524736369060 },
-      { size: 970797, path: "/File 2", name: "File 2", createdOn: 1524736369060 },
-    ],
-    folders: [
-      { size: 0, path: "/Folder 1/", name: "Folder 1", createdOn: 1524736369059 }],
+    count: 0,
+    files: [],
+    folders: [],
     name: "",
     path: "/",
   },
+  table_path: "/",
+  selected_file: "",
+  new_folder: false,
 };
 
 // Reducer
@@ -30,6 +30,17 @@ export default (state = initialState, action) => {
     case REQUEST_CONFIGURATION:
       return state;
 
+    case SET_TABEL_PATH:
+      return {
+        ...state,
+        table_path: action.table_path,
+        selected_file: action.selected_file,
+      }
+    case SET_NEW_FOLDER:
+      return {
+        ...state,
+        new_folder: action.new_folder,
+      }
     case LOAD_CONFIGURATION:
       return {
         ...state,
@@ -70,6 +81,17 @@ export const receiveFilesystem = (filesystem) => ({
   filesystem,
 });
 
+export const setTablePath = (table_path, selected_file) => ({
+  type: SET_TABEL_PATH,
+  table_path,
+  selected_file,
+});
+
+export const setNewFolder = (new_folder) => ({
+  type: SET_NEW_FOLDER,
+  new_folder,
+});
+
 // Thunk actions
 export const getConfiguration = () => (dispatch, getState) => {
   const { meta: { csrfToken: token } } = getState();
@@ -108,7 +130,9 @@ export const createFolder = (path) => (dispatch, getState) => {
 
 export const uploadFile = (data, file) => (dispatch, getState) => {
   const { meta: { csrfToken: token } } = getState();
+  console.log("uploading file");
 
+  console.log(data, file);
   return filesystemService.upload(data, file, token)
     .then((fs) => {
       dispatch(receiveFilesystem(fs));

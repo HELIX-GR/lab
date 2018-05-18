@@ -40,7 +40,7 @@ public class FileSytemController extends BaseController {
 
     private long maxUserSpace;
 
-    @Value("20971520")
+    @Value("200000000")
     public void setDefaultLocale(String maxUserSpace) {
         this.maxUserSpace = this.parseSize(maxUserSpace);
     }

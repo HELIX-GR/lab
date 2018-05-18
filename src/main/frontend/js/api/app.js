@@ -6,6 +6,10 @@ var api = {
     return actions.get('/action/start');
   },
 
+  getUserServerInfo: () => {
+    return actions.get('/action/servers');
+  },
+
 };
 
 module.exports = api;
