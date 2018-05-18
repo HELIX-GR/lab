@@ -12,7 +12,7 @@
   "author": "Giorgos Kostoulas",
   "repository": {
     "type": "git",
-    "url": "git://github.com/gkostoulas/Helix-Lab.git"
+    "url": "git://github.com/HELIX-GR/lab.git"
   },
   "license": "ISC",
   "devDependencies": {
@@ -28,9 +28,9 @@
     "webpack": "^4.8.1"
   },
   "bugs": {
-    "url": "https://github.com/gkostoulas/Helix-Lab/issues"
+    "url": "https://github.com/HELIX-GR/lab/issues"
   },
-  "homepage": "https://github.com/gkostoulas/Helix-Lab#readme",
+  "homepage": "https://github.com/HELIX-GR/lab",
   "dependencies": {
     "css-loader": "^0.28.11",
     "es6-promise": "^4.2.4",
