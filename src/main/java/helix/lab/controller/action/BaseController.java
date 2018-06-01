@@ -1,24 +1,22 @@
-package helix.lab.controller;
+package helix.lab.controller.action;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import helix.lab.service.DefaultWebFileNamingStrategry;
-import helix.lab.service.AuthenticationFacade;
-
+import helix.lab.service.IAuthenticationFacade;
 
 public abstract class BaseController {
 
     @Autowired
-    private AuthenticationFacade authenticationFacade;
+    private IAuthenticationFacade authenticationFacade;
 
     @Autowired
     @Qualifier("defaultWebFileNamingStrategry")
     protected DefaultWebFileNamingStrategry fileNamingStrategy;
-
-    protected int currentUserId() 
-    {
-        return 1;//this.authenticationFacade.getCurrentUserId() ;
+    
+    protected int currentUserId() {
+        return this.authenticationFacade.getCurrentUserId();
     }
 
 }

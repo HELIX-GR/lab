@@ -17,8 +17,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClients;
-import org.json.JSONObject;
-import org.springframework.boot.json.JsonParser;
+
 import org.springframework.http.MediaType;
 
 import com.fasterxml.jackson.databind.JsonNode;

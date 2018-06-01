@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-import helix.lab.HubUserCreate;
-import helix.lab.model.RestResponse;
+import gr.helix.core.common.model.RestResponse;
 import helix.lab.service.JupyterApi;
 
 

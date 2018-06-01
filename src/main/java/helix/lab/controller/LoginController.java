@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import helix.lab.model.BasicErrorCode;
-import helix.lab.model.Error;
-import helix.lab.model.RestResponse;
+import gr.helix.core.common.model.BasicErrorCode;
+import gr.helix.core.common.model.Error;
+import gr.helix.core.common.model.RestResponse;
 
 @RestController
 @RequestMapping(produces = "application/json")
@@ -33,7 +33,7 @@ public class LoginController
         @JsonProperty("csrfToken")
         public String getToken()
         {
-            return token.getToken();
+            return this.token.getToken();
         }
     }
 
@@ -41,14 +41,14 @@ public class LoginController
     public RestResponse<Void> login(HttpSession session, @RequestParam(required = false) String error)
     {
         if (error != null) {
-            AuthenticationException ex = (AuthenticationException)
+            final AuthenticationException ex = (AuthenticationException)
                 session.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-            Error e = new Error(BasicErrorCode.AUTHENTICATION_FAILED, ex.getMessage());
+            final Error e = new Error(BasicErrorCode.AUTHENTICATION_FAILED, ex.getMessage());
             return RestResponse.error(e);
         }
         return RestResponse.result(null);
     }
-    
+
     @RequestMapping(value = "/logged-in", method = RequestMethod.GET)
     public RestResponse<Token> loggedIn(HttpSession session, CsrfToken token)
     {
@@ -56,8 +56,8 @@ public class LoginController
     }
 
     @RequestMapping(value = "/logged-out", method = RequestMethod.GET)
-    public RestResponse<Token> loggedOut(HttpSession session, CsrfToken token)
-    {
+    public RestResponse<Token> loggedOut(HttpSession session, CsrfToken token) {
         return RestResponse.result(new Token(token));
     }
+
 }

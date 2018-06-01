@@ -3,7 +3,8 @@ package helix.lab.model;
 // Copied from package eu.slipo.workbench.common.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import gr.helix.core.common.model.ErrorCode;
 
 /**
  * A generic {@link ErrorCode} that simply holds a key. 

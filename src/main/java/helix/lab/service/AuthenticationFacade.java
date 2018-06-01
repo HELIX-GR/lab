@@ -1,6 +1,5 @@
 package helix.lab.service;
 
-
 import java.util.Locale;
 
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -8,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import helix.lab.service.DefaultUserDetailsService.Details;
+import helix.lab.model.security.User;
 
 
 @Component
@@ -16,7 +15,7 @@ public class AuthenticationFacade implements IAuthenticationFacade {
 
     @Override
     public Authentication getAuthentication() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication instanceof AnonymousAuthenticationToken) {
             return null;
@@ -26,29 +25,29 @@ public class AuthenticationFacade implements IAuthenticationFacade {
 
     @Override
     public Integer getCurrentUserId() {
-        Authentication authentication = this.getAuthentication();
+        final Authentication authentication = this.getAuthentication();
         if (authentication == null) {
             return null;
         }
-        return ((Details) authentication.getPrincipal()).getId();
+        return ((User) authentication.getPrincipal()).getId();
     }
 
     @Override
     public String getCurrentUserName() {
-        Authentication authentication = this.getAuthentication();
+        final Authentication authentication = this.getAuthentication();
         if (authentication == null) {
             return null;
         }
-        return ((Details) authentication.getPrincipal()).getUsername();
+        return ((User) authentication.getPrincipal()).getUsername();
     }
 
     @Override
     public Locale getCurrentUserLocale() {
-        Authentication authentication = this.getAuthentication();
+        final Authentication authentication = this.getAuthentication();
         if (authentication == null) {
             return null;
         }
-        String lang = ((Details) authentication.getPrincipal()).getLang();
+        final String lang = ((User) authentication.getPrincipal()).getLang();
 
         return Locale.forLanguageTag(lang);
     }

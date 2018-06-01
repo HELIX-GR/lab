@@ -1,5 +1,6 @@
 package helix.lab.model;
 
+import gr.helix.core.common.model.ErrorCode;
 
 /**
  * Error codes for file system operations
