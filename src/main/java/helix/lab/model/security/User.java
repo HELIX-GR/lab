@@ -16,9 +16,9 @@ public class User implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
-    private final Account     account;
+    private final Account account;
 
-    private final String      password;
+    private final String password;
 
     public User(Account account, String password) {
         this.account = account;

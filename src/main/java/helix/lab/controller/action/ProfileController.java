@@ -1,6 +1,5 @@
 package helix.lab.controller.action;
 
-import java.security.Principal;
 import java.util.AbstractMap;
 
 import org.slf4j.Logger;
@@ -30,18 +29,14 @@ import helix.lab.model.security.User;
 @RestController
 @Secured({ "ROLE_USER", "ROLE_ADMIN" })
 @RequestMapping(produces = "application/json")
-public class UserControler {
+public class ProfileController {
 
     private static final Logger logger = LoggerFactory.getLogger(SsoController.class);
 
     @Autowired
     UserService userService;
-
-    @RequestMapping("/user")
-    public Principal user(Principal principal) {
-        return principal;
-    }
-
+    
+     
     /**
      * Get profile data for the authenticated user
      *

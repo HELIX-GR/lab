@@ -22,6 +22,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
     basePackageClasses = {
         gr.helix.core.common.domain._Marker.class,
         helix.lab.domain._Marker.class,
+        helix.lab.model.user._Marker.class,
     }
 )
 @EnableScheduling

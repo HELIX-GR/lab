@@ -1,4 +1,4 @@
-package helix.lab;
+package helix.lab.model.user;
 
 import java.util.List;
 

@@ -607,6 +607,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                              "/action/configuration/**",
                              "/saml/**")
                 .permitAll()
+                .antMatchers("/filesystem")
+                .hasAuthority("ROLE_USER")                
             .anyRequest().authenticated()
                 .antMatchers("/admin/**")
                 .hasAuthority("ROLE_ADMIN");

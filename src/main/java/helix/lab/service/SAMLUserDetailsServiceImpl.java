@@ -1,5 +1,6 @@
 package helix.lab.service;
 
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,18 +9,29 @@ import org.opensaml.saml2.core.Attribute;
 import org.opensaml.xml.schema.impl.XSAnyImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.springframework.stereotype.Service;
 
+import gr.helix.core.common.domain.AccountEntity;
+import gr.helix.core.common.domain.AccountRoleEntity;
 import gr.helix.core.common.model.EnumRole;
 import gr.helix.core.common.model.user.Account;
+import gr.helix.core.common.repository.AccountRepository;
 import helix.lab.model.security.User;
+import helix.lab.repository.AccountRoleRepository;
 
 @Service
 public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 
+	@Autowired
+	AccountRepository acountrepository;
+	
+	@Autowired
+	AccountRoleRepository arr;
+	
     private static final Logger logger = LoggerFactory.getLogger(SAMLUserDetailsServiceImpl.class);
 
     private final static String ATTRIBUTE_USERNAME ="uid";
@@ -65,18 +77,31 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
             logger.error("Cannot map SAML credential attributes to user");
             throw new UsernameNotFoundException(userID);
         }
+        
+        // find if the user has logged in before
+        AccountEntity accountE = acountrepository.findOneByEmail(attributes.get(ATTRIBUTE_MAIL));
+        if (accountE !=null) {
+        	//update info
+            accountE.setName(attributes.get(ATTRIBUTE_GIVEN_NAME),attributes.get(ATTRIBUTE_FAMILY_NAME));
+            accountE.setRegistered(ZonedDateTime.now());
+            
+            return new User(accountE.toDto(), "");
+        }else {
+        	final AccountEntity account = new AccountEntity(attributes.get(ATTRIBUTE_USERNAME),attributes.get(ATTRIBUTE_MAIL));
+            account.setName(attributes.get(ATTRIBUTE_GIVEN_NAME),attributes.get(ATTRIBUTE_FAMILY_NAME));
+            AccountRoleEntity are = account.grant(EnumRole.ROLE_USER, null);
+            account.setRegistered(ZonedDateTime.now());
 
-        // TODO: Load user data from database and assign roles
+            acountrepository.save(account);
 
-        final Account account = new Account(attributes.get(ATTRIBUTE_USERNAME));
-        account.setEmail(attributes.get(ATTRIBUTE_MAIL));
-        account.setName(attributes.get(ATTRIBUTE_NAME));
-        account.setFamilyName(attributes.get(ATTRIBUTE_FAMILY_NAME));
-        account.setGivenName(attributes.get(ATTRIBUTE_GIVEN_NAME));
+           // if (are!=null) {
+            //	arr.save(are);
+           // }
+            return new User(account.toDto(), "");
 
-        account.getRoles().add(EnumRole.ROLE_USER);
+        }
+        
 
-        return new User(account, "");
     }
 
     private String getValue(Attribute attr) {

@@ -15,7 +15,9 @@ public abstract class BaseController {
     @Qualifier("defaultWebFileNamingStrategry")
     protected DefaultWebFileNamingStrategry fileNamingStrategy;
     
-    protected int currentUserId() {
+    protected Integer currentUserId() {
+    
+
         return this.authenticationFacade.getCurrentUserId();
     }
 

@@ -23,7 +23,7 @@ import org.springframework.http.MediaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import helix.lab.HubUserCreate;
+import helix.lab.model.user.HubUserCreate;
 
 
 
@@ -45,7 +45,7 @@ public class JupyterApi {
 		URL url = new URL("http://192.168.10.163:8081/hub/api/"+path);
 		con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod(method);
-		con.setRequestProperty ("Authorization", "token d53abbe07ec94f23811fd6f70544621a");
+		con.setRequestProperty ("Authorization", "token 48d141f9582c4856aade832b637e97d8");
 		if (method=="POST") {	
 			String message = mapper.writeValueAsString(query);
 		  	System.out.println(message.toString());
