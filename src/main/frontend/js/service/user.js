@@ -1,9 +1,13 @@
-const actions = require('./fetch-actions');
+const actions = require('./api/fetch-actions');
 
 var api = {
 
   getProfile: () => {
     return actions.get('/action/user/profile');
+  },
+
+  getServers: () => {
+    return actions.get('/action/user/servers');
   },
 
   saveProfile: (profileData, token) => {

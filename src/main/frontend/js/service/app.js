@@ -1,4 +1,4 @@
-const actions = require('./fetch-actions');
+const actions = require('./api/fetch-actions');
 
 var api = {
 
