@@ -1,4 +1,4 @@
-const appService = require('../api/app');
+const appService = require('../service/app');
 
 export const START_NOW = 'app/START_NOW';
 const GOT_SERVER= 'app/GOT_SERVER';

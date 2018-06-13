@@ -12,7 +12,7 @@ class CardLab extends React.Component {
   render(){
 
     return (
-      <div className="card style={{width: 20+'rem'}} animated fadeIn">
+      <div className="card lab-card animated fadeIn">
         <div style={{height:120+'px', width:120+'px', marginLeft: 'auto',	marginRight: 'auto'}} >
          <img className="card-img-top"  style={{height:120+'px', width:120+'px', marginLeft: 'auto',	marginRight: 'auto'}} src={this.props.imagesrc} alt="Card image cap"/> 
          </div>
