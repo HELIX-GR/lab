@@ -10,7 +10,7 @@ import {
   toast,
 } from 'react-toastify';
 
-import { login } from '../ducks/users';
+import { login, refreshProfile } from '../ducks/users';
 import { getFilesystem, getConfiguration } from '../ducks/config';
 
 

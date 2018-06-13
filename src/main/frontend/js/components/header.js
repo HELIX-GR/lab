@@ -2,13 +2,13 @@ import React from "react";
 import { Link } from 'react-router-dom'
 import ServerStatus from '../helpers/server-status';
 
-export const LabHeader = ({ onclicks, username }) => (
+export const LabHeader = ({ onclicks, username, admin }) => (
   <nav className=" navbar-white fized-top">
     <div className="row">
 
       <div className="col container-fluid">
         <a className="navbar-brand" href="#">
-          <img src="images/lablogo.png" className="d-inline-block align-top" alt="" style={{'margin':'50px'}}/>
+          <img src="images/lablogo.png" className="d-inline-block align-top logo" alt="" />
         </a>
       </div>
 
@@ -33,14 +33,17 @@ export const LabHeader = ({ onclicks, username }) => (
           <li className="nav-item">
             <Link className="nav-link" to={'/abouthelix'}><font color="#724EF8">About</font></Link>
           </li>
-          <li className="nav-item">
-            <Link className="nav-link disabled" onClick={e => e.preventDefault()} to={'/soon'}> Soon </Link>
-          </li>
+          {admin ? 
+            <li className="nav-item">
+              <Link className="nav-link " to={'/admin'}> Admin </Link>
+            </li> :null
+          }
           <li className="nav-item">
             <a className="nav-link active justify-content-end" href='#' onClick={() => (onclicks(true))} > {username ? username : 'Sign in'} </a>
           </li>
         </ul>
-        {username?<ServerStatus/>:null}
+        {//username ? <ServerStatus /> : null
+        }
       </div>
     </div >
   </nav>

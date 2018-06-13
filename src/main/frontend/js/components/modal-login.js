@@ -1,5 +1,5 @@
 import React from "react";
-import LoginForm from './login';
+import LoginForm from './login-form';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Dialog from 'material-ui/Dialog';

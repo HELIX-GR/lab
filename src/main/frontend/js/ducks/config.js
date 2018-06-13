@@ -1,6 +1,6 @@
 // config.js
-import configurationService from '../api/configuration';
-import filesystemService from '../api/filesystem';
+import configurationService from '../service/configuration';
+import filesystemService from '../service/filesystem';
 
 // Actions
 const REQUEST_CONFIGURATION = 'config/REQUEST_CONFIGURATION';
@@ -29,18 +29,25 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case REQUEST_CONFIGURATION:
       return state;
+    case LOAD_CONFIGURATION:
+      return {
+        ...state,
+        ...action.configuration,
+      };
 
     case SET_TABEL_PATH:
       return {
         ...state,
         table_path: action.table_path,
         selected_file: action.selected_file,
-      }
+      };
+
     case SET_NEW_FOLDER:
       return {
         ...state,
         new_folder: action.new_folder,
-      }
+      };
+      
     case LOAD_CONFIGURATION:
       return {
         ...state,
@@ -93,11 +100,10 @@ export const setNewFolder = (new_folder) => ({
 });
 
 // Thunk actions
-export const getConfiguration = () => (dispatch, getState) => {
-  const { meta: { csrfToken: token } } = getState();
+export const getConfiguration = (locale) => (dispatch, getState) => {
 
   dispatch(requestConfiguration());
-  return configurationService.getConfiguration(token)
+  return configurationService.getConfiguration(locale)
     .then((configuration) => {
       dispatch(receiveConfiguration(configuration));
     })
