@@ -1,14 +1,11 @@
 import React from "react";
-import _ from 'lodash';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { FileSelect } from '../helpers/file-select';
-import { Route } from 'react-router-dom';
+
 import { getFilesystem, createFolder, setTablePath } from '../../ducks/config';
 import TableToolbar from './table-toolbar';
-import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-
+import ServerButton  from './servers-button';
+import { FormattedMessage } from 'react-intl';
 
 import FileSelect2 from './file-select2';
 
@@ -18,9 +15,9 @@ class Filesystem extends React.Component {
     super(props);
 
     this.state = {
+      open:false,
       folder: this.props.filesystem,
       user: "totos2",
-      show_login: false,
       value: 1,
     };
     this._getFileSystem = this._getFileSystem.bind(this);
@@ -36,11 +33,13 @@ class Filesystem extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.user == null && nextProps.user != null) {
       this._getFileSystem();
+
     }
   }
   _getFileSystem() {
     this.props.getFilesystem('');
   }
+
 
   render() {
 
@@ -48,15 +47,15 @@ class Filesystem extends React.Component {
       margin: 12,
     };
     return (
-      <div>
-        <div className="jumbotron faq-header info-page-header jumbotron-with-breadcrumb-below row">
+      <div className="backround-white">
+        <div className="jumbotron faq-header info-page-header jumbotron-with-breadcrumb-below row backround-white">
           <div className="col" >
             <h1 className="clip-text header-with-icon">
               <span className="fas fa-archive"></span>
               <span className="header-text">My Files</span>
             </h1>
           </div>
-          <FlatButton label="Jupyter Lab" subtitle="Next-generation web-based user interface for Project Jupyter" target="_blank" href={this.props.target + "/lab"} />
+          <ServerButton/>
         </div>
 
         <TableToolbar onclick={this._getFileSystem} />

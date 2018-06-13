@@ -96,8 +96,8 @@ class FileSelect2 extends Component {
     const hierarchy = this.getFolderHierarchy(folder.path);
 
     return (
-      <div style={{ display: 'flex' }}>
-        <div style={{ flexGrow: '1' }}>
+      <div className="backround-white" >
+        <div className="backround-white" style={{ flexGrow: '1' }}>
           {
             hierarchy.map((item, i, arr) => (
               <span key={i}>
@@ -129,7 +129,7 @@ class FileSelect2 extends Component {
     ];
     this.props.setTablePath(folder.path, "");
     return (
-      <div>
+      <div className="filesystem-box">
         {this.renderHeader()}
 
         <Table height={"400px"}

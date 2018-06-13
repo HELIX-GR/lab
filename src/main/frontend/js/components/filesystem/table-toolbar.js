@@ -41,8 +41,8 @@ class TableToolbar extends React.Component {
     };
 
     return (
-      <div>
-        <div className="row">
+      <div >
+        <div className="row backround-white">
           <div className="col-12 col-lg-6">
             <FloatingActionButton label="Play" mini={true} style={style} target="_blank" href={this.props.target+"/notebooks/"+this.props.table_path+this.props.selected_file}>
               <PlayArrow />
