@@ -10,7 +10,6 @@ const REQUEST_LOGIN = 'user/REQUEST_LOGIN';
 const REQUEST_LOGOUT = 'user/REQUEST_LOGOUT';
 const REQUEST_PROFILE = 'user/REQUEST_PROFILE';
 const LOAD_PROFILE = 'user/LOAD_PROFILE';
-const SET_PROFILE = 'user/SET_PROFILE';
 const REQUEST_SAVE_PROFILE = 'user/REQUEST_SAVE_PROFILE';
 const SAVED_PROFILE = 'user/SAVED_PROFILE';
 export const SHOW_LOGIN_MODAL = 'user/SHOW_LOGIN_MODAL';
@@ -39,22 +38,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         show_login: action.show_login * !(state.loggedIn),
-      }
+      };
     case REQUEST_LOGOUT:
       return state; // no-op  
     case LOGOUT:
       return initialState;
     case REQUEST_PROFILE:
       return state; // no-op
-    case SET_PROFILE:
-      return {
-        ...state,
-        profile: {
-          ...state.profile,
-          ...action.profile,
-          _updatedAt: action.timestamp,
-        },
-      };
     case LOAD_PROFILE:
       return {
         ...state,
@@ -82,7 +72,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         servers: action.servers,
-      }
+      };
     default:
       return state;
   }
@@ -122,12 +112,6 @@ const requestProfile = () => ({
 
 const loadProfile = (profile, timestamp) => ({
   type: LOAD_PROFILE,
-  profile,
-  timestamp,
-});
-
-const setProfile = (profile, timestamp) => ({
-  type: SET_PROFILE,
   profile,
   timestamp,
 });
@@ -184,7 +168,7 @@ export const refreshProfile = () => (dispatch) => {
     (p) => {
       var t = moment().valueOf();
       dispatch(loadProfile(p, t))
-        .then(isAdminThunk());
+        .then(dispatch(isAdminThunk()));
     },
     (err) => {
       console.warn('Cannot load user profile: ' + err.message);

@@ -1,39 +1,32 @@
-const _ = require('lodash');
-const moment = require('moment');
-const adminService = require('../service/admin');
+import moment from 'moment';
+import adminService from '../service/admin';
 
 const GOT_SERVERS = 'admin/GOT_SERVERS';
-const IS_ADMIN = 'admin/IS_ADMIN';
 const GOT_USERS = 'admin/GOT_USERS';
 
 
 const initialState = {
-  isadmin: true,
-  servers:[],
-  users:[],
+  isadmin: false,
+  servers: [],
+  users: [],
 };
 
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case IS_ADMIN:
-    return {
-      ...state,
-      isadmin: action.admin_status,
-    };
     case GOT_SERVERS:
-    return {
-      ...state,
-      servers:action.servers,
-      servers_update:action.timestamp,
-    };
+      return {
+        ...state,
+        servers: action.servers,
+        servers_update: action.timestamp,
+      };
     case GOT_USERS:
-    return {
-      ...state,
-      users:action.users,
-      users_update:action.timestamp,
-    };
-    
+      return {
+        ...state,
+        users: action.users,
+        users_update: action.timestamp,
+      };
+
     default:
       return state;
   }
@@ -41,11 +34,6 @@ export default (state = initialState, action) => {
 
 
 // Action Creators
-
-const isAdmin = (admin_status) => ({
-  type: IS_ADMIN,
-  admin_status,
-});
 
 const gotServers = (servers, timestamp) => ({
   type: GOT_SERVERS,
@@ -97,18 +85,3 @@ export const requestUsers = () => (dispatch) => {
       throw err;
     });
 };
-
-
-
-
-export const isAdminThunk = () => (dispatch, getState) => {
-  var { users: { profile: roles } } = getState();
-  console.log(roles);
-  for(var i=0;i<roles.length;i++)
-  {
-      if(p.roles[i]==="ROLE_ADMIN"){dispatch(isAdmin(true));}
-  }
-  dispatch(isAdmin(false));
-  return null;
-};
-

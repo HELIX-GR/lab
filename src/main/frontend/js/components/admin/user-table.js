@@ -1,7 +1,7 @@
 import React from "react";
 import * as PropTypes from 'prop-types';
 import { FormattedTime } from 'react-intl';
-
+import _ from 'lodash';
 import {
   Table,
   TableBody,
@@ -17,7 +17,7 @@ import TextField from 'material-ui/TextField';
 
 export class UserTable extends React.Component {
   render() {
-    var data =this.props.users;
+    var data = this.props.users;
     return (
       <Table height={"400px"}
       >
@@ -25,7 +25,7 @@ export class UserTable extends React.Component {
           displaySelectAll={false}
           displayRowCheckbox={false} >
           <TableRow  >
-          <TableHeaderColumn width="66px" tooltip="Active">   </TableHeaderColumn>
+            <TableHeaderColumn width="66px" tooltip="Active">   </TableHeaderColumn>
             <TableHeaderColumn width="66px" tooltip="The ID"> ID  </TableHeaderColumn>
             <TableHeaderColumn tooltip="Username">Username</TableHeaderColumn>
             <TableHeaderColumn tooltip="description">Full Name</TableHeaderColumn>
@@ -43,7 +43,7 @@ export class UserTable extends React.Component {
             : (data.map((row, index) => (
               <TableRow key={index}>
                 <TableRowColumn width="66px" >
-                {row.active?<i className="fas fa-circle" style={{color:'#32CD32'}}></i>:<i className="fas fa-circle" style={{color:'red'}}> ></i>}
+                  {row.active ? <i className="fa fa-circle" style={{ color: '#32CD32' }}></i> : <i className="fa fa-circle" style={{ color: 'red' }}> ></i>}
                 </TableRowColumn>
                 <TableRowColumn width="66px" >{row.id}</TableRowColumn>
                 <TableRowColumn>{row.username}</TableRowColumn>
@@ -52,16 +52,16 @@ export class UserTable extends React.Component {
                 <TableRowColumn>
                   <FormattedTime value={row.registeredAt} day='numeric' month='numeric' year='numeric' />
                 </TableRowColumn>
-                <TableRowColumn>{row.roles.map((r) => (r+', '))}</TableRowColumn>
+                <TableRowColumn>{row.roles.map((r) => (r + ', '))}</TableRowColumn>
               </TableRow>
             )))}
-          
+
         </TableBody>
         <TableFooter adjustForCheckbox={false} >
           <TableRow />
         </TableFooter>
       </Table>
-    )
+    );
 
   }
 }

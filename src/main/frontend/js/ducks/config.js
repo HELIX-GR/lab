@@ -29,6 +29,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case REQUEST_CONFIGURATION:
       return state;
+
     case LOAD_CONFIGURATION:
       return {
         ...state,
@@ -46,12 +47,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         new_folder: action.new_folder,
-      };
-      
-    case LOAD_CONFIGURATION:
-      return {
-        ...state,
-        ...action.configuration,
       };
 
     case REQUEST_FILESYSTEM:
@@ -100,7 +95,7 @@ export const setNewFolder = (new_folder) => ({
 });
 
 // Thunk actions
-export const getConfiguration = (locale) => (dispatch, getState) => {
+export const getConfiguration = (locale) => (dispatch) => {
 
   dispatch(requestConfiguration());
   return configurationService.getConfiguration(locale)

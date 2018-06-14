@@ -27,7 +27,7 @@ export default class ServerForm extends Component {
     this.handleChangeRole = this.handleChangeRole.bind(this);
 
     this.state = {
-      name:"",
+      name: "",
       url: "",
       description: "",
       admin_token: "",
@@ -35,8 +35,8 @@ export default class ServerForm extends Component {
       role_eligible: "ROLE_USER"
     };
   }
-  
-  handleSubmit () {
+
+  handleSubmit() {
     this.props.finish(this.state);
   }
   handleChange = (event) => this.setState({ [event.target.id]: event.target.value });
@@ -101,21 +101,21 @@ export default class ServerForm extends Component {
           <MenuItem value={'ROLE_ADMIN'} primaryText="ADMIN" />
         </SelectField>
         <FlatButton
-        label="Cancel"
-        primary={true}
-        onClick={this.props.onClose}
-      />,
+          label="Cancel"
+          primary={true}
+          onClick={this.props.onClose}
+        />,
       <FlatButton
-        label="Submit"
-        primary={true}
-        keyboardFocused={true}
-        onClick={this.handleSubmit}
-      />
+          label="Submit"
+          primary={true}
+          keyboardFocused={true}
+          onClick={this.handleSubmit}
+        />
 
       </div>
     );
   }
-}ServerForm.propTypes = {
+} ServerForm.propTypes = {
   finish: PropTypes.func.isRequired,
-  onClose:  PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };

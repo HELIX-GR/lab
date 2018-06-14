@@ -596,6 +596,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                              "/favicon.ico",
                              "/core/",
                              "/css/**",
+                             "/fonts/**",
                              "/images/**",
                              "/i18n/**",
                              "/js/**",

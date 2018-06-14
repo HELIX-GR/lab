@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import ServerForm from './server-form';
-import { addNewServer } from'../../ducks/admin';
+import { addNewServer } from '../../ducks/admin';
 
 
 class ModalAddServer extends React.Component {
@@ -35,7 +35,7 @@ class ModalAddServer extends React.Component {
   handleSubmit(data) {
     console.log(this.state.data);
     this.props.addNewServer(data)
-    .then(this.setState({ show_modal: false }));
+      .then(this.setState({ show_modal: false }));
 
   }
 
@@ -51,7 +51,7 @@ class ModalAddServer extends React.Component {
           onRequestClose={this.handleClose}
         >
           <div>
-            <ServerForm finish={this.handleSubmit} onClose={this.handleClose}/>
+            <ServerForm finish={this.handleSubmit} onClose={this.handleClose} />
           </div>
         </Dialog>
       </div>

@@ -1,14 +1,18 @@
-const Redux = require('redux');
-import { createLogger } from 'redux-logger'
-const ReduxLogger = require('redux-logger');
-const ReduxThunk = require('redux-thunk');
+import * as Redux from 'redux';
+import * as ReduxLogger from 'redux-logger';
+import * as ReduxThunk from 'redux-thunk';
 
-const rootReducer = require('./reducers');
+import { routerMiddleware } from 'react-router-redux';
+import rootReducer from './reducers';
+import { history } from './history';
+
 
 // Create and configure store
 
 var middleware = [
   ReduxThunk.default, // lets us dispatch functions
+  //routerMiddleware(history),
+
 ];
 
 /* global process */
@@ -22,4 +26,4 @@ var store = Redux.createStore(
   rootReducer, initialState, Redux.applyMiddleware(...middleware)
 );
 
-module.exports = store;
+export default store;

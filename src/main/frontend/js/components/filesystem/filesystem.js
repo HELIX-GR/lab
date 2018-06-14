@@ -51,7 +51,7 @@ class Filesystem extends React.Component {
         <div className="jumbotron faq-header info-page-header jumbotron-with-breadcrumb-below row backround-white">
           <div className="col" >
             <h1 className="clip-text header-with-icon">
-              <span className="fas fa-archive"></span>
+              <span className="fa fa-archive"></span>
               <span className="header-text">My Files</span>
             </h1>
           </div>
@@ -69,7 +69,7 @@ class Filesystem extends React.Component {
           help="Click on resource to select"
           style={{ height: '40vh' }}
        />*/}
-      </div>)
+      </div>);
   }
 }
 

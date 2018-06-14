@@ -2,16 +2,28 @@ import {combineReducers} from "redux";
 
 import config from "./ducks/config";
 import app from "./ducks/app";
-import users from './ducks/users';
+import i18n from './ducks/i18n';
+import user from './ducks/user';
 import meta from './ducks/meta';
 import admin from './ducks/admin';
-//import actionRule from "./actionRule";
-//import condition from "./condition";
 
-module.exports = combineReducers({
-  config,
+import {
+  viewport,
+} from './ducks/ui/';
+
+import {
+  search,
+} from './ducks/ui/views';
+
+
+export default combineReducers({  config,
   app,
-  users,
+  i18n,
+  user,
+  ui: combineReducers({
+    search,
+    viewport,
+  }),
   meta,
   admin,
-})
+});

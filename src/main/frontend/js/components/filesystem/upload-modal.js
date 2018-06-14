@@ -5,7 +5,7 @@ import Dropzone from 'react-dropzone';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-import formatFileSize from '../../util/file-size'
+import formatFileSize from '../../util/file-size';
 import FileUpload from 'material-ui/svg-icons/file/file-upload';
 import { uploadFile } from '../../ducks/config';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -56,7 +56,7 @@ class UploadModal extends React.Component {
           open: false,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({
           isUploading: false,
         });
@@ -82,7 +82,7 @@ class UploadModal extends React.Component {
       fontSize: '3em',
       color: '#656565',
       border: '1px dotted #656565'
-    }
+    };
 
 
     return (

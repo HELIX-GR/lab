@@ -1,0 +1,38 @@
+.login-brand {
+    background-image: url(../images/logo.svg);
+    background-size: 148px auto;
+    height: 90px;
+    display: block;
+    background-repeat: no-repeat;
+}
+
+.text-separator {
+  position: relative;
+  text-align: center;
+}
+
+.text-separator span {
+  display: inline-flex;
+  position: relative;
+  padding: 0 8px;
+}
+
+.text-separator span::before {
+  content: '';
+  display: block;
+  width: 30px;
+  position: absolute;
+  top: 10px;
+  border-top: 1px solid rgba(0, 0, 0, .12);
+  left: 100%;
+}
+
+.text-separator span::after {
+  content: '';
+  display: block;
+  width: 30px;
+  position: absolute;
+  top: 10px;
+  border-top: 1px solid rgba(0, 0, 0, .12);
+  right: 100%;
+}

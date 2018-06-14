@@ -1,7 +1,7 @@
 import React from "react";
 import * as PropTypes from 'prop-types';
 import { FormattedTime } from 'react-intl';
-
+import _ from 'lodash';
 import {
   Table,
   TableBody,
@@ -17,7 +17,7 @@ import TextField from 'material-ui/TextField';
 
 export class AdminTable extends React.Component {
   render() {
-    var data =this.props.servers;
+    var data = this.props.servers;
     return (
       <Table height={"400px"}
       >
@@ -43,27 +43,26 @@ export class AdminTable extends React.Component {
             : (data.map((row, index) => (
               <TableRow key={index}>
                 <TableRowColumn width="66px" >{
-                  <i className="fas fa-server" />
+                  <i className="fa fa-server" />
                 }
                 </TableRowColumn>
                 <TableRowColumn>{row.name}</TableRowColumn>
                 <TableRowColumn>{row.description}</TableRowColumn>
                 <TableRowColumn>{row.url}</TableRowColumn>
-                <TableRowColumn width="80px" >{row.available?<i className="fas fa-check"></i>: <i className="fas fa-times"></i>}</TableRowColumn>
+                <TableRowColumn width="80px" >{row.available ? <i className="fa fa-check"></i> : <i className="fa fa-times"></i>}</TableRowColumn>
                 <TableRowColumn>
                   <FormattedTime value={row.started_at} day='numeric' month='numeric' year='numeric' />
                 </TableRowColumn>
                 <TableRowColumn>{row.role_eligible}</TableRowColumn>
               </TableRow>
             )))}
-          
+
         </TableBody>
         <TableFooter adjustForCheckbox={false} >
           <TableRow />
         </TableFooter>
       </Table>
-    )
-
+    );
   }
 }
 AdminTable.propTypes = {

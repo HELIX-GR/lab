@@ -1,7 +1,7 @@
-const actions = require('./api/fetch-actions');
+import * as actions from './api/fetch-actions';
 
-var api = {
 
+const api = {
   getServers: () => {
     return actions.get('/action/admin/servers');
   },  
@@ -16,4 +16,4 @@ var api = {
  
 };
 
-module.exports = api;
+export default api;

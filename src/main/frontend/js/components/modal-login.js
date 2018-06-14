@@ -3,7 +3,6 @@ import LoginForm from './login-form';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 
 
 class ModalLogin extends React.Component {
@@ -31,11 +30,11 @@ class ModalLogin extends React.Component {
 
 
   render() {
-     if (this.props.show_login){
-      this.state.show_login=true;
-     }else{
-      this.state.show_login=false;
-     }
+    if (this.props.show_login) {
+      this.state.show_login = true;
+    } else {
+      this.state.show_login = false;
+    }
     return (
       <Dialog
         title="Sign In"
@@ -54,7 +53,7 @@ class ModalLogin extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    show_login: state.users.show_login
+    show_login: state.user.show_login
   };
 }
 

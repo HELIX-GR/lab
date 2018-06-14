@@ -1,6 +1,5 @@
 package helix.lab.controller.admin;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -8,9 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -73,7 +70,7 @@ public class AdminController extends BaseController{
 		System.out.println("................................................");
 		System.out.println(request.toString());
 	        try {
-	        	//((OptionalValidatorFactoryBean) validator).validate(request, results, ServerRegistrationRequest.ServerSimpleValidation.class);
+	        	//((OptionalValidatorFactoryBean) validator).validate(request, results);
 	            
 	            if (results.hasErrors()) {
 	                

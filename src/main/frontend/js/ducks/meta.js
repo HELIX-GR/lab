@@ -1,6 +1,6 @@
 // meta.js
 
-const { LOGIN, LOGOUT } = require('./users');
+const { LOGIN, LOGOUT } = require('./user');
 
 // Actions
 const SET_CSRF_TOKEN = 'meta/SET_CSRF_TOKEN';

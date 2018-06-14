@@ -1,9 +1,8 @@
-const store = require('./store');
-const { renderRoot } = require('./root');
-
+import store from './store';
+import renderRoot from './root';
 import { setCsrfToken } from './ducks/meta';
 import { changeLocale } from './ducks/i18n';
-import { refreshProfile } from './ducks/users';
+import { refreshProfile } from './ducks/user';
 import { getConfiguration } from './ducks/config';
 
 var rootSelector = document.currentScript.getAttribute('data-root') || '#root';
@@ -13,8 +12,8 @@ var rootSelector = document.currentScript.getAttribute('data-root') || '#root';
 document.addEventListener("DOMContentLoaded", function () {
   var rootEl = document.querySelector(rootSelector);
 
- // TODO: read from non-httponly "locale" cookie
- const locale = "en-GB";
+  // TODO: read from non-httponly "locale" cookie
+  const locale = "en-GB";
 
   var token = document.querySelector("meta[name=_csrf]")
     .getAttribute('content');

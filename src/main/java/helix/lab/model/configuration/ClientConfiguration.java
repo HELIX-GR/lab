@@ -11,9 +11,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class ClientConfiguration {
 
     @JsonIgnore
-    private final List<String>    identityProviders = new ArrayList<String>();
+    private final List<String> identityProviders = new ArrayList<String>();
 
-    private String                defaultIdentityProvider;
+    private String defaultIdentityProvider;
 
     
     public List<String> getIdentityProviders() {

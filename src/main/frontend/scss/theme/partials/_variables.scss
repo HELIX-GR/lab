@@ -1,0 +1,64 @@
+/* ==========================================================================
+	Variables
+/* ========================================================================== */
+
+/* Colors */
+$color: black;
+$color_opposite: white;
+$background: white;
+$link_color: black;
+$hover_color: #000000;
+$green: #15CD72;
+$gray: #444;
+$light_gray: #ececec;
+$blue: #0069ff;
+$light_blue: #579adb;
+$red: #EA4634;
+
+$neutral-grey: #ebebeb;
+$main-black: #262626;
+$footer-white: #EBEBEB;
+$details-grey: #6F6F6F;
+
+$data-color: #3EA0DD;
+$pubs-color: #F95F85;
+$lab-color: #714DF7;
+
+$transition_time: 0.2s;
+$transition_ease: ease-in-out;
+$transition: $transition_time $transition_ease;
+
+$body_font: 'Roboto', sans-serif;
+
+$serif_font: "Playfair Display", "Times New Roman", serif;
+$hand_font: "Amatic SC", cursive;
+$sans_font: 'Lato', sans-serif;
+
+/* Font Sizes */
+$size_base: 1em;
+$weight_base: 400;
+$lineheight_base: 1.4;
+
+/* Font Sizes */
+$size_base: 1em;
+$lineheight_base: 1.5;
+
+/* Breakpoints */
+$desktop_up: 1700px;
+$tablet_up: 1025px;
+$tablet_dn: 1024px;
+$tablet_vertical: 768px;
+$tablet_vertical_dn: 767px;
+$phone_up: 481px;
+$phone_dn: 480px;
+
+$carousel_md_break_up: 1111px;
+$carousel_md_break_dn: 1110px;
+
+$carousel_sm_break_up: 881px;
+$carousel_sm_break_dn: 880px;
+
+$carousel_xs_break_up: 720px;
+$carousel_xs_break_dn: 719px;
+
+$max_article_width: 810px;

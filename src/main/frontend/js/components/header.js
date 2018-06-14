@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import ServerStatus from '../helpers/server-status';
 
 export const LabHeader = ({ onclicks, username, admin }) => (
@@ -33,10 +33,10 @@ export const LabHeader = ({ onclicks, username, admin }) => (
           <li className="nav-item">
             <Link className="nav-link" to={'/abouthelix'}><font color="#724EF8">About</font></Link>
           </li>
-          {admin ? 
+          {admin ?
             <li className="nav-item">
               <Link className="nav-link " to={'/admin'}> Admin </Link>
-            </li> :null
+            </li> : null
           }
           <li className="nav-item">
             <a className="nav-link active justify-content-end" href='#' onClick={() => (onclicks(true))} > {username ? username : 'Sign in'} </a>

@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import FlatButton from 'material-ui/FlatButton';
 
 import Paper from 'material-ui/Paper';
-import  { getUserInfoAction }  from '../ducks/app';
+import { getUserInfoAction } from '../ducks/app';
 
 
 class ServerStatus extends React.Component {
@@ -14,37 +14,37 @@ class ServerStatus extends React.Component {
     this.state = {
       value: 1,
     };
-    
+
 
   }
-componentWillMount = () => {
-  this.props.getUserInfoAction();
-}
+  componentWillMount = () => {
+    this.props.getUserInfoAction();
+  }
 
 
   render() {
     let a;
-    if (this.props.status && this.props.status.server){
-      a=this.props.status.server;
+    if (this.props.status && this.props.status.server) {
+      a = this.props.status.server;
     }
     else {
       a = "no active server";
     }
-    
+
     return (
       <div>
-      <Paper style={{
-            height: 30,
-            width: 200,
-            margin: 10,
-            textAlign: 'center',
-            display: 'inline-block',
-            float: 'right',
-          }} zDepth={3}> 
-          {a} 
+        <Paper style={{
+          height: 30,
+          width: 200,
+          margin: 10,
+          textAlign: 'center',
+          display: 'inline-block',
+          float: 'right',
+        }} zDepth={3}>
+          {a}
           <FlatButton onClick={this.props.getUserInfoAction}><i className="fa fa-refresh" aria-hidden="true"></i></FlatButton>
-          
-          </Paper >
+
+        </Paper >
       </div>);
   }
 
@@ -65,7 +65,7 @@ function mapStateToProps(state) {
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators( { getUserInfoAction, }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ getUserInfoAction, }, dispatch);
 
 
 

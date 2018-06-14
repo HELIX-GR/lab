@@ -1,0 +1,22 @@
+{
+  "locales": {
+    "en": "Αγγλικά",
+    "el": "Ελληνικά"
+  },
+  "login": {
+    "forgot-password": "Forgot password?",
+    "login": "Login",
+    "subtitle": "Sign-in into your account"
+  },
+  "header": {
+    "files":"Τα Αρχεία μου"
+  },
+  "pills": {
+    "data": "DATA",
+    "pubs": "PUBS",
+    "lab": "LAB"
+  },
+  "labsearch": {
+    "placeholder": "Αναζητήστε Notebooks"
+  }
+}

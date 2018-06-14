@@ -25,7 +25,7 @@ import {
 import {
   login,
   refreshProfile,
-} from '../ducks/users';
+} from '../ducks/user';
 
 //
 // Presentational component

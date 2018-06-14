@@ -1,0 +1,25 @@
+@charset "UTF-8";
+@import 'partials/fonts';
+
+@import "../../../../../node_modules/bootstrap/scss/bootstrap";
+@import "../../../../../node_modules/font-awesome/scss/font-awesome";
+@import "../../../../../node_modules/bourbon/core/bourbon";
+
+@import 'partials/variables';
+@import 'partials/reset';
+@import 'partials/main';
+@import 'partials/header';
+@import 'partials/footer';
+@import 'partials/landing-main';
+@import 'partials/landing-data';
+@import 'partials/landing-pubs';
+@import 'partials/landing-lab';
+@import 'partials/results-main';
+@import 'partials/landing-landing-section';
+
+
+@import 'partials/labs';
+
+html {
+    font-size: 14px;
+}

@@ -13,10 +13,9 @@ import {
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
-import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { FormattedTime } from 'react-intl';
-import formatFileSize from '../../util/file-size'
+import formatFileSize from '../../util/file-size';
 import { getFilesystem, createFolder, setTablePath, setNewFolder } from '../../ducks/config';
 import ActionDone from 'material-ui/svg-icons/action/done';
 import ContentClear from 'material-ui/svg-icons/content/clear';
@@ -30,8 +29,7 @@ class FileSelect2 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      folder: this.findFolderFromPath(),
-      folder: this.props.filesystem,
+      folder: this.props.filesystem || this.findFolderFromPath(),
       value_folder: "Folder Name",
     };
   }
@@ -40,7 +38,7 @@ class FileSelect2 extends Component {
     this.setState({
       folder: this.props.filesystem,
     }
-    )
+    );
 
   }
 
@@ -72,7 +70,7 @@ class FileSelect2 extends Component {
   }
 
   getFolderHierarchy(path) {
-    const hierarchy = [{ name: <i className="fas fa-home"></i>, folder: this.props.filesystem }];
+    const hierarchy = [{ name: <i className="fa fa-home"></i>, folder: this.props.filesystem }];
     let currentFolder = this.props.filesystem;
 
     path.split('/').slice(0, -1).forEach((name) => {

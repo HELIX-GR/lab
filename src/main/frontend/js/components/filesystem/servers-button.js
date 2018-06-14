@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import Popover from 'material-ui/Popover';
 import FlatButton from 'material-ui/FlatButton';
 import ServerList from './server-list';
-import { getUserServers } from '../../ducks/users';
+import { getUserServers } from '../../ducks/user';
 
 
 class ServerButton extends React.Component {
@@ -73,7 +73,7 @@ class ServerButton extends React.Component {
 function mapStateToProps(state) {
   return {
     target: state.app.target,
-    servers: state.users.servers,
+    servers: state.user.servers,
   };
 }
 
