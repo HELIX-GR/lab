@@ -1,145 +1,145 @@
 body{
-  
+
   &.results-main{
-    
+
     background-color: $neutral-grey;
-    
+
     section .results-main-content section.results-main-sidebar .search-form-wrapper .landing-search-form{
-      
+
     }
   }
-  
+
   &.results-data{
-    
+
     background-color: $data-color;
-    
+
     section.main-results-page-content .results-main-content section.results-main-sidebar .search-form-wrapper .landing-search-form{
-      
+
       .main-form-content{
-      
+
         border-bottom-color: $data-color;
-        
+
         .domain-pills{
           display: none;
         }
       }
-      
+
       .landing-search-button{
-        
+
         background-color: $data-color;
       }
     }
-    
+
     section .results-main-content .results-main-result-set .main-results-border-bottom{
-      
+
       border-top-color: $data-color;
     }
-    
+
     section.main-results-page-content .results-main-content section.results-main-sidebar .main-results-advanced-search .border-bottom-bar,
     section.main-results-page-content .results-main-content section.results-main-result-set .main-results-border-bottom{
-      
+
       border-top-color: $data-color;
     }
-    
+
     footer#footer.main-footer{
-    
+
       background-color: $data-color;
     }
   }
-  
+
   &.results-pubs{
-    
+
     background-color: $pubs-color;
-    
+
       section.main-results-page-content .results-main-content section.results-main-sidebar .search-form-wrapper .landing-search-form{
-      
+
         .main-form-content{
-      
+
         border-bottom-color: $pubs-color;
-        
+
         .domain-pills{
           display: none;
         }
       }
-      
+
       .landing-search-button{
-        
+
         background-color: $pubs-color;
       }
     }
-    
+
     section .results-main-content .results-main-result-set .main-results-border-bottom{
-      
+
       border-top-color: $pubs-color;
     }
-    
+
     section.main-results-page-content .results-main-content section.results-main-sidebar .main-results-advanced-search .border-bottom-bar,
     section.main-results-page-content .results-main-content section.results-main-result-set .main-results-border-bottom{
-      
+
       border-top-color: $pubs-color;
     }
-    
+
     footer#footer.main-footer{
-    
+
       background-color: $pubs-color;
     }
   }
-  
+
   &.results-lab{
-    
+
     background-color: $lab-color;
-    
+
     section.main-results-page-content .results-main-content section.results-main-sidebar .search-form-wrapper .landing-search-form{
-      
+
       .main-form-content{
-      
+
         border-bottom-color: $lab-color;
-        
+
         .domain-pills{
           display: none;
         }
       }
-      
+
       .landing-search-button{
-        
+
         background-color: $lab-color;
       }
     }
-    
+
     section .results-main-content .results-main-result-set .main-results-border-bottom{
-      
+
       border-top-color: $lab-color;
     }
-    
+
     section.main-results-page-content .results-main-content section.results-main-sidebar .main-results-advanced-search .border-bottom-bar,
     section.main-results-page-content .results-main-content section.results-main-result-set .main-results-border-bottom{
-      
+
       border-top-color: $lab-color;
     }
-    
+
     footer#footer.main-footer{
-    
+
       background-color: $lab-color;
     }
   }
-  
+
   section.main-results-page-content{
-    
+
     background-color: $neutral-grey;
     margin: 15px 15px 0 15px;
     position: relative;
-      
+
     .results-main-content{
-      
+
       position: relative;
 
       max-width: 1024px;
       margin: auto;
       padding-top: 208px;
       min-height: 2350px;
-      
+
       section.results-main-sidebar{
-        
+
         padding: 0 25px;
         width: 320px;
         max-width: 320px;
@@ -148,33 +148,33 @@ body{
         left: 0;
         margin-top: 208px;
         z-index: 2;
-        
+
         .search-form-wrapper{
-          
+
           position: relative;
           display: block;
           max-width: 100%;
           margin: auto;
           width: 100%;
-              
+
           // transform: translate(-50%, -50%);
           // -webkit-transform: translate(-50%, -50%);
           // -o-transform: translate(-50%, -50%);
           // -moz-transform: translate(-50%, -50%);
           // -ms-transform: translate(-50%, -50%);
-          // 
-          
+          //
+
           .landing-search-form{
-            
-            
+
+
             .main-form-content{
-              
-              width: calc(100% - 65px); 
+
+              width: calc(100% - 65px);
               border-bottom: solid 3px black;
               position: relative;
-              
+
               input.landing-search-text{
-                
+
                 border: none;
                 background-color: transparent;
                 font-size: 17px;
@@ -186,25 +186,25 @@ body{
                 letter-spacing: .025em;
                 color: $main-black;
                 font-weight: 400;
-                
+
                 &::-moz-selection{
                   color: white;
                   background-color: #BFBFBF;
                 }
-                
+
                 &::selection{
                   color: white;
                   background-color: #BFBFBF;
                 }
-                
+
                 &:focus{
-                  
+
                   border: none;
                 }
               }
-              
+
               .domain-pills{
-                
+
                 padding-top: 10px;
                 width: 100%;
                 z-index: 3;
@@ -212,9 +212,9 @@ body{
                 left: 0;
                 // bottom: 0;
                 // transform: translateY(-100%);
-                
+
                 .filter-pill{
-                  
+
                   cursor: pointer;
                   user-select: none;
                   margin-right: 4px;
@@ -228,19 +228,19 @@ body{
                   border-radius: 17.5px;
                   background-color: #BFBFBF;
                   opacity: 1;
-                  
+
                   transition: all .2s ease-in-out;
                   -webkit-transition: all .2s ease-in-out;
                   -moz-transition: all .2s ease-in-out;
                   -o-transition: all .2s ease-in-out;
-                  
+
                   &:hover{
 
                     opacity: .5;
                   }
-                  
+
                   &:after{
-                    
+
                     content: '\f00d';
                     display: inline-block;
                     margin-left: 4px;
@@ -250,47 +250,47 @@ body{
                     vertical-align: middle;
                     position: relative;
                     top: -1px;
-                    
+
                   }
-                  
+
                   &:last-child{
                     margin-right: none;
                   }
-                  
+
                   &.selected{
-                    
+
                     &:after{
-                      
+
                       content: '\f00c';
                     }
-                    
+
                     &.pill-data{
-                      
+
                       background-color: $data-color;
                     }
-                    
+
                     &.pill-pubs{
-                      
+
                       background-color: $pubs-color;
                     }
-                    
+
                     &.pill-lab{
-                      
+
                       background-color: $lab-color;
                     }
                   }
                 }
-                
+
                 .advanced-search-link{
-                  
+
                   cursor: pointer;
                   user-select: none;
                   position: absolute;
                   top: 0;
                   right: 0;
-                  
+
                   z-index: 0 !important;
-                  
+
                   margin-right: 12px;
                   margin-top: 13px;
                   font-size: 14px;
@@ -299,24 +299,24 @@ body{
                   letter-spacing: .05em;
                 }
               }
-              
+
               .closable{
                 display: none;
-                
+
                 &.state-open{
-                  
+
                   display: block;
                 }
-                
+
                 z-index: 1;
                 position: absolute;
                 left: 0;
                 width: 100%;
                 top: 58px;
                 background-color: white;
-                
+
                 .close-btn{
-                  
+
                   position: absolute;
                   top: 0;
                   right: 0;
@@ -326,22 +326,22 @@ body{
                   color: $main-black;
                   letter-spacing: .05em;
                   line-height: 1.4;
-                  
+
                   &:after{
-                    
+
                     content: 'X';
                   }
                 }
-                
+
                 .search-options{
-                  
+
                   position: relative;
                   margin-top: 50px;
                   padding-left: 25px;
                   padding-right: 25px;
-                  
+
                   label{
-                    
+
                     float: left;
                     width: calc(50% - 50px);
                     // height: 60px;
@@ -352,14 +352,14 @@ body{
                     line-height: 1;
                     margin-left: 25px;
                     margin-right: 25px;
-                    
+
                     .label-content{
-                      
+
                       padding-left: 10px;
                     }
-                    
+
                     input{
-                      
+
                       padding: 0 10px;
                       font-weight: 300;
                       width: 100%;
@@ -372,9 +372,9 @@ body{
                       -o-appearance: none;
                       margin-top: 6px;
                       margin-bottom: 28px;
-                      
+
                       height: 38px;
-                      
+
                       &:after{
                         content: 'lens';
                         display: block;
@@ -389,9 +389,9 @@ body{
                   }
                 }
               }
-              
+
               .landing-live-search-container{
-                
+
                 display: none;
                 z-index: 5;
                 position: absolute;
@@ -400,93 +400,93 @@ body{
                 background-color: white;
                 padding: 20px 15px 10px 15px;
                 width: 100%;
-                
+
                 .landing-live-search-group {
-                  
+
                   &.data {
-                  
+
                     .results-header{
                       border-bottom: 2px solid $data-color;
-                      
+
                       .results-title{
-                        
+
                         color: $data-color;
                       }
                     }
-                    
+
                     .search-results{
-                      
+
                       .result-entry{
-                        
+
                         .matched-text{
-                          
+
                           color: $data-color;
                         }
                       }
                     }
                   }
-                  
+
                   &.pubs {
-                    
+
                     .results-header{
                       border-bottom: 2px solid $pubs-color;
-                      
+
                       .results-title{
-                        
+
                         color: $pubs-color;
                       }
                     }
-                    
+
                     .search-results{
-                      
+
                       .result-entry{
-                        
+
                         .matched-text{
-                          
+
                           color: $pubs-color;
                         }
                       }
                     }
                   }
-                  
+
                   &.lab {
-                    
+
                     .results-header{
                       border-bottom: 2px solid $lab-color;
-                      
+
                       .results-title{
-                        
+
                         color: $lab-color;
                       }
                     }
-                    
+
                     .search-results{
-                      
+
                       .result-entry{
-                        
+
                         .matched-text{
-                          
+
                           color: $lab-color;
                         }
                       }
                     }
                   }
-                  
+
                   padding-bottom: 20px;
-                  
+
                   &:last-child{
-                    
+
                     padding-bottom: 0;
                   }
-                  
+
                   .results-header{
                     width: 100%;
                     position: relative;
                     height: 15px;
                     padding-bottom: 4px;
-                    
+
                     .results-title{
-                      
+
                       padding-left: 4px;
                       position: absolute;
                       left: 0;
@@ -497,9 +497,9 @@ body{
                       line-height: 1.4;
                       padding-right: 60px;
                     }
-                    
+
                     .all-link{
-                      
+
                       padding-right: 8px;
                       position: absolute;
                       right: 0;
@@ -512,20 +512,20 @@ body{
                       line-height: 1.3;
                       cursor: pointer;
                       user-select: none;
-                      
+
                       &:hover{
-                        
+
                         text-decoration: none;
                       }
                     }
                   }
-                    
+
                   .search-results{
-                    
+
                     width: 100%;
-                    
+
                     a.result-entry{
-                      
+
                       display: block;
                       padding-left: 4px;
                       padding-right: 4px;
@@ -536,30 +536,30 @@ body{
                       border-bottom: 1px solid #989898;
                       cursor: pointer;
                       overflow: hidden;
-                      
+
                       &:hover{
                         text-decoration: none;
                       }
-                      
+
                       &:last-child{
-                        
+
                         border-bottom: none;
                       }
-                      
+
                       .matched-text{
-                        
+
                         font-weight: 700;
                         font-size: 16px;
                         line-height: 2;
                       }
                     }
-                  }  
+                  }
                 }
               }
             }
-            
+
             button.landing-search-button{
-              
+
               color: white;
               background-color: $main-black;
               border: none;
@@ -571,44 +571,44 @@ body{
               transform: translateY(-50%);
               right: 0;
               opacity: 1;
-              
+
               transition: all .2s ease-in-out;
               -webkit-transition: all .2s ease-in-out;
               -moz-transition: all .2s ease-in-out;
               -o-transition: all .2s ease-in-out;
-              
+
               &:hover{
-                
+
                 opacity: .5;
               }
             }
-          }  
+          }
         }
-        
+
         .current-search-fields{
-          
+
           margin-top: 80px;
           margin-left: 18px;
-          
+
           .title{
-            
+
             font-weight: 400;
             font-size: 15px;
             letter-spacing: .025em;
             line-height: 1.2;
             margin-bottom: 12px;
           }
-          
+
           .search-field{
-            
+
             font-weight: 300;
             font-size: 12px;
             letter-spacing: .05em;
             line-height: 1.2;
             position: relative;
-            
+
             .x-button{
-              
+
               position: relative;
               display: inline-block;
               margin-right: 10px;
@@ -617,17 +617,17 @@ body{
           }
         }
         .main-results-advanced-search{
-          
+
           padding-top: 50px;
-          
+
           h4.header{
-            
+
             margin: 0;
             padding-bottom: 8px;
             padding-left: 7px;
             font-weight: bold;
           }
-          
+
           .border-bottom-bar{
             border-top: solid 10px $main-black;
             height: 0;
@@ -636,34 +636,34 @@ body{
             margin-bottom: 18px;
           }
         }
-        
+
         .param-box{
-          
+
           margin-top: 35px;
-          
+
           .title{
             margin-left: 13px;
             margin-bottom: 25px;
           }
-          
+
           .switches{
-            
+
             label{
-              
+
               display: block;
               border-bottom: 1px solid $details-grey;
               margin-left: 15px;
               padding: 15px 0;
               position: relative;
-              
+
               font-weight: 300;
               font-size: 14px;
               color: $details-grey;
               letter-spacing: .05em;
               line-height: 1.5;
-              
+
               input{
-                
+
                 position: relative;
                 top: 2px;
                 background-color: white;
@@ -672,14 +672,14 @@ body{
                 margin-right: 10px;
               }
             }
-            
+
             .more-link{
-              
+
               margin-left: 15px;
               margin-top: 17px;
-              
+
               a{
-                
+
                 font-weight: 300;
                 font-size: 14px;
                 color: $details-grey;
@@ -688,18 +688,18 @@ body{
               }
             }
           }
-          
+
           .map-container img{
             width: 100%;
           }
         }
-        
+
         &.about-helix-container{
-          
+
           padding-top: 65px;
-          
+
           h4.about-header{
-            
+
             margin: 0;
             padding-bottom: 18px;
             padding-left: 7px;
@@ -707,18 +707,18 @@ body{
           }
         }
       }
-      
-      
+
+
       /* ___/RESULTS MAIN CONTENT/___ */
       section.results-main-result-set{
-        
+
         // .abs-position{
-        // 
+        //
         //   position: absolute;
         //   top: 0;
         //   margin-top: 208px;
         // }
-        
+
         position: relative;
         top: 0;
         right: 0;
@@ -727,7 +727,7 @@ body{
         padding-bottom: 70px;
         // width: calc(100% - 346px);
         // float: right;
-        
+
         .breadcrumbs-pagination{
           display: block;
           width: 100%;
@@ -735,32 +735,32 @@ body{
           margin-bottom: 16px;
           position: relative;
           height: 15px;
-          
+
           &.top{
             margin-bottom: 15px;
             padding-left: 8px;
           }
-          
+
           &.bottom{
             margin-top: -10px;
             padding-left: 8px;
-            
+
             .breadcrumbs{
-              
+
               top: 3px;
             }
           }
-          
-          
+
+
           .breadcrumbs{
-            
+
             position: absolute;
             top: 1px;
             left: 0;
             margin-left: 8px;
-            
+
             .breadcrumbs-part{
-              
+
               font-weight: 400;
               font-size: 15px;
               color: $details-grey;
@@ -768,14 +768,14 @@ body{
               line-height: 1.2;
               position: relative;
               opacity: 1;
-              
+
               transition: all .2s ease-in-out;
               -webkit-transition: all .2s ease-in-out;
               -moz-transition: all .2s ease-in-out;
               -o-transition: all .2s ease-in-out;
-              
+
               &:after{
-                
+
                 content: "\\\\\\";
                 color: $details-grey;
                 margin-left: 5px;
@@ -783,38 +783,38 @@ body{
                 position: relative;
                 top: -1px
               }
-              
+
               &:last-child{
-                
+
                 color: $main-black;
                 margin-right: 0;
-                
+
                 &:after{
-                  
+
                   content: '';
                 }
               }
-              
+
               &:hover{
-                
+
                 opacity: .5;
-                
+
                 &:after{
-                  
+
                   opacity: 1;
                 }
               }
             }
           }
-          
+
           .pagination-block{
-            
+
             position: absolute;
             top: 0;
             right: 0;
-            
+
             .pagination-item{
-              
+
               margin: 0 10px;
               font-weight: 300;
               font-size: 15px;
@@ -822,29 +822,29 @@ body{
               letter-spacing: .025em;
               line-height: 1.2;
               opacity: 1;
-              
+
               transition: all .2s ease-in-out;
               -webkit-transition: all .2s ease-in-out;
               -moz-transition: all .2s ease-in-out;
               -o-transition: all .1s ease-in-out;
-              
+
               &:hover{
-                
+
                 opacity: .5;
               }
-              
+
               &:first-child{
-                
+
                 margin-left: 0;
               }
-              
+
               &:last-child{
-                
+
                 margin-right: 0;
               }
-              
+
               &.current-item{
-                
+
                 position: relative;
                 top: 1px;
                 font-weight: 500;
@@ -863,7 +863,7 @@ body{
           display: block;
           text-align: right;
           margin-bottom: 25px;
-          
+
           .order-by{
             // position: absolute;
             // right: 0;
@@ -875,7 +875,7 @@ body{
             letter-spacing: .025em;
             line-height: 1.4;
             padding-top: 10px;
-            
+
             select{
               font-weight: 400;
               font-size: 12px;
@@ -883,9 +883,9 @@ body{
             }
           }
         }
-        
+
         .main-results-result-count{
-          
+
           float: left;
           position: relative;
           padding-left: 8px;
@@ -897,11 +897,11 @@ body{
           line-height: 21px;
           vertical-align: middle;
         }
-        
+
         .result-items{
-          
+
           padding-bottom: 40px;
-          
+
           .result-item{
             max-width: 1024px;
             margin: auto;
@@ -913,62 +913,62 @@ body{
             -moz-transition: all .2s ease-in-out;
             -o-transition: all .1s ease-in-out;
             position: relative;
-            
-            
-            
+
+
+
             &.data{
-              
+
               &:hover{
-                
+
                 border-left-color: $data-color;
               }
-              
+
               .title{
-                
+
                 color: $data-color;
-                
+
                 .pill{
                   background-color: $data-color;
                 }
               }
             }
-            
+
             &.pubs{
-              
+
               &:hover{
-                
+
                 border-left-color: $pubs-color;
               }
-              
+
               .title{
-                
+
                 color: $pubs-color;
-                
+
                 .pill{
                   background-color: $pubs-color;
                 }
               }
             }
-            
+
             &.lab{
-              
+
               &:hover{
-                
+
                 border-left-color: $lab-color;
               }
-              
+
               .title{
-                
+
                 color: $lab-color;
-                
+
                 .pill{
                   background-color: $lab-color;
                 }
               }
             }
-            
+
             &:after{
-              
+
               content: '';
               position: absolute;
               left: 0;
@@ -982,56 +982,56 @@ body{
               -moz-transition: all .2s ease-in-out;
               -o-transition: all .1s ease-in-out;
             }
-            
+
             &:last-child:after{
-              
+
               border-bottom: none;
             }
-            
+
             &:hover{
-              
+
               background-color: white;
               border-bottom-color: transparent;
-            
+
               &:after{
-                
+
                 border-bottom-color: transparent;
               }
             }
-            
+
             .date-of-entry{
-              
+
               color: $details-grey;
               font-weight: 400;
               font-size: 12;
               letter-spacing: .05;
               line-height: 1.3;
-              
+
               a{
                 color: inherit;
               }
             }
-            
+
             h3.title{
-              
+
               position: relative;
               margin: 0;
               line-height: 1;
               padding-top: 8px;
               font-weight: 500;
-              
+
               a{
-                
+
                 color: inherit;
                 display: inline-block;
-                
+
                 &:hover{
                   color: inherit;
                 }
               }
-              
+
               .pill{
-                
+
                 position: relative;
                 top: -4px;
                 cursor: pointer;
@@ -1047,41 +1047,41 @@ body{
                 border-radius: 9px;
                 background-color: #BFBFBF;
 
-                
+
                 &:last-child{
                   margin-right: none;
                 }
               }
             }
-            
+
             .service{
-              
+
               margin-top: 8px;
               font-weight: 400400;
               font-size: 12;
               color: $details-grey;
               letter-spacing: .05em;
               line-height: 1.3;
-              
+
               a{
                 color: inherit;
-                
+
                 &:hover{
                   color: inherit;
                 }
               }
             }
-            
+
             .tag-list{
               margin-top: 10px;
             }
-            
+
             .bottom-separator{
               display: none;
               width: 100%;
               height: 0;
               border-bottom: solid 1px $details-grey;
-            } 
+            }
           }
         }
       }

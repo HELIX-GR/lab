@@ -1,0 +1,39 @@
+.helix-react-table-selected {
+  background: #626262;
+  color: white;
+}
+
+.helix-react-table-child-row {
+  background: #FFF9C4;
+}
+
+.helix-react-table-selected a {
+  color: white;
+}
+
+
+/**
+* Customize pagination
+*/
+
+.ReactTable .-pagination .-btn {
+  border-radius: 0px;
+  width: 6rem;
+}
+
+.ReactTable .-pagination .-previous button {
+  float: left;
+}
+
+.ReactTable .-pagination .-next button {
+  float: right;
+}
+
+
+/**
+* Fix no data label z-index (renders over select input dropdown list)
+*/
+
+.ReactTable .rt-noData {
+  z-index: 0;
+}

@@ -2,19 +2,32 @@
  * Theme
  */
 
+$layout-fixed-width :1280px;
+
 @import 'theme/theme';
 
 /*
  * Customize styles for 3rd party components
  */
 
-//@import 'vendor/react-toastify';
+@import 'vendor/react-toastify';
 
 /*
  * Import HELIX react components
  */
 
 @import 'components/login';
+@import 'components/map';
 
 
+/**
+ * Custom rules
+ */
+
+ .menu-wrapper .menu-item .active-link {
+  border-bottom: 2px solid;
+}
+
+
+@import 'vendor/react-table';
 
