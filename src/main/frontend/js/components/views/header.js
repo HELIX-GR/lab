@@ -33,7 +33,7 @@ class Header extends React.Component {
     const authenticated = (this.props.profile != null);
 
     return (
-      <header className="header">
+      <header className="header fixed">
         <div className="logo-area">
           <a>
             <img className="logo-image" src="/images/svg/Lab-logo.svg" alt="Helix Lab" />

@@ -1,25 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-  TableFooter,
-} from 'material-ui/Table';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import TableFooter from '@material-ui/core/TableFooter';
+
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 import _ from 'lodash';
-import { FormattedTime } from 'react-intl';
+import { FormattedTime, injectIntl } from 'react-intl';
 import formatFileSize from '../../util/file-size';
 import { getFilesystem, createFolder, setTablePath, setNewFolder } from '../../ducks/config';
-import ActionDone from 'material-ui/svg-icons/action/done';
-import ContentClear from 'material-ui/svg-icons/content/clear';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ActionDone from '@material-ui/icons/Done';
+import ContentClear from '@material-ui/icons/Clear';
 
 
 /**
@@ -39,7 +36,6 @@ class FileSelect2 extends Component {
       folder: this.props.filesystem,
     }
     );
-
   }
 
   get selectedPath() {
@@ -70,7 +66,7 @@ class FileSelect2 extends Component {
   }
 
   getFolderHierarchy(path) {
-    const hierarchy = [{ name: <i className="fa fa-home"></i>, folder: this.props.filesystem }];
+    const hierarchy = [{ name: <i className="fa fa-home fa-lg"></i>, folder: this.props.filesystem }];
     let currentFolder = this.props.filesystem;
 
     path.split('/').slice(0, -1).forEach((name) => {
@@ -89,6 +85,18 @@ class FileSelect2 extends Component {
     });
   };
 
+
+  handleRowClick = (event, index, type, name) => {
+
+    const { folder } = this.state;
+
+    if (type === 'File') {
+      this.props.setTablePath(folder.path, name);
+    } else if (type === 'Folder') {
+      this.setState({ folder: folder.folders[index] });
+    }
+  };
+
   renderHeader() {
     const { folder } = this.state;
     const hierarchy = this.getFolderHierarchy(folder.path);
@@ -99,8 +107,7 @@ class FileSelect2 extends Component {
           {
             hierarchy.map((item, i, arr) => (
               <span key={i}>
-                <FlatButton
-                  color="link"
+                <Button
                   onClick={(e) => {
                     if (item && item.folder) {
                       this.setState({ folder: item.folder });
@@ -108,7 +115,7 @@ class FileSelect2 extends Component {
                   }}
                 >
                   {item.name}
-                </FlatButton>
+                </Button>
                 {i !== arr.length - 1 ? <span>/</span> : null}
               </span>
             ))
@@ -122,69 +129,67 @@ class FileSelect2 extends Component {
 
     const { folder } = this.state;
     const data = [
-      ...folder.folders.map(f => ({ ...f, type: 'folder' })),
-      ...folder.files.map(f => ({ ...f, type: 'file' })),
+      ...folder.folders,
+      ...folder.files,
     ];
     this.props.setTablePath(folder.path, "");
     return (
       <div className="filesystem-box">
         {this.renderHeader()}
 
-        <Table height={"400px"}
-          onCellClick={(e) => {
-            if (data[e] && data[e].type === 'file') {
-              this.props.setTablePath(folder.path, data[e].name);
-            } else if (data[e] && data[e].type === 'folder') {
-              this.setState({ folder: folder.folders[e] });
-            }
-          }}>
-          <TableHeader
-            displaySelectAll={false}
-            displayRowCheckbox={false} >
+        <Table >
+          <TableHead>
             <TableRow  >
-              <TableHeaderColumn width="66px" tooltip="The ID">  </TableHeaderColumn>
-              <TableHeaderColumn tooltip="File Name">File Name</TableHeaderColumn>
-              <TableHeaderColumn tooltip="File type">File type</TableHeaderColumn>
-              <TableHeaderColumn tooltip="File Size">File Size</TableHeaderColumn>
-              <TableHeaderColumn tooltip="Last Modified">Last Modified</TableHeaderColumn>
+              <TableCell width="66px" tooltip="The ID">  </TableCell>
+              <TableCell tooltip="File Name">File Name</TableCell>
+              <TableCell tooltip="File type">File type</TableCell>
+              <TableCell tooltip="File Size">File Size</TableCell>
+              <TableCell tooltip="Last Modified">Last Modified</TableCell>
             </TableRow>
-          </TableHeader>
+          </TableHead>
 
-          <TableBody displayRowCheckbox={false} >
+          <TableBody>
             {(_.isEmpty(data) && !this.props.new_folder) ?
-              <TableRow>
-                <TableRowColumn style={{ textAlign: 'center' }}>No Data</TableRowColumn>
+              <TableRow >
+                <TableCell />
+                <TableCell width="300px" style={{ textAlign: 'center' }}> No Data </TableCell>
+                <TableCell />
+                <TableCell />
+                <TableCell />
               </TableRow>
               : (data.map((row, index) => (
-                <TableRow key={index}>
-                  <TableRowColumn width="66px" >{row.type === 'folder' ?
+                <TableRow
+                  hover
+                  onClick={event => this.handleRowClick(event, index, row.type, row.name)}
+                  key={index}>
+                  <TableCell width="66px" >{row.type === 'Folder' ?
                     <i className="fa fa-folder" />
-                    : row.type === 'file' ?
+                    : row.type === 'File' ?
                       <i className="fa fa-file" />
                       : <i className="fa fa-file-code" />}
-                  </TableRowColumn>
-                  <TableRowColumn>{row.name}</TableRowColumn>
-                  <TableRowColumn>{row.type}</TableRowColumn>
-                  <TableRowColumn>{formatFileSize(row.size)}</TableRowColumn>
-                  <TableRowColumn>
-                    <FormattedTime value={row.createdOn} day='numeric' month='numeric' year='numeric' />
-                  </TableRowColumn>
+                  </TableCell>
+                  <TableCell>{row.name}</TableCell>
+                  <TableCell>{row.type}</TableCell>
+                  <TableCell>{formatFileSize(row.size)}</TableCell>
+                  <TableCell>
+                  {this.props.intl.formatRelative(row.createdOn)}
+                  </TableCell>
                 </TableRow>
               )))}
             {this.props.new_folder ?
               <TableRow key={"NewFile"} >
-                <TableRowColumn width="66px" >
+                <TableCell width="66px" >
                   <i className="fa fa-folder" />
-                </TableRowColumn>
-                <TableRowColumn>
+                </TableCell>
+                <TableCell>
                   <TextField
                     id="text-field-controlled"
                     value={this.state.value_folder}
                     onChange={this.handleNameChange}
                   />
-                </TableRowColumn>
-                <TableRowColumn>
-                  <FloatingActionButton mini={true} secondary={true} style={{
+                </TableCell>
+                <TableCell>
+                  <Button variant="fab" mini={true} secondary={true} style={{
                     marginRight: 20,
                   }} onClick={(e) => {
                     this.props.createFolder(folder.path + this.state.value_folder)
@@ -196,24 +201,25 @@ class FileSelect2 extends Component {
                       }));
                   }} >
                     <ActionDone />
-                  </FloatingActionButton>
-                  <FloatingActionButton mini={true} secondary={true} style={{
+                  </Button>
+                  <Button variant="fab" mini={true} secondary={true} style={{
                     marginRight: 20,
                   }}
                     onClick={(e) => {
                       this.props.setNewFolder(false);
                     }} >
                     <ContentClear />
-                  </FloatingActionButton>
-                </TableRowColumn>
-                <TableRowColumn> </TableRowColumn>
-                <TableRowColumn>  </TableRowColumn>
+                  </Button>
+                </TableCell>
               </TableRow>
               : null
             }
           </TableBody>
-          <TableFooter adjustForCheckbox={false} >
-            <TableRow />
+          <TableFooter >
+            <TableCell />
+            <TableCell width="300px">
+            {this.props.intl.formatRelative(this.props.last_update)}
+            </TableCell>
           </TableFooter>
         </Table>
       </div>
@@ -228,6 +234,7 @@ function mapStateToProps(state) {
   return {
     filesystem: state.config.filesystem,
     new_folder: state.config.new_folder,
+    last_update: state.config.last_updated,
   };
 }
 
@@ -236,4 +243,4 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({ getFilesystem, set
 
 
 
-export default FileSelect2 = connect(mapStateToProps, mapDispatchToProps)(FileSelect2);
+export default FileSelect2 = connect(mapStateToProps, mapDispatchToProps)(injectIntl(FileSelect2));

@@ -1,11 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-
-import classnames from 'classnames';
-
-import {
-  FormattedMessage,
-} from 'react-intl';
 
 class Footer extends React.Component {
 
@@ -26,7 +19,7 @@ class Footer extends React.Component {
           <div className="footer-column about">
             <h3 className="footer-column-title">
               About
-          </h3>
+            </h3>
             <ul>
               <li><a href="#">Αρχική</a></li>
               <li><a href="#">Το έργο</a></li>
@@ -37,7 +30,7 @@ class Footer extends React.Component {
           <div className="footer-column research">
             <h3 className="footer-column-title">
               Έρευνα
-          </h3>
+            </h3>
             <ul>
               <li><a href="#">Data</a></li>
               <li><a href="#">Publications</a></li>
@@ -49,7 +42,7 @@ class Footer extends React.Component {
           <div className="footer-column partners">
             <h3 className="footer-column-title">
               Συνεργάτες
-          </h3>
+            </h3>
             <ul>
               <li>
                 <a href="#">
@@ -68,8 +61,8 @@ class Footer extends React.Component {
                   <img src="/images/png/PARTNER_OPENAIRE.png" alt="" />
                 </a>
               </li>
-              </ul>
-              <ul>
+            </ul>
+            <ul>
               <li>
                 <a href="#">
                   <img src="/images/png/PARTNER-EDUC.png" alt="" />
@@ -81,7 +74,7 @@ class Footer extends React.Component {
 
           <div className="copyright-notes">
             © 2018 Helix. All rights reserved.
-        </div>
+          </div>
         </div>
       </footer>
     );

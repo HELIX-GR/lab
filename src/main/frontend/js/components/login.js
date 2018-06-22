@@ -44,12 +44,12 @@ class LoginForm extends React.Component {
   }
 
   render() {
+    const { defaultIdentityProvider: idp } = this.props.config;
+
     return (
       <form className="form-signin" onSubmit={this._submit}>
         <div className="text-center mb-4">
-          <img className="mb-4" src="/images/helix-lab.png" alt="" width="131" height="70" />
-          <h1 className="h3 mb-3 font-weight-normal">Helix Lab</h1>
-          <p>Try your code now in one of Helix Lab services. </p>
+          <a className="login-brand text-center" target="_blank" href="http://www.hellenicdataservice.gr/"></a>
         </div>
 
         <div className="form-label-group">
@@ -72,6 +72,15 @@ class LoginForm extends React.Component {
         </label>
         </div>
         <button type="submit" className="btn btn-primary px-4">Login         </button>
+        <div className="row pt-3 pb-3">
+          <div className="col">
+            <a href={idp ? `/saml/login?idp=${idp}` : '/saml/login'}
+              className="btn btn-danger px-4 w-100"
+            >
+              Academic Login
+                        </a>
+          </div>
+        </div>
 
         <p className="mt-5 mb-3 text-muted text-center">© Powered by HELIX</p>
       </form>);
@@ -86,7 +95,11 @@ LoginForm.propTypes = {
 };
 
 
-const mapStateToProps = null;
+const mapStateToProps = (state) => ({
+  config: state.config,
+  i18n: state.i18n,
+});
+
 
 const mapDispatchToProps = (dispatch) => ({
   submit: (username, password) => (

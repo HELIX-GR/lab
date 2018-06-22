@@ -5,7 +5,7 @@ import { FormattedTime } from 'react-intl';
 import { Row, Button } from 'reactstrap';
 
 import decorateField from './form-field';
-import  formatFileSize  from '../../util/file-size';
+import formatFileSize from '../../util/file-size';
 const fileColumns = [
   {
     Header: '',
@@ -13,9 +13,9 @@ const fileColumns = [
     maxWidth: 33,
     Cell: props => props.value === 'folder' ?
       <i className="fa fa-folder" />
-      : props.value === 'file'?
-      <i className="fa fa-file" />
-      :<i className="fa fa-file-code" />
+      : props.value === 'file' ?
+        <i className="fa fa-file" />
+        : <i className="fa fa-file-code" />
   },
   {
     Header: 'File Name',
@@ -29,7 +29,7 @@ const fileColumns = [
   {
     Header: 'File Size',
     id: 'size',
-    accessor: r => (r.size? formatFileSize(r.size): " "),
+    accessor: r => (r.size ? formatFileSize(r.size) : " "),
   },
   {
     Header: 'Created',
@@ -62,7 +62,7 @@ export class FileSelect extends React.Component {
     const { folder } = this.state;
     const data = [
       ...folder.folders.map(f => ({ ...f, type: 'folder' })),
-      ...folder.files.map(f => ({type: 'file', ...f })),
+      ...folder.files.map(f => ({ type: 'file', ...f })),
     ];
     const path = folder.path.split('/').slice(0, -1).map((name, level) => level === 0 ? ({ name: '..', folder: this.props.filesystem }) : ({ name, folder: this._getParentDir(level) }));
 

@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 // config.js
 import configurationService from '../service/configuration';
 import filesystemService from '../service/filesystem';
@@ -56,6 +58,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         filesystem: action.filesystem,
+        last_updated: action.timestamp,
       };
 
     default:
@@ -78,9 +81,10 @@ export const requestFilesystem = () => ({
   type: REQUEST_FILESYSTEM,
 });
 
-export const receiveFilesystem = (filesystem) => ({
+export const receiveFilesystem = (filesystem, timestamp) => ({
   type: RECEIVE_FILESYSTEM,
   filesystem,
+  timestamp,
 });
 
 export const setTablePath = (table_path, selected_file) => ({
@@ -113,7 +117,8 @@ export const getFilesystem = () => (dispatch, getState) => {
   dispatch(requestFilesystem());
   return filesystemService.fetch(token)
     .then((fs) => {
-      dispatch(receiveFilesystem(fs));
+      var t = moment().valueOf();
+      dispatch(receiveFilesystem(fs, t));
     })
     .catch((err) => {
       console.error('Error receiving filesystem', err);
@@ -125,7 +130,8 @@ export const createFolder = (path) => (dispatch, getState) => {
 
   return filesystemService.createFolder(path, token)
     .then((fs) => {
-      dispatch(receiveFilesystem(fs));
+      var t = moment().valueOf();
+      dispatch(receiveFilesystem(fs, t));
     });
 };
 
@@ -136,7 +142,8 @@ export const uploadFile = (data, file) => (dispatch, getState) => {
   console.log(data, file);
   return filesystemService.upload(data, file, token)
     .then((fs) => {
-      dispatch(receiveFilesystem(fs));
+      var t = moment().valueOf();
+      dispatch(receiveFilesystem(fs, t));
     });
 };
 
@@ -145,6 +152,7 @@ export const deletePath = (path) => (dispatch, getState) => {
 
   return filesystemService.deletePath(path, token)
     .then((fs) => {
-      dispatch(receiveFilesystem(fs));
+      var t = moment().valueOf();
+      dispatch(receiveFilesystem(fs, t));
     });
 };

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import * as PropTypes from 'prop-types';
 
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@material-ui/core/Button';
 
 const styles = {
   customWidth: {
@@ -12,11 +11,7 @@ const styles = {
   },
 };
 
-/**
- * `SelectField` is implemented as a controlled component,
- * with the current selection set through the `value` property.
- * The `SelectField` can be disabled with the `disabled` property.
- */
+
 export default class ServerForm extends Component {
   constructor(props) {
     super(props);
@@ -80,16 +75,16 @@ export default class ServerForm extends Component {
           fullWidth={true}
         />
         <br />
-        <SelectField
+        <TextField
           floatingLabelText="Make available"
           value={this.state.available}
           onChange={this.handleChangeAvailable}
         >
           <MenuItem id="available" value={false} primaryText="No" />
           <MenuItem id="available" value={true} primaryText="Yes" />
-        </SelectField>
+        </TextField>
 
-        <SelectField
+        <TextField
           floatingLabelText="Role eligible"
           value={this.state.role_eligible}
           onChange={this.handleChangeRole}
@@ -99,13 +94,13 @@ export default class ServerForm extends Component {
           <MenuItem value={'ROLE_TESTER'} primaryText="EXPERIMENTAL" />
           <MenuItem value={'ROLE_OTHER'} primaryText="OTHER" />
           <MenuItem value={'ROLE_ADMIN'} primaryText="ADMIN" />
-        </SelectField>
-        <FlatButton
+        </TextField>
+        <Button
           label="Cancel"
           primary={true}
           onClick={this.props.onClose}
         />,
-      <FlatButton
+      <Button
           label="Submit"
           primary={true}
           keyboardFocused={true}

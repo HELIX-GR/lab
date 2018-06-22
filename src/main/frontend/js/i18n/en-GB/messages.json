@@ -18,5 +18,8 @@
   },
   "labsearch": {
     "placeholder": "Search for Notebooks."
-  }
+  },
+  "server-list":{
+    "servers": "Available Kernels"
+    }
 }

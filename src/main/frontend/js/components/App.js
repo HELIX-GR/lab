@@ -13,7 +13,7 @@ import { startNowAction } from '../ducks/app';
 import { Route } from 'react-router-dom';
 import Filesystem from './filesystem/filesystem';
 import AdminPage from './admin/admin-page';
-import Divider from "material-ui/Divider";
+import Divider from "@material-ui/core/Divider";
 
 class App extends React.Component {
   constructor(props) {

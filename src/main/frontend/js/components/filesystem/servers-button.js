@@ -2,8 +2,8 @@ import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import Popover from 'material-ui/Popover';
-import FlatButton from 'material-ui/FlatButton';
+import Popover from '@material-ui/core/Popover';
+import Button from '@material-ui/core/Button';
 import ServerList from './server-list';
 import { getUserServers } from '../../ducks/user';
 
@@ -42,6 +42,7 @@ class ServerButton extends React.Component {
     console.log(index);
     this.setState({
       selectedIndex: index,
+      open: false,
     });
   }
 
@@ -53,19 +54,29 @@ class ServerButton extends React.Component {
 
     return (
       <div>
-        <FlatButton
+        <Button
+          variant="contained"
           onClick={this.handleClick}
-          label="Servers" />
+        >
+          Servers
+        </Button>
+
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
-          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-          onRequestClose={this.handleRequestClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          onClose={this.handleRequestClose}
         >
-          <ServerList servers={this.props.servers} onClick={this.handleServerClick} selectedIndex={this.state.selectedIndex}/>
+          <ServerList servers={this.props.servers} onClick={this.handleServerClick} selectedIndex={this.state.selectedIndex} />
         </Popover>
-      </div>
+      </div >
     );
   }
 }

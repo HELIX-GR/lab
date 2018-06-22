@@ -3,13 +3,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
-import RaisedButton from 'material-ui/RaisedButton';
-import MenuItem from 'material-ui/MenuItem';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import ActionUpdate from 'material-ui/svg-icons/action/update';
-import PlayArrow from 'material-ui/svg-icons/av/play-arrow';
+import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import ContentAdd from '@material-ui/icons/Add';
+import ActionUpdate from '@material-ui/icons/Update';
+import PlayArrow from '@material-ui/icons/PlayArrow';
 
 import { getFilesystem, createFolder, uploadFile, setNewFolder} from '../../ducks/config';
 import { startNowAction } from '../../ducks/app';
@@ -44,20 +43,20 @@ class TableToolbar extends React.Component {
       <div >
         <div className="row backround-white">
           <div className="col-12 col-lg-6">
-            <FloatingActionButton label="Play" mini={true} style={style} target="_blank" href={this.props.target+"/notebooks/"+this.props.table_path+this.props.selected_file}>
+          <Button variant="fab" label="Play" mini={true} style={style} target="_blank" href={this.props.target+"/notebooks/"+this.props.table_path+this.props.selected_file}>
               <PlayArrow />
-            </FloatingActionButton>
-            <FloatingActionButton mini={true} style={style} onClick={this.handleCreate}>
+            </Button>
+            <Button variant="fab" mini={true} style={style} onClick={this.handleCreate}>
               <ContentAdd />
-            </FloatingActionButton>
-            {<FloatingActionButton mini={true} style={style} onClick={this.handleRefresh} >
+            </Button>
+            {<Button variant="fab" mini={true} style={style} onClick={this.handleRefresh} >
               <ActionUpdate />
-            </FloatingActionButton>}
+            </Button>}
             <UploadModal onChange={this.props.uploadFile}/>
           </div>
           <div className="col-12 col-lg-6 text-lg-right">
 
-            <DropDownMenu value={this.state.value} onChange={(event, index, value) => this.setState({ value })}>
+            <Menu value={this.state.value} onChange={(event, index, value) => this.setState({ value })}>
               <MenuItem value={1} primaryText="All Files" />
               <MenuItem value={2} primaryText="PDF" />
               <MenuItem value={3} primaryText="Python" />
@@ -65,7 +64,7 @@ class TableToolbar extends React.Component {
               <MenuItem value={5} primaryText="Last 10 days" />
               <MenuItem value={6} primaryText="Text" />
               <MenuItem value={7} primaryText="Data" />
-            </DropDownMenu>
+            </Menu>
           </div>
         </div>
       </div>);

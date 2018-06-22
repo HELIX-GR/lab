@@ -1,70 +1,138 @@
 import React from "react";
-import * as PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import { grand_role, revoke_role } from '../../ducks/admin';
 import { FormattedTime } from 'react-intl';
 import _ from 'lodash';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-  TableFooter,
-} from 'material-ui/Table';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
+
+import Paper from '@material-ui/core/Paper';
+import Checkbox from '@material-ui/core/Checkbox';
+import ReactTable from "react-table";
+
+
+const all_roles = ["ROLE_STANDARD", "ROLE_STANDARD_STUDENT", "ROLE_STANDARD_ACADEMIC", "ROLE_BETA", "ROLE_BETA_STUDENT", "ROLE_BETA_ACADEMIC"];
+
 
 
 export class UserTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      checked: {
+        ROLE_USER: true,
+        ROLE_ADMIN: false,
+      },
+      page: 0,
+      rowsPerPage: 15,
+    };
+
+    this.updateCheck = this.updateCheck.bind(this);
+
+  }
+
+
+
+
+  updateCheck(is, r, user_id) {
+    if (is) {
+      this.props.grand_role(user_id, r);
+    } else {
+      this.props.revoke_role(user_id, r);
+    }
+
+  }
+
+
+  handleChangePage = (event, page) => {
+    this.setState({ page });
+  };
+
+  handleChangeRowsPerPage = event => {
+    this.setState({ rowsPerPage: event.target.value });
+  };
+
+
+
   render() {
+    const UserColumns = [
+      {
+        Header: 'ID',
+        accessor: 'id',
+        maxWidth: 33,
+      },
+      {
+        Header: 'Username',
+        accessor: 'username',
+      },
+      {
+        Header: 'Full Name',
+        accessor: 'fullName',
+      },
+      {
+        Header: 'email',
+        accessor: 'email',
+      },
+      {
+        Header: 'Created',
+        id: 'registeredAt',
+        accessor: 'registeredAt',
+        Cell: props => (
+          <FormattedTime value={props.value} day='numeric' month='numeric' year='numeric' />
+        ),
+        width: 150,
+      },
+      {
+        Header: (
+          all_roles.map(name =>
+              <a>
+                <img className="account-icon" src={"/images/" + name + ".svg"} height="42" width="42"/>
+              </a>
+          )),
+        accessor: 'roles',
+        Cell: props => (all_roles.map((role) => {
+          console.log(role); console.log(props);
+          return (<Checkbox
+            checked={props.value.includes(role)}
+            onChange={(e, is) => { this.updateCheck(is, role, props.row.id ); }}
+          />);
+        }
+        )),
+        width: 300,
+      },
+    ];
+
+
+
     var data = this.props.users;
+    const { rowsPerPage, page } = this.state;
+    //const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+
     return (
-      <Table height={"400px"}
-      >
-        <TableHeader
-          displaySelectAll={false}
-          displayRowCheckbox={false} >
-          <TableRow  >
-            <TableHeaderColumn width="66px" tooltip="Active">   </TableHeaderColumn>
-            <TableHeaderColumn width="66px" tooltip="The ID"> ID  </TableHeaderColumn>
-            <TableHeaderColumn tooltip="Username">Username</TableHeaderColumn>
-            <TableHeaderColumn tooltip="description">Full Name</TableHeaderColumn>
-            <TableHeaderColumn tooltip="url">email</TableHeaderColumn>
-            <TableHeaderColumn tooltip="Last Modified">Registered At</TableHeaderColumn>
-            <TableHeaderColumn tooltip="Last Modified">Roles</TableHeaderColumn>
-          </TableRow>
-        </TableHeader>
-
-        <TableBody displayRowCheckbox={false} >
-          {(_.isEmpty(data)) ?
-            <TableRow>
-              <TableRowColumn style={{ textAlign: 'center' }}>No available Users</TableRowColumn>
-            </TableRow>
-            : (data.map((row, index) => (
-              <TableRow key={index}>
-                <TableRowColumn width="66px" >
-                  {row.active ? <i className="fa fa-circle" style={{ color: '#32CD32' }}></i> : <i className="fa fa-circle" style={{ color: 'red' }}> ></i>}
-                </TableRowColumn>
-                <TableRowColumn width="66px" >{row.id}</TableRowColumn>
-                <TableRowColumn>{row.username}</TableRowColumn>
-                <TableRowColumn>{row.fullName}</TableRowColumn>
-                <TableRowColumn>{row.email}</TableRowColumn>
-                <TableRowColumn>
-                  <FormattedTime value={row.registeredAt} day='numeric' month='numeric' year='numeric' />
-                </TableRowColumn>
-                <TableRowColumn>{row.roles.map((r) => (r + ', '))}</TableRowColumn>
-              </TableRow>
-            )))}
-
-        </TableBody>
-        <TableFooter adjustForCheckbox={false} >
-          <TableRow />
-        </TableFooter>
-      </Table>
+      <div className="helix-table-container">
+        <ReactTable
+          data={data}
+          columns={UserColumns}
+          defaultPageSize={rowsPerPage}
+          className="-striped -highlight"
+        />
+      </div >
     );
 
   }
 }
-UserTable.propTypes = {
-  servers: PropTypes.array,
-};
+
+
+function mapStateToProps(state) {
+  return {
+
+  };
+}
+
+
+const mapDispatchToProps = (dispatch) => bindActionCreators({ grand_role, revoke_role }, dispatch);
+
+
+
+export default UserTable = connect(mapStateToProps, mapDispatchToProps)(UserTable);

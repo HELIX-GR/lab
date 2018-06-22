@@ -16,23 +16,18 @@ class SearchResult extends React.Component {
   render() {
     return (
       <div className="landing-live-search-container">
-
         <div className="landing-live-search-group data">
           <div className="results-header">
-            <div className="results-title">
-              Data
-          </div>
-            <a className="all-link">
-              all Data
-          </a>
+            <div className="results-title">Data</div>
+            <a className="all-link">              all Data          </a>
           </div>
           <div className="search-results">
             <a href="#" className="result-entry">
               <span className="matched-text">Water Po</span>llution Guidelines
-          </a>
+            </a>
             <a href="#" className="result-entry">
               <span className="matched-text">Water Po</span>llution Composition Annual Data 2018
-          </a>
+            </a>
           </div>
         </div>
 
@@ -40,18 +35,18 @@ class SearchResult extends React.Component {
           <div className="results-header">
             <div className="results-title">
               Pubs
-          </div>
+            </div>
             <a className="all-link">
               all Pubs
-          </a>
+           </a>
           </div>
           <div className="search-results">
             <a href="#" className="result-entry">
               <span className="matched-text">Water Po</span>llution Guidelines
-          </a>
+            </a>
             <a href="#" className="result-entry">
               <span className="matched-text">Water Po</span>llution Composition Annual Data 2018
-          </a>
+            </a>
           </div>
         </div>
 
@@ -59,18 +54,18 @@ class SearchResult extends React.Component {
           <div className="results-header">
             <div className="results-title">
               Pubs
-          </div>
+            </div>
             <a className="all-link">
               all Lab
-          </a>
+            </a>
           </div>
           <div className="search-results">
             <a href="#" className="result-entry">
               <span className="matched-text">Water Po</span>llution Guidelines
-          </a>
+            </a>
             <a href="#" className="result-entry">
               <span className="matched-text">Water Po</span>llution Composition Annual Data 2018
-          </a>
+            </a>
           </div>
         </div>
       </div>

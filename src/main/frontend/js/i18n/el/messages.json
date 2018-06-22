@@ -18,5 +18,9 @@
   },
   "labsearch": {
     "placeholder": "Αναζητήστε Notebooks"
-  }
+  },
+
+    "server-list":{
+    "servers": "Διαθέσιμοι Kernels"
+    }
 }

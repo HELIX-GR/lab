@@ -10,15 +10,16 @@ import { history } from './history';
 // Create and configure store
 
 var middleware = [
-  ReduxThunk.default, // lets us dispatch functions
-  //routerMiddleware(history),
-
+  // Support dispatching of functions
+  ReduxThunk.default,
+  // Intercept navigation actions
+  routerMiddleware(history),
 ];
 
 /* global process */
 //if (process.env.NODE_ENV != 'production') {
-  // The logger middleware should always be last
-  middleware.push(ReduxLogger.createLogger({ colors: {} }));
+// The logger middleware should always be last
+middleware.push(ReduxLogger.createLogger({ colors: {} }));
 //}
 
 var initialState = {};

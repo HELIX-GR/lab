@@ -106,7 +106,13 @@ class LoginForm extends React.Component {
                         </button>
                       </div>
                     </div>
-
+                    <div className="row pt-3 pb-3">
+                      <div className="col">
+                        <a href="/login/google" className="btn btn-secondary px-4 w-100">
+                          Google
+                        </a>
+                      </div>
+                    </div>
                     <div className="row pt-3 pb-3">
                       <div className="col">
                         <a href={idp ? `/saml/login?idp=${idp}` : '/saml/login'}

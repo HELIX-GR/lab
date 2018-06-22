@@ -1,12 +1,11 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 import * as ReactIntl from 'react-intl';
-
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { basename } from '../history';
-
+import CssBaseline from '@material-ui/core/CssBaseline';
 import App from "./App.js";
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';//TBD
 
 //
 // Add locale-specific data for each supported locale
@@ -18,6 +17,14 @@ import el from 'react-intl/locale-data/el';
 ReactIntl.addLocaleData(en);
 ReactIntl.addLocaleData(el);
 
+const theme = createMuiTheme({
+  typography: {
+    fontFamily: 'Roboto',
+    fontSize: '13px'
+  },
+
+
+});
 class Root extends React.Component {
 
   render() {
@@ -25,7 +32,9 @@ class Root extends React.Component {
 
     return (
       <ReactIntl.IntlProvider locale={locale} key={locale} messages={messages}>
-        <MuiThemeProvider>
+        <MuiThemeProvider theme={theme}>
+          <CssBaseline />
+
           <BrowserRouter>
             <Route path="/" component={App} />
           </BrowserRouter>

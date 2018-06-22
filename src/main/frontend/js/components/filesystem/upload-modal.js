@@ -2,13 +2,12 @@ import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Dropzone from 'react-dropzone';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
+import Dialog from '@material-ui/core/Dialog';
+import Button from '@material-ui/core/Button';
 import formatFileSize from '../../util/file-size';
-import FileUpload from 'material-ui/svg-icons/file/file-upload';
+import FileUpload from '@material-ui/icons/FileUpload';
 import { uploadFile } from '../../ducks/config';
-import CircularProgress from 'material-ui/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 /**
  * A modal dialog can only be closed by selecting one of the actions.
@@ -65,12 +64,12 @@ class UploadModal extends React.Component {
 
   render() {
     const actions = [
-      <FlatButton
+      <Button
         label="Cancel"
         primary={true}
         onClick={this.handleClose}
       />,
-      <FlatButton
+      <Button
         label="Upload"
         primary={true}
         disabled={false}
@@ -86,7 +85,8 @@ class UploadModal extends React.Component {
 
 
     return (
-      <FloatingActionButton
+      <Button
+        variant="fab"
         mini={true}
         style={{ margin: 12 }}
         label="Modal Dialog"
@@ -138,7 +138,7 @@ class UploadModal extends React.Component {
             {this.state.file && ` (${formatFileSize(this.state.file.size)})`}
           </div>
         </Dialog>
-      </FloatingActionButton>
+      </Button>
 
     );
   }

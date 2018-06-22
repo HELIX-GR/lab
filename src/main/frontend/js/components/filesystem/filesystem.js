@@ -6,6 +6,7 @@ import { getFilesystem, createFolder, setTablePath } from '../../ducks/config';
 import TableToolbar from './table-toolbar';
 import ServerButton  from './servers-button';
 import { FormattedMessage } from 'react-intl';
+import Paper from '@material-ui/core/Paper';
 
 import FileSelect2 from './file-select2';
 
@@ -47,7 +48,7 @@ class Filesystem extends React.Component {
       margin: 12,
     };
     return (
-      <div className="backround-white">
+      <Paper >
         <div className="jumbotron faq-header info-page-header jumbotron-with-breadcrumb-below row backround-white">
           <div className="col" >
             <h1 className="clip-text header-with-icon">
@@ -69,7 +70,7 @@ class Filesystem extends React.Component {
           help="Click on resource to select"
           style={{ height: '40vh' }}
        />*/}
-      </div>);
+      </Paper>);
   }
 }
 

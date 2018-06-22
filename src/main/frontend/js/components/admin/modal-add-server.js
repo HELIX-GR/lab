@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';import Button from '@material-ui/core/Button';
 import ServerForm from './server-form';
 import { addNewServer } from '../../ducks/admin';
 
@@ -42,17 +43,17 @@ class ModalAddServer extends React.Component {
   render() {
     return (
       <div>
-        <FlatButton onClick={this.handleShow} label="Add Server" />
+        <Button onClick={this.handleShow}>Add Server </Button>
         <Dialog
-          title="Add a new server"
-          //actions={actions}
-          modal={false}
           open={this.state.show_modal}
-          onRequestClose={this.handleClose}
+          onClose={this.handleClose}
         >
-          <div>
+
+        <DialogTitle id="alert-dialog-title">{"Add a new server"}</DialogTitle>
+          <DialogContent>
             <ServerForm finish={this.handleSubmit} onClose={this.handleClose} />
-          </div>
+          </DialogContent>
+          
         </Dialog>
       </div>
     );
