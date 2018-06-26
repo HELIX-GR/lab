@@ -11,8 +11,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import gr.helix.core.common.model.EnumRole;
-
 @Entity(name = "HubServerEntity")
 @Table(
     schema = "helix_lab", name = "hub_server",
@@ -123,7 +121,9 @@ public class HubServerEntity {
 		this.url = request.getUrl();
 		this.available = request.getAvailable();
 		this.admin_token = request.getAdmin_token();
-		this.role_eligible = request.getRole_eligible();	}
+		this.role_eligible = request.getRole_eligible();
+		this.started_at = ZonedDateTime.now();
+		}
 	
 	
 	

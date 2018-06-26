@@ -8,7 +8,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
 import gr.helix.core.common.model.EnumRole;
 import gr.helix.core.common.model.user.Account;
 
@@ -16,9 +15,9 @@ public class User implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
-    private final Account account;
+    private final Account     account;
 
-    private final String password;
+    private final String      password;
 
     public User(Account account, String password) {
         this.account = account;
@@ -74,6 +73,11 @@ public class User implements UserDetails {
 
     public Account getAccount() {
         return this.account;
+    }
+
+    @Override
+    public String toString() {
+        return this.account.getUsername();
     }
 
 }

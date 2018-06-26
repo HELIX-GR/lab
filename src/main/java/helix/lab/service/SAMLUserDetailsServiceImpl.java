@@ -16,9 +16,7 @@ import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.springframework.stereotype.Service;
 
 import gr.helix.core.common.domain.AccountEntity;
-import gr.helix.core.common.domain.AccountRoleEntity;
 import gr.helix.core.common.model.EnumRole;
-import gr.helix.core.common.model.user.Account;
 import gr.helix.core.common.repository.AccountRepository;
 import helix.lab.model.security.User;
 import helix.lab.repository.AccountRoleRepository;
@@ -29,8 +27,6 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 	@Autowired
 	AccountRepository acountrepository;
 	
-	@Autowired
-	AccountRoleRepository arr;
 	
     private static final Logger logger = LoggerFactory.getLogger(SAMLUserDetailsServiceImpl.class);
 
@@ -42,6 +38,8 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 
     @Override
     public Object loadUserBySAML(SAMLCredential credential) throws UsernameNotFoundException {
+        System.out.println(credential.toString());
+
         final String userID = credential.getNameID().getValue();
 
         // https://ldap.com/ldap-oid-reference-guide/
@@ -79,6 +77,7 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
         }
         
         // find if the user has logged in before
+        System.out.println(attributes.toString());
         AccountEntity accountE = acountrepository.findOneByEmail(attributes.get(ATTRIBUTE_MAIL));
         if (accountE !=null) {
         	//update info
@@ -89,14 +88,12 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
         }else {
         	final AccountEntity account = new AccountEntity(attributes.get(ATTRIBUTE_USERNAME),attributes.get(ATTRIBUTE_MAIL));
             account.setName(attributes.get(ATTRIBUTE_GIVEN_NAME),attributes.get(ATTRIBUTE_FAMILY_NAME));
-            AccountRoleEntity are = account.grant(EnumRole.ROLE_USER, null);
+            account.grant(EnumRole.ROLE_UNREGISTERED, null);
             account.setRegistered(ZonedDateTime.now());
 
             acountrepository.save(account);
 
-           // if (are!=null) {
-            //	arr.save(are);
-           // }
+
             return new User(account.toDto(), "");
 
         }

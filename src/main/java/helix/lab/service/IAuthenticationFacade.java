@@ -1,9 +1,11 @@
 package helix.lab.service;
-
 import java.util.Locale;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import helix.lab.model.security.User;
+
 
 public interface IAuthenticationFacade {
 
@@ -12,6 +14,13 @@ public interface IAuthenticationFacade {
      * @return
      */
     Authentication getAuthentication();
+
+    /**
+     * Get the user
+     *
+     * @return the user or {@code null} if the user is not authenticated
+     */
+    User getCurrentUser();
 
     /**
      * Get the unique id of the authenticated user

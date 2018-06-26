@@ -38,8 +38,6 @@ CREATE TABLE helix_lab.account_to_server (
 );
 
 
-
-
 CREATE TABLE groups (
 	id INTEGER NOT NULL, 
 	name VARCHAR(255), 
@@ -54,3 +52,49 @@ CREATE TABLE user_group_map (
 	FOREIGN KEY(user_id) REFERENCES users (id), 
 	FOREIGN KEY(group_id) REFERENCES groups (id)
 );
+
+
+
+-- account white list
+CREATE SEQUENCE helix_lab.account_white_list_id_seq INCREMENT 1 MINVALUE 1 START 1 CACHE 1;
+
+CREATE TABLE helix_lab.account_white_list
+(
+  id integer NOT NULL DEFAULT nextval('helix_lab.account_white_list_id_seq'::regclass),
+  account_id integer,
+  username character varying(100),
+  email character varying(64) NOT NULL,
+  registered_on timestamp without time zone DEFAULT now(),
+  firstname character varying(40),
+  lastname character varying(70),
+  CONSTRAINT pk_account_white_list PRIMARY KEY (id),
+  CONSTRAINT fk_account FOREIGN KEY (account_id)
+        REFERENCES web.account (id) MATCH SIMPLE
+            ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT uq_account_email UNIQUE ("email")
+);
+
+
+CREATE SEQUENCE helix_lab.account_role_white_list_id_seq INCREMENT 1 MINVALUE 1 START 1 CACHE 1;
+
+
+
+
+
+CREATE TABLE helix_lab.account_role_white_list
+(
+  id integer NOT NULL DEFAULT nextval('helix_lab.account_role_white_list_id_seq'::regclass),
+  "role" character varying(64) NOT NULL,
+  "wl_account" integer NOT NULL,
+  "granted_at" timestamp DEFAULT now(),
+  "granted_by" integer,
+  CONSTRAINT pk_account_role_white_list PRIMARY KEY (id),
+  CONSTRAINT fk_account_role_white_list_account FOREIGN KEY ("wl_account")
+      REFERENCES helix_lab.account_white_list (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT fk_account_role_white_list_granted_by FOREIGN KEY ("granted_by")
+      REFERENCES web.account (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT uq_account_role_white_list UNIQUE ("wl_account", "role")
+); 
+

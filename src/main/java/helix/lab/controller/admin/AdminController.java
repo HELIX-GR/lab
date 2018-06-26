@@ -1,6 +1,7 @@
 package helix.lab.controller.admin;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,19 +9,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import gr.helix.core.common.domain.AccountEntity;
+import gr.helix.core.common.model.EnumRole;
 import gr.helix.core.common.model.Error;
 import gr.helix.core.common.model.ErrorCode;
 import gr.helix.core.common.model.RestResponse;
 import gr.helix.core.common.repository.AccountRepository;
 import helix.lab.controller.action.BaseController;
+import helix.lab.model.security.User;
+import helix.lab.model.user.AccountToServerEntity;
 import helix.lab.model.user.HubServerEntity;
 import helix.lab.model.user.ServerRegistrationRequest;
+import helix.lab.repository.AccountToServerRepository;
 import helix.lab.repository.HubServerRepository;
 
 /**
@@ -39,6 +45,9 @@ public class AdminController extends BaseController{
 	@Autowired
 	AccountRepository aer;
 	
+	@Autowired
+	AccountToServerRepository atsr;
+	
 	/**
      * Instance of @{link org.springframework.validation.Validator} for performing user input validation manually.
      */
@@ -49,6 +58,11 @@ public class AdminController extends BaseController{
 	
 	@RequestMapping(value = "action/admin/servers", method = RequestMethod.GET)
 	public RestResponse<?> getServers() {
+		//AccountEntity ac=new AccountEntity("totos", "totos@imis.gr");
+		//ac.setName("Totos", "Totou");
+		//ac.setPassword("****");
+		//ac.setActive(true);
+		//aer.save(ac);
 			List<HubServerEntity> hse = hsr.findAll();
 			System.out.println(hse);
 			return RestResponse.result(hse);
@@ -62,6 +76,62 @@ public class AdminController extends BaseController{
 			return RestResponse.result(accounts);
 			//return RestResponse.error(BasicErrorCode.IO_ERROR, "An unknown error has occurred");
 	   
+	}
+	
+	@RequestMapping(value = "action/admin/users_to_servers", method = RequestMethod.GET)
+	public RestResponse<?> getUsersToServers() {
+			List<AccountToServerEntity> accounts_to_server = atsr.findAll();
+			return RestResponse.result(accounts_to_server);
+			//return RestResponse.error(BasicErrorCode.IO_ERROR, "An unknown error has occurred");
+	   
+	}
+	
+	@RequestMapping(value = "action/admin/grand_role/{user_id}", method = RequestMethod.PUT)
+	public RestResponse<?> grand_role(Authentication Authentication, @PathVariable int user_id, @RequestBody EnumRole role,  BindingResult results) {
+		System.out.println("................................................");
+		System.out.println(role.toString());
+	        try {
+	        	//((OptionalValidatorFactoryBean) validator).validate(request, results);
+	            
+	            if (results.hasErrors()) {
+	                
+	                return RestResponse.error((Error) results.getFieldErrors());
+	            }	           
+	             Optional<AccountEntity> account =  aer.findById(user_id);
+	             AccountEntity acc = account.get();
+	             
+	             acc.grant(role, aer.findById(currentUserId()).get());
+	            return RestResponse.result(aer.save(acc));
+	        } catch (Exception ex) {
+	            logger.error(ex.getMessage(), ex);
+
+	            return RestResponse.error((ErrorCode) ex,ex.getMessage());
+	        }
+
+	}
+	
+	@RequestMapping(value = "action/admin/revoke_role/{user_id}", method = RequestMethod.PUT)
+	public RestResponse<?> revoke_role(Authentication Authentication, @PathVariable int user_id, @RequestBody EnumRole role,  BindingResult results) {
+		System.out.println("................................................");
+		System.out.println(role.toString());
+	        try {
+	        	//((OptionalValidatorFactoryBean) validator).validate(request, results);
+	            
+	            if (results.hasErrors()) {
+	                
+	                return RestResponse.error((Error) results.getFieldErrors());
+	            }	           
+	             Optional<AccountEntity> account =  aer.findById(user_id);
+	             AccountEntity acc = account.get();
+	             
+	             acc.revoke(role);
+	            return RestResponse.result(aer.save(acc));
+	        } catch (Exception ex) {
+	            logger.error(ex.getMessage(), ex);
+
+	            return RestResponse.error((ErrorCode) ex,ex.getMessage());
+	        }
+
 	}
 	
 	
@@ -85,9 +155,29 @@ public class AdminController extends BaseController{
 	            return RestResponse.error((ErrorCode) ex,ex.getMessage());
 	        }
 
-
 	}
 	
+	
+	@RequestMapping(value = "action/admin/edit_server/{server_id}", method = RequestMethod.POST)
+	public RestResponse<?> edit_server(Authentication Authentication, @PathVariable int server_id, @RequestBody ServerRegistrationRequest request,  BindingResult results) {
+		System.out.println("................................................");
+		System.out.println(request.toString());
+	        try {
+	        	//((OptionalValidatorFactoryBean) validator).validate(request, results);
+	            
+	            if (results.hasErrors()) {
+	                
+	                return RestResponse.error((Error) results.getFieldErrors());
+	            }	           
+	             Optional<HubServerEntity> hse =  hsr.findById(server_id);
+	            return RestResponse.result(hsr.save(hse.get()));
+	        } catch (Exception ex) {
+	            logger.error(ex.getMessage(), ex);
+
+	            return RestResponse.error((ErrorCode) ex,ex.getMessage());
+	        }
+
+	}
 	
 	
 	

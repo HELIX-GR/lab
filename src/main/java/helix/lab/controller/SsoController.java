@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import helix.lab.config.SamlConfiguration;
 
+
 @Controller
 @RequestMapping("/saml")
 public class SsoController {
@@ -31,7 +32,7 @@ public class SsoController {
     private static final Logger logger = LoggerFactory.getLogger(SsoController.class);
 
     @Autowired
-    private SamlConfiguration samlConfiguration;
+    private SamlConfiguration   samlConfiguration;
 
     @Autowired
     private MetadataManager     metadata;
@@ -82,7 +83,7 @@ public class SsoController {
 
     private boolean isAuthenticated() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
+        System.out.println(authentication);
         return ((authentication != null) && !(authentication instanceof AnonymousAuthenticationToken));
     }
 

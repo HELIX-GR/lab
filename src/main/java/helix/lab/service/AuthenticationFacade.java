@@ -24,6 +24,16 @@ public class AuthenticationFacade implements IAuthenticationFacade {
     }
 
     @Override
+    public User getCurrentUser() {
+        final Authentication authentication = this.getAuthentication();
+        if (authentication == null) {
+            return null;
+        }
+        return (User) authentication.getPrincipal();
+    }
+
+
+    @Override
     public Integer getCurrentUserId() {
         final Authentication authentication = this.getAuthentication();
         if (authentication == null) {
