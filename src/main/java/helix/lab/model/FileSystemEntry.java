@@ -12,14 +12,17 @@ public abstract class FileSystemEntry {
     private String path;
 
     private String name;
+    
+    private String type;
 
     private ZonedDateTime createdOn;
 
-    protected FileSystemEntry(long size, String name, String path, ZonedDateTime createdOn) {
+    protected FileSystemEntry(long size, String name, String path, ZonedDateTime createdOn, String type) {
         this.size = size;
         this.name = name;
         this.path = path;
         this.createdOn = createdOn;
+        this.type = type;
     }
 
     public long getSize() {
@@ -37,5 +40,13 @@ public abstract class FileSystemEntry {
     public ZonedDateTime getCreatedOn() {
         return createdOn;
     }
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 
 }

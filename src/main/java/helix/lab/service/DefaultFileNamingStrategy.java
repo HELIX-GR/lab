@@ -76,7 +76,7 @@ public class DefaultFileNamingStrategy implements FileNamingStrategy
     {
         final File file = path.toFile();
 
-        final DirectoryInfo di = new DirectoryInfo(name, relativePath, toZonedDateTime(file.lastModified()));
+        final DirectoryInfo di = new DirectoryInfo(name, relativePath, toZonedDateTime(file.lastModified()), "Folder");
 
         for (File f : file.listFiles()) {
         	if (!f.getName().startsWith(".")) {// Hidden files.
@@ -96,7 +96,7 @@ public class DefaultFileNamingStrategy implements FileNamingStrategy
     private FileInfo createFileInfo(File file, String path)
     {
         return new FileInfo(
-            file.length(), file.getName(), path + file.getName(), toZonedDateTime(file.lastModified()));
+            file.length(), file.getName(), path + file.getName(), toZonedDateTime(file.lastModified()), "File");
     }
 
     private ZonedDateTime toZonedDateTime(long millis)

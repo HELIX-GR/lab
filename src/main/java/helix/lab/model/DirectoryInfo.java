@@ -16,12 +16,12 @@ public class DirectoryInfo extends FileSystemEntry {
 
     private List<DirectoryInfo> folders = new ArrayList<DirectoryInfo>();
 
-    public DirectoryInfo(String name, String path, ZonedDateTime createdOn) {
-        super(0, name, path, createdOn);
+    public DirectoryInfo(String name, String path, ZonedDateTime createdOn, String type) {
+        super(0, name, path, createdOn, "Folder");
     }
 
-    public DirectoryInfo(String name, String path, ZonedDateTime createdOn, List<FileInfo> files, List<DirectoryInfo> folders) {
-        super(0, name, path, createdOn);
+    public DirectoryInfo(String name, String path, ZonedDateTime createdOn, String type, List<FileInfo> files, List<DirectoryInfo> folders) {
+        super(0, name, path, createdOn, type);
 
         this.files.addAll(files);
         this.folders.addAll(folders);

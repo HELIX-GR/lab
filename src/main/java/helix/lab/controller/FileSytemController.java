@@ -33,7 +33,7 @@ import helix.lab.model.UploadRequest;
 
 
 @RestController
-@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+@Secured({ "ROLE_STANDARD", "ROLE_ADMIN" })
 @RequestMapping(produces = "application/json")
 public class FileSytemController extends BaseController {
 

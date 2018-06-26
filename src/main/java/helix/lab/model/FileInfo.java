@@ -7,8 +7,8 @@ import java.time.ZonedDateTime;
  */
 public class FileInfo extends FileSystemEntry {
 
-    public FileInfo(long size, String name, String path, ZonedDateTime createdOn) {
-        super(size, name, path, createdOn);
+    public FileInfo(long size, String name, String path, ZonedDateTime createdOn, String type) {
+        super(size, name, path, createdOn, "file");
     }
 
 }
