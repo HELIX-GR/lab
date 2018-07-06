@@ -14,9 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -40,13 +38,10 @@ public class AccountWhiteListEntry {
 
 	@Id()
 	@Column(name = "id")
-	@SequenceGenerator(sequenceName = "account_white_list_id_seq", name = "account_white_list_id_seq", allocationSize = 1, initialValue = 1)
+	@SequenceGenerator(sequenceName = "helix_lab.account_white_list_id_seq", name = "account_white_list_id_seq", allocationSize = 1, initialValue = 1)
 	@GeneratedValue(generator = "account_white_list_id_seq", strategy = GenerationType.SEQUENCE)
 	private int id;
 
-
-	@Column(name = "account_id", nullable = true)
-	private int account;
 
 	@Basic()
 	private String username;
@@ -77,7 +72,6 @@ public class AccountWhiteListEntry {
 	}
 
 	
-	
 	public AccountWhiteListEntry(String email) {
 		this();
 		this.email = email;
@@ -89,14 +83,6 @@ public class AccountWhiteListEntry {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getAccount() {
-		return account;
-	}
-
-	public void setAccount(int account) {
-		this.account = account;
 	}
 
 	public String getUsername() {

@@ -17,7 +17,7 @@ public interface FileNamingStrategy
      * @return
      * @throws IOException
      */
-    DirectoryInfo getUserDirectoryInfo(int userId) throws IOException;
+    DirectoryInfo getUserDirectoryInfo(String userId) throws IOException;
 
     /**
      * Resolve a user's home directory as an absolute path. 
@@ -27,7 +27,7 @@ public interface FileNamingStrategy
      * 
      * @param userId
      */
-    Path getUserDir(int userId);
+    Path getUserDir(String userId);
     
     /**
      * Resolve a user's home directory as an absolute path. If told so, attempt to create an
@@ -37,7 +37,7 @@ public interface FileNamingStrategy
      * @param createIfNotExists
      * @throws IOException if an attempt to create the directory fails
      */
-    Path getUserDir(int userId, boolean createIfNotExists) throws IOException;
+    Path getUserDir(String userId, boolean createIfNotExists) throws IOException;
     
     /**
      * Resolve a path against a user's home directory
@@ -46,11 +46,11 @@ public interface FileNamingStrategy
      * @param relativePath A relative path to be resolved
      * @return an absolute path
      */
-    Path resolvePath(int userId, String relativePath);
+    Path resolvePath(String userId, String relativePath);
     
     /**
      * Resolve a path against a user's home directory
      * @see FileNamingStrategy#resolvePath(int, String)  
      */
-    Path resolvePath(int userId, Path relativePath);
+    Path resolvePath(String userId, Path relativePath);
 }

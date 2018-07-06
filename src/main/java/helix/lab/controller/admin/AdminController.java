@@ -20,14 +20,12 @@ import gr.helix.core.common.model.EnumRole;
 import gr.helix.core.common.model.Error;
 import gr.helix.core.common.model.ErrorCode;
 import gr.helix.core.common.model.RestResponse;
-import gr.helix.core.common.repository.AccountRepository;
 import helix.lab.controller.action.BaseController;
-import helix.lab.model.security.User;
+import helix.lab.model.admin.HubServerEntity;
+import helix.lab.model.admin.ServerRegistrationRequest;
 import helix.lab.model.user.AccountToServerEntity;
-import helix.lab.model.user.HubServerEntity;
-import helix.lab.model.user.ServerRegistrationRequest;
-import helix.lab.repository.AccountToServerRepository;
 import helix.lab.repository.HubServerRepository;
+import helix.lab.service.JupyterApi;
 
 /**
  * Actions for querying and updating admin data
@@ -42,12 +40,9 @@ public class AdminController extends BaseController{
 	@Autowired
 	HubServerRepository hsr;
 	
-	@Autowired
-	AccountRepository aer;
 	
-	@Autowired
-	AccountToServerRepository atsr;
-	
+	JupyterApi japi= new JupyterApi();
+
 	/**
      * Instance of @{link org.springframework.validation.Validator} for performing user input validation manually.
      */
@@ -58,11 +53,7 @@ public class AdminController extends BaseController{
 	
 	@RequestMapping(value = "action/admin/servers", method = RequestMethod.GET)
 	public RestResponse<?> getServers() {
-		//AccountEntity ac=new AccountEntity("totos", "totos@imis.gr");
-		//ac.setName("Totos", "Totou");
-		//ac.setPassword("****");
-		//ac.setActive(true);
-		//aer.save(ac);
+
 			List<HubServerEntity> hse = hsr.findAll();
 			System.out.println(hse);
 			return RestResponse.result(hse);
@@ -145,8 +136,12 @@ public class AdminController extends BaseController{
 	            if (results.hasErrors()) {
 	                
 	                return RestResponse.error((Error) results.getFieldErrors());
-	            }	           
-	             HubServerEntity hse = new HubServerEntity(request);
+	            }
+	            HubServerEntity hse = new HubServerEntity(request);
+
+	            // TODO Ping server 
+	            japi.api_request(hse,"info", "GET", null);// get info about server //test
+	            japi.api_request(hse,"users", "GET", null);// get all users of server db //test
 	             //hsr.save(hse);
 	            return RestResponse.result(hsr.save(hse));
 	        } catch (Exception ex) {
@@ -178,7 +173,6 @@ public class AdminController extends BaseController{
 	        }
 
 	}
-	
 	
 	
 }

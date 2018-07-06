@@ -12,10 +12,10 @@ import helix.lab.domain.AccountWhiteListEntry;
 @Transactional(readOnly = true)
 public interface AccountWhiteListRepository extends JpaRepository<AccountWhiteListEntry, Integer> {
 
-    @Query("FROM Account a WHERE a.username = :username")
+    @Query("FROM account_white_list a WHERE a.username = :username")
     AccountWhiteListEntry findOneByUsername(@Param("username") String username);
 
-    @Query("FROM Account a WHERE a.email = :email")
+    @Query("FROM account_white_list a WHERE a.email = :email")
     AccountWhiteListEntry findOneByEmail(@Param("email") String email);
 
     //@Query("FROM Account a WHERE a.registeredAt > :start")

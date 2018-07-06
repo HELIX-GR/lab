@@ -5,24 +5,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.http.HttpHeaders;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.methods.RequestBuilder;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.HttpClients;
-
-import org.springframework.http.MediaType;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import helix.lab.model.admin.HubServerEntity;
+import helix.lab.model.hub.HubUserResponse;
 import helix.lab.model.user.HubUserCreate;
 
 
@@ -37,15 +29,15 @@ public class JupyterApi {
 
 	
 
-	public Object api_request(String path, String method, HubUserCreate query) {
+	public Object api_request(HubServerEntity hub, String path, String method, HubUserCreate query) throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		HttpURLConnection con;
 
 	try {
-		URL url = new URL("http://192.168.10.163:8081/hub/api/"+path);
+		URL url = new URL(hub.getUrl()+":8081/hub/api/"+path);
 		con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod(method);
-		con.setRequestProperty ("Authorization", "token 48d141f9582c4856aade832b637e97d8");
+		con.setRequestProperty ("Authorization", "token "+hub.getAdmin_token());
 		if (method=="POST") {	
 			String message = mapper.writeValueAsString(query);
 		  	System.out.println(message.toString());
@@ -61,6 +53,8 @@ public class JupyterApi {
 			
 		}
 		int responseCode = con.getResponseCode();
+		
+		//-----------------Debug prints----------------------------------
 		System.out.println("\nSending "+method+" request to URL : " + url);
 		System.out.println("Response Code : " + responseCode);
 		System.out.println("body : " + query);
@@ -107,16 +101,63 @@ public class JupyterApi {
 		return actualObj;
 
 	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	    return null;
+		System.out.println(e.getMessage());
+		throw e;
+	    
 
 	}
 	}
 	
 	
 	
-	public void Apache_request(String path, String title) throws Exception {
+	
+	//---------------------------------------------------------------------------------------
+	public HubUserResponse hub_user_info(HubServerEntity hub, String path) throws IOException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		HttpURLConnection con;
+
+	try {
+		URL url = new URL(hub.getUrl()+":8081/hub/api/"+path);
+		con = (HttpURLConnection) url.openConnection();
+		con.setRequestMethod("GET");
+		con.setRequestProperty ("Authorization", "token "+hub.getAdmin_token());
+		
+		int responseCode = con.getResponseCode();
+		
+		//-----------------Debug prints----------------------------------
+		System.out.println("\nSending GET request to URL : " + url);
+		System.out.println("Response Code : " + responseCode);
+		
+
+		BufferedReader in = new BufferedReader(
+		        new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+
+		//print result
+		System.out.println(response.toString());
+
+		HubUserResponse a= objectMapper.readValue(response.toString(), HubUserResponse.class);  
+
+		return a ;
+
+	} catch (IOException e) {
+		System.out.println(e.getMessage());
+		throw e;
+	    
+
+	}
+	}
+	
+	
+	//This code is for testing
+
+	/*public void Apache_request(String path, String title) throws Exception {
 
         HttpClient httpClient = HttpClients.createDefault();
 
@@ -142,5 +183,5 @@ public class JupyterApi {
         if (response.getStatusLine().getStatusCode() != 201) {
             throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
         }
-    }
+    }*/
 }

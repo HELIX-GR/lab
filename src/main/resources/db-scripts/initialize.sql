@@ -61,16 +61,12 @@ CREATE SEQUENCE helix_lab.account_white_list_id_seq INCREMENT 1 MINVALUE 1 START
 CREATE TABLE helix_lab.account_white_list
 (
   id integer NOT NULL DEFAULT nextval('helix_lab.account_white_list_id_seq'::regclass),
-  account_id integer,
   username character varying(100),
   email character varying(64) NOT NULL,
   registered_on timestamp without time zone DEFAULT now(),
   firstname character varying(40),
   lastname character varying(70),
   CONSTRAINT pk_account_white_list PRIMARY KEY (id),
-  CONSTRAINT fk_account FOREIGN KEY (account_id)
-        REFERENCES web.account (id) MATCH SIMPLE
-            ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT uq_account_email UNIQUE ("email")
 );
 

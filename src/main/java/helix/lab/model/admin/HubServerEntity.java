@@ -1,4 +1,4 @@
-package helix.lab.model.user;
+package helix.lab.model.admin;
 
 import java.time.ZonedDateTime;
 

@@ -19,7 +19,6 @@ import gr.helix.core.common.domain.AccountEntity;
 import gr.helix.core.common.model.EnumRole;
 import gr.helix.core.common.repository.AccountRepository;
 import helix.lab.model.security.User;
-import helix.lab.repository.AccountRoleRepository;
 
 @Service
 public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {

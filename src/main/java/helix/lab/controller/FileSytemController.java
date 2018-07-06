@@ -55,7 +55,7 @@ public class FileSytemController extends BaseController {
     @RequestMapping(value = "/action/file-system",  method = RequestMethod.GET)
     public RestResponse<?> browserDirectory() {
         try {
-            return RestResponse.result(fileNamingStrategy.getUserDirectoryInfo(currentUserId()));
+            return RestResponse.result(fileNamingStrategy.getUserDirectoryInfo(currentUserName()));
         } catch (IOException ex) {
             return RestResponse.error(BasicErrorCode.IO_ERROR, "An unknown error has occurred");
         }
@@ -74,8 +74,8 @@ public class FileSytemController extends BaseController {
                 return RestResponse.error(FileSystemErrorCode.PATH_IS_EMPTY, "A path is required");
             }
 
-            final int userId = currentUserId();
-            final Path dir = fileNamingStrategy.resolvePath(userId, request.getPath());
+            final String userName = currentUserName();
+            final Path dir = fileNamingStrategy.resolvePath(userName, request.getPath());
 
             if (Files.exists(dir)) {
                 return RestResponse.error(
@@ -85,7 +85,7 @@ public class FileSytemController extends BaseController {
 
             Files.createDirectories(dir);
 
-            return RestResponse.result(fileNamingStrategy.getUserDirectoryInfo(userId));
+            return RestResponse.result(fileNamingStrategy.getUserDirectoryInfo(userName));
         } catch (IOException ex) {
             return RestResponse.error(BasicErrorCode.IO_ERROR, "An unknown error has occurred");
         }
@@ -104,8 +104,8 @@ public class FileSytemController extends BaseController {
                 return RestResponse.error(FileSystemErrorCode.PATH_IS_EMPTY, "A path is required");
             }
 
-            final int userId = currentUserId();
-            final Path absolutePath = fileNamingStrategy.resolvePath(userId, relativePath);
+            final String userName = currentUserName();
+            final Path absolutePath = fileNamingStrategy.resolvePath(userName, relativePath);
             final File file = absolutePath.toFile();
 
             if (!file.exists()) {
@@ -116,7 +116,7 @@ public class FileSytemController extends BaseController {
             }
             Files.delete(absolutePath);
 
-            return RestResponse.result(fileNamingStrategy.getUserDirectoryInfo(userId));
+            return RestResponse.result(fileNamingStrategy.getUserDirectoryInfo(userName));
         } catch (IOException ex) {
             return RestResponse.error(BasicErrorCode.IO_ERROR, "Failed to delete path");
         } catch (Exception ex) {
@@ -135,21 +135,21 @@ public class FileSytemController extends BaseController {
     public RestResponse<?> upload(@RequestPart("file") MultipartFile file, @RequestPart("data") UploadRequest request) {
 
         try {
-            final int userId = currentUserId();
-            long size = fileNamingStrategy.getUserDirectoryInfo(userId).getSize();
+            final String userName = currentUserName();
+            long size = fileNamingStrategy.getUserDirectoryInfo(userName).getSize();
             if (size + file.getSize() > maxUserSpace) {
                 return RestResponse.error(FileSystemErrorCode.NOT_ENOUGH_SPACE, "Insufficient storage space");
             }
 
-            if (StringUtils.isEmpty(request.getPath())) {
-                return RestResponse.error(FileSystemErrorCode.PATH_IS_EMPTY, "A path is required");
-            }
+           // if (StringUtils.isEmpty(request.getPath())) {
+            //    return RestResponse.error(FileSystemErrorCode.PATH_IS_EMPTY, "A path is required");
+           // }
             if (StringUtils.isEmpty(request.getFilename())) {
                 return RestResponse.error(FileSystemErrorCode.PATH_IS_EMPTY, "File name is not set");
             }
 
             final Path relativePath = Paths.get(request.getPath(), request.getFilename());
-            final Path absolutePath = fileNamingStrategy.resolvePath(userId, relativePath);
+            final Path absolutePath = fileNamingStrategy.resolvePath(userName, relativePath);
 
             if (Files.exists(absolutePath)) {
                 return RestResponse.error(FileSystemErrorCode.PATH_ALREADY_EXISTS, "File with the same name already exists");
@@ -158,7 +158,7 @@ public class FileSytemController extends BaseController {
             InputStream in = new ByteArrayInputStream(file.getBytes());
             Files.copy(in, absolutePath, StandardCopyOption.REPLACE_EXISTING);
 
-            return RestResponse.result(fileNamingStrategy.getUserDirectoryInfo(currentUserId()));
+            return RestResponse.result(fileNamingStrategy.getUserDirectoryInfo(currentUserName()));
         } catch (IOException ex) {
             return RestResponse.error(BasicErrorCode.IO_ERROR, "Failed to create file");
         } catch (Exception ex) {

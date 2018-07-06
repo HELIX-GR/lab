@@ -15,6 +15,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import gr.helix.core.common.domain.AccountEntity;
+import helix.lab.model.admin.HubServerEntity;
 
 @Entity(name = "AccountToServerEntity")
 @Table(

@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import helix.lab.model.user.HubServerEntity;
+import helix.lab.model.admin.HubServerEntity;
 
 @Repository
 @Transactional(readOnly = true)

@@ -26,25 +26,25 @@ public class DefaultFileNamingStrategy implements FileNamingStrategy
     private Path userDataDirectory;
 
     @Override
-    public DirectoryInfo getUserDirectoryInfo(int userId) throws IOException
+    public DirectoryInfo getUserDirectoryInfo(String string) throws IOException
     {
-        final Path userDir = getUserDir(userId, true);
+        final Path userDir = getUserDir(string, true);
         return createDirectoryInfo("/", userDir, "");
     }
 
     @Override
-    public Path getUserDir(int userId)
+    public Path getUserDir(String userName)
     {
-        Assert.isTrue(userId > 0, "Expected a valid (> 0) user id");
-        return userDataDirectory.resolve(Integer.toString(userId));
+        Assert.isTrue(userName.length() > 0, "Expected a valid (> 0) user id");
+        return userDataDirectory.resolve(userName);
     }
 
     @Override
-    public Path getUserDir(int userId, boolean createIfNotExists)
+    public Path getUserDir(String userName, boolean createIfNotExists)
         throws IOException
     {
-        Assert.isTrue(userId > 0, "Expected a valid (> 0) user id");
-        Path userDir = getUserDir(userId);
+        Assert.isTrue(userName.length()  > 0, "Expected a valid (> 0) user id");
+        Path userDir = getUserDir(userName);
 
         if (createIfNotExists) {
             try {
@@ -56,19 +56,19 @@ public class DefaultFileNamingStrategy implements FileNamingStrategy
     }
 
     @Override
-    public Path resolvePath(int userId, String relativePath)
+    public Path resolvePath(String userName, String relativePath)
     {
         Assert.isTrue(!StringUtils.isEmpty(relativePath), "Expected a non-empty path");
-        return resolvePath(userId, Paths.get(relativePath));
+        return resolvePath(userName, Paths.get(relativePath));
     }
 
     @Override
-    public Path resolvePath(int userId, Path relativePath)
+    public Path resolvePath(String userName, Path relativePath)
     {
-        Assert.isTrue(userId > 0, "Expected a valid (> 0) user id");
+        Assert.isTrue(userName.length() > 0, "Expected a valid (> 0) user id");
         Assert.notNull(relativePath, "Expected a non-null path");
         Assert.isTrue(!relativePath.isAbsolute(), "Expected a relative path to be resolved");
-        Path userDir = getUserDir(userId);
+        Path userDir = getUserDir(userName);
         return userDir.resolve(relativePath);
     }
 
