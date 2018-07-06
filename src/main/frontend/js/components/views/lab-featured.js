@@ -8,58 +8,58 @@ import {
 
 const cardInfo = [
   {
-    title: "Research for Data",
-    description: "Azure Notebooks provides execution environments for Python 2, Python 3, F#, and R.",
+    title: <FormattedMessage id="featured.first.title" defaultMessage="Notebook repository" />,
+    description: <FormattedMessage id="featured.first.description" defaultMessage="Find interesting projects in Python, Julia, F#, and R to copy to your folder." />,
     link: {
       ref: "",
-      text: "Use the languages of Data Science",
+      text: <FormattedMessage id="featured.first.text" defaultMessage="Search for Notebooks" />,
     },
   },
   {
-    title: "Research for Data",
-    description: "Azure Notebooks provides execution environments for Python 2, Python 3, F#, and R. ",
+    title: <FormattedMessage id="featured.second.title" defaultMessage="ACM – Europe Summer School 2018" />,
+    description: <FormattedMessage id="featured.second.description" defaultMessage="Η ACM προσκαλεί τους φοιτητές στο Ευρωπαϊκό Θερινό Σχολείο (Europe Summer School) για την επιστήμη των δεδομένων." />,
     link: {
-      ref: "#",
-      text: "Use the languages of Data Science",
+      ref: "",
+      text: <FormattedMessage id="featured.second.text" defaultMessage="Show me!" />,
     },
   }
 ];
 
 const CoursesCardInfo = [
   {
-    title: "Introduction to Python",
-    description: "Learn the basics of Python 3 in Helix Lab Notebooks. Learn Python syntax, standard data types, as well as how to write a simple program. ",
-    image: "images/svg/Python.svg",
+    title: "How to use Jupyter Notebooks",
+    description: "Get a brief introduction guide not to get lost in your first steps with Jupyter Notebook.",
+    image: "images/jupyter.svg",
     link: {
       ref: "#",
-      text: "Use the languages of Data Science",
+      text: "Start Now",
     },
   },
   {
-    title: "Introduction to R",
-    description: "Get a brief introduction to charting and graphing capabilities of R in the Jupyter Notebook. You will learn how to make line charts, pie charts and scatter plots. ",
-    image: "images/svg/R.svg",
+    title: <FormattedMessage id="featured.second.title" defaultMessage="What is Helix Lab" />,
+    description: <FormattedMessage id="featured.second.description" defaultMessage="All you need to know about the Helix Lab and how to use it." />,
+    image: "images/svg/Lab-logo.svg",
     link: {
       ref: "#",
-      text: "Use the languages of Data Science",
+      text: <FormattedMessage id="featured.second.text" defaultMessage="Show me!" />,
     },
   },
   {
-    title: "Introduction to F#",
-    description: "Get a brief introduction to using F# in the Jupyter Notebook.",
-    image: "images/svg/F.svg",
+    title: "Online Courses",
+    description: "We have lunched an Online Courses feature. Learn how to create or join one and why you should.",
+    image: "images/online_courses.svg",
     link: {
       ref: "#",
-      text: "Use the languages of Data Science",
+      text: "Take me there!",
     },
   },
   {
-    title: "Introduction to Python 3",
-    description: "Learn the basics of Python 3 in Helix Lab Notebooks. Learn Python syntax, standard data types, as well as how to write a simple program. ",
-    image: "images/svg/python3.svg",
+    title: "Tips for Data Visualization",
+    description: "Your data is only as good as your ability to understand and communicate it, which is why choosing the right visualization/ chart is essential",
+    image: "images/data_vis.png",
     link: {
       ref: "#",
-      text: "Use the languages of Data Science",
+      text: "Take me to blog post",
     },
   }
 ];

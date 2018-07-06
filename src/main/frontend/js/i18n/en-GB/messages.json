@@ -9,7 +9,10 @@
     "subtitle": "Sign-in into your account"
   },
   "header": {
-    "files":"My Files"
+    "files": "My Files",
+    "guides": "Guides",
+    "courses": "Courses",
+    "whatislab": "What is Helix Lab?" 
   },
   "pills": {
     "data": "DATA",
@@ -21,5 +24,5 @@
   },
   "server-list":{
     "servers": "Available Kernels"
-    }
+  }
 }

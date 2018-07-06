@@ -9,7 +9,10 @@
     "subtitle": "Sign-in into your account"
   },
   "header": {
-    "files":"Τα Αρχεία μου"
+    "files": "Τα Αρχεία μου",
+    "guides": "Οδηγοί",
+    "courses": "Μαθήματα",
+    "whatislab": "Τι είναι το Lab?" 
   },
   "pills": {
     "data": "DATA",
@@ -19,8 +22,7 @@
   "labsearch": {
     "placeholder": "Αναζητήστε Notebooks"
   },
-
-    "server-list":{
+  "server-list":{
     "servers": "Διαθέσιμοι Kernels"
-    }
+  }
 }

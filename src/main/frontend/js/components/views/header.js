@@ -58,9 +58,9 @@ class Header extends React.Component {
                 </a>
                 <ul className="sub-menu">
                   <li><Link to={'/filesystem'}> <FormattedMessage id="header.files" defaultMessage="My Files" /></Link></li>
-                  <li><a href="#">Διοργανωτές</a></li>
-                  <li><a href="#">Χρηματοδότηση</a></li>
-                  <li><a href="#">Ερευνητικό Έργο</a></li>
+                  <li><Link to={'/guides'}> <FormattedMessage id="header.guides" defaultMessage="Guides" /></Link></li>
+                  <li><Link to={'/courses'}> <FormattedMessage id="header.courses" defaultMessage="Courses" /></Link></li>
+                  <li><Link to={'/whatislab'}> <FormattedMessage id="header.whatislab" defaultMessage="What is Lab?" /></Link></li>
                 </ul>
               </li>
               <li id="menu-item-project" className="menu-item aux-item">
