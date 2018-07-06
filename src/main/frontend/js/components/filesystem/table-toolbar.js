@@ -4,13 +4,13 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
 import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
+
 import ContentAdd from '@material-ui/icons/Add';
 import ActionUpdate from '@material-ui/icons/Update';
 import PlayArrow from '@material-ui/icons/PlayArrow';
+import ServerButton from './servers-button';
 
-import { getFilesystem, createFolder, uploadFile, setNewFolder} from '../../ducks/config';
+import { getFilesystem, createFolder, uploadFile, setNewFolder } from '../../ducks/config';
 import { startNowAction } from '../../ducks/app';
 import UploadModal from './upload-modal';
 
@@ -27,11 +27,14 @@ class TableToolbar extends React.Component {
   }
 
 
-  handleCreate =() =>{
+  handleCreate = () => {
     this.props.setNewFolder(true);
   }
-  handleRefresh =() =>{
+  handleRefresh = () => {
     this.props.getFilesystem("");
+  }
+  handleClick = () => {
+    
   }
 
   render() {
@@ -43,39 +46,32 @@ class TableToolbar extends React.Component {
       <div >
         <div className="row backround-white">
           <div className="col-12 col-lg-6">
-          <Button variant="fab" label="Play" mini={true} style={style} target="_blank" href={this.props.target+"/notebooks/"+this.props.table_path+this.props.selected_file}>
-              <PlayArrow />
-            </Button>
+
             <Button variant="fab" mini={true} style={style} onClick={this.handleCreate}>
               <ContentAdd />
             </Button>
             {<Button variant="fab" mini={true} style={style} onClick={this.handleRefresh} >
               <ActionUpdate />
             </Button>}
-            <UploadModal onChange={this.props.uploadFile}/>
+            <UploadModal onChange={this.props.uploadFile} />
+            {!this.props.selected_hub ?
+              null
+              : this.props.target ?
+                <Button variant="fab" label="Play" mini={true} style={style} target="_blank" href={this.props.target + "/notebooks/" + this.props.table_path + this.props.selected_file}>
+                  <PlayArrow />
+                </Button> : null }
           </div>
-          <div className="col-12 col-lg-6 text-lg-right">
 
-            <Menu value={this.state.value} onChange={(event, index, value) => this.setState({ value })}>
-              <MenuItem value={1} primaryText="All Files" />
-              <MenuItem value={2} primaryText="PDF" />
-              <MenuItem value={3} primaryText="Python" />
-              <MenuItem value={4} primaryText="R" />
-              <MenuItem value={5} primaryText="Last 10 days" />
-              <MenuItem value={6} primaryText="Text" />
-              <MenuItem value={7} primaryText="Data" />
-            </Menu>
-          </div>
+
         </div>
       </div>);
   }
 
 }
 TableToolbar.propTypes = {
-  onclick: PropTypes.func.isRequired,
   table_path: PropTypes.string.isRequired,
   selected_file: PropTypes.string.isRequired,
-  target: PropTypes.string.isRequired,
+  target: PropTypes.string,
 };
 
 
@@ -85,11 +81,12 @@ function mapStateToProps(state) {
     table_path: state.config.table_path,
     selected_file: state.config.selected_file,
     target: state.app.target,
+    selected_hub: state.app.selected_hub,
   };
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ getFilesystem, createFolder, uploadFile, setNewFolder, startNowAction }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ getFilesystem, createFolder, uploadFile, setNewFolder }, dispatch);
 
 
 

@@ -6,6 +6,12 @@ import Popover from '@material-ui/core/Popover';
 import Button from '@material-ui/core/Button';
 import ServerList from './server-list';
 import { getUserServers } from '../../ducks/user';
+import { setSelectedHub } from '../../ducks/app';
+import PlayArrow from '@material-ui/icons/PlayArrow';
+import Stop from '@material-ui/icons/Stop';
+import StartStop from './start-stop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { startNowAction } from '../../ducks/app';
 
 
 class ServerButton extends React.Component {
@@ -29,6 +35,7 @@ class ServerButton extends React.Component {
     this.setState({
       open: true,
       anchorEl: event.currentTarget,
+
     });
   };
 
@@ -39,7 +46,8 @@ class ServerButton extends React.Component {
   };
 
   handleServerClick = (event, index) => {
-    console.log(index);
+    const selected = this.props.servers.find(e => e.id == index);
+    this.props.setSelectedHub(selected);
     this.setState({
       selectedIndex: index,
       open: false,
@@ -51,15 +59,33 @@ class ServerButton extends React.Component {
     const style = {
       margin: 12,
     };
-
+    const { server_stage } = this.props;
     return (
       <div>
-        <Button
-          variant="contained"
-          onClick={this.handleClick}
-        >
-          Servers
-        </Button>
+        {server_stage == 0 &&
+          <div className="button-notebook" onClick={this.handleClick}>
+            Choose Notebook
+          <i class="fa fa-crosshairs"></i>
+          </div>
+        }
+        {server_stage == 1 &&
+          <div className="button-notebook" onClick={() => this.props.startNowAction(this.props.selected_hub.id)}>
+            {this.props.selected_hub && this.props.selected_hub.name}
+            <i class="fa fa-play"></i>
+          </div>
+        }
+
+        {server_stage == 2 && <div className="button-notebook animation" onClick={() => this.props.startNowAction(this.props.selected_hub.id)}>
+          {this.props.selected_hub.name}
+          <i className="fa fa-server"></i>
+        </div>
+        }
+
+        {server_stage == 3 &&
+          <div className="button-notebook" onClick={this}>
+            Stop Notebook
+      <i class="fa fa-stop"></i>
+          </div>}
 
         <Popover
           open={this.state.open}
@@ -85,10 +111,13 @@ function mapStateToProps(state) {
   return {
     target: state.app.target,
     servers: state.user.servers,
+    user: state.user,
+    selected_hub: state.app.selected_hub,
+    server_stage: state.app.server_stage,
   };
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ getUserServers, }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ getUserServers, setSelectedHub, startNowAction }, dispatch);
 
 export default ServerButton = connect(mapStateToProps, mapDispatchToProps)(ServerButton);
