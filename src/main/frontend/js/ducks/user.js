@@ -1,5 +1,3 @@
-import { isAdminThunk } from './admin';
-
 const _ = require('lodash');
 const moment = require('moment');
 const userService = require('../service/user');
@@ -167,8 +165,7 @@ export const refreshProfile = () => (dispatch) => {
   return userService.getProfile().then(
     (p) => {
       var t = moment().valueOf();
-      dispatch(loadProfile(p, t))
-        .then(dispatch(isAdminThunk()));
+      dispatch(loadProfile(p, t));
     },
     (err) => {
       console.warn('Cannot load user profile: ' + err.message);

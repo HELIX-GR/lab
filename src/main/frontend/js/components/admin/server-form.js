@@ -1,18 +1,35 @@
 import React, { Component } from 'react';
 import * as PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 
-const styles = {
+
+const styles = theme => ({
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 550,
+  },
+  menu: {
+    width: 200,
+  },
+});
+
+const styles2 = {
   customWidth: {
     width: 150,
   },
 };
 
 
-export default class ServerForm extends Component {
+class ServerForm extends Component {
   constructor(props) {
     super(props);
 
@@ -27,7 +44,7 @@ export default class ServerForm extends Component {
       description: "",
       admin_token: "",
       available: false,
-      role_eligible: "ROLE_USER"
+      role_eligible: "ROLE_STANDARD"
     };
   }
 
@@ -35,31 +52,36 @@ export default class ServerForm extends Component {
     this.props.finish(this.state);
   }
   handleChange = (event) => this.setState({ [event.target.id]: event.target.value });
-  handleChangeAvailable = (event, index, value) => this.setState({ available: value });
-  handleChangeRole = (event, index, value) => this.setState({ role_eligible: value });
+  handleChangeAvailable = (event, index, value) => this.setState({ available: event.target.value });
+  handleChangeRole = (event, index, value) => this.setState({ role_eligible: event.target.value });
 
   render() {
+    const { classes } = this.props;
+
     return (
-      <div>
+      <form className={classes.container} noValidate autoComplete="off">
         <TextField
-          hintText="Give a name to your server"
-          floatingLabelText="Name"
+          className={classes.textField}
+          placeholder="Give a name to your server"
+          label="Name"
           value={this.state.name}
           onChange={this.handleChange}
           id="name"
           fullWidth={true}
         /><br />
         <TextField
-          hintText="A valid url"
-          floatingLabelText="url"
+          className={classes.textField}
+          placeholder="A valid url"
+          label="URL"
           value={this.state.url}
           onChange={this.handleChange}
           id="url"
           fullWidth={true}
         /><br />
         <TextField
-          hintText="Description visible to user"
-          floatingLabelText="description"
+          className={classes.textField}
+          placeholder="Description visible to user"
+          label="Description"
           value={this.state.description}
           onChange={this.handleChange}
           multiLine={true}
@@ -67,50 +89,80 @@ export default class ServerForm extends Component {
           id="description"
           fullWidth={true}
         /><br /> <TextField
-          hintText="Admin token"
-          floatingLabelText="Admin token"
+          className={classes.textField}
+          placeholder="Admin token"
+          label="Admin token"
           value={this.state.admin_token}
           onChange={this.handleChange}
           id="admin_token"
           fullWidth={true}
         />
         <br />
-        <TextField
-          floatingLabelText="Make available"
-          value={this.state.available}
-          onChange={this.handleChangeAvailable}
-        >
-          <MenuItem id="available" value={false} primaryText="No" />
-          <MenuItem id="available" value={true} primaryText="Yes" />
-        </TextField>
+        <div>
+          <TextField
+            select
+            label="Make available"
+            className={classes.textField}
+            value={this.state.available}
+            onChange={this.handleChangeAvailable}
+            helperText="Do you want users to see this server now?"
+            SelectProps={{
+              MenuProps: {
+                className: classes.menu,
+              },
+            }}
+            margin="normal"
+          >
+            <MenuItem id="available" value={false}> No </MenuItem>
+            <MenuItem id="available" value={true}> Yes </MenuItem>
+          </TextField>
+        </div>
+        <div>
 
-        <TextField
-          floatingLabelText="Role eligible"
-          value={this.state.role_eligible}
-          onChange={this.handleChangeRole}
-        >
-          <MenuItem value={'ROLE_USER'} primaryText="USER" />
-          <MenuItem value={'ROLE_STUDENT'} primaryText="STUDENT" />
-          <MenuItem value={'ROLE_TESTER'} primaryText="EXPERIMENTAL" />
-          <MenuItem value={'ROLE_OTHER'} primaryText="OTHER" />
-          <MenuItem value={'ROLE_ADMIN'} primaryText="ADMIN" />
-        </TextField>
+          <TextField
+            select
+            label="Role eligible"
+            className={classes.textField}
+            value={this.state.role_eligible}
+            onChange={this.handleChangeRole}
+            helperText="What role a user must have to see this server?"
+            SelectProps={{
+              MenuProps: {
+                className: classes.menu,
+              },
+            }}
+            margin="normal"
+
+          >
+            <MenuItem key={'ROLE_STANDARD'} value={'ROLE_STANDARD'}> Standard </MenuItem>
+            <MenuItem key={'ROLE_BETA'} value={'ROLE_BETA'}> Beta Tester</MenuItem>
+            {// <MenuItem value={'ROLE_TESTER'}> primaryText="EXPERIMENTAL</MenuItem>
+              //<MenuItem value={'ROLE_OTHER'}> primaryText="OTHER</MenuItem>
+            }
+            <MenuItem key={'ROLE_ADMIN'} value={'ROLE_ADMIN'}> Admin</MenuItem>
+          </TextField>
+        </div>
+
+        <br />
         <Button
-          label="Cancel"
-          primary={true}
-          onClick={this.props.onClose}
-        />,
-      <Button
+          variant="outlined"
+          onClick={this.props.onClose}>
+          Cancel
+          </Button>
+        <Button
+          variant="outlined"
           label="Submit"
-          primary={true}
-          keyboardFocused={true}
           onClick={this.handleSubmit}
-        />
+        >Submit          </Button>
 
-      </div>
+
+      </form>
     );
   }
 } ServerForm.propTypes = {
   finish: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
 };
+
+export default withStyles(styles)(ServerForm);

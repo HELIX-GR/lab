@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import FlatButton from 'material-ui/FlatButton';
+import Button from '@material-ui/core/Button';
 
-import Paper from 'material-ui/Paper';
+import Paper from '@material-ui/core/Paper';
 import { getUserInfoAction } from '../ducks/app';
 
 
@@ -42,7 +42,7 @@ class ServerStatus extends React.Component {
           float: 'right',
         }} zDepth={3}>
           {a}
-          <FlatButton onClick={this.props.getUserInfoAction}><i className="fa fa-refresh" aria-hidden="true"></i></FlatButton>
+          <Button onClick={this.props.getUserInfoAction}><i className="fa fa-refresh" aria-hidden="true"></i></Button>
 
         </Paper >
       </div>);

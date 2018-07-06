@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Modal from '@material-ui/core/Modal';
+import {  Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 
 const styles = theme => ({
@@ -33,7 +33,7 @@ class ModalLogin extends React.Component {
   }
 
   handleClose() {
-    this.props.showIt(false);
+    this.props.showIt(!this.state.show_login);
 
   }
 
@@ -52,25 +52,13 @@ class ModalLogin extends React.Component {
     }
     return (
       <Modal
-        open={this.state.show_login}
-        onClose={this.handleClose}
-        aria-labelledby="modal-title"
-        aria-describedby="simple-modal-description"
+        isOpen={this.state.show_login}
+        toggle={this.handleClose}
       >
-        <div styles={{
-         position: "absolute",
-         top: '50%',
-         left: '50%',
-         transform: "translate(-50%, -50%) !important"
-        }} className={classes.paper}>
-          <Typography variant="title" id="modal-title">
-            Sing in
-        </Typography>
-          <div>
-            <LoginForm />
-          </div>
-        </div>
-
+        <ModalHeader toggle={this.handleClose}>Login </ModalHeader>
+        <ModalBody>
+          <LoginForm />
+        </ModalBody>
 
       </Modal>
     );

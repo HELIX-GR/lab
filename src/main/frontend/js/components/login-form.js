@@ -64,8 +64,8 @@ class LoginForm extends React.Component {
     return (
       <div className="app flex-row align-items-center">
         <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-6 col-md-8">
+          <div className="justify-content-center">
+            <div >
               <div className="mb-0">
 
                 <div className="p-4">

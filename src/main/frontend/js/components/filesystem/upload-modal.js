@@ -2,7 +2,8 @@ import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Dropzone from 'react-dropzone';
-import Dialog from '@material-ui/core/Dialog';
+import { Button as Btn } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Button from '@material-ui/core/Button';
 import formatFileSize from '../../util/file-size';
 import FileUpload from '@material-ui/icons/FileUpload';
@@ -63,27 +64,7 @@ class UploadModal extends React.Component {
   };
 
   render() {
-    const actions = [
-      <Button
-        label="Cancel"
-        primary={true}
-        onClick={this.handleClose}
-      />,
-      <Button
-        label="Upload"
-        primary={true}
-        disabled={false}
-        onClick={this.handleUpload}
-      />,
-    ];
-    const dzstyle = {
-      textAlign: 'center',
-      fontSize: '3em',
-      color: '#656565',
-      border: '1px dotted #656565'
-    };
-
-
+   
     return (
       <Button
         variant="fab"
@@ -92,12 +73,9 @@ class UploadModal extends React.Component {
         label="Modal Dialog"
         onClick={this.handleOpen} >
         <FileUpload />
-        <Dialog
-          title="Upload a file"
-          actions={actions}
-          modal={true}
-          open={this.state.open}
-        >
+        <Modal isOpen={this.state.open} toggle={this.handleOpen} >
+          <ModalHeader toggle={this.handleOpen}>Upload a file</ModalHeader>
+
           <div>
             <Dropzone
               onDrop={(accepted, rejected) => {
@@ -137,7 +115,20 @@ class UploadModal extends React.Component {
             {this.state.file && this.state.file.name}
             {this.state.file && ` (${formatFileSize(this.state.file.size)})`}
           </div>
-        </Dialog>
+
+          <ModalFooter>
+            <Btn
+              color="primary"
+              onClick={this.handleClose}
+            >Cancel </Btn>{' '}
+            <Btn
+              color="primary"
+              onClick={this.handleUpload}
+            >Upload </Btn>
+
+          </ModalFooter>
+
+        </Modal>
       </Button>
 
     );

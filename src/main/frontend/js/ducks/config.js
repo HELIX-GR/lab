@@ -57,7 +57,9 @@ export default (state = initialState, action) => {
     case RECEIVE_FILESYSTEM:
       return {
         ...state,
-        filesystem: action.filesystem,
+        filesystem: { ...action.filesystem,
+          name: "",
+          path: "/"},
         last_updated: action.timestamp,
       };
 

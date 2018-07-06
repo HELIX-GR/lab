@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { grand_role, revoke_role } from '../../ducks/admin';
+import { grand_WL_role, revoke_WL_role } from '../../ducks/admin';
 import { FormattedTime } from 'react-intl';
 
 import Checkbox from '@material-ui/core/Checkbox';
@@ -13,12 +13,11 @@ const all_roles = ["ROLE_STANDARD", "ROLE_STANDARD_STUDENT", "ROLE_STANDARD_ACAD
 
 
 
-export class UserTable extends React.Component {
+export class WhiteListTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       checked: {
-        ROLE_USER: true,
         ROLE_ADMIN: false,
       },
       page: 0,
@@ -32,9 +31,9 @@ export class UserTable extends React.Component {
 
   updateCheck(is, r, user_id) {
     if (is) {
-      this.props.grand_role(user_id, r);
+      this.props.grand_WL_role(user_id, r);
     } else {
-      this.props.revoke_role(user_id, r);
+      this.props.revoke_WL_role(user_id, r);
     }
 
   }
@@ -50,28 +49,24 @@ export class UserTable extends React.Component {
 
 
   render() {
-    const UserColumns = [
+    const WLColumns = [
       {
         Header: 'ID',
         accessor: 'id',
         maxWidth: 33,
       },
       {
-        Header: 'Username',
-        accessor: 'username',
+        Header: 'email',
+        accessor: 'email',
       },
       {
         Header: 'Full Name',
         accessor: 'fullName',
       },
       {
-        Header: 'email',
-        accessor: 'email',
-      },
-      {
         Header: 'Created',
-        id: 'registeredAt',
-        accessor: 'registeredAt',
+        id: 'registeredOn',
+        accessor: 'registeredOn',
         Cell: props => (
           <FormattedTime value={props.value} day='numeric' month='numeric' year='numeric' />
         ),
@@ -81,7 +76,7 @@ export class UserTable extends React.Component {
         Header: (
           all_roles.map(name =>
               <a>
-                <img className="account-icon" src={"/images/" + name + ".svg"} height="42" width="42"/>
+                { name },
               </a>
           )),
         accessor: 'roles',
@@ -106,7 +101,8 @@ export class UserTable extends React.Component {
       <div className="helix-table-container">
         <ReactTable
           data={data}
-          columns={UserColumns}
+          noDataText="No White-Listed Users to display"
+          columns={WLColumns}
           defaultPageSize={rowsPerPage}
           className="-striped -highlight"
         />
@@ -124,8 +120,8 @@ function mapStateToProps(state) {
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ grand_role, revoke_role }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ grand_WL_role, revoke_WL_role }, dispatch);
 
 
 
-export default UserTable = connect(mapStateToProps, mapDispatchToProps)(UserTable);
+export default WhiteListTable = connect(mapStateToProps, mapDispatchToProps)(WhiteListTable);

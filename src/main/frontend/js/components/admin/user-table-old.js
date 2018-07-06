@@ -47,7 +47,7 @@ export class UserTable extends React.Component {
     this.RoleCheckboxes = this.RoleCheckboxes.bind(this);
 
   }
-  updateCheck(is, r, user_id,index) {
+  updateCheck(is, r, user_id, index) {
     if (is) {
       this.props.grand_role(user_id, r);
     } else {
@@ -81,55 +81,55 @@ export class UserTable extends React.Component {
 
   render() {
     var data = this.props.users;
-    const {rowsPerPage, page} = this.state;
+    const { rowsPerPage, page } = this.state;
     const { classes } = this.props;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     return (
-<Paper className={classes.root}>
-        
+      <Paper className={classes.root}>
+
         <div className={classes.tableResponsive}>
-        <Table className={classes.body}>
-          <TableHead >
-            <TableRow >
-              <TableCell padding='checkbox'>ID</TableCell>
-              <TableCell >Username</TableCell>
-              <TableCell >Full Name</TableCell>
-              <TableCell >email</TableCell>
-              <TableCell >Registered At</TableCell>
-              <TableCell padding='checkbox' >Student</TableCell>
-              <TableCell padding='checkbox' >Academic</TableCell>
-              <TableCell padding='checkbox' >Tester</TableCell>
-              <TableCell padding='checkbox' >Admin</TableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody >
-            {(_.isEmpty(data)) ?
-              <TableRow key={0}>
-                <TableCell style={{ textAlign: 'center' }}>No available Users</TableCell>
+          <Table className={classes.body}>
+            <TableHead >
+              <TableRow >
+                <TableCell padding='checkbox'>ID</TableCell>
+                <TableCell >Username</TableCell>
+                <TableCell >Full Name</TableCell>
+                <TableCell >email</TableCell>
+                <TableCell >Registered At</TableCell>
+                <TableCell padding='checkbox' >Student</TableCell>
+                <TableCell padding='checkbox' >Academic</TableCell>
+                <TableCell padding='checkbox' >Tester</TableCell>
+                <TableCell padding='checkbox' >Admin</TableCell>
               </TableRow>
-              : (data.map((row, key) => (
-                <TableRow key={row.id} 
-                hover
-                //onClick={event => this.handleRowClick(event, index, row.type, row.name)}
-                >
-                  <TableCell  padding='checkbox' >{row.id}</TableCell>
-                  <TableCell>{row.username}</TableCell>
-                  <TableCell>{row.fullName}</TableCell>
-                  <TableCell>{row.email}</TableCell>
-                  <TableCell>
-                    <FormattedTime value={row.registeredAt} day='numeric' month='numeric' year='numeric' />
-                  </TableCell>
-                  {this.RoleCheckboxes(row)}
-                </TableRow>
-              )))}
+            </TableHead>
 
-          </TableBody>
-          <TableFooter  >
-            <TableRow />
-          </TableFooter>
-        </Table>
+            <TableBody >
+              {(_.isEmpty(data)) ?
+                <TableRow key={0}>
+                  <TableCell style={{ textAlign: 'center' }}>No available Users</TableCell>
+                </TableRow>
+                : (data.map((row, key) => (
+                  <TableRow key={row.id}
+                    hover
+                  //onClick={event => this.handleRowClick(event, index, row.type, row.name)}
+                  >
+                    <TableCell padding='checkbox' >{row.id}</TableCell>
+                    <TableCell>{row.username}</TableCell>
+                    <TableCell>{row.fullName}</TableCell>
+                    <TableCell>{row.email}</TableCell>
+                    <TableCell>
+                      <FormattedTime value={row.registeredAt} day='numeric' month='numeric' year='numeric' />
+                    </TableCell>
+                    {this.RoleCheckboxes(row)}
+                  </TableRow>
+                )))}
+
+            </TableBody>
+            <TableFooter  >
+              <TableRow />
+            </TableFooter>
+          </Table>
         </div>
       </Paper>
     );
