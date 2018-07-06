@@ -104,8 +104,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   submit: (username, password) => (
     dispatch(login(username, password))
-      .then(() => dispatch(getConfiguration()))
-      // .then(() => dispatch(refreshProfile()))
+      //.then(() => dispatch(getConfiguration()))
+      .then(() => dispatch(refreshProfile()))
       .then(() => dispatch(getFilesystem()))
       .then(() => toast.dismiss(),
         () => {
