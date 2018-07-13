@@ -13,11 +13,12 @@ import { UncontrolledTooltip } from 'reactstrap';
 
 
 
-const ServerList = ({ servers, onClick, selectedIndex }) => (
+const ServerList2 = ({ servers, onClick, selectedIndex }) => (
   <div>
     <List value={selectedIndex} onChange={onClick}>
       <ListSubheader inset={true}><FormattedMessage id="server-list.servers" defaultMessage="Avaliable Servers" /></ListSubheader>
       {servers.map((row, index) => (
+
         <ListItem button={true}
           onClick={event => onClick(event, row.id)}
           key={row.id}
@@ -26,19 +27,56 @@ const ServerList = ({ servers, onClick, selectedIndex }) => (
           <Avatar>
             <i className="fa fa-server"></i>
           </Avatar>
-          <ListItemText primary={row.name} secondary={row.started_at ? <FormattedTime value={row.started_at} day='numeric' month='numeric' year='numeric' /> : "---"} />
-          <ListItemSecondaryAction>
-            <ActionInfo id={"tooltip" + index} />
-          </ListItemSecondaryAction>
-          <UncontrolledTooltip placement="right" target={"tooltip" + index}>
-            {row.description}
-          </UncontrolledTooltip>
-        </ListItem>)
+
+          <ListItemText primary={row.name} secondary={row.description} />{//row.started_at ? <FormattedTime value={row.started_at} day='numeric' month='numeric' year='numeric' /> : "---"} />
+          }
+        </ListItem>
+      )
       )}
     </List>
-    <Divider inset={true} />
-
   </div>
+
+);
+
+
+
+
+const ServerList = ({ servers, onClick, selectedIndex }) => (
+  <div className="main-results-result-count-lab">
+      <div className="result-items">
+        {servers.map((row, index) => (
+
+          <div class="result-item lab"
+            onClick={event => onClick(event, row.id)}
+            key={row.id}
+            value={row.id}>
+            <div class="date-of-entry">
+              <div>{row.started_at ? <FormattedTime value={row.started_at} day='numeric' month='numeric' year='numeric' /> : "---"} </div>
+            </div>
+            <h3 class="title">
+              <a >{row.name} </a>
+              <div class="pill data">
+                 1GB RAM
+          </div>
+          <div class="pill data">
+                 1VC
+          </div>
+            </h3>
+
+            <div class="service">
+              <a >{row.description}</a>
+            </div>
+            <div class="tag-list">
+              <a class="tag-box tag-box-other">Python </a>
+              <a class="tag-box tag-box-other">R </a>
+              <a class="tag-box first-tag" >LAB</a>
+            </div>
+          </div>
+        )
+        )}
+      </div>
+  </div>
+
 );
 
 export default ServerList;

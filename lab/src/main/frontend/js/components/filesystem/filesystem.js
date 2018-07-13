@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { FormattedTime, injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { getFilesystem, createFolder, setTablePath, setNewFolder } from '../../ducks/config';
 import TableToolbar from './table-toolbar';
 import FileTable from './file-table';
-import ServerButton from './servers-button';
+import {  toast, } from 'react-toastify';
 
 /**
  * Table example 
@@ -52,7 +52,6 @@ class FileSystem extends Component {
         folder = folder.folders.find((f) => f.name === name);
       }
     });
-    console.log("haha", folder);
     return folder;
   }
 
@@ -90,20 +89,30 @@ class FileSystem extends Component {
   };
 
 
-
-
   handleRowClick = (event, index, type, name) => {
+    const folder = this.findFolderFromPath();
+    this.props.setTablePath(folder.path, name);
 
+  };
+
+  handleRowDoubleClick = (event, index, type, name) => {
+    console.log("double cklick");
     const folder = this.findFolderFromPath();
 
     if (type === 'file') {
       this.props.setTablePath(folder.path, name);
+
+      if (this.props.target!=null){
+        window.open(this.props.target + "/notebooks/" + this.props.table_path + this.props.selected_file, "_blank");
+      }
+      else{
+        toast.warn(<FormattedMessage id="Toast.NoServer" defaultMessage="You need to start a Notebook Server First" />);
+      }
     } else if (type === 'Folder') {
       this.setState({ folder: folder.folders[index] });
       this.props.setTablePath(folder.path, "");
     }
   };
-
 
 
   renderHeader() {
@@ -113,7 +122,7 @@ class FileSystem extends Component {
     return (
       <div className="row" >
 
-        <div className="breadcrumbs-pagination col-12 col-lg-6 " >
+        <div className="breadcrumbs-pagination " >
           <div className="breadcrumbs">
 
             {
@@ -127,15 +136,6 @@ class FileSystem extends Component {
                   }}
                   className="breadcrumbs-part">{item.name}</a>))}
           </div>
-        </div>
-        <div className="col-12 col-lg-6 text-lg-right">
-
-          {this.props.target ?
-            <div className="button-notebook" onClick={this.handleClick}>
-              "Stop Notebook2"
-           <i class="fa fa-stop"></i>
-            </div>
-            : <ServerButton />}
         </div>
       </div>
 
@@ -154,6 +154,7 @@ class FileSystem extends Component {
         ],
         new_folder: this.props.new_folder,
         handleRowClick: this.handleRowClick,
+        handleRowDoubleClick: this.handleRowDoubleClick,
         formatRelative: this.props.intl.formatRelative,
         handleCreateFolder: this.handleCreateFolder,
         setNewFolder: this.props.setNewFolder,
@@ -193,6 +194,7 @@ function mapStateToProps(state) {
     selected_file: state.config.selected_file,
     user: state.user,
     table_path: state.config.table_path,
+    target: state.app.target,
   };
 }
 

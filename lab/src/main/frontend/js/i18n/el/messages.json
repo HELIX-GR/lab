@@ -24,5 +24,13 @@
   },
   "server-list":{
     "servers": "Διαθέσιμοι Kernels"
+  },
+  "filetable":{
+    "FileName": "Όνομα Αρχείου",
+    "FileType": "Τύπος Αρχείου",
+    "FileSize": "Μέγεθος Αρχείου",
+    "LastModified": "Τροποποιήθηκε",
+    "LastUpdate": "Τελευταία ενημέρωση: "
   }
+  
 }

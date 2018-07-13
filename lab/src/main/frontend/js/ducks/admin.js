@@ -1,5 +1,6 @@
 import moment from 'moment';
 import adminService from '../service/admin';
+import {  toast, } from 'react-toastify';
 
 const GOT_SERVERS = 'admin/GOT_SERVERS';
 const GOT_USERS = 'admin/GOT_USERS';
@@ -121,10 +122,11 @@ export const addNewServer = (server_data) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
   return adminService.addServer(server_data, token).then(
     (r) => {
+      toast.success("Server registered");
       dispatch(requestServers());
     },
     (err) => {
-      console.error('Failed to add server: ' + err.message);
+      toast.error('Failed to add server: ' + err.message);
       throw err;
     });
 };
@@ -217,7 +219,7 @@ export const revoke_WL_role = (id, role) => (dispatch, getState) => {
       dispatch(gotEditedWhiteList(r, ind));
     },
     (err) => {
-      console.error('Failed to revoke role: ' + err.message);
+      toast.error('Failed to revoke role: ' + err.message);
       throw err;
     });
 };
@@ -230,7 +232,7 @@ export const addWhiteList = (userInfo) => (dispatch, getState) => {
       dispatch(requestWhiteList());
     },
     (err) => {
-      console.error('Failed to add user to White List: ' + err.message);
+      toast.error('Failed to add user to White List: ' + err.message);
       throw err;
     });
 };

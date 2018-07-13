@@ -1,4 +1,5 @@
-const appService = require('../service/app');
+import appService from '../service/app';
+import {  toast, } from 'react-toastify';
 
 export const START_NOW = 'app/START_NOW';
 const GOT_SERVER = 'app/GOT_SERVER';
@@ -78,7 +79,7 @@ export const startNowAction = (hub_id) => (dispatch, getState) => {
     },
     (err) => {
       console.log(err);
-      console.error('Failed login: ' + err.message);
+      toast.error('Failed to start server: ' + err.message);
       dispatch(alter_button_stage(0));
       throw err;
     });

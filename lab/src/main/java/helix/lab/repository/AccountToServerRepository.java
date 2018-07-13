@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import helix.lab.model.admin.HubServerEntity;
 import helix.lab.model.user.AccountToServerEntity;
 
 @Repository
@@ -20,11 +19,11 @@ public interface AccountToServerRepository extends JpaRepository<AccountToServer
 	@Query(value = "SELECT * FROM Helix_lab.account_to_server a WHERE a.account = :userid", nativeQuery = true)
     public List<AccountToServerEntity> findAllServersByUserId(@Param("userid") String userid);
 	 
-	// @Query("FROM account_to_server a WHERE a.server_id = :server_id")
-	// public List<AccountToServerEntity>  findAllByServerId(@Param("server_id") String server_id);
+	@Query(value = "SELECT * FROM Helix_lab.account_to_server a  WHERE a.server_id = :server_id", nativeQuery = true)
+	public List<AccountToServerEntity>  findAllByServerId(@Param("server_id") String server_id);
 	    
-	 //@Query("FROM account_to_server a WHERE a.started_at > :start")
-	 //public List<AccountToServerEntity> findByRegisteredAfter(@Param("start") ZonedDateTime start);
+	@Query(value = "SELECT * FROM Helix_lab.account_to_server a WHERE a.started_at > :start", nativeQuery = true)
+	public List<AccountToServerEntity> findByRegisteredAfter(@Param("start") ZonedDateTime start);
 
 }
 

@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableFooter from '@material-ui/core/TableFooter';
 import formatFileSize from '../../util/file-size';
+import { FormattedMessage } from 'react-intl';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -15,17 +16,17 @@ import _ from 'lodash';
 
 
 export default function FileTable({ props }) {
-  const { data, new_folder, handleRowClick, formatRelative, handleCreateFolder, setNewFolder, folder, last_update, handleNameChange, value_folder, selected_file } = props;
+  const { data, new_folder, handleRowClick, handleRowDoubleClick, formatRelative, handleCreateFolder, setNewFolder, folder, last_update, handleNameChange, value_folder, selected_file } = props;
   return (
     <div className="filesystem-box">
       <Table >
         <TableHead>
           <TableRow  >
             <TableCell width="66px" tooltip="The ID">  </TableCell>
-            <TableCell tooltip="File Name">File Name</TableCell>
-            <TableCell tooltip="File type">File Type</TableCell>
-            <TableCell tooltip="File Size">File Size</TableCell>
-            <TableCell tooltip="Last Modified">Last Modified</TableCell>
+            <TableCell tooltip="File Name"><FormattedMessage id="filetable.FileName" defaultMessage="File Name" /></TableCell>
+            <TableCell tooltip="File type"><FormattedMessage id="filetable.FileType" defaultMessage="File Type" /></TableCell>
+            <TableCell tooltip="File Size"><FormattedMessage id="filetable.FileSize" defaultMessage="File Size" /></TableCell>
+            <TableCell tooltip="Last Modified"><FormattedMessage id="filetable.LastModified" defaultMessage="Last Modified" /></TableCell>
           </TableRow>
         </TableHead>
 
@@ -42,6 +43,7 @@ export default function FileTable({ props }) {
               <TableRow
                 hover
                 onClick={event => handleRowClick(event, index, row.type, row.name)}
+                onDoubleClick= {event => handleRowDoubleClick(event, index, row.type, row.name)}
                 key={index}
                 selected={row.name === selected_file}>
                 <TableCell width="66px" >{row.type === 'Folder' ?
@@ -93,6 +95,7 @@ export default function FileTable({ props }) {
           <TableRow >
             <TableCell />
             <TableCell width="300px">
+              {last_update && <FormattedMessage id="filetable.LastUpdate" defaultMessage="Last Update: " /> }
               {last_update && formatRelative(last_update)}
             </TableCell>
           </TableRow>

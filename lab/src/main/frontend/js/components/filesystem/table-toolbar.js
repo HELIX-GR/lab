@@ -4,14 +4,11 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
 import Button from '@material-ui/core/Button';
-
 import ContentAdd from '@material-ui/icons/Add';
 import ActionUpdate from '@material-ui/icons/Update';
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import ServerButton from './servers-button';
-
 import { getFilesystem, createFolder, uploadFile, setNewFolder } from '../../ducks/config';
-import { startNowAction } from '../../ducks/app';
 import UploadModal from './upload-modal';
 
 class TableToolbar extends React.Component {
@@ -60,6 +57,9 @@ class TableToolbar extends React.Component {
                 <Button variant="fab" label="Play" mini={true} style={style} target="_blank" href={this.props.target + "/notebooks/" + this.props.table_path + this.props.selected_file}>
                   <PlayArrow />
                 </Button> : null }
+          </div>
+          <div className="col-12 col-lg-6 text-lg-right">
+          <ServerButton />
           </div>
 
 

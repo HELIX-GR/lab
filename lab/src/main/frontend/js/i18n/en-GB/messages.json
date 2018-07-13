@@ -20,9 +20,16 @@
     "lab": "LAB"
   },
   "labsearch": {
-    "placeholder": "Search for Notebooks."
+    "placeholder": "Search for Notebooks"
   },
   "server-list":{
     "servers": "Available Kernels"
+  },
+  "filetable":{
+    "FileName": "File Name",
+    "FileType": "File Type",
+    "FileSize": "File Size",
+    "LastModified": "Last Modified",
+    "LastUpdate": "Last Update: "
   }
 }

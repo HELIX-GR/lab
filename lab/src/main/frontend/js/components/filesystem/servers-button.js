@@ -2,10 +2,11 @@ import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import Popover from '@material-ui/core/Popover';
 import ServerList from './server-list';
 import { getUserServers } from '../../ducks/user';
 import { setSelectedHub } from '../../ducks/app';
+import { FormattedMessage } from 'react-intl';
+import { Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 
 import { startNowAction, stopServerAction } from '../../ducks/app';
 
@@ -55,8 +56,8 @@ class ServerButton extends React.Component {
     return (
       <div>
         {server_stage == 0 &&
-          <div className="button-notebook" onClick={this.handleClick}>
-            Choose Notebook
+          <div id="Popover1" className="button-notebook" onClick={this.handleClick}>
+            <FormattedMessage id="Server.ChoseBtn" defaultMessage="Choose Server" />
           <i class="fa fa-crosshairs"></i>
           </div>
         }
@@ -75,24 +76,15 @@ class ServerButton extends React.Component {
 
         {server_stage == 3 &&
           <div className="button-notebook" onClick={() => this.props.stopServerAction(this.props.selected_hub.id)}>
-            Stop Notebook
+            <FormattedMessage id="Server.StopBtn" defaultMessage="Stop Server" />
       <i className="fa fa-stop"></i>
           </div>}
 
-        <Popover
-          open={this.state.open}
-          anchorEl={this.state.anchorEl}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          onClose={this.handleRequestClose}
-        >
-          <ServerList servers={this.props.servers} onClick={this.handleServerClick} selectedIndex={this.state.selectedIndex} />
+        <Popover  placement="bottom" isOpen={this.state.open} target="Popover1" toggle={this.handleRequestClose}>
+          <PopoverHeader><FormattedMessage id="server-list.servers" defaultMessage="Avaliable Servers" /></PopoverHeader>
+          <PopoverBody className="" ><ServerList servers={this.props.servers} onClick={this.handleServerClick} selectedIndex={this.state.selectedIndex} /></PopoverBody>
+      
+          
         </Popover>
       </div >
     );

@@ -1,19 +1,17 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { LabHeader } from './header';
 import SearchPage from './views/search-page';
 import Footer from './views/footer';
 import Header from './views/header';
 
-import CardLab from '../helpers/cardLab';
 import ModalLogin from './modal-login';
 import { modalLoginAction } from '../ducks/user';
 import { startNowAction } from '../ducks/app';
 import { Route } from 'react-router-dom';
 import Filesystem from './filesystem/filesystem';
 import AdminPage from './admin/admin-page';
-import Divider from "@material-ui/core/Divider";
+import { ToastContainer } from 'react-toastify';
 
 class App extends React.Component {
   constructor(props) {
@@ -36,6 +34,16 @@ class App extends React.Component {
     }
     return (
       <div className="lab">
+        <ToastContainer
+          className="helix-toastify"
+          position="bottom-center"
+          type="default"
+          autoClose={5000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnHover
+        />
         <Header />
         <Route exact={true} path="/" render={() => (
           <div>
