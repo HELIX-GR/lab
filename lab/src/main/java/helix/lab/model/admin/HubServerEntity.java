@@ -46,6 +46,15 @@ public class HubServerEntity {
 	
 	@Column(name = "`role_eligible`")
     String role_eligible;
+	
+	//@Column(name = "`ram`")
+    //String ram;
+	
+	//@Column(name = "`vcpu`")
+    //String vcpu;
+	
+	//@ElementCollection
+    //private List<String> tags = new ArrayList<>();
 
 	public Integer getId() {
 		return id;

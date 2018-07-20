@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,7 +35,7 @@ public class JupyterApi {
 		con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod(method);
 		con.setRequestProperty ("Authorization", "token "+hub.getAdmin_token());
-		if (method=="POST" || method == "DELETE") {	
+		if (method=="POST" ) {	
 			String message = mapper.writeValueAsString(query);
 		  	System.out.println(message.toString());
 		    con.setRequestProperty("Content-Type", "application/json");
@@ -74,7 +72,7 @@ public class JupyterApi {
 		
 		//-----------------------------------------------------
 		JsonNode actualObj = mapper.readTree(response.toString());
-		Iterator<Map.Entry<String, JsonNode>> values = actualObj.fields();
+	/*	Iterator<Map.Entry<String, JsonNode>> values = actualObj.fields();
 
 		Object field = null;
 		while (values.hasNext()){
@@ -93,7 +91,7 @@ public class JupyterApi {
 		       
 		    }
 		    System.out.println(key + " => "+ field);
-		}
+		}*/
 		//==================================================================
 		
 		
@@ -154,8 +152,7 @@ public class JupyterApi {
 	}
 	
 	
-	public HubUserResponse delete_user_server(HubServerEntity hub, String path) throws IOException {
-		ObjectMapper objectMapper = new ObjectMapper();
+	public boolean delete_user_server(HubServerEntity hub, String path) throws IOException {
 		HttpURLConnection con;
 
 	try {
@@ -180,20 +177,16 @@ public class JupyterApi {
 			response.append(inputLine);
 		}
 		in.close();
-
-		//print result
-		System.out.println(response.toString());
-
-		HubUserResponse a= objectMapper.readValue(response.toString(), HubUserResponse.class);  
-
-		return a ;
-
+if (responseCode< 400) {
+		return true;
+	}
 	} catch (IOException e) {
 		System.out.println(e.getMessage());
 		throw e;
 	    
 
 	}
+	return false;
 	}
 	
 	//This code is for testing

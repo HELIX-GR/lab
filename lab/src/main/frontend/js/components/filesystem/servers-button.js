@@ -58,13 +58,13 @@ class ServerButton extends React.Component {
         {server_stage == 0 &&
           <div id="Popover1" className="button-notebook" onClick={this.handleClick}>
             <FormattedMessage id="Server.ChoseBtn" defaultMessage="Choose Server" />
-          <i class="fa fa-crosshairs"></i>
+          <i className="fa fa-crosshairs"></i>
           </div>
         }
         {server_stage == 1 &&
           <div className="button-notebook" onClick={() => this.props.startNowAction(this.props.selected_hub.id)}>
             {this.props.selected_hub && this.props.selected_hub.name}
-            <i class="fa fa-play"></i>
+            <i className="fa fa-play"></i>
           </div>
         }
 
@@ -76,7 +76,7 @@ class ServerButton extends React.Component {
 
         {server_stage == 3 &&
           <div className="button-notebook" onClick={() => this.props.stopServerAction(this.props.selected_hub.id)}>
-            <FormattedMessage id="Server.StopBtn" defaultMessage="Stop Server" />
+            <FormattedMessage id="Server.StopBtn" defaultMessage="Close Server" />
       <i className="fa fa-stop"></i>
           </div>}
 

@@ -100,6 +100,7 @@ class ServerForm extends Component {
         <br />
         <div>
           <TextField
+          id = "avaliable"
             select
             label="Make available"
             className={classes.textField}
@@ -113,8 +114,8 @@ class ServerForm extends Component {
             }}
             margin="normal"
           >
-            <MenuItem id="available" value={false}> No </MenuItem>
-            <MenuItem id="available" value={true}> Yes </MenuItem>
+            <MenuItem key={false} value={false}> No </MenuItem>
+            <MenuItem key={true} value={true}> Yes </MenuItem>
           </TextField>
         </div>
         <div>

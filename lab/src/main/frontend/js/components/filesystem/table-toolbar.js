@@ -45,17 +45,20 @@ class TableToolbar extends React.Component {
           <div className="col-12 col-lg-6">
 
             <Button variant="fab" mini={true} style={style} onClick={this.handleCreate}>
-              <ContentAdd />
+            <img className="image-icon" src="/images/svg/SVG/add.svg" title="Add File"/>
             </Button>
-            {<Button variant="fab" mini={true} style={style} onClick={this.handleRefresh} >
-              <ActionUpdate />
-            </Button>}
+            <Button variant="fab" mini={true} style={style} onClick={this.handleRefresh} >
+            <img className="image-icon" src="/images/svg/SVG/refresh.svg" title="Refresh"/>
+            </Button>
             <UploadModal onChange={this.props.uploadFile} />
+            <Button variant="fab" mini={true} style={style} onClick={this.handleRefresh} >
+            <img className="image-icon" src="/images/svg/SVG/delete.svg" title="Delete"/>
+             </Button>
             {!this.props.selected_hub ?
               null
               : this.props.target ?
                 <Button variant="fab" label="Play" mini={true} style={style} target="_blank" href={this.props.target + "/notebooks/" + this.props.table_path + this.props.selected_file}>
-                  <PlayArrow />
+            <img className="image-icon" src="/images/svg/SVG/run.svg" title="Run"/>
                 </Button> : null }
           </div>
           <div className="col-12 col-lg-6 text-lg-right">

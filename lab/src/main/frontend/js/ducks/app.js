@@ -101,14 +101,13 @@ export const getUserInfoAction = () => (dispatch, getState) => {
 export const stopServerAction = (hub_id) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
   //dispatch(asked_server_to_start(2));
-  return appService.stopJupyter(hub_id).then(
+  return appService.stopJupyter(hub_id, token).then(
     (r) => {
       console.log(r);
       dispatch(alter_button_stage(0));
     },
     (err) => {
-      console.log(err);
-      console.error('Failed to stop server: ' + err.message);
+      toast.error('Failed to stop server: ' + err.message);
       dispatch(alter_button_stage(3));
       throw err;
     });

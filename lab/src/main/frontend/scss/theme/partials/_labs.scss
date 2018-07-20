@@ -341,4 +341,31 @@
 }
 .popover{
   max-width: 100%; /* Max Width of the popover (depending on the container!) */
+  background-color: #efefef;
+}
+
+.image-icon{
+  width: 17px;
+  height: 17px;
+  &:hover{
+    color: inherit;
+  }
+}
+
+.pill{
+
+  position: relative;
+  top: -4px;
+  cursor: pointer;
+  user-select: none;
+  margin-right: 8px;
+  color: white;
+  font-size: 11px;
+  padding: 2px 5px;
+  height: 18px;
+  line-height: 15px;
+  // float: left;
+  display: inline-block;
+  border-radius: 9px;
+  background-color: #BFBFBF;
 }

@@ -23,7 +23,6 @@ import gr.helix.core.common.model.RestResponse;
 import helix.lab.controller.action.BaseController;
 import helix.lab.model.admin.HubServerEntity;
 import helix.lab.model.admin.ServerRegistrationRequest;
-import helix.lab.model.user.AccountToServerEntity;
 import helix.lab.repository.HubServerRepository;
 import helix.lab.service.JupyterApi;
 
@@ -62,13 +61,6 @@ public class AdminController extends BaseController{
 	   
 	}
 	
-	@RequestMapping(value = "action/admin/users_to_servers", method = RequestMethod.GET)
-	public RestResponse<?> getUsersToServers() {
-			List<AccountToServerEntity> accounts_to_server = atsr.findAll();
-			return RestResponse.result(accounts_to_server);
-			//return RestResponse.error(BasicErrorCode.IO_ERROR, "An unknown error has occurred");
-	   
-	}
 	
 	@RequestMapping(value = "action/admin/grand_role/{user_id}", method = RequestMethod.PUT)
 	public RestResponse<?> grand_role(Authentication Authentication, @PathVariable int user_id, @RequestBody EnumRole role,  BindingResult results) {

@@ -17,7 +17,7 @@ public interface AccountToServerRepository extends JpaRepository<AccountToServer
 
 	
 	@Query(value = "SELECT * FROM Helix_lab.account_to_server a WHERE a.account = :userid", nativeQuery = true)
-    public List<AccountToServerEntity> findAllServersByUserId(@Param("userid") String userid);
+    public List<AccountToServerEntity> findAllServersByUserId(@Param("userid") int userid);
 	 
 	@Query(value = "SELECT * FROM Helix_lab.account_to_server a  WHERE a.server_id = :server_id", nativeQuery = true)
 	public List<AccountToServerEntity>  findAllByServerId(@Param("server_id") String server_id);

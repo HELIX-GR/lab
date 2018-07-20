@@ -64,7 +64,7 @@ class UploadModal extends React.Component {
   };
 
   render() {
-   
+
     return (
       <Button
         variant="fab"
@@ -72,7 +72,7 @@ class UploadModal extends React.Component {
         style={{ margin: 12 }}
         label="Modal Dialog"
         onClick={this.handleOpen} >
-        <FileUpload />
+        <img className="image-icon" src="/images/svg/SVG/upload.svg" title="Upload File" />
         <Modal isOpen={this.state.open} toggle={this.handleOpen} >
           <ModalHeader toggle={this.handleOpen}>Upload a file</ModalHeader>
 

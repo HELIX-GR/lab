@@ -46,30 +46,30 @@ const ServerList = ({ servers, onClick, selectedIndex }) => (
       <div className="result-items">
         {servers.map((row, index) => (
 
-          <div class="result-item lab"
+          <div className="result-item lab"
             onClick={event => onClick(event, row.id)}
             key={row.id}
             value={row.id}>
-            <div class="date-of-entry">
+            <div className="date-of-entry">
               <div>{row.started_at ? <FormattedTime value={row.started_at} day='numeric' month='numeric' year='numeric' /> : "---"} </div>
             </div>
-            <h3 class="title">
-              <a >{row.name} </a>
-              <div class="pill data">
+            <h3 className="title">
+              <a className="mr-2" >{row.name} </a>
+              <div className="pill data">
                  1GB RAM
           </div>
-          <div class="pill data">
+          <div className="pill data">
                  1VC
           </div>
             </h3>
 
-            <div class="service">
+            <div className="service">
               <a >{row.description}</a>
             </div>
-            <div class="tag-list">
-              <a class="tag-box tag-box-other">Python </a>
-              <a class="tag-box tag-box-other">R </a>
-              <a class="tag-box first-tag" >LAB</a>
+            <div className="tag-list">
+              <a className="tag-box tag-box-other">Python </a>
+              <a className="tag-box tag-box-other">R </a>
+              <a className="tag-box first-tag" >LAB</a>
             </div>
           </div>
         )

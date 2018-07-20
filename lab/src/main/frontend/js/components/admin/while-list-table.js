@@ -71,25 +71,22 @@ export class WhiteListTable extends React.Component {
           <FormattedTime value={props.value} day='numeric' month='numeric' year='numeric' />
         ),
         width: 150,
-      },
-      {
-        Header: (
-          all_roles.map(name =>
-              <a>
-                { name },
-              </a>
-          )),
-        accessor: 'roles',
-        Cell: props => (all_roles.map((role) => {
-          return (<Checkbox
-            checked={props.value.includes(role)}
-            onChange={(e, is) => { this.updateCheck(is, role, props.row.id ); }}
-          />);
-        }
-        )),
-        width: 300,
-      },
-    ];
+      }].concat(
+        all_roles.map(name =>{
+          return ({
+         Header:  <img className="account-icon" src={"/images/" + name + ".svg"} height="42" width="42"/>
+               
+           ,
+         id:name,
+         accessor: 'roles',
+         Cell: props => (<Checkbox
+             checked={props.value.includes(name)}
+             onChange={(e, is) => { this.updateCheck(is, name, props.row.id ); }}
+           />
+         ),
+         width: 60,
+       });}));
+ 
 
 
 

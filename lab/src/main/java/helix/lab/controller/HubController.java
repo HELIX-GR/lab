@@ -20,7 +20,7 @@ import gr.helix.core.common.model.RestResponse;
 import helix.lab.controller.action.BaseController;
 import helix.lab.model.admin.HubServerEntity;
 import helix.lab.model.hub.HubUserResponse;
-import helix.lab.repository.AccountToServerRepository;
+import helix.lab.model.user.AccountToServerEntity;
 import helix.lab.repository.HubServerRepository;
 import helix.lab.service.JupyterApi;
 
@@ -35,13 +35,12 @@ public class HubController extends BaseController
 	@Autowired
 	HubServerRepository hubserverrepo;
 	
-	//@Autowired
-	//AccountToServerRepository atsr;
+
 	
 	JupyterApi japi= new JupyterApi();
     
 
-    @RequestMapping(value = "/action/start/{chosen_hub_id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/action/start/{chosen_hub_id}", method = RequestMethod.POST)
     public RestResponse<Object> start(Authentication authentication, @PathVariable int chosen_hub_id,  @RequestParam(required = false) String error)
     {
     	String username=  currentUserName();
@@ -60,12 +59,23 @@ public class HubController extends BaseController
 				break;
 				}
     	}
-        if (isEligable) {
+    	List<AccountToServerEntity> a2sl= atsr.findAllServersByUserId(currentUserId());
+    	
+    	if (!a2sl.isEmpty()) {
+            Object target=hub.get().getUrl()+":8000/user/"+username;
+
+            return RestResponse.result(target);
+    	}
+        if (isEligable ) {
+        	AccountToServerEntity atse=	new AccountToServerEntity();
+        	atse.setAccount(aer.getOne(currentUserId()));
+        	atse.setHubServer(hub.get());
+        	atse.setName(hub.get().getName());
         //TODO add hit to database S2U connection
         	HubUserResponse respo = null;
         try {
         	respo = japi.hub_user_info(hub.get(),"users/"+username);//see if user is in hubs whitelist
-        	System.out.println(respo.toString());
+        	//System.out.println(respo.toString());
         } catch (IOException e) {
             try {
             	japi.api_request(hub.get(),"users/"+username, "POST", null);// add user to hub and the whitelist
@@ -83,7 +93,10 @@ public class HubController extends BaseController
 
         		}
 		}
+		atse.setUrl(hub.get().getUrl()+":8000/user/"+username);
+		atse.setState("Active");
 		
+		atsr.save(atse);
         Object target=hub.get().getUrl()+":8000/user/"+username;
         
         
@@ -93,7 +106,8 @@ public class HubController extends BaseController
         }
     }
     
-    @RequestMapping(value = "action/stop/{chosen_hub_id}", method = RequestMethod.POST)// TODO set it to DELETE 
+
+	@RequestMapping(value = "action/stop/{chosen_hub_id}", method = RequestMethod.DELETE)
     public RestResponse<Void> stop_server(@PathVariable int chosen_hub_id) 
     {
     	String username=  currentUserName();
@@ -108,7 +122,10 @@ public class HubController extends BaseController
             	return RestResponse.error(null, e.getMessage() );
 
     		}
-
+    	List<AccountToServerEntity> a2sl= atsr.findAllServersByUserId(currentUserId());
+    	if (!a2sl.isEmpty()) {
+    		atsr.delete(a2sl.get(0));
+    	}
         return RestResponse.success();
        
     }

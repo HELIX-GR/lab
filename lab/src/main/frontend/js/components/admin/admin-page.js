@@ -68,7 +68,7 @@ class AdminPage extends React.Component {
             textColor="primary"
             centered
           >
-            <Tab label="JupyterHubs" />
+            <Tab label="Servers" />
             <Tab label="Users" />
             <Tab label="White-List" />
             <Tab label="Monitoring" />
@@ -76,7 +76,7 @@ class AdminPage extends React.Component {
 
           {value === 0 &&
             <TabContainer>
-              <h2>JupyterHubs</h2>
+              <h2>Servers</h2>
               <a> {this.props.intl.formatRelative(this.props.servers_update)} </a>
 
               <ModalAddServer />
@@ -97,17 +97,21 @@ class AdminPage extends React.Component {
             <TabContainer><div>
               <h2>White-List</h2>
               <a> {this.props.intl.formatRelative(this.props.whitelist_update)} </a>
-              <ModalAddWhiteList/>
+              <ModalAddWhiteList />
               <WhiteListTable users={this.props.whitelist} />
             </div>
             </TabContainer>
           }
           {value === 3 &&
             <TabContainer><div>
-              <h2>User to Servers Managment</h2>
+              <h2>User to Servers Managment
+                 <div className="pill data">
+                  {this.props.u2s.length} Open
+          </div>
+              </h2>
               <a> {this.props.intl.formatRelative(this.props.u2s_update)} </a>
-              {// <U2sTable u2s={this.props.u2s} />
-              }
+              <U2sTable u2s={this.props.u2s} />
+
             </div>
             </TabContainer>
           }
