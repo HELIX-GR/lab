@@ -60,19 +60,30 @@ public class HubController extends BaseController
 				}
     	}
     	List<AccountToServerEntity> a2sl= atsr.findAllServersByUserId(currentUserId());
-    	
-    	if (!a2sl.isEmpty()) {
-            Object target=hub.get().getUrl()+":8000/user/"+username;
+    	HubUserResponse respo = null;
 
+    	if (!a2sl.isEmpty()) { // Check if i have it in db
+            Object target=hub.get().getUrl()+":8000/user/"+username;
+            try {
+            	respo = japi.hub_user_info(hub.get(),"users/"+username);//see if its active in the hub
+            } catch (IOException e) {
+            //skip
+            }
+            if (respo.getServer()==null) {// If there is not active in the hub but we have a db entry then delete it
+            	atsr.delete(a2sl.get(0)); //
+            }
+            else {
             return RestResponse.result(target);
+            }
     	}
+    	
+    	
+    	
         if (isEligable ) {
         	AccountToServerEntity atse=	new AccountToServerEntity();
         	atse.setAccount(aer.getOne(currentUserId()));
         	atse.setHubServer(hub.get());
         	atse.setName(hub.get().getName());
-        //TODO add hit to database S2U connection
-        	HubUserResponse respo = null;
         try {
         	respo = japi.hub_user_info(hub.get(),"users/"+username);//see if user is in hubs whitelist
         	//System.out.println(respo.toString());

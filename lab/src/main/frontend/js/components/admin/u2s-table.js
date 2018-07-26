@@ -48,7 +48,7 @@ export class U2sTable extends React.Component {
         accessor: 'url',
       },
       {
-        Header: 'startedAt',
+        Header: 'Started At',
         id: 'startedAt',
         accessor: 'startedAt',
         Cell: props => (

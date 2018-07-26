@@ -14,9 +14,10 @@ import { startNowAction, stopServerAction } from '../../ducks/app';
 class ServerButton extends React.Component {
   constructor(props) {
     super(props);
+    this.toggle = this.toggle.bind(this);
 
     this.state = {
-      open: false,
+      popoverOpen: false,
       selectedIndex: 0,
     };
   }
@@ -25,29 +26,19 @@ class ServerButton extends React.Component {
       this.props.getUserServers();
     }
   }
-  handleClick = (event) => {
-    // This prevents ghost click.
-    event.preventDefault();
-
-    this.setState({
-      open: true,
-      anchorEl: event.currentTarget,
-
-    });
-  };
-
-  handleRequestClose = () => {
-    this.setState({
-      open: false,
-    });
-  };
 
   handleServerClick = (event, index) => {
     const selected = this.props.servers.find(e => e.id == index);
     this.props.setSelectedHub(selected);
     this.setState({
       selectedIndex: index,
-      open: false,
+      popoverOpen: false,
+    });
+  }
+
+  toggle() {
+    this.setState({
+      popoverOpen: !this.state.popoverOpen
     });
   }
 
@@ -56,10 +47,15 @@ class ServerButton extends React.Component {
     return (
       <div>
         {server_stage == 0 &&
-          <div id="Popover1" className="button-notebook" onClick={this.handleClick}>
+          <div id="Popover1" className="button-notebook" onClick={this.toggle}>
             <FormattedMessage id="Server.ChoseBtn" defaultMessage="Choose Server" />
-          <i className="fa fa-crosshairs"></i>
+            <i className="fa fa-crosshairs"></i>
+            <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
+              <PopoverHeader><FormattedMessage id="server-list.servers" defaultMessage="Avaliable Servers" /></PopoverHeader>
+              <PopoverBody className="" ><ServerList servers={this.props.servers} onClick={this.handleServerClick} selectedIndex={this.state.selectedIndex} /></PopoverBody>
+            </Popover>
           </div>
+
         }
         {server_stage == 1 &&
           <div className="button-notebook" onClick={() => this.props.startNowAction(this.props.selected_hub.id)}>
@@ -77,15 +73,10 @@ class ServerButton extends React.Component {
         {server_stage == 3 &&
           <div className="button-notebook" onClick={() => this.props.stopServerAction(this.props.selected_hub.id)}>
             <FormattedMessage id="Server.StopBtn" defaultMessage="Close Server" />
-      <i className="fa fa-stop"></i>
+            <i className="fa fa-stop"></i>
           </div>}
 
-        <Popover  placement="bottom" isOpen={this.state.open} target="Popover1" toggle={this.handleRequestClose}>
-          <PopoverHeader><FormattedMessage id="server-list.servers" defaultMessage="Avaliable Servers" /></PopoverHeader>
-          <PopoverBody className="" ><ServerList servers={this.props.servers} onClick={this.handleServerClick} selectedIndex={this.state.selectedIndex} /></PopoverBody>
-      
-          
-        </Popover>
+
       </div >
     );
   }

@@ -52,7 +52,7 @@ export const alter_button_stage = (stage) => ({
   type: ASK_SERVER,
   stage,
 });
-const got_server = (r, t) => ({
+const got_server = (r) => ({
   type: GOT_SERVER,
   target: r,
 
@@ -105,10 +105,11 @@ export const stopServerAction = (hub_id) => (dispatch, getState) => {
     (r) => {
       console.log(r);
       dispatch(alter_button_stage(0));
+      
     },
     (err) => {
       toast.error('Failed to stop server: ' + err.message);
       dispatch(alter_button_stage(3));
       throw err;
-    });
+    }).then(dispatch(got_server(null)));
 };

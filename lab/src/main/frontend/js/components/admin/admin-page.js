@@ -106,7 +106,7 @@ class AdminPage extends React.Component {
             <TabContainer><div>
               <h2>User to Servers Managment
                  <div className="pill data">
-                  {this.props.u2s.length} Open
+                  {this.props.u2s.length} Runing
           </div>
               </h2>
               <a> {this.props.intl.formatRelative(this.props.u2s_update)} </a>
