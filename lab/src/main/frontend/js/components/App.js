@@ -1,17 +1,25 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import SearchPage from './views/search-page';
-import Footer from './views/footer';
-import Header from './views/header';
+import {
+  Footer,
+  Header,
+  SearchResult,
+  SearchPage,
+} from './views';
+import { Pages, StaticRoutes, DynamicRoutes, ErrorPages } from '../model/routes';
 
 import ModalLogin from './modal-login';
 import { modalLoginAction } from '../ducks/user';
 import { startNowAction } from '../ducks/app';
-import { Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import Filesystem from './filesystem/filesystem';
 import AdminPage from './admin/admin-page';
 import { ToastContainer } from 'react-toastify';
+import {
+  Page403,
+  Page404,
+} from './pages';
 
 class App extends React.Component {
   constructor(props) {
@@ -32,20 +40,21 @@ class App extends React.Component {
     } else {
       start_now = this.props.startNowAction;
     }
-    return (
-      <div className="lab">
-        <ToastContainer
-          className="helix-toastify"
-          position="bottom-center"
-          type="default"
-          autoClose={5000}
-          hideProgressBar={true}
-          newestOnTop={false}
-          closeOnClick
-          pauseOnHover
-        />
-        <Header />
-        <Route exact={true} path="/" render={() => (
+
+    const routes = (
+      <Switch>
+        {/* Handle errors first */}
+        <Route path={ErrorPages.Forbidden} component={Page403} exact />
+        <Route path={ErrorPages.NotFound} component={Page404} exact />
+        {/* Redirect for authenticated users. Navigation after a successful login operation
+            occurs after the component hierarchy is rendered due to state change and causes
+            /error/404 to render */}
+        <Redirect from={Pages.Login} to={StaticRoutes.LABHOME} exact />
+        <Redirect from={Pages.Register} to={StaticRoutes.LABHOME} exact />
+        {/* Static routes */}
+        <Route path={StaticRoutes.RESULTS} component={SearchResult} />
+
+        <Route exact={true} path={StaticRoutes.LABHOME} render={() => (
           <div>
             <SearchPage changeLocale={() => { }} locale={'en'} logout={() => { }} />
           </div>)} />
@@ -64,7 +73,23 @@ class App extends React.Component {
             </div>
           </section>)} />
 
+      </Switch>
+    );
 
+    return (
+      <div className="lab">
+        <ToastContainer
+          className="helix-toastify"
+          position="bottom-center"
+          type="default"
+          autoClose={5000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnHover
+        />
+        <Header />
+        {routes}
         <ModalLogin showIt={this.props.modalLoginAction} />
         <Footer />
 

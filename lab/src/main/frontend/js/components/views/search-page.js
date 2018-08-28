@@ -17,20 +17,24 @@ import {
   logout,
 } from '../../ducks/user';
 
+
 import {
   changeText,
+  search as searchAll,
+  searchAutoComplete,
   toggleAdvanced,
   togglePill,
+  toggleSearchFacet,
+  setResultVisibility,
 } from '../../ducks/ui/views/search';
-
 
 import {
   Pill,
+  Result
 } from '../helpers';
 
 import {
   LabFeatured,
-  SearchResult,
 } from './';
 
 class SearchPage extends React.Component {
@@ -38,25 +42,53 @@ class SearchPage extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onPillChanged = this.onPillChanged.bind(this);
-
-    this.onTextChanged = _.debounce((value) => {
-      this.props.changeText(value);
-    }, 1000);
-
+    this.searchAutoComplete = _.debounce(this.props.searchAutoComplete, 400);
+    this.textInput = React.createRef();
   }
 
   static contextTypes = {
     intl: PropTypes.object,
   }
 
+  isTextValid(text) {
+    return ((text) && (text.length > 2));
+  }
+
+  search(advanced = false) {
+    const { text } = this.props.search;
+
+    if (this.isTextValid(text)) {
+      this.props.searchAll(text, advanced).then((data) => {
+        const found = Object.keys(EnumCatalog).some((key) => {
+          return (data.catalogs[key] && data.catalogs[key].count !== 0);
+        });
+
+        if (found) {
+          this.props.history.push(StaticRoutes.RESULTS);
+        }
+      });
+    }
+  }
+  onTextChanged(value, refresh = true) {
+    this.props.changeText(value);
+
+    if ((refresh) && (this.isTextValid(value))) {
+      this.searchAutoComplete(value);
+    }
+  }
+
+  onSearch(e) {
+    e.preventDefault();
+
+    this.search(false);
+  }
   onPillChanged(id) {
     this.props.togglePill(id);
   }
 
 
   render() {
-    const { advanced, pills, text } = this.props.search;
+    const { advanced, partialResult: { visible, catalogs }, loading, pills, text } = this.props.search;
     const _t = this.context.intl.formatMessage;
 
     return (
@@ -69,55 +101,36 @@ class SearchPage extends React.Component {
                 <div className="main-form-content">
                   <input
                     type="text"
+                    autoComplete="off"
                     className="landing-search-text"
-                    name="landing-search-text" value=""
+                    name="landing-search-text"
                     placeholder={_t({ id: 'labsearch.placeholder' })}
                     value={text}
                     onChange={(e) => this.onTextChanged(e.target.value)}
+                    onFocus={() => this.props.setResultVisibility(true)}
+                    onBlur={() => this.props.setResultVisibility(false)}
+                    ref={this.textInput}
                   />
-                  <div
-                    className={
-                      classnames({
-                        'domain-pills': true,
-                        'short': advanced,
-                      })
-                    }
-                  >
-                    <Pill
-                      id="data"
-                      text="pills.data"
-                      className="pill-data"
-                      selected={pills.data}
-                      onChange={this.onPillChanged}
-                    />
-                    <Pill
-                      id="pubs"
-                      text="pills.pubs"
-                      className="pill-pubs"
-                      selected={pills.pubs}
-                      onChange={this.onPillChanged}
-                    />
-                    <Pill
-                      id="lab"
-                      text="pills.lab"
-                      className="pill-lab"
-                      selected={pills.lab}
-                      onChange={this.onPillChanged}
-                    />
 
-                  </div>
-                  <SearchResult />
-
+                  <Result
+                    visible={visible && !loading}
+                    result={catalogs}
+                  />
                 </div>
 
-                <button type="button" name="landing-search-button" className="landing-search-button">
-                  <i className="fa fa-search"></i>
+                <button
+                  type="submit"
+                  name="landing-search-button"
+                  className="landing-search-button"
+                  disabled={loading}
+                  onClick={(e) => this.onSearch(e)}
+                >
+                  <i className={loading ? 'fa fa-spin fa-spinner' : 'fa fa-search'}></i>
                 </button>
               </form>
             </div>
           </div>
         </section>
-
         <LabFeatured />
       </div >
     );
@@ -137,6 +150,10 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   logout,
   toggleAdvanced,
   togglePill,
+  searchAll,
+  searchAutoComplete,
+  toggleSearchFacet,
+  setResultVisibility,
 }, dispatch);
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => ({

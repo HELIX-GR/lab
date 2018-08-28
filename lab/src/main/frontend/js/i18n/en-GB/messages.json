@@ -12,7 +12,9 @@
     "files": "My Files",
     "guides": "Guides",
     "courses": "Courses",
-    "whatislab": "What is Helix Lab?" 
+    "whatislab": "What is Helix Lab?",
+    "about": "About",
+    "news": "News"
   },
   "pills": {
     "data": "DATA",
