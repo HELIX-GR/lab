@@ -1,11 +1,13 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { changeLocale, } from '../../ducks/i18n';
 import { logout, modalLoginAction } from '../../ducks/user';
 import { FormattedMessage, } from 'react-intl';
-
+import {
+  StaticRoutes,
+} from '../../model';
 
 
 class Header extends React.Component {
@@ -33,12 +35,14 @@ class Header extends React.Component {
     const authenticated = (this.props.profile != null);
 
     return (
-      <header className="header fixed">
+      <header className="header">
+
         <div className="logo-area">
-          <a>
+          <NavLink to={StaticRoutes.LABHOME}>
             <img className="logo-image" src="/images/svg/Lab-logo.svg" alt="Helix Lab" />
-          </a>
+          </NavLink>
         </div>
+
         <div className="menu-wrapper">
           <nav className="nav-menu">
             <ul className="menu-items">
@@ -65,12 +69,12 @@ class Header extends React.Component {
               </li>
               <li id="menu-item-project" className="menu-item aux-item">
                 <a href="#">
-                  Το έργο
+                <FormattedMessage id="header.about" defaultMessage="About" />
                 </a>
               </li>
               <li id="menu-item-news" className="menu-item aux-item">
                 <a href="#">
-                  Νέα
+                <FormattedMessage id="header.news" defaultMessage="News" />
                 </a>
               </li>
               {authenticated && this.props.profile.roles.includes('ROLE_ADMIN') &&
@@ -97,9 +101,24 @@ class Header extends React.Component {
           }
           {authenticated &&
             <div className="account-item">
-              <a onClick={(e) => this.props.logout()}>{this.props.profile.username}
-                <img className="account-icon" src={this.props.profile.imageUrl || "/images/svg/Avatar.svg"} alt="Account tab" />
-              </a>
+              <nav className="nav-menu">
+                <ul className="menu-items">
+                  <li id="menu-item-account" className="menu-item aux-item has-sub-menu">
+                    <a>
+                      <img className="account-icon" src={this.props.profile.imageUrl || '/images/svg/Avatar.svg'} alt="Account tab" />
+                    </a>
+                    <ul className="sub-menu">
+                      {authenticated &&
+                        <li><a href="#">Signed in as {this.props.profile.username}</a></li>
+                      }
+                      <li><a href="#">Account</a></li>
+                      <li><a href="#">Help</a></li>
+                      <li><a href="#">Settings</a></li>
+                      <li><a href="#" onClick={() => this.props.logout()}>Log out</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </nav>
             </div>
           }
 

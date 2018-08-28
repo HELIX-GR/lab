@@ -8,49 +8,40 @@ import {
 
 const cardInfo = [
   {
-    title: <FormattedMessage id="featured.first.title" defaultMessage="Notebook repository" />,
-    description: <FormattedMessage id="featured.first.description" defaultMessage="Find interesting projects in Python, Julia, F#, and R to copy to your folder." />,
+    title: <FormattedMessage id="featured.first.title" defaultMessage="What is HELIX Lab?" />,
+    description: <FormattedMessage id="featured.first.description" defaultMessage="It’s your own private data infrastructure for learning, sharing, and building with data. You can bring your own data or use our open scientific data, interactively code in your language of choice, experiment over dedicated Big Data clusters or our HPC, and share your work with others. " />,
     link: {
       ref: "",
-      text: <FormattedMessage id="featured.first.text" defaultMessage="Search for Notebooks" />,
+      text: <FormattedMessage id="featured.first.text" defaultMessage="Learn more about Lab and how to use it." />,
     },
   },
   {
-    title: <FormattedMessage id="featured.second.title" defaultMessage="ACM – Europe Summer School 2018" />,
-    description: <FormattedMessage id="featured.second.description" defaultMessage="Η ACM προσκαλεί τους φοιτητές στο Ευρωπαϊκό Θερινό Σχολείο (Europe Summer School) για την επιστήμη των δεδομένων." />,
+    title: <FormattedMessage id="featured.second.title" defaultMessage="Academic Support" />,
+    description: <FormattedMessage id="featured.second.description" defaultMessage="Integrate Lab in your official undergraduate, postgraduate or seminar curricula. Organize courses with your own data, exercises, and tests.  Your students can learn about statistics, data management, and machine learning. No infrastructure, installation, or setup costs! " />,
     link: {
       ref: "",
-      text: <FormattedMessage id="featured.second.text" defaultMessage="Show me!" />,
+      text: <FormattedMessage id="featured.second.text" defaultMessage="See the list of courses." />,
     },
   }
 ];
 
 const CoursesCardInfo = [
   {
-    title: "How to use Jupyter Notebooks",
-    description: "Get a brief introduction guide not to get lost in your first steps with Jupyter Notebook.",
+    title: "Notebook Repository",
+    description: "Find interesting notebooks created and shared by others, copy them in your own space, and use them anyway you want. Also, why don’t you also share your work with others?",
+    image: "images/code.svg",
+    link: {
+      ref: "#",
+      text: "See all public notebooks",
+    },
+  },
+  {
+    title: "Learn Jupyter",
+    description:"Whether you are a novice, or an expert notebook user, start here. We have assembled a collection of educational resources, guides, examples and online courses to help you start using Jupyter in your own research." ,
     image: "images/jupyter.svg",
     link: {
       ref: "#",
-      text: "Start Now",
-    },
-  },
-  {
-    title: <FormattedMessage id="featured.second.title" defaultMessage="What is Helix Lab" />,
-    description: <FormattedMessage id="featured.second.description" defaultMessage="All you need to know about the Helix Lab and how to use it." />,
-    image: "images/svg/Lab-logo.svg",
-    link: {
-      ref: "#",
-      text: <FormattedMessage id="featured.second.text" defaultMessage="Show me!" />,
-    },
-  },
-  {
-    title: "Online Courses",
-    description: "We have lunched an Online Courses feature. Learn how to create or join one and why you should.",
-    image: "images/online_courses.svg",
-    link: {
-      ref: "#",
-      text: "Take me there!",
+      text: "Start learning" ,
     },
   },
   {
@@ -61,7 +52,17 @@ const CoursesCardInfo = [
       ref: "#",
       text: "Take me to blog post",
     },
-  }
+  },
+  {
+    title: "Featured notebooks",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    image: "images/online_courses.svg",
+    link: {
+      ref: "#",
+      text: "Take me there!",
+    },
+  },
+  
 ];
 
 
@@ -81,12 +82,12 @@ class LabFeatured extends React.Component {
               <div className="main-lab-item">
 
                 <h2 className="main-lab-item-title">
-                Discover - Learn - Share
+                A Data Science Laboratory in your browser
                   
                 </h2>
 
                 <div className="main-lab-item-subtitle">
-                Experiment with code in your browser
+                Create and share notebooks with live interactive code and visualizations over scientific data and large-scale computing infrastructures within your browser.
                 </div>
 
               </div>

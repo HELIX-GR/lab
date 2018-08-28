@@ -61,8 +61,7 @@ class Footer extends React.Component {
                   <img src="/images/png/PARTNER_OPENAIRE.png" alt="" />
                 </a>
               </li>
-            </ul>
-            <ul>
+          
               <li>
                 <a href="#">
                   <img src="/images/png/PARTNER-EDUC.png" alt="" />
