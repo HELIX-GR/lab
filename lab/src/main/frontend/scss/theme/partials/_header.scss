@@ -79,12 +79,20 @@ body{
     }
   }
 
-  header{
+  &.fixed {
 
-    &.fixed {
-      width: $layout-fixed-width;
+    header {
+      max-width: $layout-fixed-width;
       margin-left: auto;
       margin-right: auto;
+    }
+
+  }
+
+  header{
+
+    .account-icon {
+      border-radius: 15px;
     }
 
     z-index: 2;
@@ -142,6 +150,7 @@ body{
               &:hover ul.sub-menu{
 
                 display: block;
+                min-width: 170px;
               }
             }
 
@@ -160,7 +169,7 @@ body{
                 text-decoration: none;
                 color: inherit;
 
-                opacity: .5;
+                // opacity: .5;
               }
             }
 
@@ -185,6 +194,8 @@ body{
 
                   vertical-align: middle;
                   line-height: 1.2;
+                  font-size: 15px;
+                  padding: 0px;
                 }
               }
             }
@@ -197,10 +208,22 @@ body{
               }
             }
 
-            &#menu-item-lab, &#menu-item-news{
+            &#menu-item-lab {
 
               margin-right: 30px;
-              padding-right: 0;
+              padding-right: 15px;
+            }
+
+            &#menu-item-news {
+
+              margin-right: 30px;
+              padding-right: 15px;
+            }
+
+            &#menu-item-account {
+
+              margin-right: 30px;
+              padding: 0px;
             }
 
             &.aux-item:last-of-type{
@@ -238,7 +261,7 @@ body{
             text-decoration: none;
             cursor: pointer;
 
-            opacity: .5;
+            // opacity: .5;
           }
         }
       }
@@ -267,7 +290,7 @@ body{
           -o-transition: all .2s ease-in-out;
 
           &:hover{
-            opacity: .5;
+            // opacity: .5;
           }
 
           img{
@@ -311,7 +334,7 @@ body{
           -o-transition: all .2s ease-in-out;
 
           &:hover{
-            opacity: .5;
+            // opacity: .5;
           }
 
         }

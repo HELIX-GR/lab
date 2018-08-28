@@ -1,6 +1,6 @@
 body{
 
-  &.results-main{
+  &.results-main, &.home{
 
     background-color: $neutral-grey;
 
@@ -104,11 +104,6 @@ body{
 
         background-color: $lab-color;
       }
-    }
-
-    section .results-main-content .main-results-border-bottom{
-
-      border-top-color: $lab-color;
     }
 
     section .results-main-content .results-main-result-set .main-results-border-bottom{
@@ -645,6 +640,8 @@ body{
         .param-box{
 
           margin-top: 35px;
+          max-height: 312px;
+          overflow-y: auto;
 
           .title{
             margin-left: 13px;
@@ -666,6 +663,10 @@ body{
               color: $details-grey;
               letter-spacing: .05em;
               line-height: 1.5;
+
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
 
               input{
 
