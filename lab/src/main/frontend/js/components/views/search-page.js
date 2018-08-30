@@ -17,6 +17,10 @@ import {
   logout,
 } from '../../ducks/user';
 
+import {
+  EnumCatalog,
+  StaticRoutes,
+} from '../../model';
 
 import {
   changeText,
