@@ -91,7 +91,7 @@ body{
         }
 
         .search-form-wrapper .landing-search-form button.landing-search-button{
-          background-color: $lab-color;
+          background-color: #ebebeb;
         }
       }
     }
@@ -105,7 +105,10 @@ body{
       height: 15vh;
       min-height: 15vh;
       position: relative;
-      margin: 15px 15px 0 15px;
+     // margin: 15px 15px 0 15px;
+      border-left: 15px solid $lab-color;
+      border-top: 15px solid $lab-color;
+      border-right: 15px solid $lab-color;
       background: none;
     }
 
@@ -115,8 +118,10 @@ body{
       height: 80vh;
       min-height: 600px;
       position: relative;
-      margin: 15px 15px 0 15px;
-
+      //margin: 15px 15px 0 15px;
+      border-left: 15px solid $lab-color;
+      border-top: 15px solid $lab-color;
+      border-right: 15px solid $lab-color;
       &:after{
 
         position: absolute;
@@ -642,7 +647,7 @@ body{
           button.landing-search-button{
 
             color: white;
-            background-color: $main-black;
+            background-color: $lab-color !important;
             border: none;
             border-radius: 25px;
             height: 50px;
