@@ -126,7 +126,11 @@ body{
   section.main-results-page-content{
 
     background-color: $neutral-grey;
-    margin: 15px 15px 0 15px;
+    //margin: 15px 15px 0 15px;
+    border-left: 15px solid $lab-color;
+    border-top: 15px solid $lab-color;
+    border-right: 15px solid $lab-color;
+    border-bottom: 15px solid $lab-color;
     position: relative;
 
     .results-main-content{
@@ -136,7 +140,7 @@ body{
       max-width: 1024px;
       margin: auto;
       padding-top: 208px;
-      min-height: 2350px;
+      min-height: 1350px;
 
       section.results-main-sidebar{
 
@@ -629,7 +633,7 @@ body{
           }
 
           .border-bottom-bar{
-            border-top: solid 10px $main-black;
+            border-top: solid 10px $lab-color;
             height: 0;
             position: relative;
             display: block;
@@ -863,7 +867,7 @@ body{
 
         .main-results-border-bottom{
           position: relative;
-          border-top: solid 10px $main-black;
+          border-top: solid 10px $lab-color;
           // height: 0px;
           position: relative;
           display: block;

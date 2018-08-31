@@ -4,9 +4,10 @@ import { bindActionCreators } from 'redux';
 import {
   Footer,
   Header,
-  SearchResult,
   SearchPage,
+  ResultPage,
 } from './views';
+
 import { Pages, StaticRoutes, DynamicRoutes, ErrorPages } from '../model/routes';
 
 import ModalLogin from './modal-login';
@@ -52,7 +53,7 @@ class App extends React.Component {
         <Redirect from={Pages.Login} to={StaticRoutes.LABHOME} exact />
         <Redirect from={Pages.Register} to={StaticRoutes.LABHOME} exact />
         {/* Static routes */}
-        <Route path={StaticRoutes.RESULTS} component={SearchResult} />
+        <Route path={StaticRoutes.RESULTS} component={ResultPage} />
 
         <Route exact={true} path={StaticRoutes.LABHOME} render={() => (
           <div>

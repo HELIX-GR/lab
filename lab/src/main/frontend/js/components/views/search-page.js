@@ -41,6 +41,8 @@ import {
   LabFeatured,
 } from './';
 
+import { Link, NavLink } from 'react-router-dom';
+
 class SearchPage extends React.Component {
 
   constructor(props) {
@@ -58,6 +60,7 @@ class SearchPage extends React.Component {
     return ((text) && (text.length > 2));
   }
 
+  //TODO
   search(advanced = false) {
     const { text } = this.props.search;
 
@@ -83,6 +86,7 @@ class SearchPage extends React.Component {
 
   onSearch(e) {
     e.preventDefault();
+
 
     this.search(false);
   }
@@ -121,16 +125,17 @@ class SearchPage extends React.Component {
                     result={catalogs}
                   />
                 </div>
-
-                <button
-                  type="submit"
-                  name="landing-search-button"
-                  className="landing-search-button"
-                  disabled={loading}
-                  onClick={(e) => this.onSearch(e)}
-                >
-                  <i className={loading ? 'fa fa-spin fa-spinner' : 'fa fa-search'}></i>
-                </button>
+                <Link to={StaticRoutes.RESULTS}>
+                  <button
+                    type="submit"
+                    name="landing-search-button"
+                    className="landing-search-button"
+                    disabled={loading}
+                    //onClick={(e) => this.onSearch(e)}
+                  >
+                    <i className={loading ? 'fa fa-spin fa-spinner' : 'fa fa-search'}></i>
+                  </button>
+                </Link>
               </form>
             </div>
           </div>
