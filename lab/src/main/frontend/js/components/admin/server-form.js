@@ -60,7 +60,7 @@ class ServerForm extends Component {
 
   handleChangeRole = (value) => {
     console.log(value);
-    this.setState({ role_eligible: value});
+    this.setState({ role_eligible: value });
     this.props.change(this.state);
   }
 
@@ -95,100 +95,10 @@ class ServerForm extends Component {
         </FormGroup>
         <FormGroup>
           <Label check></Label>
-            <Input type="checkbox" onChange={this.handleChangeAvailable} />
-            Avaliable
-          
+          <Input type="checkbox" onChange={this.handleChangeAvailable} />
+          Avaliable
         </FormGroup>
       </Form>);
-    {/*}
-      <form className={classes.container} noValidate autoComplete="off">
-        <TextField
-          className={classes.textField}
-          placeholder="Give a name to your server"
-          label="Name"
-          value={this.state.name}
-          onChange={this.handleChange}
-          id="name"
-          fullWidth={true}
-        /><br />
-        <TextField
-          className={classes.textField}
-          placeholder="A valid url"
-          label="URL"
-          value={this.state.url}
-          onChange={this.handleChange}
-          id="url"
-          fullWidth={true}
-        /><br />
-        <TextField
-          className={classes.textField}
-          placeholder="Description visible to user"
-          label="Description"
-          value={this.state.description}
-          onChange={this.handleChange}
-          multiLine={true}
-          rows={2}
-          id="description"
-          fullWidth={true}
-        /><br /> <TextField
-          className={classes.textField}
-          placeholder="Admin token"
-          label="Admin token"
-          value={this.state.admin_token}
-          onChange={this.handleChange}
-          id="admin_token"
-          fullWidth={true}
-        />
-        <br />
-        <div>
-          <TextField
-            id="avaliable"
-            select
-            label="Make available"
-            className={classes.textField}
-            value={this.state.available}
-            onChange={this.handleChangeAvailable}
-            helperText="Do you want users to see this server now?"
-            SelectProps={{
-              MenuProps: {
-                className: classes.menu,
-              },
-            }}
-            margin="normal"
-          >
-            <MenuItem key={false} value={false}> No </MenuItem>
-            <MenuItem key={true} value={true}> Yes </MenuItem>
-          </TextField>
-        </div>
-        <div>
-
-          <TextField
-            select
-            label="Role eligible"
-            className={classes.textField}
-            value={this.state.role_eligible}
-            onChange={this.handleChangeRole}
-            helperText="What role a user must have to see this server?"
-            SelectProps={{
-              MenuProps: {
-                className: classes.menu,
-              },
-            }}
-            margin="normal"
-
-          >
-            <MenuItem key={'ROLE_STANDARD'} value={'ROLE_STANDARD'}> Standard </MenuItem>
-            <MenuItem key={'ROLE_BETA'} value={'ROLE_BETA'}> Beta Tester</MenuItem>
-            {// <MenuItem value={'ROLE_TESTER'}> primaryText="EXPERIMENTAL</MenuItem>
-              //<MenuItem value={'ROLE_OTHER'}> primaryText="OTHER</MenuItem>
-            }
-            <MenuItem key={'ROLE_ADMIN'} value={'ROLE_ADMIN'}> Admin</MenuItem>
-          </TextField>
-        </div>
-
-      </form>
-          */}
-
   }
 } ServerForm.propTypes = {
   change: PropTypes.func.isRequired,

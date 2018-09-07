@@ -26,10 +26,10 @@ class PublishModal extends React.Component {
 
   toggle = () => {
     if (this.state.open) {
-      this.handleClose()
+      this.handleClose();
     }
     else {
-      this.handleOpen()
+      this.handleOpen();
     }
   }
   handleOpen = () => {
