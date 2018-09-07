@@ -32,6 +32,26 @@ import {
 
 const MIN_FACET_VALUES = 3;
 
+const dummy = {
+  results: [
+    {
+      'id': 1,
+      'title': "this is a notebook for smthing",
+      'tags': ["python", "scikit", "spark"],
+      'metadata_modified': moment.now()
+    },
+    {
+      'id': 2,
+      'title': "this is a notebook for smthing",
+      'tags': ["python", "scikit", "spark"],
+      'metadata_modified': moment.now()
+    },
+  ]
+
+}
+  
+
+
 class Results extends React.Component {
 
   constructor(props) {
@@ -151,15 +171,15 @@ class Results extends React.Component {
       return null;
     }
 
-    const { ckan: { host } } = this.props.config;
+    const  host  = "this.props.config";
 
     return data.results.map(r => {
-      const formats = r.resources.reduce((result, value) => {
-        if (!result.includes(value.format)) {
-          return [...result, value.format];
-        }
-        return result;
-      }, []);
+      /* const formats = r.resources.reduce((result, value) => {
+         if (!result.includes(value.format)) {
+           return [...result, value.format];
+         }
+         return result;
+       }, []);*/
 
       const age = moment.duration(moment() - moment(r.metadata_modified));
       const date = age.asHours() < 24 ?
@@ -167,7 +187,7 @@ class Results extends React.Component {
         <FormattedDate value={r.metadata_modified} day='numeric' month='numeric' year='numeric' />;
 
       return (
-        <div className="result-item data" key={r.id} >
+        <div className="result-item lab" key={r.id} >
           <div className="date-of-entry">
             {date}
           </div>
@@ -175,21 +195,22 @@ class Results extends React.Component {
             <a href={`${host}/dataset/${r.id}`} target="_blank">
               {r.title}
             </a>
-            <div className="pill data">
-              DATA
+            <div className="pill lab">
+              LAB
             </div>
           </h3>
+          <div className="notes"> I am another NOTEBOOK package! </div>
           <div className="service">
-            <a href="#">titlos</a>
+            <a href="#">Nikiforos</a>
           </div>
 
           <div className="tag-list">
-            {formats.length !== 0 &&
-              formats.filter(format => !!format).map(format => {
+            {r.tags.length !== 0 &&
+              r.tags.filter(tag => !!tag).map(tag => {
                 return (
-                  <a href="#" className="tag-box" key={format}>
+                  <a href="#" className="tag-box" key={tag}>
                     <div>
-                      {format}
+                      {tag}
                     </div>
                   </a>
                 );
@@ -204,13 +225,13 @@ class Results extends React.Component {
   render() {
 
     const {
-      search: { results = { count: 0, pageSize: 10 }, loading, text }
+      search: { result = { count: 0, pageSize: 10 }, loading, text }
     } = this.props;
 
     const _t = this.context.intl.formatMessage;
 
     return (
-      <div>
+      <div className="results-lab">
         <section className="main-results-page-content">
           <div className="results-main-content">
 
@@ -226,7 +247,7 @@ class Results extends React.Component {
                       autoComplete="off"
                       className="landing-search-text"
                       name="landing-search-text" value=""
-                      placeholder={_t({ id: 'search.placeholder' })}
+                      placeholder={_t({ id: 'labsearch.placeholder' })}
                       value={text}
                       onChange={(e) => this.onTextChanged(e.target.value)}
                     />
@@ -243,7 +264,6 @@ class Results extends React.Component {
 
                 </form>
               </div>
-
             </section>
 
 
@@ -265,20 +285,20 @@ class Results extends React.Component {
                   </select>
                 </label>
                 <div className="main-results-result-count">
-                  Βρέθηκαν {results.count} σύνολα δεδομένων
+                  Βρέθηκαν {result.count} σύνολα δεδομένων
                 </div>
               </div>
 
               <div className="result-items">
-                {//this.renderResults(results)
-                }
+                {this.renderResults(dummy)}
+
               </div>
 
               <div className="main-results-border-bottom">
 
               </div>
 
-            {/*  <Pagination
+              {/*  <Pagination
                 className="bottom"
                 pageIndex={results.pageIndex}
                 pageCount={Math.ceil(results.count / results.pageSize)}
@@ -289,7 +309,7 @@ class Results extends React.Component {
 
           </div>
         </section>
-      </div >
+      </div>
     );
   }
 }

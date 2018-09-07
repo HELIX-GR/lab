@@ -1,7 +1,6 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-
 import classnames from 'classnames';
+import * as PropTypes from 'prop-types';
 
 import {
   FormattedMessage,
@@ -12,48 +11,26 @@ class SearchResult extends React.Component {
   constructor(props) {
     super(props);
   }
-
+  static propTypes = {
+    visible: PropTypes.bool.isRequired,
+    text: PropTypes.text,
+    //result: PropTypes.object.isRequired,
+  }
   render() {
+    const { text } = this.props;
+
     return (
-      <div className="landing-live-search-container">
-        <div className="landing-live-search-group data">
-          <div className="results-header">
-            <div className="results-title">Data</div>
-            <a className="all-link">              all Data          </a>
-          </div>
-          <div className="search-results">
-            <a href="#" className="result-entry">
-              <span className="matched-text">Water Po</span>llution Guidelines
-            </a>
-            <a href="#" className="result-entry">
-              <span className="matched-text">Water Po</span>llution Composition Annual Data 2018
-            </a>
-          </div>
-        </div>
-
-        <div className="landing-live-search-group pubs">
+      <div
+        className={
+          classnames({
+            'landing-live-search-container': true,
+            'visible': this.props.visible,
+          })
+        }
+      >        <div className="landing-live-search-group lab">
           <div className="results-header">
             <div className="results-title">
-              Pubs
-            </div>
-            <a className="all-link">
-              all Pubs
-           </a>
-          </div>
-          <div className="search-results">
-            <a href="#" className="result-entry">
-              <span className="matched-text">Water Po</span>llution Guidelines
-            </a>
-            <a href="#" className="result-entry">
-              <span className="matched-text">Water Po</span>llution Composition Annual Data 2018
-            </a>
-          </div>
-        </div>
-
-        <div className="landing-live-search-group lab">
-          <div className="results-header">
-            <div className="results-title">
-              Pubs
+              Lab
             </div>
             <a className="all-link">
               all Lab
@@ -61,10 +38,10 @@ class SearchResult extends React.Component {
           </div>
           <div className="search-results">
             <a href="#" className="result-entry">
-              <span className="matched-text">Water Po</span>llution Guidelines
+              <span className="matched-text">{text}</span>llution Guidelines
             </a>
             <a href="#" className="result-entry">
-              <span className="matched-text">Water Po</span>llution Composition Annual Data 2018
+              <span className="matched-text">{text}</span>llution Composition Annual Data 2018
             </a>
           </div>
         </div>

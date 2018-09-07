@@ -33,9 +33,10 @@ import {
 } from '../../ducks/ui/views/search';
 
 import {
-  Pill,
   Result
 } from '../helpers';
+
+import  SearchResult  from './search-result';
 
 import {
   LabFeatured,
@@ -119,7 +120,7 @@ class SearchPage extends React.Component {
                     onBlur={() => this.props.setResultVisibility(false)}
                     ref={this.textInput}
                   />
-
+                  <SearchResult visible={text.length>3} text={text}/>
                   <Result
                     visible={visible && !loading}
                     result={catalogs}
@@ -131,7 +132,7 @@ class SearchPage extends React.Component {
                     name="landing-search-button"
                     className="landing-search-button"
                     disabled={loading}
-                    //onClick={(e) => this.onSearch(e)}
+                  //onClick={(e) => this.onSearch(e)}
                   >
                     <i className={loading ? 'fa fa-spin fa-spinner' : 'fa fa-search'}></i>
                   </button>
@@ -139,6 +140,8 @@ class SearchPage extends React.Component {
               </form>
             </div>
           </div>
+
+
         </section>
         <LabFeatured />
       </div >
