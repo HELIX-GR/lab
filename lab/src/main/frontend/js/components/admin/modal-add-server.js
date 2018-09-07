@@ -7,6 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import ServerForm from './server-form';
 import { addNewServer } from '../../ducks/admin';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 
 class ModalAddServer extends React.Component {
@@ -29,14 +30,14 @@ class ModalAddServer extends React.Component {
   }
 
   handleShow() {
-    this.setState({ show_modal: true });
+    this.setState({ show_modal: !this.state.show_modal });
   }
   handleChange(data) {
     this.setState({ data });
   }
-  handleSubmit(data) {
+  handleSubmit() {
     console.log(this.state.data);
-    this.props.addNewServer(data)
+    this.props.addNewServer(this.state.data)
       .then(this.setState({ show_modal: false }));
 
   }
@@ -45,17 +46,18 @@ class ModalAddServer extends React.Component {
     return (
       <div>
         <Button onClick={this.handleShow}>Add Server </Button>
-        <Dialog
-          open={this.state.show_modal}
-          onClose={this.handleClose}
-        >
 
-        <DialogTitle id="alert-dialog-title">{"Add a new server"}</DialogTitle>
-          <DialogContent>
-            <ServerForm finish={this.handleSubmit} onClose={this.handleClose} />
-          </DialogContent>
-          
-        </Dialog>
+        <Modal isOpen={this.state.show_modal} toggle={this.handleShow} className={this.props.className}>
+          <ModalHeader toggle={this.handleShow}>Add Server</ModalHeader>
+          <ModalBody>
+            <ServerForm change={this.handleChange} handleClose={this.handleClose} data={this.state.data} />
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.handleClose}>Cancel</Button>{' '}
+            <Button color="primary" onClick={this.handleSubmit}>Submit</Button>
+          </ModalFooter>
+        </Modal>
+
       </div>
     );
   }

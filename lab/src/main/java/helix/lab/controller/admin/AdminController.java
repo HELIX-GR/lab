@@ -125,8 +125,8 @@ public class AdminController extends BaseController{
 	            HubServerEntity hse = new HubServerEntity(request);
 
 	            // TODO Ping server 
-	            japi.api_request(hse,"info", "GET", null);// get info about server //test
-	            japi.api_request(hse,"users", "GET", null);// get all users of server db //test
+	           // japi.api_request(hse,"info", "GET", null);// get info about server //test
+	           // japi.api_request(hse,"users", "GET", null);// get all users of server db //test
 	             //hsr.save(hse);
 	            return RestResponse.result(hsr.save(hse));
 	        } catch (Exception ex) {
