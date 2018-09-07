@@ -1,19 +1,20 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Dropzone from 'react-dropzone';
 import { Button as Btn } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
+
 import Button from '@material-ui/core/Button';
 import formatFileSize from '../../util/file-size';
-import { uploadFile } from '../../ducks/config';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { publishFile } from '../../ducks/config';
 import { toast, } from 'react-toastify';
 
 /**
  * A modal dialog can only be closed by selecting one of the actions.
  */
-class UploadModal extends React.Component {
+class PublishModal extends React.Component {
   state = {
     open: false,
     file: null,
@@ -83,49 +84,37 @@ class UploadModal extends React.Component {
         style={{ margin: 12 }}
         label="Modal Dialog"
         onClick={this.handleOpen} >
-        <img className="image-icon" src="/images/svg/SVG/upload.svg" title="Upload File" />
+        <img className="image-icon" src="/images/svg/SVG/copy.svg" title="Publish" />
         <Modal isOpen={this.state.open} toggle={this.toggle} >
-          <ModalHeader toggle={this.toggle}>Upload a file</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Publish a notebook</ModalHeader>
 
-          <div>
-            <Dropzone
-              onDrop={(accepted, rejected) => {
-                if (rejected.length) {
-                  console.error('rejected file:', rejected);
-                }
-                const file = accepted && accepted.length && accepted[0];
-                console.log(file);
-                this.setState({
-                  file: file,
-                  isUploading: false,
-                });
+          <ModalBody>
+            <Form autoComplete={false} onClose={this.props.handleClose}>
+              <FormGroup autoComplete={false}>
+                <Label for="name">Title</Label>
+                <Input type="text" name="name" id="name" value={this.state.name} placeholder="Give a title to your upload" onChange={this.handleChange} />
+              </FormGroup>
+              <FormGroup autoComplete={false}>
+                <Label for="name">File name</Label>
+                <Input placeholder={this.props.selected_file} />
+              
+              </FormGroup>
 
+              <FormGroup>
+                <Label for="description">Description</Label>
+                <Input type="textarea" name="description" id="description" placeholder="Description visible to user." onChange={this.handleChange} />
+              </FormGroup>
+              <FormGroup>
+                <Label for="role_eligible">Select language</Label>
+                <Input type="select" name="role_eligible" id="role_eligible" placeholder="What role a user must have to see this server?" onChange={this.handleChangeRole}>
+                  <option key={'ROLE_STANDARD'} value={'ROLE_STANDARD'}> Python</option>
+                  <option key={'ROLE_BETA'} value={'ROLE_BETA'}> R</option>
+                  <option key={'ROLE_ADMIN'} value={'ROLE_ADMIN'}> C</option>
+                </Input>
+              </FormGroup>
 
-              }}
-              style={{
-                textAlign: 'center',
-                fontSize: '3em',
-                color: '#656565',
-                border: '1px dotted #656565',
-                height: '12rem',
-              }}
-              disableClick={false}
-              multiple={false}
-              disabled={this.state.isUploading}
-            >
-              {this.state.isUploading ?
-                <div style={{ paddingTop: '3rem' }}>
-                  <CircularProgress size={80} thickness={5} />
-                </div>
-                :
-                <div>
-                  <i className="fa fa-cloud-upload fa-4x"></i>
-                </div>
-              }
-            </Dropzone>
-            {this.state.file && this.state.file.name}
-            {this.state.file && ` (${formatFileSize(this.state.file.size)})`}
-          </div>
+            </Form>
+          </ModalBody>
 
           <ModalFooter>
             <Btn
@@ -136,7 +125,7 @@ class UploadModal extends React.Component {
               color="primary"
               onClick={this.handleUpload}
               disabled={this.state.file == null}
-            >Upload </Btn>
+            >Publish </Btn>
 
           </ModalFooter>
 
@@ -151,12 +140,13 @@ function mapStateToProps(state) {
   return {
     filesystem: state.config.filesystem,
     table_path: state.config.table_path,
+    selected_file: state.config.selected_file,
   };
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ uploadFile }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ publishFile }, dispatch);
 
 
 
-export default UploadModal = connect(mapStateToProps, mapDispatchToProps)(UploadModal);
+export default PublishModal = connect(mapStateToProps, mapDispatchToProps)(PublishModal);

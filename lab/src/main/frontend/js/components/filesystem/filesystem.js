@@ -110,7 +110,7 @@ class FileSystem extends Component {
       }
     } else if (type === 'Folder') {
       this.setState({ folder: folder.folders[index] });
-      this.props.setTablePath(folder.path, "");
+      this.props.setTablePath(folder.folders[index].path, "");
     }
   };
 

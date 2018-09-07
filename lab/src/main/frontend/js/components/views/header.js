@@ -64,17 +64,20 @@ class Header extends React.Component {
                   <li><Link to={'/filesystem'}> <FormattedMessage id="header.files" defaultMessage="My Files" /></Link></li>
                   <li><Link to={'/guides'}> <FormattedMessage id="header.guides" defaultMessage="Guides" /></Link></li>
                   <li><Link to={'/courses'}> <FormattedMessage id="header.courses" defaultMessage="Courses" /></Link></li>
+                  <li><a>
+                    NBviewer
+                </a></li>
                   <li><Link to={'/whatislab'}> <FormattedMessage id="header.whatislab" defaultMessage="What is Lab?" /></Link></li>
                 </ul>
               </li>
               <li id="menu-item-project" className="menu-item aux-item">
                 <a href="#">
-                <FormattedMessage id="header.about" defaultMessage="About" />
+                  <FormattedMessage id="header.about" defaultMessage="About" />
                 </a>
               </li>
               <li id="menu-item-news" className="menu-item aux-item">
                 <a href="#">
-                <FormattedMessage id="header.news" defaultMessage="News" />
+                  <FormattedMessage id="header.news" defaultMessage="News" />
                 </a>
               </li>
               {authenticated && this.props.profile.roles.includes('ROLE_ADMIN') &&

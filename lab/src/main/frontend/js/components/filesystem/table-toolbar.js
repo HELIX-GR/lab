@@ -4,12 +4,11 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
 import Button from '@material-ui/core/Button';
-import ContentAdd from '@material-ui/icons/Add';
-import ActionUpdate from '@material-ui/icons/Update';
-import PlayArrow from '@material-ui/icons/PlayArrow';
 import ServerButton from './servers-button';
-import { getFilesystem, createFolder, uploadFile, setNewFolder } from '../../ducks/config';
+import { getFilesystem, createFolder, deletePath, setNewFolder } from '../../ducks/config';
 import UploadModal from './upload-modal';
+import PublishModal from './publish-modal';
+import {  toast, } from 'react-toastify';
 
 class TableToolbar extends React.Component {
   constructor(props) {
@@ -30,8 +29,15 @@ class TableToolbar extends React.Component {
   handleRefresh = () => {
     this.props.getFilesystem("");
   }
-  handleClick = () => {
-    
+  handleDelete = () => {
+    if (!this.props.selected_file){
+      toast.warn("Chose a File or empty Folder");
+      
+    }else if (this.props.table_path!=="/") {
+      this.props.deletePath(this.props.table_path + "/" + this.props.selected_file);
+    } else {
+      this.props.deletePath("/" + this.props.selected_file);
+    }
   }
 
   render() {
@@ -45,24 +51,25 @@ class TableToolbar extends React.Component {
           <div className="col-12 col-lg-6">
 
             <Button variant="fab" mini={true} style={style} onClick={this.handleCreate}>
-            <img className="image-icon" src="/images/svg/SVG/add.svg" title="Add File"/>
+              <img className="image-icon" src="/images/svg/SVG/add.svg" title="Add File" />
             </Button>
             <Button variant="fab" mini={true} style={style} onClick={this.handleRefresh} >
-            <img className="image-icon" src="/images/svg/SVG/refresh.svg" title="Refresh"/>
+              <img className="image-icon" src="/images/svg/SVG/refresh.svg" title="Refresh" />
             </Button>
-            <UploadModal onChange={this.props.uploadFile} />
-            <Button variant="fab" mini={true} style={style} onClick={this.handleRefresh} >
-            <img className="image-icon" src="/images/svg/SVG/delete.svg" title="Delete"/>
-             </Button>
+            <UploadModal />
+            <Button variant="fab" mini={true} style={style} onClick={this.handleDelete} >
+              <img className="image-icon" src="/images/svg/SVG/delete.svg" title="Delete" />
+            </Button>
+            <PublishModal />
             {!this.props.selected_hub ?
               null
               : this.props.target ?
                 <Button variant="fab" label="Play" mini={true} style={style} target="_blank" href={this.props.target + "/notebooks/" + this.props.table_path + this.props.selected_file}>
-            <img className="image-icon" src="/images/svg/SVG/run.svg" title="Run"/>
-                </Button> : null }
+                  <img className="image-icon" src="/images/svg/SVG/run.svg" title="Run" />
+                </Button> : null}
           </div>
           <div className="col-12 col-lg-6 text-lg-right">
-          <ServerButton />
+            <ServerButton />
           </div>
 
 
@@ -89,7 +96,7 @@ function mapStateToProps(state) {
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ getFilesystem, createFolder, uploadFile, setNewFolder }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ getFilesystem, createFolder, deletePath, setNewFolder }, dispatch);
 
 
 

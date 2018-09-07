@@ -30,4 +30,14 @@ module.exports = {
     return actions.submit('/action/file-system/upload', token, form);
   },
 
+  publish: (data, file, token) => {
+    const form = new FormData();
+    form.append('file', file);
+    form.append('data', new Blob([JSON.stringify(data)], {
+      type: 'application/json'
+    }));
+
+    return actions.submit('/action/file-system/publish', token, form);
+  },
+
 };
