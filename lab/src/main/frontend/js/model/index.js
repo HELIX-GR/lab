@@ -10,3 +10,7 @@ export {
   EnumCatalog,
   EnumFacet,
 } from './enum';
+
+export {
+  WordPressPages,
+} from './wordpress-pages';

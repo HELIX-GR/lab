@@ -36,7 +36,7 @@ import {
   Result
 } from '../helpers';
 
-import  SearchResult  from './search-result';
+import SearchResult from './search-result';
 
 import {
   LabFeatured,
@@ -66,15 +66,7 @@ class SearchPage extends React.Component {
     const { text } = this.props.search;
 
     if (this.isTextValid(text)) {
-      this.props.searchAll(text, advanced).then((data) => {
-        const found = Object.keys(EnumCatalog).some((key) => {
-          return (data.catalogs[key] && data.catalogs[key].count !== 0);
-        });
-
-        if (found) {
-          this.props.history.push(StaticRoutes.RESULTS);
-        }
-      });
+      this.props.searchAll(text, advanced);
     }
   }
   onTextChanged(value, refresh = true) {
@@ -111,6 +103,7 @@ class SearchPage extends React.Component {
                   <input
                     type="text"
                     autoComplete="off"
+                    outline="off"
                     className="landing-search-text"
                     name="landing-search-text"
                     placeholder={_t({ id: 'labsearch.placeholder' })}
@@ -120,11 +113,7 @@ class SearchPage extends React.Component {
                     onBlur={() => this.props.setResultVisibility(false)}
                     ref={this.textInput}
                   />
-                  <SearchResult visible={text.length>3} text={text}/>
-                  <Result
-                    visible={visible && !loading}
-                    result={catalogs}
-                  />
+                  <SearchResult visible={text.length > 3} text={text} result={this.props.search.partialResult.catalogs} />
                 </div>
                 <Link to={StaticRoutes.RESULTS}>
                   <button
@@ -132,7 +121,7 @@ class SearchPage extends React.Component {
                     name="landing-search-button"
                     className="landing-search-button"
                     disabled={loading}
-                  //onClick={(e) => this.onSearch(e)}
+                    onClick={(e) => this.onSearch(e)}
                   >
                     <i className={loading ? 'fa fa-spin fa-spinner' : 'fa fa-search'}></i>
                   </button>

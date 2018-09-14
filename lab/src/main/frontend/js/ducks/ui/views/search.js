@@ -121,7 +121,7 @@ export default (state = initialState, action) => {
         ...state,
         loading: false,
         result: {
-          catalogs: action.data.catalogs,
+          catalogs: action.data,
         },
       };
 
@@ -132,7 +132,7 @@ export default (state = initialState, action) => {
         loading: false,
         partialResult: {
           visible: true,
-          catalogs: action.data.catalogs,
+          catalogs: action.data,
         },
       };
 
@@ -198,6 +198,7 @@ export const searchAutoComplete = (term) => (dispatch, getState) => {
   dispatch(catalogSearchKeywordBegin(catalog, term));
   return catalogService.searchKeyword(token, catalog, term)
     .then((data) => {
+      console.log(data);
       dispatch(catalogSearchKeywordComplete(data));
       return data;
     })
@@ -207,30 +208,25 @@ export const searchAutoComplete = (term) => (dispatch, getState) => {
     });
 };
 
-export const search = (term, advanced = false, pageIndex = 0, pageSize = 2) => (dispatch, getState) => {
+export const search = (term, advanced = false, pageIndex = 0, pageSize = 5) => (dispatch, getState) => {
   const { meta: { csrfToken: token }, ui: { search: { pills, facets } } } = getState();
 
-  const queries = {};
-  if (pills.data) {
-    queries[EnumCatalog.CKAN] = {
-      catalog: EnumCatalog.CKAN,
-      pageIndex,
-      pageSize,
-      term,
-      facets: advanced ? facets : null,
-    };
-  }
-  if (pills.pubs) {
-    queries[EnumCatalog.OPENAIRE] = {
-      catalog: EnumCatalog.OPENAIRE,
-      pageIndex,
-      pageSize,
-      term,
-    };
-  }
+  const querie = {
+    pageIndex,
+    pageSize,
+    term,
+    facets: advanced ? facets : null,
+  };
+
+
 
   dispatch(catalogSearchBegin(term));
-  return catalogService.search(token, { queries })
+  return catalogService.search(token, { 
+    pageIndex,
+    pageSize,
+    term,
+    facets: advanced ? facets : null,
+  } )
     .then((data) => {
       dispatch(catalogSearchComplete(data));
       return (data);

@@ -6,7 +6,10 @@ import { changeLocale, } from '../../ducks/i18n';
 import { logout, modalLoginAction } from '../../ducks/user';
 import { FormattedMessage, } from 'react-intl';
 import {
+  buildPath,
+  DynamicRoutes,
   StaticRoutes,
+  WordPressPages,
 } from '../../model';
 
 
@@ -47,12 +50,12 @@ class Header extends React.Component {
           <nav className="nav-menu">
             <ul className="menu-items">
               <li id="menu-item-data" className="menu-item domain-item">
-                <a href="index_data.html">
+                <a href="http://data.hellenicdataservice.gr">
                   Data
                 </a>
               </li>
               <li id="menu-item-pubs" className="menu-item domain-item">
-                <a href="index_pubs.html">
+                <a href="http://core.hellenicdataservice.gr/pubs">
                   Pubs
                 </a>
               </li>
@@ -70,15 +73,31 @@ class Header extends React.Component {
                   <li><Link to={'/whatislab'}> <FormattedMessage id="header.whatislab" defaultMessage="What is Lab?" /></Link></li>
                 </ul>
               </li>
-              <li id="menu-item-project" className="menu-item aux-item">
+              <li id="menu-item-project" className="menu-item aux-item has-sub-menu">
                 <a href="#">
                   <FormattedMessage id="header.about" defaultMessage="About" />
                 </a>
+                <ul className="sub-menu">
+                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.WhatIsHelix])}>  <span>What is HELIX?</span></a> </li>
+                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Services])}> <span> Services </span></a></li>
+                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.FAQ])}><span>FAQ</span></a></li>
+                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.PublishData])}><span>Publish Data </span></a></li>
+                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Software])}><span>Software </span></a></li>
+                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Project])}><span>The project </span></a></li>
+                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Media])}><span>Media </span></a></li>
+                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.AcknowledgeHelix])}><span>Acknowledge Helix </span></a></li>
+                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Contact])}><span>Contact </span></a></li>
+                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.TermsOfUse])}><span>Terms of use </span></a></li>
+                </ul>
               </li>
-              <li id="menu-item-news" className="menu-item aux-item">
+              <li id="menu-item-news" className="menu-item aux-item has-sub-menu">
                 <a href="#">
                   <FormattedMessage id="header.news" defaultMessage="News" />
-                </a>
+                </a> 
+                <ul className="sub-menu">
+                  <li> <a href="http://core.hellenicdataservice.gr/core/news"><span>News </span></a></li>
+                  <li> <a href="http://core.hellenicdataservice.gr/core/events"><span>Events</span></a></li>
+                </ul>
               </li>
               {authenticated && this.props.profile.roles.includes('ROLE_ADMIN') &&
                 <li id="menu-item-news" className="menu-item aux-item">
