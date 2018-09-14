@@ -26,8 +26,6 @@ import {
   changeText,
   search as searchAll,
   searchAutoComplete,
-  toggleAdvanced,
-  togglePill,
   toggleSearchFacet,
   setResultVisibility,
 } from '../../ducks/ui/views/search';
@@ -67,8 +65,12 @@ class SearchPage extends React.Component {
 
     if (this.isTextValid(text)) {
       this.props.searchAll(text, advanced);
+
+      this.props.history.push(StaticRoutes.RESULTS);
     }
+  
   }
+
   onTextChanged(value, refresh = true) {
     this.props.changeText(value);
 
@@ -78,7 +80,7 @@ class SearchPage extends React.Component {
   }
 
   onSearch(e) {
-    e.preventDefault();
+    //e.preventDefault();
 
 
     this.search(false);
@@ -149,8 +151,6 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   changeLocale,
   changeText,
   logout,
-  toggleAdvanced,
-  togglePill,
   searchAll,
   searchAutoComplete,
   toggleSearchFacet,

@@ -218,8 +218,6 @@ export const search = (term, advanced = false, pageIndex = 0, pageSize = 5) => (
     facets: advanced ? facets : null,
   };
 
-
-
   dispatch(catalogSearchBegin(term));
   return catalogService.search(token, { 
     pageIndex,

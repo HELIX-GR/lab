@@ -3,7 +3,7 @@ import * as ReactRedux from 'react-redux';
 import * as ReactIntl from 'react-intl';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { basename } from '../history';
+import { basename, history } from '../history';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import App from "./App.js";
 
@@ -35,7 +35,7 @@ class Root extends React.Component {
         <MuiThemeProvider theme={theme}>
           <CssBaseline />
 
-          <BrowserRouter>
+          <BrowserRouter history={history}>
             <Route path="/" component={App} />
           </BrowserRouter>
         </MuiThemeProvider>

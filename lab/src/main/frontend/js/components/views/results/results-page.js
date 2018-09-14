@@ -49,7 +49,7 @@ const dummy = {
   ]
 
 };
-  
+
 
 
 class Results extends React.Component {
@@ -171,7 +171,7 @@ class Results extends React.Component {
       return null;
     }
 
-    const  host  = "this.props.config";
+    const host = "this.props.config";
 
     return data.results.map(r => {
       /* const formats = r.resources.reduce((result, value) => {
