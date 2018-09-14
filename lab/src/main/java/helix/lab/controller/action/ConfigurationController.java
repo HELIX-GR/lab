@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import gr.helix.core.common.model.RestResponse;
 import helix.lab.config.SamlConfiguration;
 import helix.lab.model.configuration.ClientConfiguration;
+import helix.lab.service.CkanServiceProxy;
 
 @RestController
 @RequestMapping(produces = "application/json")
@@ -20,7 +21,9 @@ public class ConfigurationController extends BaseController {
     @Autowired
     private MetadataManager metadata;
 
-
+    @Autowired
+    private CkanServiceProxy ckanServiceProxy;
+    
 	@RequestMapping(value = "/action/configuration/{locale}", method = RequestMethod.GET)
 	public RestResponse<ClientConfiguration> getConfiguration(String locale) {
 		return RestResponse.result(this.createConfiguration());
@@ -33,6 +36,7 @@ public class ConfigurationController extends BaseController {
 		//config.setBingMaps(this.mapConfiguration.getBingMaps());
 		config.setDefaultIdentityProvider(this.samlConfiguration.getDefaultProvider());
 
+		config.setCkan(this.ckanServiceProxy.getMetadata());
 		this.metadata.getIDPEntityNames().stream().forEach(config::addIdentityProvider);
 
 		return config;

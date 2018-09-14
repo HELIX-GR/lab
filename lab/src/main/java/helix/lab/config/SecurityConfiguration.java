@@ -544,7 +544,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                              "/login**",
                              "/logged-out",
                              "/error**",
-                             "/saml/**").permitAll()            
+                             "/saml/**",
+                          // Public endpoints
+                             "/action/configuration/**",
+                             "/action/ckan/**",
+                             "/action/catalog/**").permitAll()            
             .anyRequest().authenticated()
                 .antMatchers("/admin/**")
                 .hasAuthority("ROLE_ADMIN");
