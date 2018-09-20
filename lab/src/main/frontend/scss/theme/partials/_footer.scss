@@ -1,132 +1,93 @@
-body{
-
-  footer#footer{
-
-    &.main-footer{
-
+body {
+  footer#footer {
+    &.main-footer {
       color: $footer-white;
       background-color: $main-black;
     }
-
-    &.data-footer{
-
+    &.data-footer {
       color: white;
       background-color: $data-color;
     }
-
-    &.pubs-footer{
-
+    &.pubs-footer {
       color: white;
       background-color: $pubs-color;
     }
-
-    &.lab-footer{
-
+    &.lab-footer {
       color: white;
       background-color: $lab-color;
     }
-
-    .footer-content{
-
+    .footer-content {
       width: 100%;
-      padding: 45px 50px 30px 50px;
+      padding: 45px 50px 30px 55px;
       max-width: 1366px;
       display: block;
       margin: auto;
-
-      .footer-column{
-
+      .footer-column {
         vertical-align: top;
         display: inline-block;
-
-        &.logo{
-
-          min-width: 332px;
-
-          a{
-
+        &.logo {
+          min-width: 312px;
+          a {
             color: inherit;
-
-            img{
-
+            img {
               vertical-align: super;
               width: 210px;
             }
           }
         }
-
-        &.about{
-
-          min-width: 220px;
+        &.about {
+          min-width: 180px;
+          margin-top: -4px;
         }
-
-        &.research{
-
-          min-width: 232px;
+        &.research {
+          min-width: 180px;
+          margin-top: -4px;
         }
-
-        &.partners{
-
-          li{
-
+        &.partners {
+          li {
             float: left;
-
-            img{
-
+            img {
               max-width: 200px;
               min-width: 55px;
               margin: 0px 10px 0px 0px;
             }
           }
+          h3.footer-column-title {
+            margin-bottom: 72px;
+          }
         }
-
-        h3.footer-column-title{
-
+        h3.footer-column-title {
           font-weight: 500;
           font-size: 25;
           line-height: 1;
           letter-spacing: -.02em;
-
-          margin-bottom: 45px;
+          margin-bottom: 47px;
         }
-
-        ul{
-
+        ul {
           list-style-type: none;
           padding: 0;
-
-          li{
-
+          li {
             margin-bottom: 18px;
             font-weight: 300;
             font-size: 14px;
             line-height: 1.3;
-
-
-            &:last-child{
-
+            padding-right: 20px;
+            &:last-child {
               margin-bottom: none;
             }
-
-            a{
-
+            a {
               color: inherit;
-
-              &:hover{
-
+              &:hover {
                 text-decoration: none;
               }
             }
           }
         }
       }
-
-      .copyright-notes{
-
+      .copyright-notes {
         font-size: 12px;
         font-weight: 400;
         line-height: 1;
-
       }
     }
   }

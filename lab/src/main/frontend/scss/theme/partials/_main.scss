@@ -1,53 +1,51 @@
-body{
-  // margin: 15px;
-
-  ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+body {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  ::placeholder {
     color: #67676A;
-    opacity: 1; /* Firefox */
+    /* Firefox */
+    opacity: 1;
   }
-
-  :-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: #67676A;
-  }
-
-  ::-ms-input-placeholder { /* Microsoft Edge */
+  /* Internet Explorer 10-11 */
+  :-ms-input-placeholder {
     color: #67676A;
   }
-
+  /* Microsoft Edge */
+  ::-ms-input-placeholder {
+    color: #67676A;
+  }
   font-family: $body_font;
-
   &.main-landing {
     background-color: $neutral-grey;
   }
-
-
   /* Clear Fix */
   .cf {
-  	&:before,
-  	&:after {
-  		content: " ";
-  		display: table;
-  	}
-  	&:after {
-  		clear: both;
-  	}
+    &:before,
+    &:after {
+      content: " ";
+      display: table;
+    }
+    &:after {
+      clear: both;
+    }
   }
-
-  a{
-
-    &:hover{
-
+  a {
+    &:hover {
       text-decoration: none;
     }
   }
 }
 
-
-h1, h2, h3, h4, h5, h6{
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0;
 }
 
-h1, .style-1{
+h1,
+.style-1 {
   font-family: $body_font;
   font-weight: 500;
   font-size: 40px;
@@ -55,8 +53,8 @@ h1, .style-1{
   letter-spacing: .02em;
 }
 
-h2, .style-2{
-
+h2,
+.style-2 {
   font-family: $body_font;
   font-weight: 500;
   font-size: 30px;
@@ -64,8 +62,8 @@ h2, .style-2{
   letter-spacing: 0;
 }
 
-h3, .style-3{
-
+h3,
+.style-3 {
   font-family: $body_font;
   font-weight: 400;
   font-size: 25px;
@@ -73,8 +71,8 @@ h3, .style-3{
   letter-spacing: 0;
 }
 
-h4, .style-4{
-
+h4,
+.style-4 {
   font-family: $body_font;
   font-weight: 700;
   font-size: 20px;
@@ -82,8 +80,8 @@ h4, .style-4{
   letter-spacing: .02em;
 }
 
-h5, .style-5{
-
+h5,
+.style-5 {
   font-family: $body_font;
   font-weight: 400;
   font-size: 15px;
@@ -91,8 +89,8 @@ h5, .style-5{
   letter-spacing: .025em;
 }
 
-h6, .style-6{
-
+h6,
+.style-6 {
   font-family: $body_font;
   font-weight: 300;
   font-size: 12px;
@@ -100,36 +98,30 @@ h6, .style-6{
   letter-spacing: .05em;
 }
 
-.tag-box{
-
+.tag-box {
   color: $details-grey;
   display: inline-block;
   border: 1px solid #898989;
   margin: 3px;
-  padding: 5px 3px;
-  font-size: 12px;
+  padding: 3px 3px;
+  font-size: 0.8rem;
   line-height: 1.3;
   font-weight: 300;
-
   opacity: 1;
-
   transition: all .2s ease-in-out;
   -webkit-transition: all .2s ease-in-out;
   -moz-transition: all .2s ease-in-out;
   -o-transition: all .2s ease-in-out;
-
-  &:first-child{
+  letter-spacing: 0.07rem;
+  &:first-child {
     margin-left: 0;
   }
-
-  &:first-child{
+  &:first-child {
     margin-right: 0;
   }
-
-  &:hover{
+  &:hover {
     opacity: .5;
     color: $details-grey;
     text-decoration: none;
   }
 }
-

@@ -15,19 +15,18 @@ $layout-fixed-width :1366px;
 /*
  * Import HELIX react components
  */
-
+@import 'components/debug-console';
 @import 'components/login';
 @import 'components/map';
 
 
-/**
- * Custom rules
- */
-
- .menu-wrapper .menu-item .active-link {
-  border-bottom: 2px solid;
-}
-
-
 @import 'vendor/react-table';
 
+
+/*
+ * Override bootstrap defaults
+ */
+
+.modal-open {
+  overflow: auto;
+}

@@ -1,0 +1,20 @@
+.debug-console-wrapper {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 1001;
+  background: white;
+  opacity: 0.8;
+  padding: 20px;
+}
+
+.debug-foreground {
+  z-index: 1050;
+}
+
+.debug-image {
+  opacity: 0.5;
+  position: absolute;
+  top: 0;
+  filter: saturate(8);
+}
