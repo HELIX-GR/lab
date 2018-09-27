@@ -9,6 +9,8 @@ public class ServiceConfiguration {
     private int    port;
 
     private String path;
+    
+    private String apikey;
 
     public String getScheme() {
         return this.scheme;
@@ -41,5 +43,14 @@ public class ServiceConfiguration {
     public void setPath(String path) {
         this.path = path;
     }
+
+	public String getApikey() {
+		return apikey;
+	}
+
+	public void setApikey(String apikey) {
+		this.apikey = apikey;
+	}
+    
 
 }

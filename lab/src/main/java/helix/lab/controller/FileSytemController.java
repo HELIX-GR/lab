@@ -9,8 +9,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Locale;
+import java.util.UUID;
+
+import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
@@ -22,12 +26,14 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import gr.helix.core.common.model.RestResponse;
 import gr.helix.core.common.model.BasicErrorCode;
+import gr.helix.core.common.model.RestResponse;
 import helix.lab.controller.action.BaseController;
 import helix.lab.model.FileSystemErrorCode;
 import helix.lab.model.FileSystemPathRequest;
+import helix.lab.model.PublishRequest;
 import helix.lab.model.UploadRequest;
+import helix.lab.service.CkanServiceProxy;
 
 
 
@@ -36,10 +42,13 @@ import helix.lab.model.UploadRequest;
 @Secured({ "ROLE_STANDARD", "ROLE_ADMIN" })
 @RequestMapping(produces = "application/json")
 public class FileSytemController extends BaseController {
+	
+    @Autowired
+    private CkanServiceProxy     ckanServiceProxy;
 
     private long maxUserSpace;
 
-    @Value("200000000")
+    @Value("2000000000")// 20mb?
     public void setDefaultLocale(String maxUserSpace) {
         this.maxUserSpace = this.parseSize(maxUserSpace);
     }
@@ -137,6 +146,7 @@ public class FileSytemController extends BaseController {
         try {
             final String userName = currentUserName();
             long size = fileNamingStrategy.getUserDirectoryInfo(userName).getSize();
+            System.out.println(maxUserSpace);
             if (size + file.getSize() > maxUserSpace) {
                 return RestResponse.error(FileSystemErrorCode.NOT_ENOUGH_SPACE, "Insufficient storage space");
             }
@@ -166,6 +176,50 @@ public class FileSytemController extends BaseController {
         }
     }
 
+    /**
+     * Publish a file to ckan
+     *
+     * @param file uploaded resource file
+     * @param request request with the file name
+     * @throws InvalidProcessDefinitionException
+     */
+    @RequestMapping(value = "/action/file-system/publish", method = RequestMethod.POST)
+    public RestResponse<?> publish(@RequestBody @Valid PublishRequest request) throws IOException {
+    //TODO
+    	System.out.println(request.toString() );
+        try {
+        	 if (StringUtils.isEmpty(request.getFilename())) {
+                 return RestResponse.error(FileSystemErrorCode.PATH_IS_EMPTY, "File name is not set");
+             }
+
+            final String userName = currentUserName();
+            final Path relativePath = Paths.get(request.getPath(), request.getFilename());
+            final Path absolutePath = fileNamingStrategy.resolvePath(userName, relativePath);
+        	System.out.println(absolutePath.toString() );
+
+            final File file = absolutePath.toFile();
+
+            if (!file.exists()) {
+                return RestResponse.error(FileSystemErrorCode.PATH_NOT_FOUND, "Path does not exist");
+            }
+            if (StringUtils.isEmpty(request.getFilename())) {
+                return RestResponse.error(FileSystemErrorCode.PATH_IS_EMPTY, "File name is not set");
+            }
+            // Create a new dataset
+          String package_id = UUID.randomUUID().toString();
+          System.out.println(ckanServiceProxy.createNewDataset(request, package_id ));
+
+            return RestResponse.result (ckanServiceProxy.createNewResource(request, file, package_id));
+        //    InputStream in = new ByteArrayInputStream(file.getBytes());
+          //  Files.copy(in, absolutePath, StandardCopyOption.REPLACE_EXISTING);
+
+          //  return RestResponse.result(fileNamingStrategy.getUserDirectoryInfo(currentUserName()));
+        } catch (Exception ex) {
+        	System.out.println(ex.toString());
+            return RestResponse.error(BasicErrorCode.UNKNOWN, "An unknown error has occurred");
+        }
+    }
+    
     private long parseSize(String size) {
         Assert.hasLength(size, "Size must not be empty");
 

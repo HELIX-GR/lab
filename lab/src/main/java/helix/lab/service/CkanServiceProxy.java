@@ -1,21 +1,32 @@
 package helix.lab.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +39,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gr.helix.core.common.model.ApplicationException;
 import gr.helix.core.common.model.BasicErrorCode;
 import helix.lab.config.ServiceConfiguration;
-import helix.lab.model.ckan.CatalogResult;
+import helix.lab.model.PublishRequest;
 import helix.lab.model.ckan.ArrayResponse;
+import helix.lab.model.ckan.CatalogResult;
 import helix.lab.model.ckan.CkanCatalogQuery;
 import helix.lab.model.ckan.CkanCatalogResult;
 import helix.lab.model.ckan.CkanMetadata;
@@ -406,44 +418,54 @@ public class CkanServiceProxy {
 
         return "";
     }
-    // Create a new recourse in CKAN
-    public CatalogResult<Package> createNewRecourse(CkanCatalogQuery query, boolean includeFacets) throws ApplicationException {
+    // Create a new dataset in CKAN
+    public Object createNewDataset(PublishRequest query, String package_id) throws ApplicationException {
         try {
             // Documentation: http://docs.ckan.org/en/latest/api/index.html
 //TODO
+        	 System.out.println("create new recourse");
+        	 System.out.println(query.toString());
             // CKAN start index starts from 0
             final URIBuilder builder = new URIBuilder()
                 .setScheme(this.ckanConfiguration.getScheme())
                 .setHost(this.ckanConfiguration.getHost())
                 .setPort(this.ckanConfiguration.getPort())
-                .setPath(this.composePath("/api/action/package_search"))
-                .addParameter("q", query.getTerm())
-                .addParameter("sort", "relevance asc, metadata_modified desc")
-                .addParameter("rows", Integer.toString(query.getPageSize()))
-                .addParameter("start", Integer.toString(query.getPageSize() * query.getPageIndex()));
+                .setPath(this.composePath("/api/action/package_create"));
 
-            if ((includeFacets) && (query.getFacets() != null)) {
-                final String facetQuery = this.buildFacetQuery(query.getFacets());
-                if (!StringUtils.isBlank(facetQuery)) {
-                    builder.addParameter("facet.field", "[\"license_id\",\"organization\", \"groups\", \"tags\", \"res_format\"]");
-                    builder.addParameter("fq", facetQuery);
-                }
-            }
 
             final URI uri = builder.build();
+            
+          
 
-            final HttpUriRequest request = RequestBuilder.post(uri)
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            nameValuePairs.add(new BasicNameValuePair("name", package_id));
+            nameValuePairs.add(new BasicNameValuePair("title",query.getTitle()));
+            nameValuePairs.add(new BasicNameValuePair("notes",query.getDescription()));
+            nameValuePairs.add(new BasicNameValuePair("closed_tag","Biography"));
+            nameValuePairs.add(new BasicNameValuePair("foo.contact_email","lab@helix.gr"));
+            nameValuePairs.add(new BasicNameValuePair("foo.creator.creator_name","HELIX Lab"));
+            nameValuePairs.add(new BasicNameValuePair("owner_org","lab"));
+            nameValuePairs.add(new BasicNameValuePair("return_id_only","True"));
+//TODO tags
+           // nameValuePairs.add(new BasicNameValuePair("tags",query.getLang()));
+            
+            
+            
+            final HttpUriRequest req = RequestBuilder.post(uri)
                 .addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-                .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .addHeader(HttpHeaders.AUTHORIZATION , this.ckanConfiguration.getApikey().toString())
+                .setEntity(new UrlEncodedFormEntity(nameValuePairs))
                 .build();
-
-            try (CloseableHttpResponse response = (CloseableHttpResponse) this.httpClient.execute(request)) {
+           
+            try (CloseableHttpResponse response = (CloseableHttpResponse) this.httpClient.execute(req)) {
+            	
+            	//return response;
                 if (response.getStatusLine().getStatusCode() != 200) {
                     throw ApplicationException.fromMessage("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
                 }
                 final CatalogResult<Package> ckanResponse = this.parsePackages(response);
-                ckanResponse.setPageIndex(query.getPageIndex());
-                ckanResponse.setPageSize(query.getPageSize());
+                
                 return ckanResponse;
             }
         } catch (final ApplicationException ex) {
@@ -454,5 +476,64 @@ public class CkanServiceProxy {
         return null;
     }
 
+    
+    
+    // Create a new resource  in CKAN
+    public Object createNewResource(PublishRequest query, File  file, String package_id) throws ApplicationException {
+        try {
+            // Documentation: http://docs.ckan.org/en/latest/api/index.html
+//TODO
+        	 System.out.println("create new recourse");
+        	 System.out.println(query.toString());
+            // CKAN start index starts from 0
+            final URIBuilder builder = new URIBuilder()
+                .setScheme(this.ckanConfiguration.getScheme())
+                .setHost(this.ckanConfiguration.getHost())
+                .setPort(this.ckanConfiguration.getPort())
+                .setPath(this.composePath("/api/action/resource_create"));
+
+
+            final URI uri = builder.build();
+
+
+            // build multipart upload request
+            HttpEntity mpEntity = MultipartEntityBuilder.create()
+            		.addBinaryBody("upload", file,  ContentType.DEFAULT_BINARY, file.getName())
+            		.addTextBody("package_id", package_id)
+					.addTextBody("url", "")
+					.addTextBody("name", query.getFilerename())
+					.addTextBody("format", FilenameUtils.getExtension(query.getFilename()))
+					.build();
+         
+
+            final HttpUriRequest req = RequestBuilder.post(uri)
+                .addHeader(HttpHeaders.AUTHORIZATION , this.ckanConfiguration.getApikey().toString())
+                .setEntity(mpEntity)
+                .build();
+            
+            System.out.println("Executing request " + req.getRequestLine());
+            ResponseHandler<String> responseHandler = response -> {
+            int status = response.getStatusLine().getStatusCode();
+            if (status >= 200 && status < 300) {
+                HttpEntity entity = response.getEntity();
+                return entity != null ? EntityUtils.toString(entity) : null;
+            } else {
+            	System.out.println(response.toString());
+            	return null;
+               // throw new ClientProtocolException("Unexpected response status: " + status);
+            }};
+       
+        	String responseBody = this.httpClient.execute(req, responseHandler);
+            System.out.println("----------------------------------------");
+            System.out.println(responseBody);
+            return responseBody;
+        
+        } catch (final ApplicationException ex) {
+            throw ex;
+        } catch (final Exception ex) {
+            this.handleException(ex);
+        }
+        return null;
+    }
 
 }
