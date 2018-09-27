@@ -76,7 +76,6 @@ class App extends React.Component {
 
       </Switch>
     );
-
     return (
       <div className="lab">
         <ToastContainer

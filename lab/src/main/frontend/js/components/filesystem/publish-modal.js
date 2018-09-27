@@ -16,11 +16,13 @@ import { toast, } from 'react-toastify';
  */
 class PublishModal extends React.Component {
   state = {
+    title: '',
     open: false,
-    file: null,
-    newFolderName: '',
-    isUploading: false,
+    filename: '',
+    filerename: '',
+    isPublishing: false,
     path: this.props.table_path,
+    lang: "Python"
   };
 
 
@@ -33,47 +35,55 @@ class PublishModal extends React.Component {
     }
   }
   handleOpen = () => {
-    this.setState({ open: true });
+    this.setState({
+      open: true,
+      path: this.props.table_path,
+      filename: this.props.selected_file,
+      filerename: this.props.selected_file,
+    });
   };
 
   handleClose = () => {
     this.setState({
+      title: '',
       open: false,
-      file: null,
-      newFolderName: '',
-      isUploading: false,
+      filename: '',
+      filerename: '',
+      isPublishing: false,
     });
   };
 
 
-  handleUpload = () => {
+  handlePublish = () => {
 
     let path = this.props.table_path;
     if (path.startsWith('/')) {
       path = path.slice(1);
     }
+   
     console.log("path : ", path);
     this.setState({
-      isUploading: true,
+      isPublishing: true,
     });
-    let file = this.state.file;
-    this.props.uploadFile({ path, filename: file.name, }, file)
+
+    let { title, filename, filerename, description, lang } = this.state;
+    this.props.publishFile({ title, path, filename, filerename, description, lang })
       .then(fs => {
-        toast.success("The file is uploaded!");
-        this.setState({
-          file: null,
-          newFolderName: '',
-          isUploading: false,
-          open: false,
-        });
+        toast.success("The file is published!");
+        this.handleClose();
       })
       .catch((err) => {
-        toast.error("Can't upload file!");
+        toast.error("Can't publish this file!");
         this.setState({
-          isUploading: false,
+          isPublishing: false,
         });
       });
   };
+
+  handleChange = (event) => {
+    this.setState({ [event.target.id]: event.target.value });
+    // this.props.change(this.state);
+  }
 
   render() {
 
@@ -89,27 +99,27 @@ class PublishModal extends React.Component {
           <ModalHeader toggle={this.toggle}>Publish a notebook</ModalHeader>
 
           <ModalBody>
-            <Form autoComplete={false} onClose={this.props.handleClose}>
-              <FormGroup autoComplete={false}>
-                <Label for="name">Title</Label>
-                <Input type="text" name="name" id="name" value={this.state.name} placeholder="Give a title to your upload" onChange={this.handleChange} />
+            <Form onClose={this.props.handleClose}>
+              <FormGroup >
+                <Label for="title">Title</Label>
+                <Input type="text" id="title" value={this.state.title} placeholder="Give a title to your upload" onChange={this.handleChange} />
               </FormGroup>
-              <FormGroup autoComplete={false}>
+              <FormGroup >
                 <Label for="name">File name</Label>
-                <Input placeholder={this.props.selected_file} />
-              
+                <Input id="filerename" placeholder={this.state.filename} value={this.state.filerename} onChange={this.handleChange} />
+
               </FormGroup>
 
               <FormGroup>
                 <Label for="description">Description</Label>
-                <Input type="textarea" name="description" id="description" placeholder="Description visible to user." onChange={this.handleChange} />
+                <Input type="textarea" name="description" id="description" value={this.state.description} placeholder="Description visible to user." onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
                 <Label for="role_eligible">Select language</Label>
-                <Input type="select" name="role_eligible" id="role_eligible" placeholder="What role a user must have to see this server?" onChange={this.handleChangeRole}>
-                  <option key={'ROLE_STANDARD'} value={'ROLE_STANDARD'}> Python</option>
-                  <option key={'ROLE_BETA'} value={'ROLE_BETA'}> R</option>
-                  <option key={'ROLE_ADMIN'} value={'ROLE_ADMIN'}> C</option>
+                <Input type="select" name="lang" id="lang"  onChange={this.handleChange}>
+                  <option key={'Python'} value={'Python'}> Python</option>
+                  <option key={'R'} value={'R'}> R</option>
+                  <option key={'C'} value={'C'}> C</option>
                 </Input>
               </FormGroup>
 
@@ -123,8 +133,8 @@ class PublishModal extends React.Component {
             >Cancel </Btn>{' '}
             <Btn
               color="primary"
-              onClick={this.handleUpload}
-              disabled={this.state.file == null}
+              onClick={this.handlePublish}
+              disabled={this.state.title == null}
             >Publish </Btn>
 
           </ModalFooter>

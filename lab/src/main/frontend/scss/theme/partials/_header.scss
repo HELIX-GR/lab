@@ -104,7 +104,7 @@ body {
     z-index: 2;
     @include position(absolute, 0 0 null 0);
     img.logo-image {
-      height: 100px;
+      height: 103px;
       margin-top: 50px;
       margin-left: 50px;
     }
@@ -124,8 +124,8 @@ body {
             letter-spacing: .005em;
             line-height: 1.2;
             float: left;
-            padding-left: 15px;
-            padding-right: 15px;
+            padding-left: 10px;
+            padding-right: 10px;
             position: relative;
             &.has-sub-menu {
               background-color: transparent;
@@ -182,23 +182,25 @@ body {
               }
             }
             &#menu-item-data {
+              margin-right: 4px;
+              a.active-link {
+                border-color: $data-color;
+              }
             }
             &#menu-item-pubs {
-              padding-right: 10px;
+              margin-right: 6px;
               a.active-link {
                 border-color: $pubs-color;
               }
             }
             &#menu-item-lab {
-              margin-right: 20px;
-              padding-right: 15px;
+              margin-right: 30px;
             }
             &#menu-item-project {
-              padding-right: 5px;
+
             }
             &#menu-item-news {
-              margin-right: 20px;
-              padding-right: 15px;
+              margin-right: 25px;
             }
             &#menu-item-account {
               padding: 0px;
@@ -211,14 +213,14 @@ body {
         a {
           height: 45px;
           font-weight: 400;
-          font-size: 20px;
+          font-size: 1.35rem;
           color: $main-black;
           letter-spacing: .005em;
           float: left;
-          padding-left: 15px;
-          padding-right: 13px;
+          padding-left: 14px;
+          padding-right: 15px;
           vertical-align: middle;
-          line-height: 43px;
+          line-height: 44px;
           transition: all .2s ease-in-out;
           -webkit-transition: all .2s ease-in-out;
           -moz-transition: all .2s ease-in-out;
@@ -271,7 +273,7 @@ body {
           line-height: 35px;
           height: 34px;
           width: 34px;
-          line-height: 30px;
+          line-height: 34px;
           transition: all .2s ease-in-out;
           -webkit-transition: all .2s ease-in-out;
           -moz-transition: all .2s ease-in-out;

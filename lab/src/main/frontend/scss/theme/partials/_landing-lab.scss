@@ -101,6 +101,7 @@
           line-height: 1.5;
         }
         .lab-item {
+          height: 100%;
           padding: 15px 15px 45px 15px;
           border-top: solid 10px $lab-color;
           transition: all .2s ease-in-out;
@@ -132,6 +133,8 @@
             line-height: 1.3;
           }
           .lab-action-link {
+            bottom: 10px;
+            position: absolute;
             margin-top: 25px;
             font-weight: 500;
             font-size: 18;

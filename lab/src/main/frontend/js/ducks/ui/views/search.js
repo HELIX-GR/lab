@@ -37,7 +37,7 @@ const initialState = {
   result: {
     catalogs: {},
   },
-  text: '',
+  text: "",
 };
 
 function facetReducer(state, action) {
@@ -120,9 +120,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        result: {
-          catalogs: action.data,
-        },
+        result:  action.data,
       };
 
     case SEARCH_AUTOCOMPLETE_RESPONSE:

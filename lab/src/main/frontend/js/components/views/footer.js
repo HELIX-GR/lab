@@ -72,7 +72,7 @@ class Footer extends React.Component {
           </div>
 
           <div className="copyright-notes">
-            © 2018 Helix. All rights reserved.
+            © 2018 HELIX. All rights reserved.
           </div>
         </div>
       </footer>

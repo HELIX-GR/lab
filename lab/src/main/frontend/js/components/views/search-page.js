@@ -3,7 +3,7 @@ import * as ReactRedux from 'react-redux';
 import * as PropTypes from 'prop-types';
 
 import _ from 'lodash';
-import classnames from 'classnames';
+import { withRouter } from 'react-router';
 
 import {
   bindActionCreators
@@ -18,7 +18,6 @@ import {
 } from '../../ducks/user';
 
 import {
-  EnumCatalog,
   StaticRoutes,
 } from '../../model';
 
@@ -40,7 +39,6 @@ import {
   LabFeatured,
 } from './';
 
-import { Link, NavLink } from 'react-router-dom';
 
 class SearchPage extends React.Component {
 
@@ -59,16 +57,15 @@ class SearchPage extends React.Component {
     return ((text) && (text.length > 2));
   }
 
-  //TODO
   search(advanced = false) {
     const { text } = this.props.search;
 
     if (this.isTextValid(text)) {
-      this.props.searchAll(text, advanced);
+      this.props.searchAll(text, advanced).then(
 
-      this.props.history.push(StaticRoutes.RESULTS);
+        this.props.history.push(StaticRoutes.RESULTS));
     }
-  
+
   }
 
   onTextChanged(value, refresh = true) {
@@ -80,20 +77,16 @@ class SearchPage extends React.Component {
   }
 
   onSearch(e) {
-    //e.preventDefault();
+    e.preventDefault();
 
 
     this.search(false);
-  }
-  onPillChanged(id) {
-    this.props.togglePill(id);
   }
 
 
   render() {
     const { advanced, partialResult: { visible, catalogs }, loading, pills, text } = this.props.search;
     const _t = this.context.intl.formatMessage;
-
     return (
 
       <div>
@@ -115,19 +108,18 @@ class SearchPage extends React.Component {
                     onBlur={() => this.props.setResultVisibility(false)}
                     ref={this.textInput}
                   />
-                  <SearchResult visible={text.length > 3} text={text} result={this.props.search.partialResult.catalogs} />
+                  {text &&
+                    <SearchResult visible={text.length > 3} text={text || ""} result={this.props.search.partialResult.catalogs} />}
                 </div>
-                <Link to={StaticRoutes.RESULTS}>
-                  <button
-                    type="submit"
-                    name="landing-search-button"
-                    className="landing-search-button"
-                    disabled={loading}
-                    onClick={(e) => this.onSearch(e)}
-                  >
-                    <i className={loading ? 'fa fa-spin fa-spinner' : 'fa fa-search'}></i>
-                  </button>
-                </Link>
+                <button
+                  type="submit"
+                  name="landing-search-button"
+                  className="landing-search-button"
+                  disabled={loading}
+                  onClick={(e) => this.onSearch(e)}
+                >
+                  <i className={loading ? 'fa fa-spin fa-spinner' : 'fa fa-search'}></i>
+                </button>
               </form>
             </div>
           </div>
@@ -163,4 +155,5 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
 });
 
-export default ReactRedux.connect(mapStateToProps, mapDispatchToProps, mergeProps)(SearchPage);
+SearchPage = ReactRedux.connect(mapStateToProps, mapDispatchToProps, mergeProps)(SearchPage);
+export default withRouter(SearchPage);

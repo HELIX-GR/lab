@@ -33,9 +33,7 @@ class Root extends React.Component {
     return (
       <ReactIntl.IntlProvider locale={locale} key={locale} messages={messages}>
         <MuiThemeProvider theme={theme}>
-          <CssBaseline />
-
-          <BrowserRouter history={history}>
+          <BrowserRouter>
             <Route path="/" component={App} />
           </BrowserRouter>
         </MuiThemeProvider>

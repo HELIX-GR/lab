@@ -149,15 +149,15 @@ export const uploadFile = (data, file) => (dispatch, getState) => {
     });
 };
 
-export const publishFile = (data, file) => (dispatch, getState) => {
+export const publishFile = (data) => (dispatch, getState) => {
   const { meta: { csrfToken: token } } = getState();
-  console.log("uploading file");
+  console.log("publish file");
 
-  console.log(data, file);
-  return filesystemService.publish(data, file, token)
+  console.log(data);
+  return filesystemService.publish(data, token)
     .then((fs) => {
       var t = moment().valueOf();
-      dispatch(receiveFilesystem(fs, t));
+      console.log(fs, t);
     })
     .catch((err) => {
       console.error('Error publishing file', err);

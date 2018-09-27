@@ -195,17 +195,14 @@ class Results extends React.Component {
             <a href={`${host}/dataset/${r.id}`} target="_blank">
               {r.title}
             </a>
-            <div className="pill lab">
-              LAB
-            </div>
           </h3>
-          <div className="notes"> I am another NOTEBOOK package! </div>
+          <div className="notes"> {r.notes} </div>
           <div className="service">
-            <a href="#">Nikiforos</a>
+            <a href="#">{r.organization.title}</a>
           </div>
 
           <div className="tag-list">
-            {r.tags.length !== 0 &&
+            {r.tags && r.tags.length !== 0 &&
               r.tags.filter(tag => !!tag).map(tag => {
                 return (
                   <a href="#" className="tag-box" key={tag}>
@@ -221,6 +218,7 @@ class Results extends React.Component {
       );
     });
   }
+
 
   render() {
 
@@ -264,6 +262,9 @@ class Results extends React.Component {
 
                 </form>
               </div>
+              {//this.renderParameters("Organization", 'ORGANIZATIONS', 'name', 'title', 'org', 5, (() => { }))
+              }
+
             </section>
 
 
@@ -290,7 +291,7 @@ class Results extends React.Component {
               </div>
 
               <div className="result-items">
-                {this.renderResults(dummy)}
+                {result.results && this.renderResults(result)}
 
               </div>
 
