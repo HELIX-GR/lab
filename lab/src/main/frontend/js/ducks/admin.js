@@ -1,6 +1,6 @@
 import moment from 'moment';
 import adminService from '../service/admin';
-import {  toast, } from 'react-toastify';
+import { toast, } from 'react-toastify';
 
 const GOT_SERVERS = 'admin/GOT_SERVERS';
 const GOT_USERS = 'admin/GOT_USERS';
@@ -46,7 +46,7 @@ export default (state = initialState, action) => {
           ...state.users,
         ]
       };
-      case GOT_EDITED_WHITELIST:
+    case GOT_EDITED_WHITELIST:
       state.whitelist.splice(action.ind, 1, action.user);
       return {
         ...state,
@@ -127,6 +127,19 @@ export const addNewServer = (server_data) => (dispatch, getState) => {
     },
     (err) => {
       toast.error('Failed to add server: ' + err.message);
+      throw err;
+    });
+};
+
+export const editServer = (id, server_data) => (dispatch, getState) => {
+  var { meta: { csrfToken: token } } = getState();
+  return adminService.editServer(id, server_data, token).then(
+    (r) => {
+      toast.success("Server edited");
+      dispatch(requestServers());
+    },
+    (err) => {
+      toast.error('Failed to edit server: ' + err.message);
       throw err;
     });
 };

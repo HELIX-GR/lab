@@ -1,12 +1,17 @@
 package helix.lab.model.admin;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -24,37 +29,39 @@ public class HubServerEntity {
     @Column(name = "`id`", updatable = false)
     @SequenceGenerator(sequenceName = "helix_lab.server_id_seq", name = "server_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "server_id_seq", strategy = GenerationType.SEQUENCE)
-    Integer id;
+	private Integer id;
 	
 	@Column(name = "`name`")
-    String name;
+	private String name;
 	
 	@Column(name = "`description`")
-    String description;
+	private String description;
 	
 	@Column(name = "`server_url`")
-    String url;
+	private String url;
 	
 	@Column(name = "`available`")
-    Boolean available;
+	private Boolean available;
 	
 	@Column(name = "`admin_token`")
-    String admin_token;
+	private String admin_token;
 	
 	@Column(name = "`started_at`")
-	ZonedDateTime started_at;
+	private ZonedDateTime started_at;
 	
 	@Column(name = "`role_eligible`")
-    String role_eligible;
+	private String role_eligible;
 	
-	//@Column(name = "`ram`")
-    //String ram;
+	@Column(name = "`ram`")
+	private float ram;
 	
-	//@Column(name = "`vcpu`")
-    //String vcpu;
+	@Column(name = "`vcpu`")
+	private float vcpu;
 	
-	//@ElementCollection
-    //private List<String> tags = new ArrayList<>();
+	@ElementCollection(targetClass = String.class)
+	@CollectionTable(schema = "helix_lab", name = "hub_server_tags", joinColumns = {@JoinColumn(name = "id")})
+	@Column(name = "tag")
+	private List<String> tags = new ArrayList<>();
 
 	public Integer getId() {
 		return id;
@@ -120,10 +127,47 @@ public class HubServerEntity {
 		this.started_at = started_at;
 	}
 
+	
+	public float getRam() {
+		return ram;
+	}
+
+	public void setRam(float ram) {
+		this.ram = ram;
+	}
+
+	public float getVcpu() {
+		return vcpu;
+	}
+
+	public void setVcpu(float vcpu) {
+		this.vcpu = vcpu;
+	}
+
+	public List<String> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+	
 	public HubServerEntity() {
 		
 	}
-
+	public void update(ServerRegistrationRequest request) {
+		this.name = request.getName();
+		this.description = request.getDescription();
+		this.url = request.getUrl();
+		this.available = request.getAvailable();
+		this.admin_token = request.getAdmin_token();
+		this.role_eligible = request.getRole_eligible();
+		this.started_at = ZonedDateTime.now();
+		this.ram = request.getRam();
+		this.vcpu = request.getCpus();
+		this.tags = request.getTags();
+	}
+	
 	public HubServerEntity(ServerRegistrationRequest request) {
 		this.name = request.getName();
 		this.description = request.getDescription();
@@ -132,7 +176,11 @@ public class HubServerEntity {
 		this.admin_token = request.getAdmin_token();
 		this.role_eligible = request.getRole_eligible();
 		this.started_at = ZonedDateTime.now();
-		}
+		this.ram = request.getRam();
+		this.vcpu = request.getCpus();
+		this.tags = request.getTags();
+	}
+
 	
 	
 	

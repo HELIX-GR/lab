@@ -18,6 +18,10 @@ const api = {
     return actions.post('/action/admin/add_server', token, serverData);
   },
 
+  editServer: (id,serverData, token) => {
+    return actions.post('/action/admin/edit_server/'+id, token, serverData);
+  },
+
   grandRole: (id, role, token) => {
     return actions.put('/action/admin/grand_role/' + id, token, role);
   },

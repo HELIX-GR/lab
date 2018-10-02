@@ -3,6 +3,8 @@ package helix.lab.controller.admin;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,7 +114,7 @@ public class AdminController extends BaseController{
 	
 	
 	@RequestMapping(value = "action/admin/add_server", method = RequestMethod.POST)
-	public RestResponse<?> add_server(Authentication Authentication, @RequestBody ServerRegistrationRequest request,  BindingResult results) {
+	public RestResponse<?> add_server(Authentication Authentication, @RequestBody @Valid ServerRegistrationRequest request,  BindingResult results) {
 		System.out.println("................................................");
 		System.out.println(request.toString());
 	        try {
@@ -139,7 +141,7 @@ public class AdminController extends BaseController{
 	
 	
 	@RequestMapping(value = "action/admin/edit_server/{server_id}", method = RequestMethod.POST)
-	public RestResponse<?> edit_server(Authentication Authentication, @PathVariable int server_id, @RequestBody ServerRegistrationRequest request,  BindingResult results) {
+	public RestResponse<?> edit_server(Authentication Authentication, @PathVariable int server_id, @RequestBody @Valid ServerRegistrationRequest request,  BindingResult results) {
 		System.out.println("................................................");
 		System.out.println(request.toString());
 	        try {
@@ -150,7 +152,9 @@ public class AdminController extends BaseController{
 	                return RestResponse.error((Error) results.getFieldErrors());
 	            }	           
 	             Optional<HubServerEntity> hse =  hsr.findById(server_id);
-	            return RestResponse.result(hsr.save(hse.get()));
+	             HubServerEntity temp= hse.get();
+	             temp.update(request);
+	            return RestResponse.result(hsr.save(temp));
 	        } catch (Exception ex) {
 	            logger.error(ex.getMessage(), ex);
 

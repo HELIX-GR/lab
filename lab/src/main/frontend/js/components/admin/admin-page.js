@@ -33,6 +33,10 @@ class AdminPage extends React.Component {
     this.setState({ value });
   };
 
+  handleEdit= (e)=>{
+    console.log(e);
+  }
+
   componentWillMount() {
     this._getServers();
   }
@@ -76,11 +80,11 @@ class AdminPage extends React.Component {
 
           {value === 0 &&
             <TabContainer>
-              <h2>Servers</h2>
+              <h2><i className="fa fa-server" /> Servers</h2>
               <a> {this.props.intl.formatRelative(this.props.servers_update)} </a>
 
               <ModalAddServer />
-              <AdminTable servers={this.props.servers} />
+              <AdminTable servers={this.props.servers} serverEdit={this.handleEdit}/>
 
             </TabContainer>
           }

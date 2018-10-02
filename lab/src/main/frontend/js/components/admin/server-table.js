@@ -1,8 +1,8 @@
 import React from "react";
 import * as PropTypes from 'prop-types';
 import { FormattedTime } from 'react-intl';
-import ReactTable from "react-table";
-
+import ReactTable from 'react-table';
+import ModalEditServer from './modal-edit-server';
 
 
 export class AdminTable extends React.Component {
@@ -23,7 +23,7 @@ export class AdminTable extends React.Component {
       {
         Header: '',
         maxWidth: 33,
-        Cell: <i className="fa fa-server" />,
+      Cell: props=> (<ModalEditServer data={this.props.servers.filter(srv => srv.id == props.original.id)[0]}/>),
       },
       {
         Header: 'Name',
@@ -74,5 +74,6 @@ export class AdminTable extends React.Component {
 }
 AdminTable.propTypes = {
   servers: PropTypes.array,
+  serverEdit: PropTypes.func.isRequired,
 };
 

@@ -1,33 +1,23 @@
 import React, { Component } from 'react';
 import * as PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { Col, Row, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import Select from 'react-select';
+import CreatableSelect from 'react-select/lib/Creatable';
 
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+const options = [
+  { value: 'ROLE_STANDARD', label: 'Standard' },
+  { value: 'ROLE_BETA', label: 'Beta Tester' },
+  { value: 'ROLE_ADMIN', label: 'Admin' }
+];
 
-
-const styles = theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 550,
-  },
-  menu: {
-    width: 200,
-  },
-});
-
-const styles2 = {
-  customWidth: {
-    width: 150,
-  },
-};
-
+const tagOptions = [
+  { value: 'Python', label: 'Python' },
+  { value: 'R', label: 'R' },
+  { value: 'Data Science', label: 'Data Science' },
+  { value: 'Lite', label: 'Lite' },
+  { value: 'GeoNotebook', label: 'GeoNotebook' },
+  { value: 'scipy', label: 'scipy' },
+];
 
 class ServerForm extends Component {
   constructor(props) {
@@ -38,13 +28,16 @@ class ServerForm extends Component {
     this.handleChangeRole = this.handleChangeRole.bind(this);
 
     this.state = {
-      name: "",
-      url: "",
-      description: "",
-      admin_token: "",
-      available: false,
-      role_eligible: "ROLE_STANDARD"
+      name: this.props.data.name || "",
+      url: this.props.data.url || "",
+      description: this.props.data.description || "",
+      admin_token: this.props.data.admin_token || "",
+      available: this.props.data.available,
+      ram: this.props.data.ram,
+      cpus: this.props.data.vcpu,
+      role_eligible: "ROLE_STANDARD",
     };
+
   }
 
   handleChange = (event) => {
@@ -52,21 +45,30 @@ class ServerForm extends Component {
     this.props.change(this.state);
   }
 
-  handleChangeAvailable = (event, index, value) => {
-    console.log(event);
-    this.setState({ available: event.target.value });
+  handleChangeAvailable = () => {
+    var a = this.state.available;
+    if (a) {
+      this.setState({ available: false });
+    }
+    else {
+      this.setState({ available: true });
+    }
     this.props.change(this.state);
   }
 
   handleChangeRole = (value) => {
-    console.log(value);
     this.setState({ role_eligible: value });
     this.props.change(this.state);
   }
 
-  render() {
-    const { classes } = this.props;
+  handleChangeTags = (newValue, actionMeta) => {
+    var arr = [];
+    newValue.map(s => { arr.push(s.value); });
+    this.setState({ tags: arr });
+    console.log(this.state);
+  };
 
+  render() {
     return (
       <Form onClose={this.props.handleClose}>
         <FormGroup >
@@ -75,28 +77,58 @@ class ServerForm extends Component {
         </FormGroup>
         <FormGroup>
           <Label for="url">URL</Label>
-          <Input type="url" name="url" id="url" placeholder="A valid url" onChange={this.handleChange} />
+          <Input type="url" name="url" id="url" value={this.state.url} placeholder="A valid url" onChange={this.handleChange} />
         </FormGroup>
         <FormGroup>
           <Label for="admin_token">Admin token</Label>
-          <Input type="text" name="admin_token" id="admin_token" placeholder="A valid admin token for the server" onChange={this.handleChange} />
+          <Input type="text" name="admin_token" id="admin_token" value="*****************" placeholder="A valid admin token for the server" onChange={this.handleChange} />
         </FormGroup>
         <FormGroup>
           <Label for="description">Description</Label>
-          <Input type="textarea" name="description" id="description" placeholder="Description visible to user." onChange={this.handleChange} />
+          <Input type="textarea" name="description" id="description" value={this.state.description} placeholder="Description visible to user." onChange={this.handleChange} />
         </FormGroup>
+        <Row >
+          <Col md={6}>
+            <FormGroup>
+              <Label for="role_eligible">Select role eligible</Label>
+              <Select
+                id="role_eligible"
+                title="Choose the role a user must have to see this server?"
+                options={options}
+                value={this.state.role_eligible}
+                onChange={e => this.handleChangeRole(e.value)}
+              />
+            </FormGroup>
+          </Col>
+          <Col md={3}>
+            <FormGroup>
+              <Label for="ram">Ram</Label>
+              <Input type="text" name="ram" id="ram" value={this.state.ram} onChange={this.handleChange} />
+            </FormGroup>
+          </Col>
+          <Col md={3}>
+            <FormGroup>
+              <Label for="cpus">Virtual CPUs</Label>
+              <Input type="text" name="cpus" id="cpus" value={this.state.cpus} onChange={this.handleChange} />
+            </FormGroup>
+          </Col>
+        </Row>
+
         <FormGroup>
-          <Label for="role_eligible">Select role eligible</Label>
-          <Input type="select" name="role_eligible" id="role_eligible" placeholder="What role a user must have to see this server?" onChange={(e) => this.handleChangeRole(`${e.target.value}`)}>
-            <option key={'ROLE_STANDARD'} value={'ROLE_STANDARD'} > Standard</option>
-            <option key={'ROLE_BETA'} value={'ROLE_BETA'}> Beta Tester</option>
-            <option key={'ROLE_ADMIN'} value={'ROLE_ADMIN'} > Admin</option>
-          </Input>
+          <Label for="tags">Select tags</Label>
+          <CreatableSelect
+            isClearable
+            isMulti
+            name="tags"
+            options={tagOptions}
+            onChange={this.handleChangeTags}
+          />
+
         </FormGroup>
         <FormGroup>
           <Label check></Label>
-          <Input type="checkbox" onChange={this.handleChangeAvailable} />
-          Avaliable
+          <input type="checkbox" checked={this.state.available} id="available" onChange={this.handleChangeAvailable} />
+          {' '}Available
         </FormGroup>
       </Form>);
   }
@@ -107,4 +139,4 @@ class ServerForm extends Component {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ServerForm);
+export default ServerForm;

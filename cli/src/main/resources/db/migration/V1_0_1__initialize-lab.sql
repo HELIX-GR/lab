@@ -16,8 +16,24 @@ CREATE TABLE helix_lab.hub_server (
     admin_token character varying(255) NOT NULL,
     started_at timestamp without time zone DEFAULT now(),
     role_eligible character varying(64) NOT NULL,
+    ram real NOT NULL,
+    vcpu real NOT NULL,
     CONSTRAINT pk_hub_server PRIMARY KEY (id)
 );
+
+CREATE SEQUENCE helix_lab.hub_server_tags_id_seq INCREMENT 1 MINVALUE 1 START 1 CACHE 1;
+
+CREATE TABLE helix_lab.hub_server_tags
+(
+  id integer NOT NULL DEFAULT nextval('helix_lab.hub_server_tags_id_seq'::regclass),
+  "tag" character varying(64) NOT NULL,
+  "hub_server" integer NOT NULL,
+
+  CONSTRAINT pk_hub_server_tags PRIMARY KEY (id),
+  CONSTRAINT fk_hub_server_tags_hub_server FOREIGN KEY ("hub_server")
+      REFERENCES helix_lab.hub_server (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE
+); 
 
 CREATE TABLE helix_lab.account_to_server (
     id integer NOT NULL DEFAULT nextval('helix_lab.account_to_server_id_seq'::regclass),

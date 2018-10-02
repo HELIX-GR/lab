@@ -1,35 +1,25 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import ServerForm from './server-form';
-import { addNewServer } from '../../ducks/admin';
+import { editServer } from '../../ducks/admin';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import * as PropTypes from 'prop-types';
 
 
-class ModalAddServer extends React.Component {
+class ModalEditServer extends React.Component {
   constructor(props) {
     super(props);
 
+    this.handleOpen = this.handleOpen.bind(this);
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.state = {
       show_modal: false,
-      data: {
-        name: "",
-        url: "",
-        description: "",
-        admin_token: "",
-        available: false,
-        ram: 1,
-        cpus: 1,
-        role_eligible: "ROLE_STANDARD"
-      }
+      data: null
     };
   }
 
@@ -37,7 +27,14 @@ class ModalAddServer extends React.Component {
   handleClose() {
     this.setState({ show_modal: false });
   }
-
+  handleOpen() {
+    console.log(this.props.data);
+    this.setState({
+      show_modal: !this.state.show_modal,
+      id: this.props.data.id,
+      data: this.props.data
+    });
+  }
   handleShow() {
     this.setState({ show_modal: !this.state.show_modal });
   }
@@ -46,7 +43,7 @@ class ModalAddServer extends React.Component {
   }
   handleSubmit() {
     console.log(this.state.data);
-    this.props.addNewServer(this.state.data)
+    this.props.editServer(this.props.data.id, this.state.data)
       .then(this.setState({ show_modal: false }));
 
   }
@@ -54,10 +51,10 @@ class ModalAddServer extends React.Component {
   render() {
     return (
       <div>
-        <Button onClick={this.handleShow}>Add Server </Button>
+        <i class="fa fa-wrench" onClick={this.handleOpen}></i>
 
         <Modal isOpen={this.state.show_modal} toggle={this.handleShow} className={this.props.className}>
-          <ModalHeader toggle={this.handleShow}>Add Server</ModalHeader>
+          <ModalHeader toggle={this.handleShow}>Edit Server: {this.props.data.name}</ModalHeader>
           <ModalBody>
             <ServerForm change={this.handleChange} handleClose={this.handleClose} data={this.state.data} />
           </ModalBody>
@@ -71,13 +68,16 @@ class ModalAddServer extends React.Component {
     );
   }
 }
+ModalEditServer.propTypes = {
+  data: PropTypes.array,
+};
 
 function mapStateToProps(state) {
   return {
   };
 }
-const mapDispatchToProps = (dispatch) => bindActionCreators({ addNewServer }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ editServer }, dispatch);
 
 
 
-export default ModalAddServer = connect(mapStateToProps, mapDispatchToProps)(ModalAddServer);
+export default ModalEditServer = connect(mapStateToProps, mapDispatchToProps)(ModalEditServer);
