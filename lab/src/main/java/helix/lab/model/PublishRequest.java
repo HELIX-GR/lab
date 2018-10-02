@@ -1,5 +1,7 @@
 package helix.lab.model;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -21,6 +23,8 @@ public class PublishRequest {
 	
     @NotNull
     private String lang;
+    
+    private List<String> tags;
 
 	public String getTitle() {
 		return title;
@@ -68,6 +72,15 @@ public class PublishRequest {
 
 	public void setLang(String lang) {
 		this.lang = lang;
+	}
+	
+
+	public List<String> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<String> tags) {
+		this.tags = tags;
 	}
 
 	@Override

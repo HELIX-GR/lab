@@ -3,14 +3,22 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button as Btn } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
-import { InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
+import { Form, FormGroup, Label, Input } from 'reactstrap';
 
 import Button from '@material-ui/core/Button';
-import formatFileSize from '../../util/file-size';
 import { publishFile } from '../../ducks/config';
 import { toast, } from 'react-toastify';
+import CreatableSelect from 'react-select/lib/Creatable';
 
+
+const tagOptions = [
+  { value: 'Python', label: 'Python' },
+  { value: 'R', label: 'R' },
+  { value: 'Data Science', label: 'Data Science' },
+  { value: 'Lite', label: 'Lite' },
+  { value: 'GeoNotebook', label: 'GeoNotebook' },
+  { value: 'scipy', label: 'scipy' },
+];
 /**
  * A modal dialog can only be closed by selecting one of the actions.
  */
@@ -60,14 +68,14 @@ class PublishModal extends React.Component {
     if (path.startsWith('/')) {
       path = path.slice(1);
     }
-   
+
     console.log("path : ", path);
     this.setState({
       isPublishing: true,
     });
 
-    let { title, filename, filerename, description, lang } = this.state;
-    this.props.publishFile({ title, path, filename, filerename, description, lang })
+    let { title, filename, filerename, description, lang, tags } = this.state;
+    this.props.publishFile({ title, path, filename, filerename, description, lang , tags})
       .then(fs => {
         toast.success("The file is published!");
         this.handleClose();
@@ -84,6 +92,13 @@ class PublishModal extends React.Component {
     this.setState({ [event.target.id]: event.target.value });
     // this.props.change(this.state);
   }
+
+  handleChangeTags = (newValue, actionMeta) => {
+    var arr=[];
+    newValue.map(s => {arr.push(s.value); });
+    this.setState({ tags: arr });
+    console.log(arr);
+  };
 
   render() {
 
@@ -115,13 +130,18 @@ class PublishModal extends React.Component {
                 <Input type="textarea" name="description" id="description" value={this.state.description} placeholder="Description visible to user." onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
-                <Label for="role_eligible">Select language</Label>
-                <Input type="select" name="lang" id="lang"  onChange={this.handleChange}>
-                  <option key={'Python'} value={'Python'}> Python</option>
-                  <option key={'R'} value={'R'}> R</option>
-                  <option key={'C'} value={'C'}> C</option>
-                </Input>
+
+                <Label for="tags">Select tags</Label>
+                <CreatableSelect
+                  isClearable
+                  isMulti
+                  name="tags"
+                  options={tagOptions}
+                  onChange={this.handleChangeTags}
+                />
               </FormGroup>
+
+
 
             </Form>
           </ModalBody>

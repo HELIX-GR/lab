@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,19 +13,19 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -422,9 +421,7 @@ public class CkanServiceProxy {
     public Object createNewDataset(PublishRequest query, String package_id) throws ApplicationException {
         try {
             // Documentation: http://docs.ckan.org/en/latest/api/index.html
-//TODO
-        	 System.out.println("create new recourse");
-        	 System.out.println(query.toString());
+
             // CKAN start index starts from 0
             final URIBuilder builder = new URIBuilder()
                 .setScheme(this.ckanConfiguration.getScheme())
@@ -434,28 +431,29 @@ public class CkanServiceProxy {
 
 
             final URI uri = builder.build();
-            
-          
+            JSONArray tags = new JSONArray();
+            for (String s: query.getTags()) {
+            	tags.put(new JSONObject().put("name", s));
+            	
+            }
 
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-            nameValuePairs.add(new BasicNameValuePair("name", package_id));
-            nameValuePairs.add(new BasicNameValuePair("title",query.getTitle()));
-            nameValuePairs.add(new BasicNameValuePair("notes",query.getDescription()));
-            nameValuePairs.add(new BasicNameValuePair("closed_tag","Biography"));
-            nameValuePairs.add(new BasicNameValuePair("foo.contact_email","lab@helix.gr"));
-            nameValuePairs.add(new BasicNameValuePair("foo.creator.creator_name","HELIX Lab"));
-            nameValuePairs.add(new BasicNameValuePair("owner_org","lab"));
-            nameValuePairs.add(new BasicNameValuePair("return_id_only","True"));
-//TODO tags
-           // nameValuePairs.add(new BasicNameValuePair("tags",query.getLang()));
-            
-            
-            
+            JSONObject  data= new JSONObject()
+            		.put("name", package_id)
+            		.put("title",query.getTitle())
+            		.put("notes",query.getDescription())
+            		//stc in the new ckan install
+            		.put("closed_tag","Biography") //TODO
+            		.put("datacite.contact_email","lab@helix.gr")
+            		.put("datacite.creator.creator_name","HELIX Lab")
+            		.put("owner_org","lab")
+            		.put("return_id_only","True")
+            		.put("tags", tags);
+
             final HttpUriRequest req = RequestBuilder.post(uri)
-                .addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-                .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                //.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                //.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .addHeader(HttpHeaders.AUTHORIZATION , this.ckanConfiguration.getApikey().toString())
-                .setEntity(new UrlEncodedFormEntity(nameValuePairs))
+                .setEntity( new StringEntity(data.toString(), ContentType.create("application/json")))
                 .build();
            
             try (CloseableHttpResponse response = (CloseableHttpResponse) this.httpClient.execute(req)) {
@@ -482,9 +480,6 @@ public class CkanServiceProxy {
     public Object createNewResource(PublishRequest query, File  file, String package_id) throws ApplicationException {
         try {
             // Documentation: http://docs.ckan.org/en/latest/api/index.html
-//TODO
-        	 System.out.println("create new recourse");
-        	 System.out.println(query.toString());
             // CKAN start index starts from 0
             final URIBuilder builder = new URIBuilder()
                 .setScheme(this.ckanConfiguration.getScheme())

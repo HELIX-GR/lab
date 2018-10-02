@@ -72,21 +72,20 @@ export class WhiteListTable extends React.Component {
         ),
         width: 150,
       }].concat(
-        all_roles.map(name =>{
+        all_roles.map(name => {
           return ({
-         Header:  <img className="account-icon" src={"/images/" + name + ".svg"} height="42" width="42"/>
-               
-           ,
-         id:name,
-         accessor: 'roles',
-         Cell: props => (<Checkbox
-             checked={props.value.includes(name)}
-             onChange={(e, is) => { this.updateCheck(is, name, props.row.id ); }}
-           />
-         ),
-         width: 60,
-       });}));
- 
+            Header: <img className="account-icon" src={"/images/" + name + ".svg"} height="42" width="42" />,
+            id: name,
+            accessor: 'roles',
+            Cell: props => (<Checkbox
+              checked={props.value.includes(name)}
+              onChange={(e, is) => { this.updateCheck(is, name, props.row.id); }}
+            />
+            ),
+            width: 60,
+          });
+        }));
+
 
 
 
