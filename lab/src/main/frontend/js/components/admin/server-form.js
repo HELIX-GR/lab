@@ -42,21 +42,21 @@ class ServerForm extends Component {
   }
 
   handleChange = (event) => {
-    this.setState({ [event.target.id]: event.target.value },() => { this.props.change(this.state)});
+    this.setState({ [event.target.id]: event.target.value }, () => { this.props.change(this.state); });
   }
 
   handleChangeAvailable = () => {
-    this.setState({ available: !this.state.available }, () => {this.props.change(this.state)});
+    this.setState({ available: !this.state.available }, () => { this.props.change(this.state); });
   }
 
   handleChangeRole = (value) => {
-    this.setState({ role_eligible: value }, () => {this.props.change(this.state)});
+    this.setState({ role_eligible: value }, () => { this.props.change(this.state); });
   }
 
   handleChangeTags = (newValue, actionMeta) => {
     var arr = [];
     newValue.map(s => { arr.push(s.value); });
-    this.setState({ tags: arr }, () => {this.props.change(this.state)});
+    this.setState({ tags: arr }, () => { this.props.change(this.state); });
   };
 
   getValue = (val) => {
