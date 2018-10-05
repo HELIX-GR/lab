@@ -32,7 +32,11 @@ class ModalEditServer extends React.Component {
     this.setState({
       show_modal: !this.state.show_modal,
       id: this.props.data.id,
-      data: this.props.data
+      data: {
+        ...this.props.data,
+        tags: this.props.data.tags
+      }
+
     });
   }
   handleShow() {
@@ -51,7 +55,7 @@ class ModalEditServer extends React.Component {
   render() {
     return (
       <div>
-        <i class="fa fa-wrench" onClick={this.handleOpen}></i>
+        <i className="fa fa-wrench" onClick={this.handleOpen}></i>
 
         <Modal isOpen={this.state.show_modal} toggle={this.handleShow} className={this.props.className}>
           <ModalHeader toggle={this.handleShow}>Edit Server: {this.props.data.name}</ModalHeader>
@@ -69,7 +73,7 @@ class ModalEditServer extends React.Component {
   }
 }
 ModalEditServer.propTypes = {
-  data: PropTypes.array,
+  data: PropTypes.object,
 };
 
 function mapStateToProps(state) {

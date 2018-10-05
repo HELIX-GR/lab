@@ -4,17 +4,19 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CollectionTable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import helix.lab.model.HubServerResponse;
 
 @Entity(name = "HubServerEntity")
 @Table(
@@ -58,10 +60,9 @@ public class HubServerEntity {
 	@Column(name = "`vcpu`")
 	private float vcpu;
 	
-	@ElementCollection(targetClass = String.class)
-	@CollectionTable(schema = "helix_lab", name = "hub_server_tags", joinColumns = {@JoinColumn(name = "id")})
-	@Column(name = "tag")
-	private List<String> tags = new ArrayList<>();
+	@OneToMany(targetEntity=HubServerTagsEntity.class,mappedBy = "hub_server", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    List<HubServerTagsEntity> tags   = new ArrayList<>();
+	
 
 	public Integer getId() {
 		return id;
@@ -145,11 +146,30 @@ public class HubServerEntity {
 	}
 
 	public List<String> getTags() {
-		return tags;
-	}
+		List<String> r = new ArrayList<String>();
+		for (final HubServerTagsEntity ar : this.tags) {
+            r.add(ar.tag);
+        }
+        return r;	}
 
+ 
+	public boolean hasTheTag(String tag) {
+        for (final HubServerTagsEntity hste: this.tags) {
+            if (tag == hste.getTag()) {
+                return true;
+            }
+        }
+        return false;
+    }
+	
 	public void setTags(List<String> tags) {
-		this.tags = tags;
+		this.tags.removeAll(this.tags);
+		for (String a:tags) {
+			if (!hasTheTag(a)) {
+			this.tags.add(new HubServerTagsEntity(this, a));
+			}
+		}
+		
 	}
 	
 	public HubServerEntity() {
@@ -165,7 +185,8 @@ public class HubServerEntity {
 		this.started_at = ZonedDateTime.now();
 		this.ram = request.getRam();
 		this.vcpu = request.getCpus();
-		this.tags = request.getTags();
+		
+	//	this.tags = request.getTags();
 	}
 	
 	public HubServerEntity(ServerRegistrationRequest request) {
@@ -178,9 +199,21 @@ public class HubServerEntity {
 		this.started_at = ZonedDateTime.now();
 		this.ram = request.getRam();
 		this.vcpu = request.getCpus();
-		this.tags = request.getTags();
+	//	this.tags = request.getTags();
 	}
 
+	public HubServerResponse toHubServerResponse() {
+		HubServerResponse resp= new HubServerResponse(id, name);
+
+		resp.setDescription(description);
+		resp.setRam(ram);
+		resp.setUrl(url);
+		resp.setVcpu(vcpu);
+		resp.setStarted_at(started_at);
+		resp.setTags(this.getTags());
+	
+		return resp;
+	}
 	
 	
 	

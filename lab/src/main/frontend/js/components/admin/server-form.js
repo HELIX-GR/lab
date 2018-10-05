@@ -36,36 +36,46 @@ class ServerForm extends Component {
       ram: this.props.data.ram,
       cpus: this.props.data.vcpu,
       role_eligible: "ROLE_STANDARD",
+      tags: this.props.data.tags || [],
     };
 
   }
 
   handleChange = (event) => {
-    this.setState({ [event.target.id]: event.target.value });
-    this.props.change(this.state);
+    this.setState({ [event.target.id]: event.target.value },() => { this.props.change(this.state)});
   }
 
   handleChangeAvailable = () => {
-    var a = this.state.available;
-    if (a) {
-      this.setState({ available: false });
-    }
-    else {
-      this.setState({ available: true });
-    }
-    this.props.change(this.state);
+    this.setState({ available: !this.state.available }, () => {this.props.change(this.state)});
   }
 
   handleChangeRole = (value) => {
-    this.setState({ role_eligible: value });
-    this.props.change(this.state);
+    this.setState({ role_eligible: value }, () => {this.props.change(this.state)});
   }
 
   handleChangeTags = (newValue, actionMeta) => {
     var arr = [];
     newValue.map(s => { arr.push(s.value); });
-    this.setState({ tags: arr });
-    console.log(this.state);
+    this.setState({ tags: arr }, () => {this.props.change(this.state)});
+  };
+
+  getValue = (val) => {
+    // To work around react-select's weird input api
+    if (val) {
+      return ({
+        label: options.find(a => a.value == val).label,
+        value: val
+      });
+    }
+  };
+  getTagValue = (val) => {
+    // To work around react-select's weird input api
+    if (val) {
+      return ({
+        label: val,
+        value: val
+      });
+    }
   };
 
   render() {
@@ -81,7 +91,7 @@ class ServerForm extends Component {
         </FormGroup>
         <FormGroup>
           <Label for="admin_token">Admin token</Label>
-          <Input type="text" name="admin_token" id="admin_token" value="*****************" placeholder="A valid admin token for the server" onChange={this.handleChange} />
+          <Input type="text" name="admin_token" id="admin_token" placeholder="A valid admin token for the server" onChange={this.handleChange} />
         </FormGroup>
         <FormGroup>
           <Label for="description">Description</Label>
@@ -95,7 +105,7 @@ class ServerForm extends Component {
                 id="role_eligible"
                 title="Choose the role a user must have to see this server?"
                 options={options}
-                value={this.state.role_eligible}
+                value={this.getValue(this.state.role_eligible)}
                 onChange={e => this.handleChangeRole(e.value)}
               />
             </FormGroup>
@@ -103,13 +113,13 @@ class ServerForm extends Component {
           <Col md={3}>
             <FormGroup>
               <Label for="ram">Ram</Label>
-              <Input type="text" name="ram" id="ram" value={this.state.ram} onChange={this.handleChange} />
+              <Input type="number" name="ram" id="ram" value={this.state.ram} onChange={this.handleChange} />
             </FormGroup>
           </Col>
           <Col md={3}>
             <FormGroup>
               <Label for="cpus">Virtual CPUs</Label>
-              <Input type="text" name="cpus" id="cpus" value={this.state.cpus} onChange={this.handleChange} />
+              <Input type="number" name="cpus" id="cpus" value={this.state.cpus} onChange={this.handleChange} />
             </FormGroup>
           </Col>
         </Row>
@@ -121,6 +131,7 @@ class ServerForm extends Component {
             isMulti
             name="tags"
             options={tagOptions}
+            value={this.state.tags.map(tag => (this.getTagValue(tag)))}
             onChange={this.handleChangeTags}
           />
 
@@ -136,7 +147,6 @@ class ServerForm extends Component {
   change: PropTypes.func.isRequired,
   data: PropTypes.object,
   handleClose: PropTypes.func.isRequired,
-  classes: PropTypes.object.isRequired,
 };
 
 export default ServerForm;

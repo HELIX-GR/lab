@@ -125,7 +125,7 @@ public class AdminController extends BaseController{
 	                return RestResponse.error((Error) results.getFieldErrors());
 	            }
 	            HubServerEntity hse = new HubServerEntity(request);
-
+	            hse.setTags(request.getTags());
 	            // TODO Ping server 
 	           // japi.api_request(hse,"info", "GET", null);// get info about server //test
 	           // japi.api_request(hse,"users", "GET", null);// get all users of server db //test
@@ -153,7 +153,9 @@ public class AdminController extends BaseController{
 	            }	           
 	             Optional<HubServerEntity> hse =  hsr.findById(server_id);
 	             HubServerEntity temp= hse.get();
+	             
 	             temp.update(request);
+	             temp.setTags(request.getTags());
 	            return RestResponse.result(hsr.save(temp));
 	        } catch (Exception ex) {
 	            logger.error(ex.getMessage(), ex);

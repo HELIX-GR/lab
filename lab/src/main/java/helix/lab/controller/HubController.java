@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gr.helix.core.common.model.RestResponse;
 import helix.lab.controller.action.BaseController;
+import helix.lab.model.HubServerResponse;
 import helix.lab.model.admin.HubServerEntity;
 import helix.lab.model.hub.HubUserResponse;
 import helix.lab.model.user.AccountToServerEntity;
@@ -145,11 +146,14 @@ public class HubController extends BaseController
 	public RestResponse<?> getServers(Authentication authentication) {
     
     	List<HubServerEntity> hsel = new ArrayList<HubServerEntity>();
+    	List<HubServerResponse> hser = new ArrayList<HubServerResponse>();
 		System.out.println(authentication.getAuthorities());
 		for ( GrantedAuthority  E:authentication.getAuthorities()){
-			hsel.addAll(hubserverrepo.findAllByRole(E.toString())); }
-		
-			return RestResponse.result(hsel);
+			hsel.addAll(hubserverrepo.findAllByRole(E.toString() )); }
+		for ( HubServerEntity e:hsel) {
+			hser.add(e.toHubServerResponse());
+		}
+			return RestResponse.result(hser);
 			//return RestResponse.error(BasicErrorCode.IO_ERROR, "An unknown error has occurred");
 	   
 	}

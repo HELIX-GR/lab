@@ -56,10 +56,10 @@ const ServerList = ({ servers, onClick, selectedIndex }) => (
           <h3 className="title">
             <a className="mr-2" >{row.name} </a>
             <div className="pill data">
-              1GB RAM
+              {row.ram}GB RAM
           </div>
             <div className="pill data">
-              1VC
+              {row.vcpu} VC
           </div>
           </h3>
 
@@ -67,9 +67,9 @@ const ServerList = ({ servers, onClick, selectedIndex }) => (
             <a >{row.description}</a>
           </div>
           <div className="tag-list">
-            <a className="tag-box tag-box-other">Python </a>
-            <a className="tag-box tag-box-other">R </a>
-            <a className="tag-box first-tag" >LAB</a>
+          {row.tags.map((tag) =>(
+            <a className="tag-box tag-box-other">{tag} </a>
+          ))}
           </div>
         </div>
       )
