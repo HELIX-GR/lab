@@ -45,6 +45,8 @@ public class Package {
     private String                           revisionId;
     @JsonProperty("identifier")
     private List<String>                     identifier;
+    @JsonProperty("tags")
+    private List<Tag>                     tags;
 
     public String getCreatorUserId() {
         return this.creatorUserId;
@@ -197,5 +199,14 @@ public class Package {
     public void setIdentifier(List<String> identifier) {
         this.identifier = identifier;
     }
+
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
+    
 
 }

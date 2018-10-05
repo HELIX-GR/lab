@@ -30,26 +30,6 @@ import {
   Pagination,
 } from './pagination';
 
-const MIN_FACET_VALUES = 3;
-
-const dummy = {
-  results: [
-    {
-      'id': 1,
-      'title': "this is a notebook for smthing",
-      'tags': ["python", "scikit", "spark"],
-      'metadata_modified': moment.now()
-    },
-    {
-      'id': 2,
-      'title': "this is a notebook for smthing",
-      'tags': ["python", "scikit", "spark"],
-      'metadata_modified': moment.now()
-    },
-  ]
-
-};
-
 
 
 class Results extends React.Component {
@@ -106,9 +86,13 @@ class Results extends React.Component {
   onSearch(e) {
     e.preventDefault();
 
-    this.search();
-  }
+    const { text } = this.props.search;
 
+    if (this.isTextValid(text)) {
+      this.props.searchAll(text);
+    }
+
+  }
   onPageChange(index) {
     const {
       search: { result: { catalogs: { [EnumCatalog.CKAN]: { pageIndex } } } }
@@ -132,36 +116,30 @@ class Results extends React.Component {
     return (
       <div className={`${key} param-box`}>
         <h5 className="title">{title}</h5>
-
         <div className="switches">
-          {
-            items.slice(0, size).map((value, index) => {
-              const resolvedValue = valueProperty ? value[valueProperty] : value;
-              const checked = !!facets[key].find(value => value === resolvedValue);
+          {items.slice(0, size).map((value, index) => {
+            const resolvedValue = valueProperty ? value[valueProperty] : value;
+            const checked = !!facets[key].find(value => value === resolvedValue);
 
-              return (
-                <label htmlFor={`switch-${prefix}-${index}`} key={`switch-${prefix}-${index}`}>
-                  <input
-                    type="checkbox"
-                    id={`switch-${prefix}-${index}`}
-                    name={`switch-${prefix}-${index}`}
-                    value={resolvedValue}
-                    onChange={() => { this.onFacetChanged(key, resolvedValue); }}
-                    checked={checked}
-                  />
-                  {textProperty ? value[textProperty] : value}
-                </label>
-              );
-            })
-          }
-
+            return (
+              <label htmlFor={`switch-${prefix}-${index}`} key={`switch-${prefix}-${index}`}>
+                <input
+                  type="checkbox"
+                  id={`switch-${prefix}-${index}`}
+                  name={`switch-${prefix}-${index}`}
+                  value={resolvedValue}
+                  onChange={() => { this.onFacetChanged(key, resolvedValue); }}
+                  checked={checked}
+                />
+                {textProperty ? value[textProperty] : value}
+              </label>
+            );
+          })}
           {items.length > minOptions &&
             <div className="more-link">
               <a onClick={(e) => this.toggleMore(e, key)}>{showAll ? "View Less" : "View More"}</a>
-            </div>
-          }
+            </div>}
         </div>
-
       </div>
     );
   }
@@ -174,13 +152,6 @@ class Results extends React.Component {
     const host = "this.props.config";
 
     return data.results.map(r => {
-      /* const formats = r.resources.reduce((result, value) => {
-         if (!result.includes(value.format)) {
-           return [...result, value.format];
-         }
-         return result;
-       }, []);*/
-
       const age = moment.duration(moment() - moment(r.metadata_modified));
       const date = age.asHours() < 24 ?
         moment(r.metadata_modified).fromNow() :
@@ -203,11 +174,11 @@ class Results extends React.Component {
 
           <div className="tag-list">
             {r.tags && r.tags.length !== 0 &&
-              r.tags.filter(tag => !!tag).map(tag => {
+              r.tags.map(tag => {
                 return (
-                  <a href="#" className="tag-box" key={tag}>
+                  <a href="#" className="tag-box" key={tag.id}>
                     <div>
-                      {tag}
+                      {tag.name}
                     </div>
                   </a>
                 );
@@ -218,6 +189,7 @@ class Results extends React.Component {
       );
     });
   }
+
 
 
   render() {
@@ -243,11 +215,13 @@ class Results extends React.Component {
                     <input
                       type="text"
                       autoComplete="off"
+                      outline="off"
                       className="landing-search-text"
-                      name="landing-search-text" value=""
+                      name="landing-search-text"
                       placeholder={_t({ id: 'labsearch.placeholder' })}
                       value={text}
                       onChange={(e) => this.onTextChanged(e.target.value)}
+                      ref={this.textInput}
                     />
                   </div>
 
@@ -256,6 +230,7 @@ class Results extends React.Component {
                     name="landing-search-button"
                     className="landing-search-button"
                     disabled={loading}
+                    onClick={(e) => this.onSearch(e)}
                   >
                     <i className={loading ? 'fa fa-spin fa-spinner' : 'fa fa-search'}></i>
                   </button>
