@@ -16,6 +16,7 @@ import { startNowAction } from '../ducks/app';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Filesystem from './filesystem/filesystem';
 import AdminPage from './admin/admin-page';
+import NotebookShow from './views/notebook-show';
 import { ToastContainer } from 'react-toastify';
 import {
   Page403,
@@ -59,7 +60,7 @@ class App extends React.Component {
           <div>
             <SearchPage changeLocale={() => { }} locale={'en'} logout={() => { }} />
           </div>)} />
-
+        <Route path='/notebook/:uuid' component={NotebookShow}/>
         <Route path="/filesystem" render={() => (
           <section className="main-results-page-content">
             <div className="results-main-content">

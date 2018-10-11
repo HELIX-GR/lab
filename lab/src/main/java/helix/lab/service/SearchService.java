@@ -23,10 +23,20 @@ public class SearchService {
         return this.ckanServiceProxy.getPackages(query, false);
     }
 
+    
+    public CatalogResult<?> queryById(String term) {
+        final CkanCatalogQuery query = new CkanCatalogQuery();
+        query.setTerm(term);
+
+        return this.ckanServiceProxy.getPackageById(query);
+    }
+
 	
     public CatalogResult<?> queryData(CkanCatalogQuery query) {
         return this.ckanServiceProxy.getPackages(query, true);
     }
+    
+    
 
 
    

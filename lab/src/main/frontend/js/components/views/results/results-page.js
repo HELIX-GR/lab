@@ -26,9 +26,7 @@ import {
   EnumFacet,
 } from '../../../model';
 
-import {
-  Pagination,
-} from './pagination';
+import Pagination from './pagination';
 
 
 
@@ -66,11 +64,7 @@ class Results extends React.Component {
     const { text } = this.props.search;
 
     if (this.isTextValid(text)) {
-      this.props.searchAll(text, true, pageIndex).then((data) => {
-        const found = Object.keys(EnumCatalog).some((key) => {
-          return (data.catalogs[key] && data.catalogs[key].count !== 0);
-        });
-      });
+      this.props.searchAll(text, true, pageIndex);
     }
   }
 
@@ -95,7 +89,7 @@ class Results extends React.Component {
   }
   onPageChange(index) {
     const {
-      search: { result: { catalogs: { [EnumCatalog.CKAN]: { pageIndex } } } }
+      search: { result: pageIndex }
     } = this.props;
 
     if (index !== pageIndex) {
@@ -149,7 +143,7 @@ class Results extends React.Component {
       return null;
     }
 
-    const host = "this.props.config";
+    const host = "notebook";
 
     return data.results.map(r => {
       const age = moment.duration(moment() - moment(r.metadata_modified));
@@ -163,7 +157,7 @@ class Results extends React.Component {
             {date}
           </div>
           <h3 className="title">
-            <a href={`${host}/dataset/${r.id}`} target="_blank">
+            <a href={`${host}/${r.id}`}>
               {r.title}
             </a>
           </h3>
@@ -197,7 +191,7 @@ class Results extends React.Component {
     const {
       search: { result = { count: 0, pageSize: 10 }, loading, text }
     } = this.props;
-
+    console.log(result);
     const _t = this.context.intl.formatMessage;
 
     return (
@@ -244,13 +238,13 @@ class Results extends React.Component {
 
 
             <section className="results-main-result-set">
-
-              {/* <Pagination
-                className="top"
-                pageIndex={results.pageIndex}
-                pageCount={Math.ceil(results.count / results.pageSize)}
-                pageChange={(pageIndex) => this.onPageChange(pageIndex)}
-             />*/}
+              {result.results &&
+                <Pagination
+                  className="top"
+                  pageIndex={result.pageIndex}
+                  pageCount={Math.ceil(result.count / result.pageSize)}
+                  pageChange={(pageIndex) => this.onPageChange(pageIndex)}
+                />}
 
               <div className="main-results-border-bottom">
                 <label className="order-by" htmlFor="order-by">Ταξινόμηση κατά
@@ -261,7 +255,7 @@ class Results extends React.Component {
                   </select>
                 </label>
                 <div className="main-results-result-count">
-                  Βρέθηκαν {result.count} σύνολα δεδομένων
+                  Βρέθηκαν {result.count} Notebooks
                 </div>
               </div>
 
@@ -274,12 +268,13 @@ class Results extends React.Component {
 
               </div>
 
-              {/*  <Pagination
-                className="bottom"
-                pageIndex={results.pageIndex}
-                pageCount={Math.ceil(results.count / results.pageSize)}
-                pageChange={(pageIndex) => this.onPageChange(pageIndex)}
-            />*/}
+              {result.results &&
+                <Pagination
+                  className="bottom"
+                  pageIndex={result.pageIndex}
+                  pageCount={Math.ceil(result.count / result.pageSize)}
+                  pageChange={(pageIndex) => this.onPageChange(pageIndex)}
+                />}
 
             </section>
 

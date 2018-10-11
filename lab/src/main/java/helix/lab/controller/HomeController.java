@@ -15,7 +15,15 @@ public class HomeController {
         if(request.getServletPath().equalsIgnoreCase("/")) {
             return "index";
         }
-        return "redirect:/";
+        return "index";
     }
 
+	@RequestMapping("notebook/*")
+    public String notebook(HttpSession session, HttpServletRequest request) {
+        // Prevent infinite redirects
+        if(request.getServletPath().equalsIgnoreCase("/")) {
+            return "index";
+        }
+        return "index";
+    }
 }

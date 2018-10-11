@@ -530,5 +530,42 @@ public class CkanServiceProxy {
         }
         return null;
     }
+    
+    //------------------------- pachage show ----------------------------------------
+    public CatalogResult<Package> getPackageById(CkanCatalogQuery query) throws ApplicationException {
+        try {
+            // Documentation: http://docs.ckan.org/en/latest/api/index.html
+
+            // CKAN start index starts from 0
+            final URIBuilder builder = new URIBuilder()
+                .setScheme(this.ckanConfiguration.getScheme())
+                .setHost(this.ckanConfiguration.getHost())
+                .setPort(this.ckanConfiguration.getPort())
+                .setPath(this.composePath("/api/action/package_show"))
+                .addParameter("id", query.getTerm());
+          
+            final URI uri = builder.build();
+
+            final HttpUriRequest request = RequestBuilder.post(uri)
+                .addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .build();
+
+            try (CloseableHttpResponse response = (CloseableHttpResponse) this.httpClient.execute(request)) {
+                if (response.getStatusLine().getStatusCode() != 200) {
+                    throw ApplicationException.fromMessage("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+                }
+                final CatalogResult<Package> ckanResponse = this.parsePackages(response);
+                ckanResponse.setPageIndex(query.getPageIndex());
+                ckanResponse.setPageSize(query.getPageSize());
+                return ckanResponse;
+            }
+        } catch (final ApplicationException ex) {
+            throw ex;
+        } catch (final Exception ex) {
+            this.handleException(ex);
+        }
+        return null;
+    }
 
 }

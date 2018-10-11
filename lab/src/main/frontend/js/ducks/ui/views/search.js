@@ -206,8 +206,8 @@ export const searchAutoComplete = (term) => (dispatch, getState) => {
     });
 };
 
-export const search = (term, advanced = false, pageIndex = 0, pageSize = 5) => (dispatch, getState) => {
-  const { meta: { csrfToken: token }, ui: { search: { pills, facets } } } = getState();
+export const search = (term, advanced = false, pageIndex = 0, pageSize = 10) => (dispatch, getState) => {
+  const { meta: { csrfToken: token }, ui: { search: { facets } } } = getState();
 
   const querie = {
     pageIndex,
@@ -223,6 +223,21 @@ export const search = (term, advanced = false, pageIndex = 0, pageSize = 5) => (
     term,
     facets: advanced ? facets : null,
   } )
+    .then((data) => {
+      dispatch(catalogSearchComplete(data));
+      return (data);
+    })
+    .catch((err) => {
+      // TODO: Add error handling
+      console.error('Failed loading catalog data:', err);
+    });
+};
+
+
+export const searchById = (id) => (dispatch, getState) => {
+  const { meta: { csrfToken: token }, ui: { search: { facets } } } = getState();
+
+  return catalogService.searchById(token, id )
     .then((data) => {
       dispatch(catalogSearchComplete(data));
       return (data);

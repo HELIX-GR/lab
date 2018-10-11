@@ -7,6 +7,10 @@ export default {
     return actions.get(`${routes.SearchCkan}?catalog=${catalog}&search=${term}`, token);
   },
 
+  searchById: (token, catalog, id) => {
+    return actions.get(`'/action/ckan/queryById&id=${id}`, token);
+  },
+
   search: (token, query) => {
     return actions.post(routes.SearchCkan, token, query);
   },

@@ -534,6 +534,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         		.antMatchers("/filesystem")
         		.hasRole("STANDARD")    
                 .antMatchers("/",
+                			 "/results",
+                			 "/notebook/**",
                 			 "/favicon.ico",
                              "/css/**",
                              "/fonts/**",

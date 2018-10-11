@@ -31,11 +31,19 @@ public class SearchController {
             return RestResponse.error(BasicErrorCode.UNKNOWN, "An unknown error has occurred");
         }
     }
+    
+    @RequestMapping(value = "/action/ckan/queryId", method = RequestMethod.GET)
+    public RestResponse<?> getPackageById(Authentication authentication, @RequestParam String id) {
+        try {
+            return RestResponse.result(this.searchService.queryById(id));
+        } catch (final Exception ex) {
+            return RestResponse.error(BasicErrorCode.UNKNOWN, "An unknown error has occurred");
+        }
+    }
 
     @RequestMapping(value = "/action/ckan/query", method = RequestMethod.POST)
     public RestResponse<?> getPackages(Authentication authentication, @RequestBody CkanCatalogQuery query) {
         try {
-        	System.out.println(query.toString());
             return RestResponse.result(this.searchService.queryData(query));
         } catch (final Exception ex) {
             return RestResponse.error(BasicErrorCode.UNKNOWN, "An unknown error has occurred");

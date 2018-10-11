@@ -105,9 +105,7 @@ public class JupyterApi {
 	}
 	}
 	
-	
-	
-	
+
 	//---------------------------------------------------------------------------------------
 	public HubUserResponse hub_user_info(HubServerEntity hub, String path) throws IOException {
 		ObjectMapper objectMapper = new ObjectMapper();
