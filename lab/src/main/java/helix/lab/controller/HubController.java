@@ -64,7 +64,7 @@ public class HubController extends BaseController
     	HubUserResponse respo = null;
 
     	if (!a2sl.isEmpty()) { // Check if i have it in db
-            Object target=hub.get().getUrl()+":8000/user/"+username;
+            Object target = hub.get().getUrl()+"/user/"+username;
             try {
             	respo = japi.hub_user_info(hub.get(),"users/"+username);//see if its active in the hub
             } catch (IOException e) {
@@ -105,11 +105,11 @@ public class HubController extends BaseController
 
         		}
 		}
-		atse.setUrl(hub.get().getUrl()+":8000/user/"+username);
+		atse.setUrl(hub.get().getUrl()+"/user/"+username);
 		atse.setState("Active");
 		
 		atsr.save(atse);
-        Object target=hub.get().getUrl()+":8000/user/"+username;
+        Object target=hub.get().getUrl()+"/user/"+username;
         
         
         return RestResponse.result(target);}

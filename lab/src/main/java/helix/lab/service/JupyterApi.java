@@ -31,7 +31,8 @@ public class JupyterApi {
 		HttpURLConnection con;
 
 	try {
-		URL url = new URL(hub.getUrl()+":8081/hub/api/"+path);
+		URL url = new URL(hub.getUrl()+"/hub/api/"+path);
+		System.out.println(url);
 		con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod(method);
 		con.setRequestProperty ("Authorization", "token "+hub.getAdmin_token());
@@ -112,7 +113,7 @@ public class JupyterApi {
 		HttpURLConnection con;
 
 	try {
-		URL url = new URL(hub.getUrl()+":8081/hub/api/"+path);
+		URL url = new URL(hub.getUrl()+"/hub/api/"+path);
 		con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod("GET");
 		con.setRequestProperty ("Authorization", "token "+hub.getAdmin_token());
@@ -154,7 +155,7 @@ public class JupyterApi {
 		HttpURLConnection con;
 
 	try {
-		URL url = new URL(hub.getUrl()+":8081/hub/api/"+path);
+		URL url = new URL(hub.getUrl()+"/hub/api/"+path);
 		con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod("DELETE");
 		con.setRequestProperty ("Authorization", "token "+hub.getAdmin_token());
