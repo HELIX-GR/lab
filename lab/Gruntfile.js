@@ -346,5 +346,5 @@ module.exports = function (grunt) {
 
   grunt.registerTask('develop', ['mode', 'clean', 'build', 'docs', 'copy', 'watch']);
 
-  grunt.registerTask('default', ['mode', 'clean', 'build', 'docs', 'copy']);
+  grunt.registerTask('default', ['mode', 'clean', 'build', 'copy']);
 };

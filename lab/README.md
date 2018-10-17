@@ -5,25 +5,16 @@ Discover - Learn - Share
 
 ### Requirements
 
- You will need a VM with access to the helix-lab nfs.
-  - Spring Boot v2.0.2.RELEASE
-  - PostgreSQL
-  - Grunt
-
-
+ You will need:
+  - a PostgreSQL database
+  - Java 1.8
+  - SASS (CSS compiler)
 
 ### Steps
 
-1.Setup your database using /lab/src/main/resources/db-scripts/initialize.sql
+1. Setup your database using Flyway migration
     
-2.Run Grunt
-    
-    $ grunt build
-
-3.he following example shows a typical Maven command to run a Spring Boot application
+2. Run the application, e.g.:
 
     $ mvn spring-boot:run
-
-Go to https://your_ip_address:8080
-
 
