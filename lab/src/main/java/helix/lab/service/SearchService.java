@@ -24,11 +24,9 @@ public class SearchService {
     }
 
     
-    public CatalogResult<?> queryById(String term) {
-        final CkanCatalogQuery query = new CkanCatalogQuery();
-        query.setTerm(term);
-
-        return this.ckanServiceProxy.getPackageById(query);
+    public helix.lab.model.ckan.Package queryById(String term) {
+    	
+        return this.ckanServiceProxy.getPackageById(term);
     }
 
 	

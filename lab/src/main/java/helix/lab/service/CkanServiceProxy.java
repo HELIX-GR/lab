@@ -441,11 +441,13 @@ public class CkanServiceProxy {
             		.put("name", package_id)
             		.put("title",query.getTitle())
             		.put("notes",query.getDescription())
+            		//-----------------------------------------------
             		//stc in the new ckan install
             		.put("closed_tag","Biography") //TODO
             		.put("datacite.contact_email","lab@helix.gr")
             		.put("datacite.creator.creator_name","HELIX Lab")
             		.put("owner_org","lab")
+            		//-----------------------------------------------
             		.put("return_id_only","True")
             		.put("tags", tags);
 
@@ -531,8 +533,8 @@ public class CkanServiceProxy {
         return null;
     }
     
-    //------------------------- pachage show ----------------------------------------
-    public CatalogResult<Package> getPackageById(CkanCatalogQuery query) throws ApplicationException {
+    //------------------------- pachage show ----------------------------------------TODO
+    public Package getPackageById(String id) throws ApplicationException {
         try {
             // Documentation: http://docs.ckan.org/en/latest/api/index.html
 
@@ -542,10 +544,9 @@ public class CkanServiceProxy {
                 .setHost(this.ckanConfiguration.getHost())
                 .setPort(this.ckanConfiguration.getPort())
                 .setPath(this.composePath("/api/action/package_show"))
-                .addParameter("id", query.getTerm());
+                .addParameter("id", id);
           
             final URI uri = builder.build();
-
             final HttpUriRequest request = RequestBuilder.post(uri)
                 .addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -555,9 +556,8 @@ public class CkanServiceProxy {
                 if (response.getStatusLine().getStatusCode() != 200) {
                     throw ApplicationException.fromMessage("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
                 }
-                final CatalogResult<Package> ckanResponse = this.parsePackages(response);
-                ckanResponse.setPageIndex(query.getPageIndex());
-                ckanResponse.setPageSize(query.getPageSize());
+                final Package ckanResponse = this.parseOnePackageShow(response);
+                
                 return ckanResponse;
             }
         } catch (final ApplicationException ex) {
@@ -566,6 +566,20 @@ public class CkanServiceProxy {
             this.handleException(ex);
         }
         return null;
+    }
+    
+    
+    private Package parseOnePackageShow(HttpResponse response) {
+        try (InputStream contentStream = response.getEntity().getContent()) {
+            final ObjectResponse<Package> ckanResponse =
+                this.objectMapper.readValue(contentStream, new TypeReference<ObjectResponse<Package>>() { });
+            return ckanResponse.getResult();
+
+        } catch (final IOException ex) {
+            logger.error("An I/O exception has occured while reading the response content", ex);
+        }
+
+        throw ApplicationException.fromMessage("Failed to read response");
     }
 
 }

@@ -237,7 +237,7 @@ export const search = (term, advanced = false, pageIndex = 0, pageSize = 10) => 
 export const searchById = (id) => (dispatch, getState) => {
   const { meta: { csrfToken: token }, ui: { search: { facets } } } = getState();
 
-  return catalogService.searchById(token, id )
+  return catalogService.searchById(token, id)
     .then((data) => {
       dispatch(catalogSearchComplete(data));
       return (data);

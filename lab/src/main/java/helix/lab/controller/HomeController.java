@@ -18,7 +18,7 @@ public class HomeController {
         return "index";
     }
 
-	@RequestMapping("notebook/*")
+	@RequestMapping("/notebook/{notebookId}")
     public String notebook(HttpSession session, HttpServletRequest request) {
         // Prevent infinite redirects
         if(request.getServletPath().equalsIgnoreCase("/")) {

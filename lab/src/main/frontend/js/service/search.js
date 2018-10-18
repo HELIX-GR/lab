@@ -7,8 +7,8 @@ export default {
     return actions.get(`${routes.SearchCkan}?catalog=${catalog}&search=${term}`, token);
   },
 
-  searchById: (token, catalog, id) => {
-    return actions.get(`'/action/ckan/queryById&id=${id}`, token);
+  searchById: (token, id) => {
+    return actions.get(`/action/ckan/queryId?id=${id}`, token);
   },
 
   search: (token, query) => {
