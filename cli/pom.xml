@@ -3,14 +3,14 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>helix-core-cli</artifactId>
-    <name>[helix-core] Client</name>
+    <artifactId>helix-lab-cli</artifactId>
+    <name>[helix-lab] Command</name>
 
     <packaging>jar</packaging>
 
     <parent>
       <groupId>gr.helix</groupId>
-      <artifactId>helix-core-parent</artifactId>
+      <artifactId>helix-lab-parent</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </parent>
 
