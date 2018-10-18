@@ -6,6 +6,8 @@ import { getFilesystem, createFolder, setTablePath, setNewFolder } from '../../d
 import TableToolbar from './table-toolbar';
 import FileTable from './file-table';
 import {  toast, } from 'react-toastify';
+import {  StaticRoutes, } from '../../model';
+import { withRouter, } from 'react-router-dom';
 
 /**
  * Table example 
@@ -24,11 +26,13 @@ class FileSystem extends Component {
   }
 
   componentWillMount() {
-    if (this.props.user !== null) {
+    if (this.props.user.profile !== null) {
       this.props.getFilesystem("")
         .then(this.setState({
           folder: this.props.filesystem
         }));
+    } else{
+      this.props.history.push(StaticRoutes.LABHOME);
     }
 
   }
@@ -96,7 +100,6 @@ class FileSystem extends Component {
   };
 
   handleRowDoubleClick = (event, index, type, name) => {
-    console.log("double cklick");
     const folder = this.findFolderFromPath();
 
     if (type === 'file') {
@@ -145,7 +148,6 @@ class FileSystem extends Component {
   renderBrowser() {
     const { value_folder } = this.state;
     const folder = this.findFolderFromPath();
-    console.log(folder);
     return (
       <FileTable props={{
         data: [
@@ -184,8 +186,6 @@ class FileSystem extends Component {
 }
 
 
-
-
 function mapStateToProps(state) {
   return {
     filesystem: state.config.filesystem,
@@ -202,5 +202,5 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => bindActionCreators({ getFilesystem, setTablePath, createFolder, setNewFolder }, dispatch);
 
 
-
-export default FileSystem = connect(mapStateToProps, mapDispatchToProps)(injectIntl(FileSystem));
+FileSystem = connect(mapStateToProps, mapDispatchToProps)(injectIntl(FileSystem));
+export default withRouter(FileSystem);

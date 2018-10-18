@@ -13,6 +13,10 @@ import { FormattedTime, injectIntl } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
 import { WhiteListTable } from "./while-list-table";
 import ModalAddWhiteList from './madal-add-white-list';
+import { withRouter, Redirect } from 'react-router-dom';
+import {
+  StaticRoutes,
+} from '../../model';
 
 function TabContainer(props) {
   return (
@@ -38,7 +42,11 @@ class AdminPage extends React.Component {
   }
 
   componentWillMount() {
+    if (this.props.isadmin){
     this._getServers();
+    } else {
+      this.props.history.push(StaticRoutes.LABHOME);
+    }
   }
   _getServers() {
     this.props.requestServers();
@@ -136,9 +144,11 @@ function mapStateToProps(state) {
     whitelist_update: state.admin.whitelist_update,
     u2s: state.admin.u2s,
     u2s_update: state.admin.u2s_update,
+    isadmin: state.admin.isadmin,
   };
 }
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ requestServers, requestUsers, requestUsersToServers, requestWhiteList }, dispatch);
 
-export default AdminPage = connect(mapStateToProps, mapDispatchToProps)(injectIntl(AdminPage));
+AdminPage = connect(mapStateToProps, mapDispatchToProps)(injectIntl(AdminPage));
+export default withRouter(AdminPage);

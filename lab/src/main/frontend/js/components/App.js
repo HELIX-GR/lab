@@ -60,14 +60,29 @@ class App extends React.Component {
           <div>
             <SearchPage changeLocale={() => { }} locale={'en'} logout={() => { }} />
           </div>)} />
-        <Route path='/notebook/:uuid' component={NotebookShow}/>
+        <Route path='/notebook/:uuid' component={NotebookShow} />
         <Route path="/filesystem" render={() => (
           <section className="main-results-page-content">
             <div className="results-main-content">
               <Filesystem />
             </div>
           </section>)} />
-
+        <Route path="/courses" render={() => (
+          <section className="main-results-page-content">
+            <div className="results-main-content">
+              <h2>
+              <i className="fa fa-cog fa-spin"></i> Under construction <i className="fa fa-cog fa-spin"></i>
+              </h2>
+            </div>
+          </section>)} />
+          <Route path="/guides" render={() => (
+          <section className="main-results-page-content">
+            <div className="results-main-content">
+              <h2>
+              <i className="fa fa-cog fa-spin"></i> Under construction <i className="fa fa-cog fa-spin"></i>
+              </h2>
+            </div>
+          </section>)} />
         <Route path="/admin" render={() => (
           <section className="main-results-page-content">
             <div className="results-main-content">

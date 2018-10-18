@@ -70,7 +70,8 @@ class Header extends React.Component {
                   <li><a>
                     NBviewer
                 </a></li>
-                  <li><Link to={'/whatislab'}> <FormattedMessage id="header.whatislab" defaultMessage="What is Lab?" /></Link></li>
+                  {//<li><Link to={'/whatislab'}> <FormattedMessage id="header.whatislab" defaultMessage="What is Lab?" /></Link></li>
+                  }
                 </ul>
               </li>
               <li id="menu-item-project" className="menu-item aux-item has-sub-menu">
@@ -95,8 +96,8 @@ class Header extends React.Component {
                   <FormattedMessage id="header.news" defaultMessage="News" />
                 </a> 
                 <ul className="sub-menu">
-                  <li> <a href="http://core.hellenicdataservice.gr/core/news"><span>News </span></a></li>
-                  <li> <a href="http://core.hellenicdataservice.gr/core/events"><span>Events</span></a></li>
+                  <li> <a href="http://core.hellenicdataservice.gr/main/news"><span>News </span></a></li>
+                  <li> <a href="http://core.hellenicdataservice.gr/main/events"><span>Events</span></a></li>
                 </ul>
               </li>
               {authenticated && this.props.profile.roles.includes('ROLE_ADMIN') &&
@@ -137,7 +138,7 @@ class Header extends React.Component {
                       <li><a href="#">Help</a></li>
                       <li><a href="#">Settings</a></li>
                       <li><a href="#" onClick={() => this.props.logout()}>Log out</a></li>
-                      <li> <a href="https://goo.gl/forms/BusjilnDlJhIDrN32" target="_blank"> Report a bug <i class="fa fa-bug"></i></a></li>
+                      <li> <a href="https://goo.gl/forms/BusjilnDlJhIDrN32" target="_blank"> Report a bug <i className="fa fa-bug"></i></a></li>
                     </ul>
                   </li>
                 </ul>
