@@ -42,7 +42,7 @@ class AdminPage extends React.Component {
   }
 
   componentWillMount() {
-    if (this.props.isadmin){
+    if (this.props.profile.roles.includes('ROLE_ADMIN')){
     this._getServers();
     } else {
       this.props.history.push(StaticRoutes.LABHOME);
@@ -144,7 +144,7 @@ function mapStateToProps(state) {
     whitelist_update: state.admin.whitelist_update,
     u2s: state.admin.u2s,
     u2s_update: state.admin.u2s_update,
-    isadmin: state.admin.isadmin,
+    profile: state.user.profile,
   };
 }
 
