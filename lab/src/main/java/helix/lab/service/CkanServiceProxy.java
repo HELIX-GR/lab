@@ -443,10 +443,10 @@ public class CkanServiceProxy {
             		.put("notes",query.getDescription())
             		//-----------------------------------------------
             		//stc in the new ckan install
-            		.put("closed_tag","Biography") //TODO
-            		.put("datacite.contact_email","lab@helix.gr")
-            		.put("datacite.creator.creator_name","HELIX Lab")
-            		.put("owner_org","lab")
+            		//.put("closed_tag","Biography") //TODO
+            		//.put("datacite.contact_email","lab@helix.gr")
+            		//.put("datacite.creator.creator_name","HELIX Lab")
+            		.put("owner_org","IMIS Athena")
             		//-----------------------------------------------
             		.put("return_id_only","True")
             		.put("tags", tags);
