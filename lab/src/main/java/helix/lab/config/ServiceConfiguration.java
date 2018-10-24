@@ -11,6 +11,16 @@ public class ServiceConfiguration {
     private String path;
     
     private String apikey;
+    
+    public String getPublisherOrganization() {
+		return publisherOrganization;
+	}
+
+	public void setPublisherOrganization(String publisherOrganization) {
+		this.publisherOrganization = publisherOrganization;
+	}
+
+	private String publisherOrganization;
 
     public String getScheme() {
         return this.scheme;
