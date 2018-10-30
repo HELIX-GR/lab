@@ -21,6 +21,7 @@ import helix.lab.controller.action.BaseController;
 import helix.lab.model.HubServerResponse;
 import helix.lab.model.admin.HubServerEntity;
 import helix.lab.model.hub.HubUserResponse;
+import helix.lab.model.hub.ServerInfoResponse;
 import helix.lab.model.user.AccountToServerEntity;
 import helix.lab.repository.HubServerRepository;
 import helix.lab.service.JupyterApi;
@@ -128,8 +129,8 @@ public class HubController extends BaseController
        
         System.out.println("user "+ username+" deleting server");
     	try {
-    		japi.delete_user_server(hub.get(),"users/"+username+"/server");// stop notebook server for this user
-            
+    		japi.delete_user_server(hub.get(),username+"/server");// stop notebook server for this user
+    		japi.delete_user_server(hub.get(),username);//delete user from this hub so he can't reconnect without lab
             } catch (IOException e) {
             	return RestResponse.error(null, e.getMessage() );
 
@@ -158,16 +159,27 @@ public class HubController extends BaseController
 	   
 	}
     
-   /* @RequestMapping(value = "/action/servers", method = RequestMethod.GET)
-    public RestResponse<Object> server_info(HttpSession session, @RequestParam(required = false) String error) 
+    @RequestMapping(value = "/action/user/server_info", method = RequestMethod.GET)
+    public RestResponse<?> server_info(Authentication authentication) 
     {
-        if (error != null) {
-      
-            return RestResponse.error(null, error);
+    	List<AccountToServerEntity> a2sl= atsr.findAllServersByUserId(currentUserId());
+    	HubUserResponse respo = null;
+    	String target=null;
+	if (!a2sl.isEmpty()) { // Check if i have it in db
+        target = a2sl.get(0).getUrl();
+        try {
+        	respo = japi.hub_user_info(a2sl.get(0).getHubServer(),"users/"+currentUserName());//see if its active in the hub
+        } catch (IOException e) {
+        //skip
         }
-        Integer username= currentUserId();
+        if (respo.getServer()==null) {// If there is not active in the hub but we have a db entry then delete it
+        	atsr.delete(a2sl.get(0)); //
+        	target=null;
+        }
         
-        return RestResponse.result(japi.api_request("users/"+username, "GET", null));
-    }*/
+        return RestResponse.result(new ServerInfoResponse(a2sl.get(0).getHubServer().toHubServerResponse(),target));   
+    }
+	return RestResponse.result(target);
+	}
 
 }

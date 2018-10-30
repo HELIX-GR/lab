@@ -8,7 +8,7 @@ import { setSelectedHub } from '../../ducks/app';
 import { FormattedMessage } from 'react-intl';
 import { Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 
-import { startNowAction, stopServerAction } from '../../ducks/app';
+import { startNowAction, stopServerAction, getUserInfoAction } from '../../ducks/app';
 
 
 class ServerButton extends React.Component {
@@ -24,6 +24,7 @@ class ServerButton extends React.Component {
   componentWillMount() {
     if (this.props.user !== null) {
       this.props.getUserServers();
+      this.props.getUserInfoAction();
     }
   }
 
@@ -93,6 +94,6 @@ function mapStateToProps(state) {
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ getUserServers, setSelectedHub, startNowAction, stopServerAction }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ getUserServers, setSelectedHub, startNowAction, stopServerAction, getUserInfoAction }, dispatch);
 
 export default ServerButton = connect(mapStateToProps, mapDispatchToProps)(ServerButton);
