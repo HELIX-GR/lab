@@ -14,6 +14,10 @@ const api = {
     return actions.get('/action/admin/users_to_servers');
   },
 
+  deleteUserToServer: (u2s_id, token) => {
+    return actions.post('action/admin/close_u2s/'+ u2s_id, token);
+  },
+
   addServer: (serverData, token) => {
     return actions.post('/action/admin/add_server', token, serverData);
   },

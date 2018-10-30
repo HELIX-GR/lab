@@ -142,8 +142,6 @@ public class AdminController extends BaseController{
 	
 	@RequestMapping(value = "action/admin/edit_server/{server_id}", method = RequestMethod.POST)
 	public RestResponse<?> edit_server(Authentication Authentication, @PathVariable int server_id, @RequestBody @Valid ServerRegistrationRequest request,  BindingResult results) {
-		System.out.println("................................................");
-		System.out.println(request.toString());
 	        try {
 	        	//((OptionalValidatorFactoryBean) validator).validate(request, results);
 	            

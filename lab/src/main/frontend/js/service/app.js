@@ -11,7 +11,7 @@ var api = {
   },
 
   getUserServerInfo: () => {
-    return actions.get('/action/servers');
+    return actions.get('/action/user/server_info');
   },
 
 };

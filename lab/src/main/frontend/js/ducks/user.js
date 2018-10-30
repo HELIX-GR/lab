@@ -104,6 +104,7 @@ export const modalLoginAction = (show_login) => ({
   type: SHOW_LOGIN_MODAL,
   show_login,
 });
+
 const requestProfile = () => ({
   type: REQUEST_PROFILE,
 });
@@ -127,6 +128,8 @@ const gotServers = (servers, timestamp) => ({
   servers,
   timestamp,
 });
+
+
 
 
 
@@ -200,3 +203,4 @@ export const getUserServers = () => (dispatch) => {
       throw err;
     });
 };
+

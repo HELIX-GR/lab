@@ -12,6 +12,7 @@ const REQUEST_FILESYSTEM = 'config/REQUEST_FILESYSTEM';
 const RECEIVE_FILESYSTEM = 'config/RECEIVE_FILESYSTEM';
 const SET_TABEL_PATH = 'config/SET_TABEL_PATH';
 const SET_NEW_FOLDER = 'config/SET_NEW_FOLDER';
+const RECEIVE_PUBLISH = 'config/RECEIVE_PUBLISH';
 
 const initialState = {
   filesystem: {
@@ -21,6 +22,7 @@ const initialState = {
     name: "",
     path: "/",
   },
+  publish: {},
   table_path: "/",
   selected_file: "",
   new_folder: false,
@@ -57,10 +59,19 @@ export default (state = initialState, action) => {
     case RECEIVE_FILESYSTEM:
       return {
         ...state,
-        filesystem: { ...action.filesystem,
+        filesystem: {
+          ...action.filesystem,
           name: "",
-          path: "/"},
+          path: "/"
+        },
         last_updated: action.timestamp,
+      };
+    case RECEIVE_PUBLISH:
+      return {
+        ...state,
+        publish: {
+          ...action.publish,
+        }
       };
 
     default:
@@ -86,6 +97,12 @@ export const requestFilesystem = () => ({
 export const receiveFilesystem = (filesystem, timestamp) => ({
   type: RECEIVE_FILESYSTEM,
   filesystem,
+  timestamp,
+});
+
+export const receivePublish = (publish, timestamp) => ({
+  type: RECEIVE_PUBLISH,
+  publish,
   timestamp,
 });
 
@@ -151,13 +168,11 @@ export const uploadFile = (data, file) => (dispatch, getState) => {
 
 export const publishFile = (data) => (dispatch, getState) => {
   const { meta: { csrfToken: token } } = getState();
-  console.log("publish file");
 
-  console.log(data);
   return filesystemService.publish(data, token)
     .then((fs) => {
       var t = moment().valueOf();
-      console.log(fs, t);
+      dispatch(receivePublish(fs, t));
     })
     .catch((err) => {
       console.error('Error publishing file', err);

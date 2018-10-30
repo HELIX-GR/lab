@@ -10,6 +10,10 @@ var api = {
     return actions.get('/action/user/servers');
   },
 
+  getServerInfo: () => {
+    return actions.get('/action/user/server_info');
+  },
+
   saveProfile: (profileData, token) => {
     return actions.post('/action/user/profile/save', token, JSON.stringify(profileData));
   },

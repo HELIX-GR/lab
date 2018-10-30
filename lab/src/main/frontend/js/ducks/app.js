@@ -1,5 +1,5 @@
 import appService from '../service/app';
-import {  toast, } from 'react-toastify';
+import { toast, } from 'react-toastify';
 
 export const START_NOW = 'app/START_NOW';
 const GOT_SERVER = 'app/GOT_SERVER';
@@ -35,7 +35,9 @@ export default (state = initialState, action) => {
     case GOT_STATUS:
       return {
         ...state,
-        status: action.status,
+        target: action.target,
+        server_stage: action.server_stage,
+        selected_hub: action.hub_server,
       };
     case SET_SELECTED_HUB:
       return {
@@ -52,15 +54,17 @@ export const alter_button_stage = (stage) => ({
   type: ASK_SERVER,
   stage,
 });
+
 const got_server = (r) => ({
   type: GOT_SERVER,
   target: r,
-
 });
-const got_status = (r, t) => ({
-  type: GOT_STATUS,
-  status: r,
 
+const got_status = (hub_server, target, server_stage) => ({
+  type: GOT_STATUS,
+  target,
+  hub_server,
+  server_stage,
 });
 
 export const setSelectedHub = (selected_hub) => ({
@@ -72,7 +76,7 @@ export const setSelectedHub = (selected_hub) => ({
 export const startNowAction = (hub_id) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
   dispatch(alter_button_stage(2));
-  return appService.startJupyter(hub_id,token).then(
+  return appService.startJupyter(hub_id, token).then(
     (r) => {
       console.log(r);
       dispatch(got_server(r));
@@ -89,8 +93,13 @@ export const getUserInfoAction = () => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
   return appService.getUserServerInfo().then(
     (r) => {
-      console.log(r);
-      dispatch(got_status(r));
+      if (r) {
+        console.log(r);
+        dispatch(got_status(r.hub_server, r.target,3));
+      }
+      else {
+        dispatch(got_status(null, null, 0));
+      }
     },
     (err) => {
       console.error('Failed login: ' + err.message);
@@ -105,7 +114,7 @@ export const stopServerAction = (hub_id) => (dispatch, getState) => {
     (r) => {
       console.log(r);
       dispatch(alter_button_stage(0));
-      
+
     },
     (err) => {
       toast.error('Failed to stop server: ' + err.message);

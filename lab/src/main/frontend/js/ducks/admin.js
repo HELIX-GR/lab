@@ -168,6 +168,18 @@ export const requestUsersToServers = () => (dispatch) => {
     });
 };
 
+export const deleteUserToServer = (id) => (dispatch, getState) => {
+  var { meta: { csrfToken: token } } = getState();
+  return adminService.deleteUserToServer(id, token).then(
+    (r) => {
+      this.requestUsersToServers();
+    },
+    (err) => {
+      console.error('Failed to Detele Server of a user: ' + err.message);
+      throw err;
+    });
+};
+
 export const grand_role = (id, role) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
   var { admin } = getState();

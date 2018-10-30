@@ -151,11 +151,11 @@ public class JupyterApi {
 	}
 	
 	
-	public boolean delete_user_server(HubServerEntity hub, String path) throws IOException {
+	public boolean delete_user_server(HubServerEntity hub, String username) throws IOException {
 		HttpURLConnection con;
 
 	try {
-		URL url = new URL(hub.getUrl()+"/hub/api/"+path);
+		URL url = new URL(hub.getUrl()+"/hub/api/users/"+username);
 		con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod("DELETE");
 		con.setRequestProperty ("Authorization", "token "+hub.getAdmin_token());
@@ -176,9 +176,9 @@ public class JupyterApi {
 			response.append(inputLine);
 		}
 		in.close();
-if (responseCode< 400) {
-		return true;
-	}
+		if (responseCode< 400) {
+			return true;
+		}
 	} catch (IOException e) {
 		System.out.println(e.getMessage());
 		throw e;
@@ -188,33 +188,5 @@ if (responseCode< 400) {
 	return false;
 	}
 	
-	//This code is for testing
-
-	/*public void Apache_request(String path, String title) throws Exception {
-
-        HttpClient httpClient = HttpClients.createDefault();
-
-        URI uri = new URIBuilder()
-            .setScheme("http")
-            .setHost("http://192.168.10.163:8081/hub/api/")
-            .setPort(8081)
-            .setPath(String.format("/hub/api/", path))
-            .build();
-
-        String json = "{\"featureType\":{\"name\":\"%s\",\"title\":\"%s\",\"nativeCRS\":\"EPSG:4326\",\"recalculate\":\"nativebbox,latlonbbox\"}}";
-      //  StringEntity entity = new StringEntity(String.format(json, tableName, title));
-
-       // String auth = config.getUsername() + ":" + config.getPassword();
-      //  byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("ISO-8859-1")));
-
-        HttpUriRequest request = RequestBuilder.post(uri)
-            .addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-            .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
-            .addHeader(HttpHeaders.AUTHORIZATION, "token " + new String("8f972f5d7d5244fda516f2e19298f3a4")).build();
-
-        HttpResponse response = httpClient.execute(request);
-        if (response.getStatusLine().getStatusCode() != 201) {
-            throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
-        }
-    }*/
+	
 }
