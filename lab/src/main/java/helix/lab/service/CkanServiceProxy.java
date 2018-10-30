@@ -418,7 +418,7 @@ public class CkanServiceProxy {
         return "";
     }
     // Create a new dataset in CKAN
-    public Object createNewDataset(PublishRequest query, String package_id) throws ApplicationException {
+    public Object createNewDataset(PublishRequest query, String package_id, String principal) throws ApplicationException {
         try {
             // Documentation: http://docs.ckan.org/en/latest/api/index.html
 
@@ -443,6 +443,7 @@ public class CkanServiceProxy {
             		.put("notes",query.getDescription())
             		.put("owner_org",this.ckanConfiguration.getPublisherOrganization())
             		.put("return_id_only","True")
+            		.put("maintainer_email", principal)
             		.put("tags", tags);
 
             final HttpUriRequest req = RequestBuilder.post(uri)

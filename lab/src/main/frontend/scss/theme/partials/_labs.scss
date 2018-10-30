@@ -1,51 +1,43 @@
 .backgroung-white {
-    margin-right: 0px;
-    margin-left: 0px;
-    background-color: #FFF;
+  margin-right: 0px;
+  margin-left: 0px;
+  background-color: #FFF;
 }
 
 .filesystem-box {
-    margin:15px;
-    border-width:2px;
-    border-color: blue;
+  margin: 15px;
+  border-width: 2px;
+  border-color: blue;
 }
-
 
 .top-border-lab {
-    border-top: solid 10px #714DF7;    
+  border-top: solid 10px #714DF7;
 }
 
-.breadcrumbs-pagination{
+.breadcrumbs-pagination {
   display: block;
   width: 100%;
   margin: auto;
   margin-bottom: 16px;
   position: relative;
   height: 15px;
-
-  &.top{
+  &.top {
     margin-bottom: 15px;
     padding-left: 8px;
   }
-
-  &.bottom{
+  &.bottom {
     margin-top: -10px;
     padding-left: 8px;
-
-    .breadcrumbs{
-
+    .breadcrumbs {
       top: 3px;
     }
   }
-  .breadcrumbs{
-
+  .breadcrumbs {
     position: absolute;
     top: 1px;
     left: 0;
     margin-left: 8px;
-
-    .breadcrumbs-part{
-
+    .breadcrumbs-part {
       font-weight: 400;
       font-size: 15px;
       color: $details-grey;
@@ -53,14 +45,11 @@
       line-height: 1.2;
       position: relative;
       opacity: 1;
-
       transition: all .2s ease-in-out;
       -webkit-transition: all .2s ease-in-out;
       -moz-transition: all .2s ease-in-out;
       -o-transition: all .2s ease-in-out;
-
-      &:after{
-
+      &:after {
         content: "\\\\\\";
         color: $details-grey;
         margin-left: 5px;
@@ -68,31 +57,22 @@
         position: relative;
         top: -1px
       }
-
-      &:last-child{
-
+      &:last-child {
         color: $main-black;
         margin-right: 0;
-
-        &:after{
-
+        &:after {
           content: '';
         }
       }
-
-      &:hover{
-
+      &:hover {
         opacity: .5;
-
-        &:after{
-
+        &:after {
           opacity: 1;
         }
       }
     }
   }
 }
-
 
 .modal-dialog-centered {
   display: -webkit-box;
@@ -104,75 +84,75 @@
   min-height: calc(100% - (2rem * 2));
 }
 
-
-
-
-
 .button-notebook {
-    backface-visibility: hidden;
-    position: relative;
-    cursor: pointer;
-    display: inline-block;
-    white-space: nowrap;
-    background: rgba(100%,100%,100%,0);
-    border-radius: 500px;
-    border: 01px solid #444;
-    border-width: 01px 01px 01px 01px;
-    padding: 8px 20px 8px 50px;
-    color: #1a1a1a;
-    font-weight: 900;
-    margin: 6px 6px 6px 6px
+  backface-visibility: hidden;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  white-space: nowrap;
+  background: rgba(100%, 100%, 100%, 0);
+  border-radius: 500px;
+  border: 01px solid #444;
+  border-width: 01px 01px 01px 01px;
+  padding: 8px 20px 8px 50px;
+  color: #1a1a1a;
+  font-weight: 900;
+  margin: 6px 6px 6px 6px
 }
+
 .button-notebook:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-}
-.button-notebook > div {
-    color: #999;
-    font-size: 10px;
-    font-weight: initial;
-    font-style: normal;
-    text-align: center;
-    margin: 0px 0px 0px 0px
-}
-.button-notebook > i {
-    color: #e21;
-    font-size: 1em;
-    background: #ebebeb;
-    border-radius: 100px;
-    border: 0.5px solid #242424;
-    border-width: 3px 3px 3px 3px;
-    padding: 12.5px 14px 12.5px 14px;
-    margin: 6px 6px 6px 6px;
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    bottom: -10px;
-}
-.button-notebook > .ld {
-    font-size: initial
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
-.animation > i{
-    border-width: 3px 3px 3px 3px;
-    animation: spin 2s linear infinite;
-    border: 3px solid #714df7;
-    padding: 12.5px 14px 12.5px 14px;
-    border-top: 3px solid rgb(235, 235, 235);
-    border-radius: 55%;
+.button-notebook>div {
+  color: #999;
+  font-size: 10px;
+  font-weight: initial;
+  font-style: normal;
+  text-align: center;
+  margin: 0px 0px 0px 0px
 }
 
+.button-notebook>i {
+  color: #e21;
+  font-size: 1em;
+  background: #ebebeb;
+  border-radius: 100px;
+  border: 0.5px solid #242424;
+  border-width: 3px 3px 3px 3px;
+  padding: 12.5px 14px 12.5px 14px;
+  margin: 6px 6px 6px 6px;
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  bottom: -10px;
+}
+
+.button-notebook>.ld {
+  font-size: initial
+}
+
+.animation>i {
+  border-width: 3px 3px 3px 3px;
+  animation: spin 2s linear infinite;
+  border: 3px solid #714df7;
+  padding: 12.5px 14px 12.5px 14px;
+  border-top: 3px solid rgb(235, 235, 235);
+  border-radius: 55%;
+}
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-
-.main-results-result-count-lab{
-
+.main-results-result-count-lab {
   float: left;
-  position: relative;
-  //padding-left: 8px;
+  position: relative; //padding-left: 8px;
   //padding-top: 10px;
   font-weight: 300;
   font-size: 12px;
@@ -182,15 +162,12 @@
   vertical-align: middle;
 }
 
-.result-items{
+.result-items {
   padding-top: 3px;
-
   padding-bottom: 3px;
-
-  .result-item{
+  .result-item {
     max-width: 1024px;
-    margin: 5px;
-    //margin-top: -1px;
+    margin: 5px; //margin-top: -1px;
     padding: 5px 7px;
     border-left: solid 10px transparent;
     transition: all .2s ease-in-out;
@@ -198,28 +175,18 @@
     -moz-transition: all .2s ease-in-out;
     -o-transition: all .1s ease-in-out;
     position: relative;
-
-
-
-    &.lab{
-
-      &:hover{
-
+    &.lab {
+      &:hover {
         border-left-color: $lab-color;
       }
-
-      .title{
-
+      .title {
         color: $lab-color;
-
-        .pill{
+        .pill {
           background-color: $lab-color;
         }
       }
     }
-
-    &:after{
-
+    &:after {
       content: '';
       position: absolute;
       left: 0;
@@ -233,56 +200,40 @@
       -moz-transition: all .2s ease-in-out;
       -o-transition: all .1s ease-in-out;
     }
-
-    &:last-child:after{
-
+    &:last-child:after {
       border-bottom: none;
     }
-
-    &:hover{
-
+    &:hover {
       background-color: white;
       border-bottom-color: transparent;
-
-      &:after{
-
+      &:after {
         border-bottom-color: transparent;
       }
     }
-
-    .date-of-entry{
-
+    .date-of-entry {
       color: $details-grey;
       font-weight: 400;
       font-size: 12;
       letter-spacing: .05;
       line-height: 1.3;
-
-      a{
+      a {
         color: inherit;
       }
     }
-
-    h3.title{
-
+    h3.title {
       position: relative;
       margin: 0;
       line-height: 1;
       padding-top: 8px;
       font-weight: 500;
-
-      a{
-
+      a {
         color: inherit;
         display: inline-block;
-
-        &:hover{
+        &:hover {
           color: inherit;
         }
       }
-
-      .pill{
-
+      .pill {
         position: relative;
         top: -4px;
         cursor: pointer;
@@ -292,42 +243,33 @@
         font-size: 11px;
         padding: 2px 5px;
         height: 18px;
-        line-height: 15px;
-        // float: left;
+        line-height: 15px; // float: left;
         display: inline-block;
         border-radius: 9px;
         background-color: #BFBFBF;
-
-
-        &:last-child{
+        &:last-child {
           margin-right: none;
         }
       }
     }
-
-    .service{
-
+    .service {
       margin-top: 8px;
       font-weight: 400400;
       font-size: 12;
       color: $details-grey;
       letter-spacing: .05em;
       line-height: 1.3;
-
-      a{
+      a {
         color: inherit;
-
-        &:hover{
+        &:hover {
           color: inherit;
         }
       }
     }
-
-    .tag-list{
+    .tag-list {
       margin-top: 10px;
     }
-
-    .bottom-separator{
+    .bottom-separator {
       display: none;
       width: 100%;
       height: 0;
@@ -336,24 +278,25 @@
   }
 }
 
-.popover-body{
-  padding:0px;
+.popover-body {
+  padding: 0px;
 }
-.popover{
-  max-width: 100%; /* Max Width of the popover (depending on the container!) */
+
+.popover {
+  max-width: 100%;
+  /* Max Width of the popover (depending on the container!) */
   background-color: #efefef;
 }
 
-.image-icon{
+.image-icon {
   width: 17px;
   height: 17px;
-  &:hover{
+  &:hover {
     color: inherit;
   }
 }
 
-.pill{
-
+.pill {
   position: relative;
   top: -4px;
   cursor: pointer;
@@ -363,9 +306,110 @@
   font-size: 11px;
   padding: 2px 5px;
   height: 18px;
-  line-height: 15px;
-  // float: left;
+  line-height: 15px; // float: left;
   display: inline-block;
   border-radius: 9px;
   background-color: #BFBFBF;
+}
+
+//This sccs is for the notebook show page
+//------------------------------------------------------
+
+.nav-bar {
+  border-bottom: 1px $lab-color solid;
+  margin-bottom: 20px;
+  list-style: none;
+  float: left;
+  width: 100%;
+  padding-left: 25px;
+  margin-top: 10px;
+  .package-title {
+    color: $lab-color;
+    margin-bottom: 10px;
+    font-weight: 300; //width: 75%;  //for distance from fav save buttons
+    .draft-state {
+      //border: 2px $lab-color solid;
+      border-radius: 8px;
+      font-size: 1.4rem;
+      font-weight: 600;
+      padding: 10px;
+      background: $lab-color;
+      color: #fff;
+      vertical-align: middle;
+    }
+  }
+}
+
+.dataset-dates {
+  margin-bottom: 30px;
+  color: #666666;
+  font-size: 13px;
+  font-weight: 400;
+  display: inline-block;
+  .title {
+    float: left;
+  }
+  .date {
+    font-weight: 500;
+    margin-left: 180px;
+    letter-spacing: 1px;
+  }
+}
+
+.package-notes {
+  display: inline-block;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  font-weight: 300;
+  line-height: 23px;
+  font-size: 15px;
+}
+
+.package-resources {
+  list-style: none;
+  .inline {
+    padding-left: 25px;
+  }
+  .resource-component {
+    position: relative;
+    padding: 10px 0 10px 60px;
+    margin-bottom: 0px;
+    border-radius: 3px;
+    max-height: 80px;
+    .format-label {
+      background-repeat: no-repeat;
+      background-position: 0px 0px;
+      background-size: 62%;
+      position: absolute;
+      width: 50px;
+      height: 42px;
+      top: 5px;
+      left: 5px;
+    }
+    .btn-group {
+      margin-top: 0px;
+    }
+    .btn-download {
+      float: right;
+      display: inline;
+    }
+    .description {
+      font-family: 'Roboto';
+      font-weight: 300;
+      font-size: 1rem;
+      line-height: 10px;
+      a {
+        color: #67676A;
+      }
+    }
+  }
+}
+.btn-group-main {
+  background-color: #ffffff;
+  border: 2px $lab-color solid !important;
+  color: $lab-color;
+  font-family: 'Roboto' !important;
+  font-weight: 500;
+  font-size: 12px;
+  padding: 5px 25px 5px 25px;
 }

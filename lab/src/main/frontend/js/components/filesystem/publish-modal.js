@@ -13,7 +13,7 @@ import CreatableSelect from 'react-select/lib/Creatable';
 
 const tagOptions = [
   { value: 'Python', label: 'Python' },
-  { value: 'R', label: 'R' },
+  { value: 'R language', label: 'R language' },
   { value: 'Data Science', label: 'Data Science' },
   { value: 'Lite', label: 'Lite' },
   { value: 'GeoNotebook', label: 'GeoNotebook' },
@@ -61,31 +61,41 @@ class PublishModal extends React.Component {
     });
   };
 
+  getFileExtension = (filename) => {
+    return filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
+  };
 
   handlePublish = () => {
-
     let path = this.props.table_path;
     if (path.startsWith('/')) {
       path = path.slice(1);
     }
 
-    console.log("path : ", path);
     this.setState({
       isPublishing: true,
     });
 
     let { title, filename, filerename, description, lang, tags } = this.state;
-    this.props.publishFile({ title, path, filename, filerename, description, lang , tags})
-      .then(fs => {
-        toast.success("The file is published!");
-        this.handleClose();
-      })
-      .catch((err) => {
-        toast.error("Can't publish this file!");
-        this.setState({
-          isPublishing: false,
+    if (this.getFileExtension(filename) == "ipynb") {
+      this.props.publishFile({ title, path, filename, filerename, description, lang, tags })
+        .then((fs) => {
+          console.log(fs);
+          toast.success("The file is published!");
+          this.handleClose();
+        })
+        .catch((err) => {
+          toast.error("Can't publish this file!");
+          this.setState({
+            isPublishing: false,
+          });
         });
+    } else {
+      toast.error("Only Notebooks (.ipynb) can be published!");
+      this.setState({
+        isPublishing: false,
       });
+
+    }
   };
 
   handleChange = (event) => {
@@ -94,10 +104,9 @@ class PublishModal extends React.Component {
   }
 
   handleChangeTags = (newValue, actionMeta) => {
-    var arr=[];
-    newValue.map(s => {arr.push(s.value); });
+    var arr = [];
+    newValue.map(s => { arr.push(s.value); });
     this.setState({ tags: arr });
-    console.log(arr);
   };
 
   render() {

@@ -35,45 +35,44 @@ class NotebookShow extends React.Component {
       <div className="results-lab">
         <section className="main-results-page-content">
           <div className="results-main-content">
-            <section className="results-main-sidebar">
-              <h5 className="side-heading org-heading">
-                Organization</h5>
-              <i className="icon-building"></i>
-              <section className="org-content">
-                <div className="image">
-                  <a href="/organization/helix">
-                    <img src="http://83.212.105.241:5000/uploads/group/2018-06-14-101450.705782Helix-logo.svg" width="200" alt="helix" />
-                  </a>
-                </div>
-              </section>
-              <h5 className="side-heading grayed">
-                Tags</h5>
-              <section className="side-content">
-                <a className="tags" >SEWAGE</a>
-                <a className="tags" >STATISTICS</a>
-                <a className="tags" >WATER</a>
-              </section>
-            </section>
-
             <section className="results-main-result-set">
 
               {result && result.resources &&
                 <div className="main-results-border-bottom">
+                  <div className="nav-bar">
+                    <h1 className="package-title">{result.title}</h1>
+                    <div className="dataset-dates">
+                      <div className="title"> CREATED: </div>
+                      <div className="date"> {result.resources[0].created}</div>
 
-                  <h1 className="package-title">{result.title}</h1>
-                  <div className="dataset-dates">
-                    <div className="title"> CREATED: </div>
-                    <div className="date"> {result.resources[0].created}</div>
-
-                    <div className="title"> LAST REVISION: </div>
-                    <div className="date"> {result.resources[0].last_modified}</div>
-
+                      <div className="title"> LAST REVISION: </div>
+                      <div className="date"> {result.resources[0].last_modified}</div>
+                    </div>
                   </div>
                   <div className="package-notes">
                     <p>{result.notes}</p>
                   </div>
+                  <section class="package-resources ">
+                    <div class="section-title">
+                      <h5 class="inline">NOTEBOOK FILE</h5>
 
-                  <div className="main-results-border-bottom">          </div>
+                      <hr class="separator" />  </div>
+
+                    <div class="package-resource-list">
+                      <li class="resource-component clearfix" >
+
+                        <a class="resource-title" href={result.resources[0].url} title={result.resources[0].name}>
+                          {result.resources[0].name}
+                        </a>
+
+                        <div class="btn-download btn-group ">
+                          <a class=" btn-group-main" href={"http://nbviewer.jupyter.org/url/" + result.resources[0].url}> VIEW</a>
+                        </div>
+                      </li>
+
+                    </div></section>
+                  <div className="main-results-border-bottom">
+                  </div>
 
                 </div>
               }

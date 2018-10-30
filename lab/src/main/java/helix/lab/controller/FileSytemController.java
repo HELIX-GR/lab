@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -184,8 +185,7 @@ public class FileSytemController extends BaseController {
      * @throws InvalidProcessDefinitionException
      */
     @RequestMapping(value = "/action/file-system/publish", method = RequestMethod.POST)
-    public RestResponse<?> publish(@RequestBody @Valid PublishRequest request) throws IOException {
-    //TODO
+    public RestResponse<?> publish(Authentication authentication, @RequestBody @Valid PublishRequest request) throws IOException {
     	System.out.println(request.toString() );
         try {
         	 if (StringUtils.isEmpty(request.getFilename())) {
@@ -207,7 +207,7 @@ public class FileSytemController extends BaseController {
             }
             // Create a new dataset
           String package_id = UUID.randomUUID().toString();
-          System.out.println(ckanServiceProxy.createNewDataset(request, package_id ));
+          System.out.println(ckanServiceProxy.createNewDataset(request, package_id , (String) authentication.getPrincipal()));
 
             return RestResponse.result (ckanServiceProxy.createNewResource(request, file, package_id));
         //    InputStream in = new ByteArrayInputStream(file.getBytes());
