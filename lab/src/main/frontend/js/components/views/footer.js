@@ -13,7 +13,7 @@ class Footer extends React.Component {
 
           <div className="footer-column logo">
             <a href="#">
-              <img src="/images/svg/Helix-logo-White-on-Black.svg" alt="" />
+              <img src="/images/svg/Helix-logo-White-on-Purple.svg" alt="" />
             </a>
           </div>
           <div className="footer-column about">
