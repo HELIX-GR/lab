@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
+import { FormattedTime } from 'react-intl';
 
 import {
   bindActionCreators
@@ -43,10 +44,10 @@ class NotebookShow extends React.Component {
                     <h1 className="package-title">{result.title}</h1>
                     <div className="dataset-dates">
                       <div className="title"> CREATED: </div>
-                      <div className="date"> {result.resources[0].created}</div>
+                      <div className="date"> <FormattedTime value={result.resources[0].created} day='numeric' month='numeric' year='numeric' /></div>
 
                       <div className="title"> LAST REVISION: </div>
-                      <div className="date"> {result.resources[0].last_modified}</div>
+                      <div className="date"> <FormattedTime value={result.resources[0].last_modified} day='numeric' month='numeric' year='numeric' /></div>
                     </div>
                   </div>
                   <div className="package-notes">
@@ -66,7 +67,7 @@ class NotebookShow extends React.Component {
                         </a>
 
                         <div class="btn-download btn-group ">
-                          <a class=" btn-group-main" href={"http://nbviewer.jupyter.org/url/" + result.resources[0].url}> VIEW</a>
+                          <a class=" btn-group-main" href={"http://nbviewer.jupyter.org/url/" + result.resources[0].url.replace("http://","").replace("https://","")}> VIEW</a>
                         </div>
                       </li>
 
