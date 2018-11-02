@@ -179,6 +179,19 @@ export const publishFile = (data) => (dispatch, getState) => {
     });
 };
 
+export const getNotebookToFilesystem = (id) => (dispatch, getState) => {
+  const { meta: { csrfToken: token } } = getState();
+
+  return filesystemService.getNotebook(id, token)
+    .then((fs) => {
+   //TODO handle
+    })
+    .catch((err) => {
+      console.error('Error geting the file', err);
+    });
+};
+
+
 
 export const deletePath = (path) => (dispatch, getState) => {
   const { meta: { csrfToken: token } } = getState();

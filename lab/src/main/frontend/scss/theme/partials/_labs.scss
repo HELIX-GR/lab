@@ -340,6 +340,21 @@
   }
 }
 
+.btn-save {
+  float: right;
+  margin-top: 16px;
+  margin-right: 17px;
+  a {
+    display: block;
+  }
+
+  &:hover {
+    img {
+      opacity: .6;
+    }
+  }
+}
+
 .dataset-dates {
   margin-bottom: 30px;
   color: #666666;

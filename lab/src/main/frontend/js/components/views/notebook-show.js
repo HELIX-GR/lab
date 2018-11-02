@@ -6,6 +6,10 @@ import {
   bindActionCreators
 } from 'redux';
 
+import { 
+  getNotebookToFilesystem,
+ } from '../../ducks/config';
+
 import {
   searchById
 } from '../../ducks/ui/views/search';
@@ -41,6 +45,10 @@ class NotebookShow extends React.Component {
               {result && result.resources &&
                 <div className="main-results-border-bottom">
                   <div className="nav-bar">
+                  {this.props.username &&
+                    <div className="btn-save">
+                      <a onClick={() => this.props.getNotebookToFilesystem(uuid)}><img  src="/images/png/save.png" /></a>
+                    </div>}
                     <h1 className="package-title">{result.title}</h1>
                     <div className="dataset-dates">
                       <div className="title"> CREATED: </div>
@@ -53,21 +61,21 @@ class NotebookShow extends React.Component {
                   <div className="package-notes">
                     <p>{result.notes}</p>
                   </div>
-                  <section class="package-resources ">
-                    <div class="section-title">
-                      <h5 class="inline">NOTEBOOK FILE</h5>
+                  <section className="package-resources ">
+                    <div className="section-title">
+                      <h5 className="inline">NOTEBOOK FILE</h5>
 
-                      <hr class="separator" />  </div>
+                      <hr className="separator" />  </div>
 
-                    <div class="package-resource-list">
-                      <li class="resource-component clearfix" >
+                    <div className="package-resource-list">
+                      <li className="resource-component clearfix" >
 
-                        <a class="resource-title" href={result.resources[0].url} title={result.resources[0].name}>
+                        <a className="resource-title" href={result.resources[0].url} title={result.resources[0].name}>
                           {result.resources[0].name}
                         </a>
 
-                        <div class="btn-download btn-group ">
-                          <a class=" btn-group-main" href={"http://nbviewer.jupyter.org/url/" + result.resources[0].url.replace("http://","").replace("https://","")}> VIEW</a>
+                        <div className="btn-download btn-group ">
+                          <a className=" btn-group-main" href={"http://nbviewer.jupyter.org/url/" + result.resources[0].url.replace("http://", "").replace("https://", "")}> VIEW</a>
                         </div>
                       </li>
 
@@ -93,10 +101,12 @@ class NotebookShow extends React.Component {
 
 const mapStateToProps = (state) => ({
   search: state.ui.search,
+  username: state.user.username,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  searchById
+  searchById,
+  getNotebookToFilesystem,
 }, dispatch);
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => ({

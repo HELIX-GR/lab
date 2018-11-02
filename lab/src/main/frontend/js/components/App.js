@@ -61,7 +61,7 @@ class App extends React.Component {
             <SearchPage changeLocale={() => { }} locale={'en'} logout={() => { }} />
           </div>)} />
         <Route path='/notebook/:uuid' component={NotebookShow} />
-        <Route path="/filesystem" render={() => (
+        <Route exact={true} path="/filesystem" render={() => (
           <section className="main-results-page-content">
             <div className="results-main-content">
               <Filesystem />
@@ -75,7 +75,7 @@ class App extends React.Component {
               </h2>
             </div>
           </section>)} />
-          <Route path="/guides" render={() => (
+          <Route exact={true} path="/guides" render={() => (
           <section className="main-results-page-content">
             <div className="results-main-content">
               <h2>
@@ -83,13 +83,13 @@ class App extends React.Component {
               </h2>
             </div>
           </section>)} />
-        <Route path="/admin" render={() => (
+        <Route exact={true} path="/admin" render={() => (
           <section className="main-results-page-content">
             <div className="results-main-content">
               <AdminPage />
             </div>
           </section>)} />
-
+          <Route  component={Page404}  />
       </Switch>
     );
     return (

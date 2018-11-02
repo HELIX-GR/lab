@@ -34,4 +34,8 @@ module.exports = {
     return actions.post('/action/file-system/publish', token, data);
   },
 
+  getNotebook: (id, token) => {
+    return actions.get('/action/file-system/getNotebook/'+id);
+  },
+
 };

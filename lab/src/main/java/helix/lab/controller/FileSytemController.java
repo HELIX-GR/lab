@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,7 +36,9 @@ import helix.lab.model.FileSystemErrorCode;
 import helix.lab.model.FileSystemPathRequest;
 import helix.lab.model.PublishRequest;
 import helix.lab.model.UploadRequest;
+import helix.lab.model.ckan.Package;
 import helix.lab.service.CkanServiceProxy;
+import helix.lab.service.SearchService;
 
 
 
@@ -46,6 +50,9 @@ public class FileSytemController extends BaseController {
 	
     @Autowired
     private CkanServiceProxy     ckanServiceProxy;
+    
+	@Autowired
+    public SearchService searchService;
 
     private long maxUserSpace;
 
@@ -214,6 +221,46 @@ public class FileSytemController extends BaseController {
           //  Files.copy(in, absolutePath, StandardCopyOption.REPLACE_EXISTING);
 
           //  return RestResponse.result(fileNamingStrategy.getUserDirectoryInfo(currentUserName()));
+        } catch (Exception ex) {
+        	System.out.println(ex.toString());
+            return RestResponse.error(BasicErrorCode.UNKNOWN, "An unknown error has occurred");
+        }
+    }
+    
+    /**
+     * Download file from ckan to filesystem
+     *
+     * @param file uploaded resource file
+     * @param request request with the file name
+     * @throws InvalidProcessDefinitionException
+     */
+    @RequestMapping(value = "/action/file-system/getNotebook/{id}", method = RequestMethod.GET)
+    public RestResponse<?> getNotebook(Authentication authentication, @PathVariable("id") String id) throws IOException {
+        try {
+        	 if (StringUtils.isEmpty(id)) {
+                 return RestResponse.error(FileSystemErrorCode.PATH_IS_EMPTY, "File name is not set");
+             }
+
+            final String userName = currentUserName();
+            
+            
+            final Path dir = fileNamingStrategy.resolvePath(userName, "Published");
+
+            if (!Files.exists(dir)) {
+            	Files.createDirectories(dir);
+            }
+            
+            Package pack = this.searchService.queryById(id);
+            final Path target = fileNamingStrategy.resolvePath(userName, "Published/"+pack.getResources().get(0).getName());
+
+            URL url= new URL(pack.getResources().get(0).getUrl());// Gets the first resource!!!
+            
+                try (InputStream in = url.openStream()) {
+                    Files.copy(in, target, StandardCopyOption.REPLACE_EXISTING);
+                }
+            
+            return RestResponse.result(true);
+        
         } catch (Exception ex) {
         	System.out.println(ex.toString());
             return RestResponse.error(BasicErrorCode.UNKNOWN, "An unknown error has occurred");
