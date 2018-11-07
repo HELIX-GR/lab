@@ -11,7 +11,7 @@ import { UserTable } from './user-table';
 import { U2sTable } from './u2s-table';
 import { FormattedTime, injectIntl } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
-import { WhiteListTable } from "./while-list-table";
+import { WhiteListTable } from "./white-list-table";
 import ModalAddWhiteList from './madal-add-white-list';
 import { withRouter, Redirect } from 'react-router-dom';
 import {
@@ -37,13 +37,13 @@ class AdminPage extends React.Component {
     this.setState({ value });
   };
 
-  handleEdit= (e)=>{
+  handleEdit = (e) => {
     console.log(e);
   }
 
   componentWillMount() {
-    if (this.props.profile.roles.includes('ROLE_ADMIN')){
-    this._getServers();
+    if (this.props.profile.roles.includes('ROLE_ADMIN')) {
+      this._getServers();
     } else {
       this.props.history.push(StaticRoutes.LABHOME);
     }
@@ -92,7 +92,7 @@ class AdminPage extends React.Component {
               <a> {this.props.intl.formatRelative(this.props.servers_update)} </a>
 
               <ModalAddServer />
-              <AdminTable servers={this.props.servers} serverEdit={this.handleEdit}/>
+              <AdminTable servers={this.props.servers} serverEdit={this.handleEdit} />
 
             </TabContainer>
           }

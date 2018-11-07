@@ -161,7 +161,7 @@ class Results extends React.Component {
               {r.title}
             </a>
           </h3>
-          <div className="notes"> {r.notes} </div>
+          <div className="notes"> {r.notes.length<=220 ? r.notes :r.notes.substring(0,220)+"..."} </div>
           <div className="service">
             <a href="#">{r.organization.title}</a>
           </div>

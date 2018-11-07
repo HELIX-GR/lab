@@ -12,7 +12,7 @@ class Footer extends React.Component {
         <div className="footer-content">
 
           <div className="footer-column logo">
-            <a href="#">
+            <a href="https://hellenicdataservice.gr">
               <img src="/images/svg/Helix-logo-White-on-Purple.svg" alt="" />
             </a>
           </div>
@@ -22,9 +22,9 @@ class Footer extends React.Component {
             </h3>
             <ul>
               <li><a href="#">Αρχική</a></li>
-              <li><a href="#">Το έργο</a></li>
-              <li><a href="#">Επικοινωνία</a></li>
-              <li><a href="#">Όροι χρήσης</a></li>
+              <li><a href="http://hellenicdataservice.gr/project/page/about">Το έργο</a></li>
+              <li><a href="http://hellenicdataservice.gr/project/page/contact">Επικοινωνία</a></li>
+              <li><a href="http://hellenicdataservice.gr/project/page/terms-of-use">Όροι χρήσης</a></li>
             </ul>
           </div>
           <div className="footer-column research">
@@ -32,8 +32,8 @@ class Footer extends React.Component {
               Έρευνα
             </h3>
             <ul>
-              <li><a href="#">Data</a></li>
-              <li><a href="#">Publications</a></li>
+              <li><a href="https://data.hellenicdataservice.gr">Data</a></li>
+              <li><a href="https://pubs.hellenicdataservice.gr">Publications</a></li>
               <li><a href="#">Lab</a></li>
               <li><a href="#">Θεματικές</a></li>
               <li><a href="#">Οργανισμοί</a></li>
@@ -45,25 +45,25 @@ class Footer extends React.Component {
             </h3>
             <ul>
               <li>
-                <a href="#">
+                <a href="https://www.athena-innovation.gr/">
                   <img src="/images/png/PARTNER-ATHENA.png" alt="" />
                 </a>
               </li>
 
               <li>
-                <a href="#">
+                <a href="https://grnet.gr/">
                   <img src="/images/png/PARTNER_GRNET.png" alt="" />
                 </a>
               </li>
 
               <li>
-                <a href="#">
+                <a href="https://www.openaire.eu/">
                   <img src="/images/png/PARTNER_OPENAIRE.png" alt="" />
                 </a>
               </li>
           
               <li>
-                <a href="#">
+                <a href="https://www.minedu.gov.gr/">
                   <img src="/images/png/PARTNER-EDUC.png" alt="" />
                 </a>
               </li>

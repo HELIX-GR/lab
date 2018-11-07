@@ -5,9 +5,10 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { getFilesystem, createFolder, setTablePath, setNewFolder } from '../../ducks/config';
 import TableToolbar from './table-toolbar';
 import FileTable from './file-table';
-import {  toast, } from 'react-toastify';
-import {  StaticRoutes, } from '../../model';
+import { toast, } from 'react-toastify';
+import { StaticRoutes, } from '../../model';
 import { withRouter, } from 'react-router-dom';
+import { modalLoginAction } from '../../ducks/user';
 
 /**
  * Table example 
@@ -31,7 +32,8 @@ class FileSystem extends Component {
         .then(this.setState({
           folder: this.props.filesystem
         }));
-    } else{
+    } else {
+      this.props.modalLoginAction(true)
       this.props.history.push(StaticRoutes.LABHOME);
     }
 
@@ -105,10 +107,10 @@ class FileSystem extends Component {
     if (type === 'file') {
       this.props.setTablePath(folder.path, name);
 
-      if (this.props.target!=null){
+      if (this.props.target != null) {
         window.open(this.props.target + "/notebooks/" + this.props.table_path + this.props.selected_file, "_blank");
       }
-      else{
+      else {
         toast.warn(<FormattedMessage id="Toast.NoServer" defaultMessage="You need to start a Notebook Server First" />);
       }
     } else if (type === 'Folder') {
@@ -199,7 +201,7 @@ function mapStateToProps(state) {
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ getFilesystem, setTablePath, createFolder, setNewFolder }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ getFilesystem, setTablePath, createFolder, setNewFolder, modalLoginAction }, dispatch);
 
 
 FileSystem = connect(mapStateToProps, mapDispatchToProps)(injectIntl(FileSystem));

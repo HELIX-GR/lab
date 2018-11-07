@@ -21,8 +21,8 @@ export const StaticRoutes = {
 /**
  * Dynamic routes
  */
-const NEWS_DETAILS = '/news/view/:id';
-const PROJECT_PAGE = 'http://core.hellenicdataservice.gr/main/project/page/:name';
+const NEWS_DETAILS = 'http://hellenicdataservice.gr/news/view/:id';
+const PROJECT_PAGE = 'http://hellenicdataservice.gr/project/page/:name';
 
 export const DynamicRoutes = {
   NEWS_DETAILS,

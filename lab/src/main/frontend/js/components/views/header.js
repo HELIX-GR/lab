@@ -55,7 +55,7 @@ class Header extends React.Component {
                 </a>
               </li>
               <li id="menu-item-pubs" className="menu-item domain-item">
-                <a href="http://core.hellenicdataservice.gr/pubs">
+                <a href="http://pubs.hellenicdataservice.gr">
                   Pubs
                 </a>
               </li>
@@ -94,7 +94,7 @@ class Header extends React.Component {
               <li id="menu-item-news" className="menu-item aux-item has-sub-menu">
                 <a href="#">
                   <FormattedMessage id="header.news" defaultMessage="News" />
-                </a> 
+                </a>
                 <ul className="sub-menu">
                   <li> <a href="http://core.hellenicdataservice.gr/main/news"><span>News </span></a></li>
                   <li> <a href="http://core.hellenicdataservice.gr/main/events"><span>Events</span></a></li>
@@ -102,7 +102,7 @@ class Header extends React.Component {
               </li>
               {authenticated && this.props.profile.roles.includes('ROLE_ADMIN') &&
                 <li id="menu-item-news" className="menu-item aux-item">
-                  <Link to={'/Admin'}> Admin </Link>
+                  <Link to={'/admin'}> Admin </Link>
                 </li>
               }
             </ul>
