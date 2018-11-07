@@ -74,7 +74,7 @@ export class WhiteListTable extends React.Component {
       }].concat(
         all_roles.map(name => {
           return ({
-            Header: <img className="account-icon" src={"/images/" + name + ".svg"} height="42" width="42" />,
+            Header: <img className="account-icon" src={"/images/png/" + name + ".png"} height="35" width="35" />,
             id: name,
             accessor: 'roles',
             Cell: props => (<Checkbox

@@ -68,10 +68,13 @@ class NotebookShow extends React.Component {
                       <hr className="separator" />  </div>
 
                     <div className="package-resource-list">
+
                       <li className="resource-component clearfix" >
 
                         <a className="resource-title" href={result.resources[0].url} title={result.resources[0].name}>
+
                           {result.resources[0].name}
+                          <img class="format-label" src="\images\ipynb.svg" />
                         </a>
 
                         <div className="btn-download btn-group ">
