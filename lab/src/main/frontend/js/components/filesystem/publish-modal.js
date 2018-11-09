@@ -112,13 +112,9 @@ class PublishModal extends React.Component {
   render() {
 
     return (
-      <Button
-        variant="fab"
-        mini={true}
-        style={{ margin: 12 }}
-        label="Modal Dialog"
-        onClick={this.handleOpen} >
-        <img className="image-icon" src="/images/svg/SVG/copy.svg" title="Publish" />
+      <div className="filesystem-btn">
+        <a onClick={this.handleOpen}>
+          <img src="/images/svg/SVG/copy.svg" title="Publish Notebook" /></a>
         <Modal isOpen={this.state.open} toggle={this.toggle} >
           <ModalHeader toggle={this.toggle}>Publish a notebook</ModalHeader>
 
@@ -169,8 +165,7 @@ class PublishModal extends React.Component {
           </ModalFooter>
 
         </Modal>
-      </Button>
-
+      </div>
     );
   }
 }

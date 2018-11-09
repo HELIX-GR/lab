@@ -33,7 +33,7 @@ class FileSystem extends Component {
           folder: this.props.filesystem
         }));
     } else {
-      this.props.modalLoginAction(true)
+      this.props.modalLoginAction(true);
       this.props.history.push(StaticRoutes.LABHOME);
     }
 

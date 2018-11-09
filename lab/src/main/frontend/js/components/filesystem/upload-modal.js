@@ -77,72 +77,68 @@ class UploadModal extends React.Component {
   render() {
 
     return (
-      <Button
-        variant="fab"
-        mini={true}
-        style={{ margin: 12 }}
-        label="Modal Dialog"
-        onClick={this.handleOpen} >
-        <img className="image-icon" src="/images/svg/SVG/upload.svg" title="Upload File" />
-        <Modal isOpen={this.state.open} toggle={this.toggle} >
-          <ModalHeader toggle={this.toggle}>Upload a file</ModalHeader>
+      <div className="filesystem-btn">
+        <a onClick={this.handleOpen}>
+          <img src="/images/svg/SVG/upload.svg" title="Upload File" />
+          <Modal isOpen={this.state.open} toggle={this.toggle} >
+            <ModalHeader toggle={this.toggle}>Upload a file</ModalHeader>
 
-          <div>
-            <Dropzone
-              onDrop={(accepted, rejected) => {
-                if (rejected.length) {
-                  console.error('rejected file:', rejected);
+            <div>
+              <Dropzone
+                onDrop={(accepted, rejected) => {
+                  if (rejected.length) {
+                    console.error('rejected file:', rejected);
+                  }
+                  const file = accepted && accepted.length && accepted[0];
+                  console.log(file);
+                  this.setState({
+                    file: file,
+                    isUploading: false,
+                  });
+
+
+                }}
+                style={{
+                  textAlign: 'center',
+                  fontSize: '3em',
+                  color: '#656565',
+                  border: '1px dotted #656565',
+                  height: '12rem',
+                }}
+                disableClick={false}
+                multiple={false}
+                disabled={this.state.isUploading}
+              >
+                {this.state.isUploading ?
+                  <div style={{ paddingTop: '3rem' }}>
+                    <CircularProgress size={80} thickness={5} />
+                  </div>
+                  :
+                  <div>
+                    <i className="fa fa-cloud-upload fa-4x"></i>
+                  </div>
                 }
-                const file = accepted && accepted.length && accepted[0];
-                console.log(file);
-                this.setState({
-                  file: file,
-                  isUploading: false,
-                });
+              </Dropzone>
+              {this.state.file && this.state.file.name}
+              {this.state.file && ` (${formatFileSize(this.state.file.size)})`}
+            </div>
 
+            <ModalFooter>
+              <Btn
+                color="primary"
+                onClick={this.handleClose}
+              >Cancel </Btn>{' '}
+              <Btn
+                color="primary"
+                onClick={this.handleUpload}
+                disabled={this.state.file == null}
+              >Upload </Btn>
 
-              }}
-              style={{
-                textAlign: 'center',
-                fontSize: '3em',
-                color: '#656565',
-                border: '1px dotted #656565',
-                height: '12rem',
-              }}
-              disableClick={false}
-              multiple={false}
-              disabled={this.state.isUploading}
-            >
-              {this.state.isUploading ?
-                <div style={{ paddingTop: '3rem' }}>
-                  <CircularProgress size={80} thickness={5} />
-                </div>
-                :
-                <div>
-                  <i className="fa fa-cloud-upload fa-4x"></i>
-                </div>
-              }
-            </Dropzone>
-            {this.state.file && this.state.file.name}
-            {this.state.file && ` (${formatFileSize(this.state.file.size)})`}
-          </div>
+            </ModalFooter>
 
-          <ModalFooter>
-            <Btn
-              color="primary"
-              onClick={this.handleClose}
-            >Cancel </Btn>{' '}
-            <Btn
-              color="primary"
-              onClick={this.handleUpload}
-              disabled={this.state.file == null}
-            >Upload </Btn>
-
-          </ModalFooter>
-
-        </Modal>
-      </Button>
-
+          </Modal>
+        </a>
+      </div>
     );
   }
 }

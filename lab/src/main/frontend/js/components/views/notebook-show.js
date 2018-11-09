@@ -47,7 +47,7 @@ class NotebookShow extends React.Component {
                   <div className="nav-bar">
                   {this.props.username &&
                     <div className="btn-save">
-                      <a onClick={() => this.props.getNotebookToFilesystem(uuid)}><img  src="/images/png/save.png" /></a>
+                      <a onClick={() => this.props.getNotebookToFilesystem(uuid)}><img  src="/images/png/save.png" title="Add to my Folder"/></a>
                     </div>}
                     <h1 className="package-title">{result.title}</h1>
                     <div className="dataset-dates">

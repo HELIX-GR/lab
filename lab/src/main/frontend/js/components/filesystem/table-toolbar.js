@@ -8,7 +8,7 @@ import ServerButton from './servers-button';
 import { getFilesystem, createFolder, deletePath, setNewFolder } from '../../ducks/config';
 import UploadModal from './upload-modal';
 import PublishModal from './publish-modal';
-import {  toast, } from 'react-toastify';
+import { toast, } from 'react-toastify';
 
 class TableToolbar extends React.Component {
   constructor(props) {
@@ -30,10 +30,10 @@ class TableToolbar extends React.Component {
     this.props.getFilesystem("");
   }
   handleDelete = () => {
-    if (!this.props.selected_file){
+    if (!this.props.selected_file) {
       toast.warn("Chose a File or empty Folder");
-      
-    }else if (this.props.table_path!=="/") {
+
+    } else if (this.props.table_path !== "/") {
       this.props.deletePath(this.props.table_path + "/" + this.props.selected_file);
     } else {
       this.props.deletePath("/" + this.props.selected_file);
@@ -49,9 +49,32 @@ class TableToolbar extends React.Component {
       <div >
         <div className="row backround-white">
           <div className="col-12 col-lg-6">
+            <div className="filesystem-btn">
+              <a onClick={this.handleCreate}>
+                <img src="/images/svg/SVG/add.svg" title="Create Folder" /></a>
+            </div>
+            <div className="filesystem-btn">
+              <a onClick={this.handleDelete}>
+                <img src="/images/svg/SVG/delete.svg" title="Delete" /></a>
+            </div>
+            <UploadModal />
 
-            <Button variant="fab" mini={true} style={style} onClick={this.handleCreate}>
-              <img className="image-icon" src="/images/svg/SVG/add.svg" title="Add File" />
+            <div className="filesystem-btn">
+              <a onClick={this.handleRefresh}>
+                <img src="/images/svg/SVG/refresh.svg" title="Refresh" /></a>
+            </div>
+            <PublishModal />
+
+            {!this.props.selected_hub ?
+              null
+              : this.props.target ?
+                <div className="filesystem-btn">
+                  <a target="_blank" href={this.props.target + "/notebooks/" + this.props.table_path + this.props.selected_file}>
+                    <img src="/images/svg/SVG/run.svg" title="Run" /></a>
+                </div> : null}
+
+            {/* <Button variant="fab" mini={true} style={style} onClick={this.handleCreate}>
+              <img className="image-icon" src="/images/svg/SVG/add.svg" title="Create Folder" />
             </Button>
             <Button variant="fab" mini={true} style={style} onClick={this.handleRefresh} >
               <img className="image-icon" src="/images/svg/SVG/refresh.svg" title="Refresh" />
@@ -66,7 +89,7 @@ class TableToolbar extends React.Component {
               : this.props.target ?
                 <Button variant="fab" label="Play" mini={true} style={style} target="_blank" href={this.props.target + "/notebooks/" + this.props.table_path + this.props.selected_file}>
                   <img className="image-icon" src="/images/svg/SVG/run.svg" title="Run" />
-                </Button> : null}
+            </Button> : null}*/}
           </div>
           <div className="col-12 col-lg-6 text-lg-right">
             <ServerButton />

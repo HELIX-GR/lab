@@ -49,7 +49,7 @@ class ServerButton extends React.Component {
       <div>
         {server_stage == 0 &&
           <div id="Popover1" className="button-notebook" onClick={this.toggle}>
-            <FormattedMessage id="Server.ChoseBtn" defaultMessage="Choose Server" />
+            <FormattedMessage id="Server.ChoseBtn" defaultMessage="Servers" />
             <i className="fa fa-crosshairs"></i>
             <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
               <PopoverHeader><FormattedMessage id="server-list.servers" defaultMessage="Avaliable Servers" /></PopoverHeader>

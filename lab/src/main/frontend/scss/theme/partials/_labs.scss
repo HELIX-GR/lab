@@ -9,6 +9,34 @@
   border-width: 2px;
   border-color: blue;
 }
+.filesystem-btn {
+  width: 36px;
+  height: 36px;
+  margin-top: 15px;
+  margin-left: 15px;
+  float: left;
+  a {
+    line-height: 15.1px;
+    border: 8.5px solid #ebebeb;
+    display: block;
+    border-radius: 100%;
+    background-color: #ebebeb;
+  }
+  
+  &:hover {
+    a{
+      border: 8.5px solid #FFFFFF;
+      border-radius: 100%;
+      color: #FFFFFF;
+      background-color: #FFFFFF;
+      cursor: pointer;
+    }
+    img {
+      opacity: .6;
+    }
+  }
+  
+}
 
 .top-border-lab {
   border-top: solid 10px #714DF7;
@@ -252,6 +280,13 @@
         }
       }
     }
+    .notes{
+      color: #333 !important;
+      line-height: 20px;
+      width: 80%;
+      font-weight: 400;
+      margin-top: 8px;
+    }
     .service {
       margin-top: 8px;
       font-weight: 400400;
@@ -428,3 +463,4 @@
   font-size: 12px;
   padding: 5px 25px 5px 25px;
 }
+
