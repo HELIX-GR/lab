@@ -68,7 +68,7 @@ const ServerList = ({ servers, onClick, selectedIndex }) => (
           </div>
           <div className="tag-list">
           {row.tags.map((tag) =>(
-            <a className="tag-box tag-box-other">{tag} </a>
+            <a key={tag} className="tag-box tag-box-other">{tag} </a>
           ))}
           </div>
         </div>

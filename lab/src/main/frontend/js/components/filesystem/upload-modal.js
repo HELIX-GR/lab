@@ -78,8 +78,8 @@ class UploadModal extends React.Component {
 
     return (
       <div className="filesystem-btn">
-        <a onClick={this.handleOpen}>
-          <img src="/images/svg/SVG/upload.svg" title="Upload File" />
+        <a data="UPLOAD FILE" onClick={this.handleOpen}>
+          <img src="/images/svg/SVG/upload.svg" />
           <Modal isOpen={this.state.open} toggle={this.toggle} >
             <ModalHeader toggle={this.toggle}>Upload a file</ModalHeader>
 

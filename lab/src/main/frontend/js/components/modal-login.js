@@ -1,33 +1,63 @@
 import React from "react";
-import LoginForm from './login-form';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
+import {  FormattedMessage, } from 'react-intl';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import {  Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {  Modal, } from 'reactstrap';
+
+import {
+  NavLink,
+} from 'react-router-dom';
+
+import {
+  toast,
+} from 'react-toastify';
+
+import {
+  Pages
+} from '../model/routes';
+
+import {
+  getConfiguration,
+} from '../ducks/config';
+
+import {
+  login,
+  refreshProfile,
+} from '../ducks/user';
 
 
-const styles = theme => ({
-  paper: {
-    position: 'absolute',
-    width: theme.spacing.unit * 50,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit * 4,
-  },
-});
 class ModalLogin extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleShow = this.handleShow.bind(this);
-    this.handleClose = this.handleClose.bind(this);
+    this._submit = this._submit.bind(this);
+
     this.state = {
-      show_login: false
+      username: props.username || '',
+      password: '',
     };
   }
+
+  static propTypes = {
+    showIt: PropTypes.func.isRequired,
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      username: nextProps.username || '',
+      password: '',
+    });
+  }
+
+  _submit($event) {
+    $event.preventDefault();
+
+    let { username, password } = this.state;
+
+    this.props.submit(username, password, this.props.i18n.locale);
+  }
+
   componentWillMount() {
     this.state.show_login = this.props.show_login;
   }
@@ -43,46 +73,102 @@ class ModalLogin extends React.Component {
 
 
   render() {
-    const { classes } = this.props;
+    const { defaultIdentityProvider: idp } = this.props.config;
 
-    if (this.props.show_login) {
-      this.state.show_login = true;
-    } else {
-      this.state.show_login = false;
-    }
     return (
       <Modal
-        isOpen={this.state.show_login}
-        toggle={this.handleClose}
-      >
-        <ModalHeader toggle={this.handleClose}>Login </ModalHeader>
-        <ModalBody>
-          <LoginForm />
-        </ModalBody>
+        centered={true}
+        isOpen={this.props.visible}
+        keyboard={false}
+        style={{ maxWidth: '780px' }}
+        toggle={this.props.toggle}>
+        <div id="login-form">
+          <a href="" className="close" onClick={(e) => { e.preventDefault(); this.props.showIt(false); }}></a>
+          <div className="title">
+            <FormattedMessage id="login.subtitle" defaultMessage="Sign-in into your account" />
+          </div>
+          <div className="text-center">
 
+            <form onSubmit={this._submit}>
+
+              <div className="text-center username">
+                <input type="text" className="input-text" placeholder="username"
+                  value={this.state.username}
+                  onChange={(ev) => this.setState({ username: ev.target.value })}
+                />
+              </div>
+
+              <div className="text-center password">
+                <input type="password" className="input-text" placeholder="password"
+                  value={this.state.password}
+                  onChange={(ev) => this.setState({ password: ev.target.value })}
+                />
+              </div>
+
+              <div className="text-center forgot-password" >
+                <NavLink className="forgot-password" to={Pages.ResetPassword}>
+                  <FormattedMessage id="login.forgot-password" defaultMessage="Forgot your password?" />
+                </NavLink>
+              </div>
+
+              <div className="login-helix">
+                <button type="submit" name="helix" className="helix">
+                  <FormattedMessage id="login.login" defaultMessage="Login" disabled/>
+                </button>
+              </div>
+
+              <div className="text-separator">
+                <span className="text-center">OR</span>
+              </div>
+
+              <div className="login-google">
+                <a href="/login/google">
+                  <button type="button" name="google" className="oauth">
+                    <span>Google</span>
+                  </button>
+                </a>
+              </div>
+
+              <div className="login-academic">
+                <a href={idp ? `/saml/login?idp=${idp}` : '/saml/login'}>
+                  <button type="button" name="academic" className="academic" disabled>
+                    <span>Academic Login</span>
+                  </button>
+                </a>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
       </Modal>
     );
   }
 }
-ModalLogin.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
-function mapStateToProps(state) {
-  return {
-    show_login: state.user.show_login
-  };
-}
+const mapStateToProps = (state) => ({
+  config: state.config,
+  i18n: state.i18n,
+  visible: state.user.show_login,
+});
 
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(Object.assign({}, {}), dispatch)
-  };
-}
+const mapDispatchToProps = (dispatch) => ({
+  submit: (username, password, locale) => (
+    dispatch(login(username, password))
+      .then(() => dispatch(getConfiguration(locale)))
+      .then(() => dispatch(refreshProfile()))
+      .then(
+        () => {
+          toast.dismiss();
+          dispatch(this.props.showIt(false));
+        },
+        () => {
+          toast.dismiss();
+          toast.error(<FormattedMessage id="login.failure" defaultMessage="The username or password is incorrect." />);
+        })
+      .catch(() => null)
+  ),
+});
 
+export default connect(mapStateToProps, mapDispatchToProps)(ModalLogin);
 
-ModalLogin = connect(mapStateToProps, mapDispatchToProps)(ModalLogin);
-
-ModalLogin = withStyles(styles)(ModalLogin);
-
-export default ModalLogin;

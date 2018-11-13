@@ -9,6 +9,7 @@ import { FormattedMessage } from 'react-intl';
 import { Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 
 import { startNowAction, stopServerAction, getUserInfoAction } from '../../ducks/app';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 
 class ServerButton extends React.Component {
@@ -51,10 +52,18 @@ class ServerButton extends React.Component {
           <div id="Popover1" className="button-notebook" onClick={this.toggle}>
             <FormattedMessage id="Server.ChoseBtn" defaultMessage="Servers" />
             <i className="fa fa-crosshairs"></i>
-            <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
+
+            <Modal isOpen={this.state.popoverOpen} toggle={this.toggle} >
+              <ModalHeader toggle={this.toggle}><FormattedMessage id="server-list.servers" defaultMessage="Avaliable Servers" /></ModalHeader>
+
+              <ModalBody>
+                <ServerList servers={this.props.servers} onClick={this.handleServerClick} selectedIndex={this.state.selectedIndex} />
+              </ModalBody>
+            </Modal>
+            {/* <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
               <PopoverHeader><FormattedMessage id="server-list.servers" defaultMessage="Avaliable Servers" /></PopoverHeader>
               <PopoverBody className="" ><ServerList servers={this.props.servers} onClick={this.handleServerClick} selectedIndex={this.state.selectedIndex} /></PopoverBody>
-            </Popover>
+              </Popover>*/}
           </div>
 
         }

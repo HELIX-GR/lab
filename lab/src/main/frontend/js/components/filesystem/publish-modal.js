@@ -113,8 +113,8 @@ class PublishModal extends React.Component {
 
     return (
       <div className="filesystem-btn">
-        <a onClick={this.handleOpen}>
-          <img src="/images/svg/SVG/copy.svg" title="Publish Notebook" /></a>
+        <a data="PUBLISH NOTEBOOK" onClick={this.handleOpen}>
+          <img src="/images/svg/SVG/copy.svg"  /></a>
         <Modal isOpen={this.state.open} toggle={this.toggle} >
           <ModalHeader toggle={this.toggle}>Publish a notebook</ModalHeader>
 

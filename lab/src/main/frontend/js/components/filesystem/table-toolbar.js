@@ -50,18 +50,18 @@ class TableToolbar extends React.Component {
         <div className="row backround-white">
           <div className="col-12 col-lg-6">
             <div className="filesystem-btn">
-              <a onClick={this.handleCreate}>
-                <img src="/images/svg/SVG/add.svg" title="Create Folder" /></a>
+              <a data="NEW FOLDER" onClick={this.handleCreate}>
+                <img src="/images/svg/SVG/add.svg"  /></a>
             </div>
             <div className="filesystem-btn">
-              <a onClick={this.handleDelete}>
-                <img src="/images/svg/SVG/delete.svg" title="Delete" /></a>
+              <a data="DELETE" onClick={this.handleDelete}>
+                <img src="/images/svg/SVG/delete.svg"  /></a>
             </div>
             <UploadModal />
 
             <div className="filesystem-btn">
-              <a onClick={this.handleRefresh}>
-                <img src="/images/svg/SVG/refresh.svg" title="Refresh" /></a>
+              <a data="REFRESH" onClick={this.handleRefresh}>
+                <img src="/images/svg/SVG/refresh.svg"  /></a>
             </div>
             <PublishModal />
 
@@ -69,7 +69,7 @@ class TableToolbar extends React.Component {
               null
               : this.props.target ?
                 <div className="filesystem-btn">
-                  <a target="_blank" href={this.props.target + "/notebooks/" + this.props.table_path + this.props.selected_file}>
+                  <a data="RUN "target="_blank" href={this.props.target + "/notebooks/" + this.props.table_path + this.props.selected_file}>
                     <img src="/images/svg/SVG/run.svg" title="Run" /></a>
                 </div> : null}
 
