@@ -18,6 +18,9 @@ import {
   FormattedMessage,
 } from 'react-intl';
 
+import {
+  StaticRoutes,
+} from '../../model';
 class NotebookShow extends React.Component {
 
   constructor(props) {
@@ -43,7 +46,7 @@ class NotebookShow extends React.Component {
             <section className="results-main-result-set">
 
               {result && result.resources &&
-                <div className="main-results-border-bottom">
+                <div className="main-results-border-bottom-2">
                   <div className="nav-bar">
                   {this.props.username &&
                     <div className="btn-save">
@@ -78,7 +81,7 @@ class NotebookShow extends React.Component {
                         </a>
 
                         <div className="btn-download btn-group ">
-                          <a className=" btn-group-main" href={"http://nbviewer.jupyter.org/url/" + result.resources[0].url.replace("http://", "").replace("https://", "")}> VIEW</a>
+                          <a className=" btn-group-main" href={StaticRoutes.NBVIEWER + "/url/" + result.resources[0].url.replace("http://", "").replace("https://", "")}> VIEW</a>
                         </div>
                       </li>
 

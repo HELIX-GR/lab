@@ -67,7 +67,7 @@ class Header extends React.Component {
                   <li><Link to={'/filesystem'}> <FormattedMessage id="header.files" defaultMessage="My Files" /></Link></li>
                   <li><Link to={'/guides'}> <FormattedMessage id="header.guides" defaultMessage="Guides" /></Link></li>
                   <li><Link to={'/courses'}> <FormattedMessage id="header.courses" defaultMessage="Courses" /></Link></li>
-                  <li><a>
+                  <li><a href={StaticRoutes.NBVIEWER}>
                     NBviewer
                 </a></li>
                   {//<li><Link to={'/whatislab'}> <FormattedMessage id="header.whatislab" defaultMessage="What is Lab?" /></Link></li>
@@ -147,9 +147,10 @@ class Header extends React.Component {
           }
 
           <div className="search-item">
-            <a href="#">
+            <NavLink to={StaticRoutes.LABHOME}><a href="#">
               <i className="fa fa-search"></i>
             </a>
+            </NavLink>
           </div>
         </div>
       </header>

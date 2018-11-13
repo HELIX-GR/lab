@@ -25,7 +25,7 @@
     "placeholder": "Search for Notebooks"
   },
   "server-list":{
-    "servers": "Available Kernels"
+    "servers": "Available Servers"
   },
   "filetable":{
     "FileName": "File Name",

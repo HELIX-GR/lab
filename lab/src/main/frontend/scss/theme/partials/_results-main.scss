@@ -519,6 +519,7 @@
           }
           &.about-helix-container {
             padding-top: 65px;
+            max-width: $layout-fixed-width;
             h4.about-header {
               margin: 0;
               padding-bottom: 18px;
@@ -605,6 +606,7 @@
               top: 0;
               right: 0;
               .pagination-item {
+                cursor: pointer;
                 margin: 0 10px;
                 font-weight: 300;
                 font-size: 15px;
@@ -640,7 +642,7 @@
             border-top: solid 10px $main-black; // height: 0px;
             position: relative;
             display: block;
-            text-align: left;
+            text-align: right;
             margin-bottom: 25px;
             .order-by {
               font-weight: 400;
@@ -660,6 +662,14 @@
                 background: $neutral-grey;
               }
             }
+          }
+          .main-results-border-bottom-2 {
+            position: relative;
+            border-top: solid 10px $lab-color; // height: 0px;
+            position: relative;
+            display: block;
+            text-align: left;
+            margin-bottom: 25px;
           }
           .main-results-result-count {
             float: left;

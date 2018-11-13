@@ -45,20 +45,24 @@ const CoursesCardInfo = [
     },
   },
   {
-    title: "Tips for Data Visualization",
-    description: "Your data is only as good as your ability to understand and communicate it, which is why choosing the right visualization/ chart is essential",
-    image: "images/data_vis.png",
+    title: "The JupyterLab Interface",
+    description: "JupyterLab provides flexible building blocks for interactive,\
+     exploratory computing. While JupyterLab has many features found in traditional \
+     integrated development environments (IDEs), it remains focused on interactive, exploratory computing.",
+    image: "",
     link: {
-      ref: "#",
-      text: "Take me to blog post",
+      ref: "https://jupyterlab.readthedocs.io/en/latest/user/interface.html",
+      text: "Take me to the guide",
     },
   },
   {
     title: "Featured notebooks",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    description: "A curated collection of Jupyter/IPython notebooks that are notable. \
+    This list contains many notebooks in fields like Statistics, Machine Learning and Data Science \
+    Mathematics, Physics, Chemistry, Biology and many others.",
     image: "images/online_courses.svg",
     link: {
-      ref: "#",
+      ref: "https://github.com/jupyter/jupyter/wiki/A-gallery-of-interesting-Jupyter-Notebooks",
       text: "Take me there!",
     },
   },

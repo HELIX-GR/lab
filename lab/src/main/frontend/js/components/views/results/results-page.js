@@ -63,9 +63,9 @@ class Results extends React.Component {
   search(pageIndex) {
     const { text } = this.props.search;
 
-    if (this.isTextValid(text)) {
+   // if (this.isTextValid(text)) {
       this.props.searchAll(text, true, pageIndex);
-    }
+   // }
   }
 
   onTextChanged(value) {
@@ -82,9 +82,9 @@ class Results extends React.Component {
 
     const { text } = this.props.search;
 
-    if (this.isTextValid(text)) {
+    //if (this.isTextValid(text)) {
       this.props.searchAll(text);
-    }
+    //}
 
   }
   onPageChange(index) {

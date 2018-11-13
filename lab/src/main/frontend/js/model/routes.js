@@ -10,12 +10,15 @@ const LABHOME = '/';
 const RESULTS = '/results';
 const NEWS = '/news';
 const PROJECT = '/project/*';
+const NBVIEWER= 'http://nbviewer.jupyter.org';
+
 
 export const StaticRoutes = {
   LABHOME,
   RESULTS,
   NEWS,
   PROJECT,
+  NBVIEWER
 };
 
 /**

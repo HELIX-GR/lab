@@ -60,11 +60,10 @@ class SearchPage extends React.Component {
   search(advanced = false) {
     const { text } = this.props.search;
 
-    if (this.isTextValid(text)) {
+    //if (this.isTextValid(text)) {
       this.props.searchAll(text, advanced).then(
-
         this.props.history.push(StaticRoutes.RESULTS));
-    }
+    //}
 
   }
 

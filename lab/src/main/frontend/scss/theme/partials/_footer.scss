@@ -19,7 +19,6 @@ body {
     .footer-content {
       width: 100%;
       padding: 45px 50px 30px 55px;
-      max-width: 1366px;
       display: block;
       margin: auto;
       .footer-column {
@@ -27,6 +26,7 @@ body {
         display: inline-block;
         &.logo {
           min-width: 312px;
+          flex-grow: 1;
           a {
             color: inherit;
             img {
@@ -44,6 +44,7 @@ body {
           margin-top: -4px;
         }
         &.partners {
+          margin-top: -4px;
           li {
             float: left;
             img {

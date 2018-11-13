@@ -50,10 +50,9 @@ class SearchResult extends React.Component {
 
   renderNotebooks(packages, text) {
     return packages.map((p, index) => {
-      const res = p.title.split(text, 2);
-
+     // const res = p.title.split(text, 2);
       return (
-        <a key={`package-${index}`} href="#" className="result-entry">{res[0]} <span className="matched-text">{text}</span>{res[1]}
+        <a key={`package-${index}`} href={"/notebook/"+p.id} className="result-entry">{p.title}
 
         </a>
       );

@@ -1,13 +1,3 @@
-body {
-  &.fixed {
-    width: $layout-fixed-width;
-    margin-left: auto;
-    margin-right: auto;
-    // Prevent bootstrap from updating body padding
-    padding: 0px !important
-  }
-}
-
 #root {
   div {
     &.home {
@@ -109,7 +99,7 @@ body {
           width: 955px;
           min-width: 400px;
           @include position(absolute,
-          56.5% null null 50%);
+          57% null null 50%);
           transform: translate(-50%, -50%);
           -webkit-transform: translate(-50%, -50%);
           -o-transform: translate(-50%, -50%);

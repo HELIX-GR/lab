@@ -14,6 +14,8 @@ body {
     color: #67676A;
   }
   font-family: $body_font;
+  /* Remove Bootstrap modal padding */
+  padding-right: 0px !important;
   &.main-landing {
     background-color: $neutral-grey;
   }
