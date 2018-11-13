@@ -80,7 +80,11 @@ class PublishModal extends React.Component {
       this.props.publishFile({ title, path, filename, filerename, description, lang, tags })
         .then((fs) => {
           console.log(fs);
-          toast.success("The file is published!");
+          if (!fs) {
+            toast.error("Error publishing file!");
+          } else {
+            toast.success("The file is published!");
+          }
           this.handleClose();
         })
         .catch((err) => {
@@ -110,11 +114,11 @@ class PublishModal extends React.Component {
   };
 
   render() {
-
-    return (
+    const show = this.getFileExtension(this.props.selected_file) == "ipynb";
+    return (show &&
       <div className="filesystem-btn">
         <a data="PUBLISH NOTEBOOK" onClick={this.handleOpen}>
-          <img src="/images/svg/SVG/copy.svg"  /></a>
+          <img src="/images/svg/SVG/copy.svg" /></a>
         <Modal isOpen={this.state.open} toggle={this.toggle} >
           <ModalHeader toggle={this.toggle}>Publish a notebook</ModalHeader>
 
@@ -145,12 +149,8 @@ class PublishModal extends React.Component {
                   onChange={this.handleChangeTags}
                 />
               </FormGroup>
-
-
-
             </Form>
           </ModalBody>
-
           <ModalFooter>
             <Btn
               color="primary"

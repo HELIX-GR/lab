@@ -214,7 +214,7 @@ public class FileSytemController extends BaseController {
             }
             // Create a new dataset
           String package_id = UUID.randomUUID().toString();
-          System.out.println(ckanServiceProxy.createNewDataset(request, package_id , (String) authentication.getPrincipal()));
+          System.out.println(ckanServiceProxy.createNewDataset(request, package_id , authentication.getPrincipal().toString()));
 
             return RestResponse.result (ckanServiceProxy.createNewResource(request, file, package_id));
         //    InputStream in = new ByteArrayInputStream(file.getBytes());

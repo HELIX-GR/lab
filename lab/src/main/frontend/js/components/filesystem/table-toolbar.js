@@ -51,17 +51,17 @@ class TableToolbar extends React.Component {
           <div className="col-12 col-lg-6">
             <div className="filesystem-btn">
               <a data="NEW FOLDER" onClick={this.handleCreate}>
-                <img src="/images/svg/SVG/add.svg"  /></a>
+                <img src="/images/svg/SVG/add.svg" /></a>
             </div>
             <div className="filesystem-btn">
               <a data="DELETE" onClick={this.handleDelete}>
-                <img src="/images/svg/SVG/delete.svg"  /></a>
+                <img src="/images/svg/SVG/delete.svg" /></a>
             </div>
             <UploadModal />
 
             <div className="filesystem-btn">
               <a data="REFRESH" onClick={this.handleRefresh}>
-                <img src="/images/svg/SVG/refresh.svg"  /></a>
+                <img src="/images/svg/SVG/refresh.svg" /></a>
             </div>
             <PublishModal />
 
@@ -69,7 +69,10 @@ class TableToolbar extends React.Component {
               null
               : this.props.target ?
                 <div className="filesystem-btn">
-                  <a data="RUN "target="_blank" href={this.props.target + "/notebooks/" + this.props.table_path + this.props.selected_file}>
+                  <a data="RUN " target="_blank" href={this.props.target}>
+                    {
+                      //+ "/notebooks/" + this.props.table_path + this.props.selected_file
+                    }
                     <img src="/images/svg/SVG/run.svg" title="Run" /></a>
                 </div> : null}
 
