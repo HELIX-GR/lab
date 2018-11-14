@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { toast, } from 'react-toastify';
 
 // config.js
 import configurationService from '../service/configuration';
@@ -22,7 +23,7 @@ const initialState = {
     name: "",
     path: "/",
   },
-  publish: {},
+  publish: [],
   table_path: "/",
   selected_file: "",
   new_folder: false,
@@ -156,9 +157,6 @@ export const createFolder = (path) => (dispatch, getState) => {
 
 export const uploadFile = (data, file) => (dispatch, getState) => {
   const { meta: { csrfToken: token } } = getState();
-  console.log("uploading file");
-
-  console.log(data, file);
   return filesystemService.upload(data, file, token)
     .then((fs) => {
       var t = moment().valueOf();
@@ -172,10 +170,17 @@ export const publishFile = (data) => (dispatch, getState) => {
   return filesystemService.publish(data, token)
     .then((fs) => {
       var t = moment().valueOf();
-      dispatch(receivePublish(fs, t));
+      if (fs.result) {
+        dispatch(receivePublish(fs.result, t))
+          .then(toast.success(<span>File Published! <a href={"/notebook/" + fs.result.package_id}> See it!</a></span>, {
+            autoClose: 50000,
+            closeOnClick: false,
+            pauseOnHover: true
+          }));
+      }
     })
     .catch((err) => {
-      console.error('Error publishing file', err);
+      toast.error('File Not Published!')
     });
 };
 
@@ -184,7 +189,7 @@ export const getNotebookToFilesystem = (id) => (dispatch, getState) => {
 
   return filesystemService.getNotebook(id, token)
     .then((fs) => {
-   //TODO handle
+      //TODO handle
     })
     .catch((err) => {
       console.error('Error geting the file', err);
