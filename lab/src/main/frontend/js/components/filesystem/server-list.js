@@ -43,6 +43,8 @@ const ServerList2 = ({ servers, onClick, selectedIndex }) => (
 
 const ServerList = ({ servers, onClick, selectedIndex }) => (
   <div className="main-results-result-count-lab">
+    <a> Select a server to run your notebooks and see your files</a>
+
     <div className="result-items">
       {servers.map((row, index) => (
 
@@ -67,9 +69,9 @@ const ServerList = ({ servers, onClick, selectedIndex }) => (
             <a >{row.description}</a>
           </div>
           <div className="tag-list">
-          {row.tags.map((tag) =>(
-            <a key={tag} className="tag-box tag-box-other">{tag} </a>
-          ))}
+            {row.tags.map((tag) => (
+              <a key={tag} className="tag-box tag-box-other">{tag} </a>
+            ))}
           </div>
         </div>
       )

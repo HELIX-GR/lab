@@ -180,7 +180,7 @@ export const publishFile = (data) => (dispatch, getState) => {
       }
     })
     .catch((err) => {
-      toast.error('File Not Published!')
+      toast.error('File Not Published!');
     });
 };
 

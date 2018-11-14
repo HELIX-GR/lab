@@ -11,9 +11,11 @@ const RESULTS = '/results';
 const NEWS = '/news';
 const PROJECT = '/project/*';
 const NBVIEWER= 'http://nbviewer.jupyter.org';
+const CORE = 'http://core.hellenicdataservice.gr';
 
 
 export const StaticRoutes = {
+  CORE,
   LABHOME,
   RESULTS,
   NEWS,
