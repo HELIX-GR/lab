@@ -21,8 +21,7 @@ import helix.lab.model.admin.HubServerEntity;
 @Table(
     schema = "helix_lab", name = "account_to_server",
     uniqueConstraints = {
-        @UniqueConstraint(name = "uq_account_username", columnNames = {"`server_url`"}),
-     //   @UniqueConstraint(name = "uq_account_email", columnNames = {"`email`"}),
+        @UniqueConstraint(name = "uq_account_to_server_server_url", columnNames = {"`server_url`"}),
     })
 public class AccountToServerEntity {
 
