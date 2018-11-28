@@ -152,9 +152,11 @@ class Results extends React.Component {
     const host = "notebook";
 
     return data.results.map(r => {
-      const age = moment.duration(moment() - moment(r.metadata_modified));
+      // Note: parse modification timestamp from server (do not assume same timezone offset!) 
+      const modifiedAt = moment(r.metadata_modified).parseZone();
+      const age = moment.duration(moment() - modifiedAt);
       const date = age.asHours() < 24 ?
-        moment(r.metadata_modified).fromNow() :
+        ('Before ' + age.humanize()):
         <FormattedDate value={r.metadata_modified} day='numeric' month='numeric' year='numeric' />;
 
       return (
