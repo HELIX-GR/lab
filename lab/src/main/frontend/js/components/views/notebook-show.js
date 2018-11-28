@@ -1,14 +1,15 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 import { FormattedTime } from 'react-intl';
+import { toast, } from 'react-toastify';
 
 import {
   bindActionCreators
 } from 'redux';
 
-import { 
+import {
   getNotebookToFilesystem,
- } from '../../ducks/config';
+} from '../../ducks/config';
 
 import {
   searchById
@@ -21,11 +22,14 @@ import {
 import {
   StaticRoutes,
 } from '../../model';
+
+
 class NotebookShow extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      active: true,
       uuid: props.match.params.uuid,
     };
   }
@@ -33,6 +37,13 @@ class NotebookShow extends React.Component {
   componentWillMount() {
     const { uuid } = this.props.match.params;
     this.props.searchById(uuid);
+  }
+
+  handleSaveBtn = (uuid) => {
+    this.props.getNotebookToFilesystem(uuid).then(toast.success("Saved in you filesystem!"))
+    this.setState({
+      active: false
+    })
   }
 
   render() {
@@ -48,10 +59,10 @@ class NotebookShow extends React.Component {
               {result && result.resources &&
                 <div className="main-results-border-bottom-2">
                   <div className="nav-bar">
-                  {this.props.username &&
-                    <div className="btn-save">
-                      <a onClick={() => this.props.getNotebookToFilesystem(uuid)}><img  src="/images/png/save.png" title="Add to my Folder"/></a>
-                    </div>}
+                    {this.props.username && this.state.active &&
+                      <div className="btn-save">
+                        <a onClick={() => this.handleSaveBtn(uuid)}><img src="/images/png/save.png" title="Add to my Folder" /></a>
+                      </div>}
                     <h1 className="package-title">{result.title}</h1>
                     <div className="dataset-dates">
                       <div className="title"> CREATED: </div>
