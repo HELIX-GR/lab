@@ -55,7 +55,7 @@ class Header extends React.Component {
                 </a>
               </li>
               <li id="menu-item-pubs" className="menu-item domain-item">
-                <a href="https://hellenicdataservice.gr/pubs">
+                <a href="https://hellenicdataservice.gr/pubs/">
                   Pubs
                 </a>
               </li>
