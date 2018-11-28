@@ -1,0 +1,18 @@
+<th:block 
+  xmlns:th="http://www.thymeleaf.org" 
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+  layout:fragment="googleanalytics-tracker">
+   
+   <!--/* see: https://github.com/googleanalytics/autotrack#installation-and-usage */-->
+  <script type="text/javascript" th:data-tracker-id="${@environment.getProperty('helix.googleanalytics.tracker-id')}">
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	  ga('create', document.currentScript.getAttribute('data-tracker-id'), 'auto');
+	  ga('require', 'eventTracker');
+	  ga('require', 'outboundLinkTracker');
+	  ga('require', 'urlChangeTracker');
+	  ga('send', 'pageview');
+  </script>
+  <script async src="https://www.google-analytics.com/analytics.js"></script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js"></script>
+
+</th:block>
