@@ -22,7 +22,7 @@ import helix.lab.model.HubServerResponse;
 @Table(
     schema = "helix_lab", name = "hub_server",
     uniqueConstraints = {
-        @UniqueConstraint(name = "uq_account_username", columnNames = {"`server_url`"})
+        @UniqueConstraint(name = "uq_hub_server_server_url", columnNames = {"`server_url`"})
     })
 public class HubServerEntity {
 

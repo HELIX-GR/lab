@@ -1,6 +1,6 @@
 module.exports = function (grunt) {
 
-  const develop = true;//process.env.NODE_ENV != 'production';
+  const develop = process.env.NODE_ENV != 'production';
 
   // Project configuration
 
@@ -145,7 +145,7 @@ module.exports = function (grunt) {
       },
       'helix-lab': {
         files: {
-          '<%= buildDir %>/js/helix-lab.min.js': ['<%= buildDir %>/js/helix-lab.js'],
+          '<%= buildDir %>/js/bundle.min.js': ['<%= buildDir %>/js/bundle.js'],
         },
       },
       'vendor': {

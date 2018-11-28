@@ -46,6 +46,12 @@ class Results extends React.Component {
     intl: PropTypes.object,
   };
 
+  componentWillMount() {
+    if (this.props.search.text == "") {
+      this.props.searchAll("");
+    } 
+  }
+
   toggleMore(e, key) {
     e.preventDefault();
     this.setState({

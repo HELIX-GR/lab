@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import Dropzone from 'react-dropzone';
 import { Button as Btn } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import Button from '@material-ui/core/Button';
 import formatFileSize from '../../util/file-size';
 import { uploadFile } from '../../ducks/config';
 import CircularProgress from '@material-ui/core/CircularProgress';

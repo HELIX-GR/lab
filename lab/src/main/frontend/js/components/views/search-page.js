@@ -122,8 +122,6 @@ class SearchPage extends React.Component {
               </form>
             </div>
           </div>
-
-
         </section>
         <LabFeatured />
       </div >

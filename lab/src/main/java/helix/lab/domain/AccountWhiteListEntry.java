@@ -31,8 +31,7 @@ import gr.helix.core.common.model.EnumRole;
 @Table(
 	    schema = "helix_lab", name = "account_white_list",
 	    uniqueConstraints = {
-	       // @UniqueConstraint(name = "uq_account_username", columnNames = {"`server_url`"}),
-	        @UniqueConstraint(name = "uq_account_email", columnNames = {"`email`"}),
+	        @UniqueConstraint(name = "uq_account_white_list_email", columnNames = {"`email`"}),
 	    })
 public class AccountWhiteListEntry {
 

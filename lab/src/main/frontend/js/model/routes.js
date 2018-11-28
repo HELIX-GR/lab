@@ -11,9 +11,11 @@ const RESULTS = '/results';
 const NEWS = '/news';
 const PROJECT = '/project/*';
 const NBVIEWER= 'http://nbviewer.jupyter.org';
+const CORE = 'https://hellenicdataservice.gr';
 
 
 export const StaticRoutes = {
+  CORE,
   LABHOME,
   RESULTS,
   NEWS,
@@ -24,8 +26,8 @@ export const StaticRoutes = {
 /**
  * Dynamic routes
  */
-const NEWS_DETAILS = 'http://hellenicdataservice.gr/news/view/:id';
-const PROJECT_PAGE = 'http://hellenicdataservice.gr/project/page/:name';
+const NEWS_DETAILS = 'https://hellenicdataservice.gr/news/view/:id';
+const PROJECT_PAGE = 'https://hellenicdataservice.gr/project/page/:name';
 
 export const DynamicRoutes = {
   NEWS_DETAILS,

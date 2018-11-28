@@ -79,12 +79,6 @@ class PublishModal extends React.Component {
     if (this.getFileExtension(filename) == "ipynb") {
       this.props.publishFile({ title, path, filename, filerename, description, lang, tags })
         .then((fs) => {
-          console.log(fs);
-          if (!fs) {
-            toast.error("Error publishing file!");
-          } else {
-            toast.success("The file is published!");
-          }
           this.handleClose();
         })
         .catch((err) => {

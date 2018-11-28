@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Courses } from './landing/courses';
-
+import { StaticRoutes, buildPath } from '../../model/routes';
 
 import {
   FormattedMessage,
@@ -11,7 +11,7 @@ const cardInfo = [
     title: <FormattedMessage id="featured.first.title" defaultMessage="What is HELIX Lab?" />,
     description: <FormattedMessage id="featured.first.description" defaultMessage="It’s your own private data infrastructure for learning, sharing, and building with data. You can bring your own data or use our open scientific data, interactively code in your language of choice, experiment over dedicated Big Data clusters or our HPC, and share your work with others. " />,
     link: {
-      ref: "",
+      ref: StaticRoutes.CORE+"/news/view/300",
       text: <FormattedMessage id="featured.first.text" defaultMessage="Learn more about Lab and how to use it." />,
     },
   },
@@ -19,7 +19,7 @@ const cardInfo = [
     title: <FormattedMessage id="featured.second.title" defaultMessage="Academic Support" />,
     description: <FormattedMessage id="featured.second.description" defaultMessage="Integrate Lab in your official undergraduate, postgraduate or seminar curricula. Organize courses with your own data, exercises, and tests.  Your students can learn about statistics, data management, and machine learning. No infrastructure, installation, or setup costs! " />,
     link: {
-      ref: "",
+      ref: StaticRoutes.CORE+"/project/page/contact",
       text: <FormattedMessage id="featured.second.text" defaultMessage="See the list of courses." />,
     },
   }
@@ -31,7 +31,7 @@ const CoursesCardInfo = [
     description: "Find interesting notebooks created and shared by others, copy them in your own space, and use them anyway you want. Also, why don’t you also share your work with others?",
     image: "images/code.svg",
     link: {
-      ref: "#",
+      ref: "/results",
       text: "See all public notebooks",
     },
   },
@@ -40,7 +40,7 @@ const CoursesCardInfo = [
     description:"Whether you are a novice, or an expert notebook user, start here. We have assembled a collection of educational resources, guides, examples and online courses to help you start using Jupyter in your own research." ,
     image: "images/jupyter.svg",
     link: {
-      ref: "#",
+      ref: "https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/",
       text: "Start learning" ,
     },
   },
@@ -100,7 +100,7 @@ class LabFeatured extends React.Component {
               <div className="col-md-3 col-sm-6 col-xs-12" key={key}>
                 <div className="lab-item">
                   <h3 className="lab-title">
-                    <a href="#"> {r.title} </a>
+                    <a href={r.link.ref}> {r.title} </a>
                   </h3>
                   <div className="lab-description">
                     {r.description}

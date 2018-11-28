@@ -55,7 +55,7 @@ class Header extends React.Component {
                 </a>
               </li>
               <li id="menu-item-pubs" className="menu-item domain-item">
-                <a href="http://pubs.hellenicdataservice.gr">
+                <a href="https://hellenicdataservice.gr/pubs/">
                   Pubs
                 </a>
               </li>
@@ -65,8 +65,8 @@ class Header extends React.Component {
                 </a>
                 <ul className="sub-menu">
                   <li><Link to={'/filesystem'}> <FormattedMessage id="header.files" defaultMessage="My Files" /></Link></li>
-                  <li><Link to={'/guides'}> <FormattedMessage id="header.guides" defaultMessage="Guides" /></Link></li>
-                  <li><Link to={'/courses'}> <FormattedMessage id="header.courses" defaultMessage="Courses" /></Link></li>
+                  <li><Link to={'/results'}> <FormattedMessage id="header.guides" defaultMessage="Guides" /></Link></li>
+                  <li><a href={StaticRoutes.CORE+"/news/view/300"}> <FormattedMessage id="header.courses" defaultMessage="Courses" /></a></li>
                   <li><a href={StaticRoutes.NBVIEWER}>
                     NBviewer
                 </a></li>
@@ -96,8 +96,8 @@ class Header extends React.Component {
                   <FormattedMessage id="header.news" defaultMessage="News" />
                 </a>
                 <ul className="sub-menu">
-                  <li> <a href="http://core.hellenicdataservice.gr/main/news"><span>News </span></a></li>
-                  <li> <a href="http://core.hellenicdataservice.gr/main/events"><span>Events</span></a></li>
+                  <li> <a href="https://hellenicdataservice.gr/news"><span>News </span></a></li>
+                  <li> <a href="https://hellenicdataservice.gr/events"><span>Events</span></a></li>
                 </ul>
               </li>
               {authenticated && this.props.profile.roles.includes('ROLE_ADMIN') &&
