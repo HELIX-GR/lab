@@ -170,9 +170,9 @@ export const publishFile = (data) => (dispatch, getState) => {
   return filesystemService.publish(data, token)
     .then((fs) => {
       var t = moment().valueOf();
-      if (fs.result) {
-        dispatch(receivePublish(fs.result, t))
-          .then(toast.success(<span>File Published! <a href={"/notebook/" + fs.result.package_id}> See it!</a></span>, {
+      if (fs) {
+        dispatch(receivePublish(fs, t))
+          .then(toast.success(<span>File Published! <a href={"/notebook/" + fs.package_id}> See it!</a></span>, {
             autoClose: 50000,
             closeOnClick: false,
             pauseOnHover: true
