@@ -17,7 +17,7 @@
         <artifactId>helix-lab-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -27,6 +27,15 @@
         <node.version>v8.11.1</node.version>
         <node.env>production</node.env>
     </properties>
+    
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <properties>
+                <node.env>development</node.env>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
 
@@ -35,7 +44,8 @@
             <artifactId>helix-core-common</artifactId>
             <version>${project.version}</version>
         </dependency>
-       <!-- Spring-Boot starter dependencies -->
+
+        <!-- Spring-Boot starter dependencies -->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
