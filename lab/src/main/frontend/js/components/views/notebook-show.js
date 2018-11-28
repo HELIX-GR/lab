@@ -40,10 +40,10 @@ class NotebookShow extends React.Component {
   }
 
   handleSaveBtn = (uuid) => {
-    this.props.getNotebookToFilesystem(uuid).then(toast.success("Saved in you filesystem!"))
+    this.props.getNotebookToFilesystem(uuid).then(toast.success("Saved in you filesystem!"));
     this.setState({
       active: false
-    })
+    });
   }
 
   render() {
