@@ -1,4 +1,5 @@
 import i18n from '../service/i18n';
+import moment from '../moment-localized';
 
 // Actions
 const SET_LOCALE = 'locale/SET_LOCALE';
@@ -16,6 +17,8 @@ export default (state = initialState, action) => {
     case REQUEST_MESSAGES:
       return state; // no-op
     case LOAD_MESSAGES: {
+      moment.locale(action.locale);
+
       const newState = { ...state };
       newState.messages[action.locale] = action.messages;
       return newState;

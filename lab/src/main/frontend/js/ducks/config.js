@@ -1,5 +1,5 @@
-import moment from 'moment';
 import { toast, } from 'react-toastify';
+import moment from '../moment-localized';
 
 // config.js
 import configurationService from '../service/configuration';

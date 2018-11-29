@@ -1,6 +1,7 @@
-import moment from 'moment';
 import adminService from '../service/admin';
 import { toast, } from 'react-toastify';
+
+import moment from '../moment-localized';
 
 const GOT_SERVERS = 'admin/GOT_SERVERS';
 const GOT_USERS = 'admin/GOT_USERS';
