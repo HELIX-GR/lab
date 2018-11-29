@@ -530,30 +530,33 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.antMatcher("/**")
-        		.authorizeRequests()
-        		.antMatchers("/filesystem")
-        		.hasRole("STANDARD")    
+		    .authorizeRequests()  
                 .antMatchers("/",
-                			 "/results",
+                             // Site parts
+                             "/admin/",
+                             "/error/**",
+                			 "/filesystem/",
                 			 "/notebook/**",
-                			 "/favicon.ico",
+                             "/results/",
+                			 // Assets
+                             "/favicon.ico",
                              "/css/**",
                              "/fonts/**",
-                             "/images/**",
                              "/i18n/**",
+                             "/images/**",
                              "/js/**",
                              "/vendor/**",
+                             // Authentication endpoints
                              "/login**",
+                             "/logged-in",
                              "/logged-out",
                              "/error**",
+                             // SAML endpoints
                              "/saml/**",
-                          // Public endpoints
+                             // Public action API endpoints
                              "/action/configuration/**",
                              "/action/ckan/**",
-                             "/action/catalog/**").permitAll()            
-            .anyRequest().authenticated()
-                .antMatchers("/admin/**")
-                .hasAuthority("ROLE_ADMIN");
+                             "/action/catalog/**").permitAll();
 
         http.csrf().requireCsrfProtectionMatcher((HttpServletRequest req) -> {
             final String method = req.getMethod();

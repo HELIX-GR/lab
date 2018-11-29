@@ -1,6 +1,11 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
+import {
+  SecureRoute
+} from './helpers';
+
 import {
   Footer,
   Header,
@@ -56,40 +61,54 @@ class App extends React.Component {
         {/* Static routes */}
         <Route path={StaticRoutes.RESULTS} component={ResultPage} />
 
-        <Route exact={true} path={StaticRoutes.LABHOME} render={() => (
+        <Route exact path={StaticRoutes.LABHOME} render={() => (
           <div>
             <SearchPage changeLocale={() => { }} locale={'en'} logout={() => { }} />
           </div>)} />
         <Route path='/notebook/:uuid' component={NotebookShow} />
-        <Route exact={true} path="/filesystem" render={() => (
-          <section className="main-results-page-content">
-            <div className="results-main-content">
-              <Filesystem />
+        <Route exact path="/filesystem/" render={() => (
+          <React.Fragment>
+            <div className="border-placeholder"></div>
+            <div>
+              <div>
+                <section className="main-results-page-content">
+                  <div className="results-main-content" style={{ flexDirection: 'column' }}>
+                    <Filesystem />
+                  </div>
+                </section>
+              </div>
             </div>
-          </section>)} />
-        <Route path="/courses" render={() => (
+          </React.Fragment>
+        )} />
+        <Route path="/courses/" render={() => (
           <section className="main-results-page-content">
             <div className="results-main-content">
               <h2>
                 <i className="fa fa-cog fa-spin"></i> Under construction <i className="fa fa-cog fa-spin"></i>
               </h2>
             </div>
-          </section>)} />
-        <Route exact={true} path="/guides" render={() => (
+          </section>
+        )} />
+        <Route exact path="/guides/" render={() => (
           <section className="main-results-page-content">
             <div className="results-main-content">
               <h2>
                 <i className="fa fa-cog fa-spin"></i> Under construction <i className="fa fa-cog fa-spin"></i>
               </h2>
             </div>
-          </section>)} />
-        <Route exact={true} path="/admin" render={() => (
-          <section className="main-results-page-content">
-            <div className="results-main-content" style={{ flexDirection: 'column' }}>
-              <AdminPage />
-            </div>
-          </section>)} />
-        <Route component={Page404} />
+          </section>
+        )} />
+        <SecureRoute exact path="/admin/" roles={['ROLE_ADMIN']} render={() => (
+          <React.Fragment>
+            <div className="border-placeholder"></div>
+            <section className="main-results-page-content">
+              <div className="results-main-content" style={{ flexDirection: 'column' }}>
+                <AdminPage />
+              </div>
+            </section>
+          </React.Fragment>
+        )} />
+        <Redirect to="/" />
       </Switch>
     );
     return (

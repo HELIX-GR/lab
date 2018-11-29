@@ -29,6 +29,15 @@ $layout-fixed-width :1366px;
   border-bottom: 3px solid;
 }
 
+.border-placeholder {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 15px;
+  background: $lab-color;
+  z-index: 1;
+}
+
 /*
   * Override bootstrap defaults
   */

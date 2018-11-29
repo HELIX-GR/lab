@@ -7,8 +7,8 @@ import pathToRegexp from 'path-to-regexp';
  * Static routes
  */
 const LABHOME = '/';
-const RESULTS = '/results';
-const NEWS = '/news';
+const RESULTS = '/results/';
+const NEWS = '/news/';
 const PROJECT = '/project/*';
 const NBVIEWER = 'http://nbviewer.jupyter.org';
 const CKAN = 'https://notebooks.dev.hellenicdataservice.gr/';

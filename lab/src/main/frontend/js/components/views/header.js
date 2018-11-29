@@ -62,19 +62,15 @@ class Header extends React.Component {
                   Pubs
                 </a>
               </li>
-              <li id="menu-item-lab" className="menu-item domain-item  has-sub-menu">
-                <a href="/">
+              <li id="menu-item-lab" className="menu-item domain-item has-sub-menu">
+                <NavLink to="/">
                   Lab
-                </a>
+                </NavLink>
                 <ul className="sub-menu">
-                  <li><Link to={'/filesystem'}> <FormattedMessage id="header.files" defaultMessage="My Files" /></Link></li>
-                  <li><Link to={'/results'}> <FormattedMessage id="header.guides" defaultMessage="Guides" /></Link></li>
-                  <li><a href={StaticRoutes.CORE + "/news/view/300"}> <FormattedMessage id="header.courses" defaultMessage="Courses" /></a></li>
-                  <li><a href={StaticRoutes.NBVIEWER}>
-                    NBviewer
-                </a></li>
-                  {//<li><Link to={'/whatislab'}> <FormattedMessage id="header.whatislab" defaultMessage="What is Lab?" /></Link></li>
-                  }
+                  <li><Link to={'/filesystem/'}> <FormattedMessage id="header.files" defaultMessage="My Files" /></Link></li>
+                  <li><a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/" target="_blank"><FormattedMessage id="header.guides" defaultMessage="Guides" /></a></li>
+                  <li><a href="https://jupyterlab.readthedocs.io/en/latest/user/interface.html" target="_blank"><FormattedMessage id="header.courses" defaultMessage="Courses" /></a></li>
+                  <li><a href={StaticRoutes.NBVIEWER}>NBviewer</a></li>
                 </ul>
               </li>
               <li id="menu-item-project" className="menu-item aux-item has-sub-menu">
@@ -104,8 +100,8 @@ class Header extends React.Component {
                 </ul>
               </li>
               {authenticated && this.props.profile.roles.includes('ROLE_ADMIN') &&
-                <li id="menu-item-news" className="menu-item aux-item">
-                  <Link to={'/admin'}> Admin </Link>
+                <li id="menu-item-admin" className="menu-item aux-item">
+                  <NavLink to='/admin/'> Admin </NavLink>
                 </li>
               }
 

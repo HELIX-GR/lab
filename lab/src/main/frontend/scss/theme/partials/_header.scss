@@ -185,6 +185,16 @@
             &#menu-item-lab {
               margin-left: 5px;
               margin-right: 20px;
+              a.active-link {
+                border-color: $lab-color;
+              }
+            }
+            &#menu-item-admin {
+              margin-left: 5px;
+              margin-right: 20px;
+              a.active-link {
+                border-color: $lab-color;
+              }
             }
             &#menu-item-project {
               margin-left: 20px;

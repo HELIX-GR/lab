@@ -125,13 +125,12 @@ class FileSystem extends Component {
     const hierarchy = this.getFolderHierarchy(folder.path);
 
     return (
-      <div className="row" >
+      <div className="row">
+        <div className="col">
+          <div className="breadcrumbs-pagination " >
+            <div className="breadcrumbs">
 
-        <div className="breadcrumbs-pagination " >
-          <div className="breadcrumbs">
-
-            {
-              hierarchy.map((item, i, arr) => (
+              {hierarchy.map((item, i, arr) => (
                 <a
                   key={i}
                   onClick={(e) => {
@@ -139,7 +138,10 @@ class FileSystem extends Component {
                       this.setState({ folder: item.folder });
                     }
                   }}
-                  className="breadcrumbs-part">{item.name}</a>))}
+                  className="breadcrumbs-part">{item.name}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -174,7 +176,7 @@ class FileSystem extends Component {
   render() {
 
     return (
-      <div >
+      <React.Fragment>
         {this.renderHeader()}
         <div className="top-border-lab" />
 
@@ -182,7 +184,7 @@ class FileSystem extends Component {
         <TableToolbar />
         {this.renderBrowser()}
 
-      </div>
+      </React.Fragment>
     );
   }
 }

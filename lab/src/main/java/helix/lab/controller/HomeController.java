@@ -8,22 +8,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomeController {
+    
+    private static final String clientRoutes[] = {
+        "/",
+        "/admin/",
+        "/error/",
+        "/filesystem/",
+        "/notebook/",
+        "/results/",
+    };
 
-	@RequestMapping("*")
+    @RequestMapping("*")
     public String index(HttpSession session, HttpServletRequest request) {
         // Prevent infinite redirects
-        if(request.getServletPath().equalsIgnoreCase("/")) {
+        if (this.isClientRoute(request.getServletPath())) {
             return "index";
         }
-        return "index";
+        return "redirect:/";
     }
 
-	@RequestMapping("/notebook/{notebookId}")
-    public String notebook(HttpSession session, HttpServletRequest request) {
-        // Prevent infinite redirects
-        if(request.getServletPath().equalsIgnoreCase("/")) {
-            return "index";
+    private boolean isClientRoute(String path) {
+        for (final String value : clientRoutes) {
+            if (path.toLowerCase().startsWith(value)) {
+                return true;
+            }
         }
-        return "index";
+        return false;
     }
+
 }
