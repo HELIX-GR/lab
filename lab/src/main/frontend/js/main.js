@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
   Promise.resolve()
     .then(() => store.dispatch(setCsrfToken(token)))
     .then(() => store.dispatch(changeLocale(locale)))
-  //  .then(() => store.dispatch(getConfiguration(locale)))
+    .then(() => store.dispatch(getConfiguration(locale)))
     .then(() => store.dispatch(refreshProfile())
       // recover from an "Unauthorized" error
       .catch(() => console.error('Cannot refresh user profile')))

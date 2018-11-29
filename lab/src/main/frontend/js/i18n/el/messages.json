@@ -21,8 +21,12 @@
     "pubs": "PUBS",
     "lab": "LAB"
   },
-  "labsearch": {
+  "search": {
+    "advanced-search": "ΠΡΟΧΩΡΗΜΕΝΗ ΑΝΑΖΗΤΗΣΗ",
     "placeholder": "Αναζητήστε Notebooks"
+  },
+  "results": {
+    "advanced-search": "Σύνθετη Αναζήτηση"
   },
   "server-list": {
     "servers": "Διαθέσιμοι Kernels"
@@ -70,5 +74,26 @@
     "add-favorite": "Προσθήκη στα αγαπημένα",
     "remove-favorite": "Διαγραφή από τα αγαπημένα",
     "add-to-user-folder": "Προσθήκη στα αρχεία μου"
+  },
+  "advanced-search": {
+    "title": "Προχωρημένη Αναζήτηση",
+    "placeholder": {
+      "prefix": "Αναζήτηση {catalogs}",
+      "lab": "ερευνητικά εργαλεία"
+    },
+    "tabs": {
+      "lab": "LAB"
+    },
+    "filters": {
+      "ckan": {
+        "organizations": "ΟΡΓΑΝΙΣΜΟΙ",
+        "topics": "ΘΕΜΑΤΑ",
+        "tags": "TAGS",
+        "formats": "ΜΟΡΦΟΤΥΠΟΙ",
+        "licenses": "ΑΔΕΙΕΣ"
+      }
+    },
+    "view-less": "Λιγότερα",
+    "view-more": "Περισσότερα"
   }
 }

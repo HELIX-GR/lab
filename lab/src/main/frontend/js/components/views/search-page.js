@@ -1,8 +1,9 @@
+import _ from 'lodash';
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 import * as PropTypes from 'prop-types';
+import classnames from 'classnames';
 
-import _ from 'lodash';
 import { withRouter } from 'react-router';
 
 import {
@@ -10,28 +11,29 @@ import {
 } from 'redux';
 
 import {
-  changeLocale,
-} from '../../ducks/i18n';
-
-import {
   logout,
 } from '../../ducks/user';
 
 import {
-  StaticRoutes,
+  StaticRoutes, EnumCatalog,
 } from '../../model';
 
 import {
   changeText,
   search as searchAll,
   searchAutoComplete,
-  toggleSearchFacet,
   setResultVisibility,
+  toggleAdvanced,
+  toggleSearchFacet,
 } from '../../ducks/ui/views/search';
 
 import {
   Result
 } from '../helpers';
+
+import {
+  default as AdvancedSearchModal,
+} from './advanced-search-modal';
 
 import SearchResult from './search-result';
 
@@ -40,17 +42,30 @@ import {
 } from './';
 
 
+const KEYSTROKE_INTERVAL = 800;
+
 class SearchPage extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.searchAutoComplete = _.debounce(this.props.searchAutoComplete, 400);
+    this.onKeyDown = this.onKeyDown.bind(this);
+    this.searchAutoComplete = _.debounce(this.props.searchAutoComplete, KEYSTROKE_INTERVAL);
+
     this.textInput = React.createRef();
   }
 
   static contextTypes = {
     intl: PropTypes.object,
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.onKeyDown, false);
+    this.props.setResultVisibility(false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.onKeyDown, false);
   }
 
   isTextValid(text) {
@@ -60,11 +75,17 @@ class SearchPage extends React.Component {
   search(advanced = false) {
     const { text } = this.props.search;
 
-    //if (this.isTextValid(text)) {
-      this.props.searchAll(text, advanced).then(
-        this.props.history.push(StaticRoutes.RESULTS));
-    //}
-
+    if (this.isTextValid(text)) {
+      this.props.searchAll(text, advanced)
+        .then((data) => {
+          if (data.results.length !== 0) {
+            if (advanced) {
+              this.props.toggleAdvanced();
+            }
+            this.props.history.push(StaticRoutes.RESULTS);
+          }
+        });
+    }
   }
 
   onTextChanged(value, refresh = true) {
@@ -78,16 +99,20 @@ class SearchPage extends React.Component {
   onSearch(e) {
     e.preventDefault();
 
-
     this.search(false);
   }
 
+  onKeyDown(e) {
+    if (e.key === 'Escape') {
+      this.props.setResultVisibility(false);
+    }
+  }
 
   render() {
-    const { advanced, partialResult: { visible, catalogs }, loading, pills, text } = this.props.search;
+    const { advanced, partialResult: { visible, catalogs }, loading, text } = this.props.search;
     const _t = this.context.intl.formatMessage;
-    return (
 
+    return (
       <div>
         <section>
           <div className="landing-section">
@@ -100,16 +125,39 @@ class SearchPage extends React.Component {
                     outline="off"
                     className="landing-search-text"
                     name="landing-search-text"
-                    placeholder={_t({ id: 'labsearch.placeholder' })}
+                    placeholder={_t({ id: 'search.placeholder' })}
                     value={text}
                     onChange={(e) => this.onTextChanged(e.target.value)}
                     onFocus={() => this.props.setResultVisibility(true)}
                     onBlur={() => this.props.setResultVisibility(false)}
                     ref={this.textInput}
                   />
+                  <div
+                    className={
+                      classnames({
+                        'domain-pills': true,
+                        'short': advanced,
+                      })
+                    }
+                  >
+                    <div
+                      className={
+                        classnames({
+                          'advanced-search-link': true,
+                          'hidden': advanced,
+                        })
+                      }
+                      onClick={() => this.props.toggleAdvanced()}
+                    >
+                      {_t({ id: 'search.advanced-search' })}
+                    </div>
+                  </div>
+
                   {text &&
-                    <SearchResult visible={text.length > 3} text={text || ""} result={this.props.search.partialResult.catalogs} />}
+                    <SearchResult visible={text.length > 3} text={text || ""} result={this.props.search.partialResult.catalogs} />
+                  }
                 </div>
+
                 <button
                   type="submit"
                   name="landing-search-button"
@@ -123,7 +171,19 @@ class SearchPage extends React.Component {
             </div>
           </div>
         </section>
+
         <LabFeatured />
+
+        <AdvancedSearchModal
+          config={this.props.config.ckan}
+          data={this.props.search}
+          search={() => this.search(true)}
+          setText={(text) => this.onTextChanged(text, false)}
+          toggle={this.props.toggleAdvanced}
+          toggleFacet={this.props.toggleSearchFacet}
+          visible={advanced}
+        />
+
       </div >
     );
   }
@@ -132,18 +192,18 @@ class SearchPage extends React.Component {
 const mapStateToProps = (state) => ({
   config: state.config,
   locale: state.i18n.locale,
-  search: state.ui.search,
   profile: state.user.profile,
+  search: state.ui.search,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  changeLocale,
   changeText,
   logout,
   searchAll,
   searchAutoComplete,
-  toggleSearchFacet,
   setResultVisibility,
+  toggleAdvanced,
+  toggleSearchFacet,
 }, dispatch);
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => ({

@@ -14,10 +14,6 @@ import {
   toast,
 } from 'react-toastify';
 
-//import {
-//  Pages
-//} from '../../model/routes';
-
 import {
   getConfiguration,
 } from '../ducks/config';

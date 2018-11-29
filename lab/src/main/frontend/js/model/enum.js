@@ -5,6 +5,14 @@ export const EnumCatalog = {
   LAB: 'LAB',
 };
 
+export const EnumCkanFacet = {
+  Format: 'formats',
+  Group: 'groups',
+  License: 'licenses',
+  Organization: 'organizations',
+  Tag: 'tags',
+};
+
 export const EnumFacet = {
   Format: 'formats',
   Group: 'groups',

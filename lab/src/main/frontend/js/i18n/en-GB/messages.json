@@ -21,8 +21,12 @@
     "pubs": "PUBS",
     "lab": "LAB"
   },
-  "labsearch": {
+  "search": {
+    "advanced-search": "ADVANCED SEARCH",
     "placeholder": "Search for Notebooks"
+  },
+  "results": {
+    "advanced-search": "Advanced Search"
   },
   "server-list": {
     "servers": "Available Servers"
@@ -70,5 +74,26 @@
     "add-favorite": "Add to favorites",
     "remove-favorite": "Remove from favorite",
     "add-to-user-folder": "Add to my folder"
+  },
+  "advanced-search": {
+    "title": "Advanced Search",
+    "placeholder": {
+      "prefix": "Search {catalogs}",
+      "lab": "research tools"
+    },
+    "tabs": {
+      "lab": "LAB"
+    },
+    "filters": {
+      "ckan": {
+        "organizations": "ORGANIZATIONS",
+        "topics": "TOPICS",
+        "tags": "TAGS",
+        "formats": "FORMATS",
+        "licenses": "LICENSES"
+      }
+    },
+    "view-less": "View Less",
+    "view-more": "View More"
   }
 }

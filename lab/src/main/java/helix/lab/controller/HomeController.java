@@ -26,6 +26,11 @@ public class HomeController {
         }
         return "redirect:/";
     }
+    
+    @RequestMapping("/notebook/*")
+    public String notebook(HttpSession session, HttpServletRequest request) {
+        return "index";
+    }
 
     private boolean isClientRoute(String path) {
         for (final String value : clientRoutes) {

@@ -13,7 +13,7 @@ import {
   ResultPage,
 } from './views';
 
-import { Pages, StaticRoutes, DynamicRoutes, ErrorPages } from '../model/routes';
+import { Pages, StaticRoutes, ErrorPages } from '../model/routes';
 
 import ModalLogin from './modal-login';
 import { modalLoginAction } from '../ducks/user';
@@ -37,9 +37,6 @@ class App extends React.Component {
       show_login: false,
     };
   }
-
-
-
   render() {
     var start_now = () => { };
     if (!this.props.username) {

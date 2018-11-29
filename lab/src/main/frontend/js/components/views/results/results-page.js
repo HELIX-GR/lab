@@ -5,33 +5,49 @@ import * as PropTypes from 'prop-types';
 import moment from '../../../moment-localized';
 
 import {
-  Link,
-} from 'react-router-dom';
-
-import {
   bindActionCreators
 } from 'redux';
 
 import {
   FormattedDate,
+  FormattedMessage,
 } from 'react-intl';
+
+import {
+  Link,
+} from 'react-router-dom';
 
 import {
   changeText,
   search as searchAll,
-  toggleAdvanced,
-  togglePill,
-  toggleSearchFacet,
   setResultVisibility,
+  toggleAdvanced,
+  toggleSearchFacet,
 } from '../../../ducks/ui/views/search';
 
 import {
   buildPath,
-  EnumFacet,
+  EnumCatalog,
+  EnumCkanFacet,
   StaticRoutes,
 } from '../../../model';
 
+import {
+  toast,
+} from 'react-toastify';
+
+import {
+  Favorite,
+} from '../../helpers';
+
+import {
+  default as CkanAdvancedOptions,
+} from '../ckan-advanced-options';
+
 import Pagination from './pagination';
+
+const MAX_TITLE_LENGTH = 77;
+const MAX_NOTES_LENGTH = 192;
 
 class Results extends React.Component {
 
@@ -39,25 +55,18 @@ class Results extends React.Component {
     super(props);
 
     this.state = {
-      more: Object.keys(EnumFacet).reduce((result, key) => { result[EnumFacet[key]] = false; return result; }, {}),
+      more: Object.keys(EnumCkanFacet).reduce((result, key) => { result[EnumCkanFacet[key]] = false; return result; }, {}),
     };
 
     this.textInput = React.createRef();
+
+    this.onFacetChanged = this.onFacetChanged.bind(this);
+    this.toggleFavorite = this.toggleFavorite.bind(this);
   }
 
   static contextTypes = {
     intl: PropTypes.object,
   };
-
-  toggleMore(e, key) {
-    e.preventDefault();
-    this.setState({
-      more: {
-        ...this.state.more,
-        [key]: !this.state.more[key],
-      }
-    });
-  }
 
   isTextValid(text) {
     return ((text) && (text.length > 2));
@@ -83,59 +92,94 @@ class Results extends React.Component {
   onSearch(e) {
     e.preventDefault();
 
-    const { text } = this.props.search;
-
-    if (this.isTextValid(text)) {
-      this.props.searchAll(text);
-    }
-
+    this.search();
   }
+
   onPageChange(index) {
     const {
-      search: { result: pageIndex }
+      search: { result = {} }
     } = this.props;
+
+    const pageIndex = result.pageIndex || 0;
 
     if (index !== pageIndex) {
       this.search(index);
     }
   }
 
-  renderParameters(key, title, valueProperty, textProperty, prefix, minOptions, showAll) {
-    const { facets } = this.props.search;
-    const { ckan } = this.props.config;
+  isFavoriteActive(catalog, handle) {
+    return false;
+    //return !!this.props.favorites.find(f => f.catalog === catalog && f.handle === handle);
+  }
 
-    const items = ckan[key];
-    const size = Array.isArray(items) ? showAll ? items.length : Math.min(items.length, minOptions) : 0;
-    if (size === 0) {
-      return null;
+  toggleFavorite(data) {
+    const authenticated = (this.props.profile != null);
+    const active = this.isFavoriteActive(data.catalog, data.handle);
+
+    if (authenticated) {
+      (active ? this.props.removeFavorite(data) : this.props.addFavorite(data))
+        .catch((err) => {
+          if ((err.errors) && (err.errors[0].code.startsWith('FavoriteErrorCode.'))) {
+            // Ignore
+            return;
+          }
+          toast.dismiss();
+          toast.error(<FormattedMessage id={`favorite.${active ? 'remove' : 'add'}-error-notebook`} />);
+        });
+    } else {
+      toast.dismiss();
+      toast.error(<FormattedMessage id='favorite.login-required' />);
     }
+  }
+
+  renderNotebook(n, host) {
+    const modifiedAt = moment(n.metadata_modified).parseZone();
+    const age = moment.duration(moment() - modifiedAt);
+    const date = age.asHours() < 24 ?
+      moment(modifiedAt).fromNow() :
+      <FormattedDate value={n.metadata_modified} day='numeric' month='numeric' year='numeric' />;
 
     return (
-      <div className={`${key} param-box`}>
-        <h5 className="title">{title}</h5>
-        <div className="switches">
-          {items.slice(0, size).map((value, index) => {
-            const resolvedValue = valueProperty ? value[valueProperty] : value;
-            const checked = !!facets[key].find(value => value === resolvedValue);
+      <div className="result-item lab" key={n.id} >
+        <div className="date-of-entry">
+          {date}
+        </div>
+        <Favorite
+          active={this.isFavoriteActive(EnumCatalog.LAB, n.id)}
+          catalog={EnumCatalog.LAB}
+          description={n.notes}
+          handle={n.id}
+          onClick={this.toggleFavorite}
+          title={n.title}
+          url={`${host}/notebook/${n.id}`}
+        />
+        <h3 className="title">
+          <Link to={buildPath(StaticRoutes.NOTEBOOK, [n.id])}>
+            {n.title.length > MAX_TITLE_LENGTH ? `${n.title.substring(0, MAX_TITLE_LENGTH)} ...` : n.title}
+          </Link>
+          <div className="pill lab ml-1">
+            LAB
+          </div>
+        </h3>
+        <div className="notes">
+          {n.notes.length > MAX_NOTES_LENGTH ? `${n.notes.substring(0, MAX_NOTES_LENGTH)} ...` : n.notes}
+        </div>
+        <div className="service">
+          <a onClick={(e) => e.preventDefault()}>{n.organization.title}</a>
+        </div>
 
-            return (
-              <label htmlFor={`switch-${prefix}-${index}`} key={`switch-${prefix}-${index}`}>
-                <input
-                  type="checkbox"
-                  id={`switch-${prefix}-${index}`}
-                  name={`switch-${prefix}-${index}`}
-                  value={resolvedValue}
-                  onChange={() => { this.onFacetChanged(key, resolvedValue); }}
-                  checked={checked}
-                />
-                {textProperty ? value[textProperty] : value}
-              </label>
-            );
-          })}
-          {items.length > minOptions &&
-            <div className="more-link">
-              <a onClick={(e) => this.toggleMore(e, key)}>{showAll ? "View Less" : "View More"}</a>
-            </div>}
+        <div className="tag-list">
+          {n.tags && n.tags.length !== 0 &&
+            n.tags.map(tag => {
+              return (
+                <a onClick={(e) => e.preventDefault()} className="tag-box" key={tag}>
+                  <div>
+                    {tag}
+                  </div>
+                </a>
+              );
+            })
+          }
         </div>
       </div>
     );
@@ -146,55 +190,12 @@ class Results extends React.Component {
       return null;
     }
 
-    const host = "notebook";
-
-    return data.results.map(r => {
-      // Note: parse modification timestamp from server (do not assume same timezone offset!) 
-      const modifiedAt = moment(r.metadata_modified).parseZone();
-      const age = moment.duration(moment() - modifiedAt);
-      const date = age.asHours() < 24 ?
-        ('Before ' + age.humanize()) :
-        <FormattedDate value={r.metadata_modified} day='numeric' month='numeric' year='numeric' />;
-
-      return (
-        <div className="result-item lab" key={r.id} >
-          <div className="date-of-entry">
-            {date}
-          </div>
-          <h3 className="title">
-            <Link to={buildPath(StaticRoutes.NOTEBOOK, [r.id])}>
-              {r.title}
-            </Link>
-          </h3>
-          <div className="notes"> {r.notes.length <= 220 ? r.notes : r.notes.substring(0, 220) + "..."} </div>
-          <div className="service">
-            <a href="#">{r.organization.title}</a>
-          </div>
-
-          <div className="tag-list">
-            {r.tags && r.tags.length !== 0 &&
-              r.tags.map(tag => {
-                return (
-                  <a href="#" className="tag-box" key={tag}>
-                    <div>
-                      {tag}
-                    </div>
-                  </a>
-                );
-              })
-            }
-          </div>
-        </div >
-      );
-    });
+    return data.results.map(r => this.renderNotebook(r));
   }
 
-
-
   render() {
-
     const {
-      search: { result = { count: 0, pageSize: 10 }, loading, text }
+      search: { result = { count: 0, pageSize: 2 }, loading, text }
     } = this.props;
     const _t = this.context.intl.formatMessage;
 
@@ -216,7 +217,7 @@ class Results extends React.Component {
                       outline="off"
                       className="landing-search-text"
                       name="landing-search-text"
-                      placeholder={_t({ id: 'labsearch.placeholder' })}
+                      placeholder={_t({ id: 'search.placeholder' })}
                       value={text}
                       onChange={(e) => this.onTextChanged(e.target.value)}
                       ref={this.textInput}
@@ -235,11 +236,31 @@ class Results extends React.Component {
 
                 </form>
               </div>
-              {//this.renderParameters("Organization", 'ORGANIZATIONS', 'name', 'title', 'org', 5, (() => { }))
+
+              <div className="main-results-advanced-search">
+
+                <h4 className="header">
+                  {_t({ id: 'results.advanced-search' })}
+                </h4>
+
+
+                <div className="border-bottom-bar">
+
+                </div>
+              </div>
+
+              {true === false &&
+                <LocationFilter />
               }
 
-            </section>
+              <CkanAdvancedOptions
+                config={this.props.config}
+                facets={this.props.search.facets}
+                minOptions={4}
+                toggleFacet={this.onFacetChanged}
+              />
 
+            </section>
 
             <section className="results-main-result-set">
               {result.results &&
@@ -290,8 +311,8 @@ class Results extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  config: state.config,
-  locale: state.i18n.locale,
+  config: state.config.ckan,
+  profile: state.user.profile,
   search: state.ui.search,
 });
 
@@ -299,7 +320,6 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   changeText,
   searchAll,
   toggleAdvanced,
-  togglePill,
   toggleSearchFacet,
   setResultVisibility,
 }, dispatch);
