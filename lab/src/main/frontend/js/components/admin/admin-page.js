@@ -62,13 +62,13 @@ class AdminPage extends React.Component {
         <div className="breadcrumbs-pagination" >
           <div className="breadcrumbs">
             <a className="breadcrumbs-part">
-              <span className="fa fa-key"></span>
+              <span className="fa fa-cogs mr-2"></span>
               <span className="header-text">Admin Panel</span>
             </a>
           </div>
 
         </div>
-        
+
         <div className="top-border-lab" />
 
         <Paper className="mb-5">
@@ -87,7 +87,7 @@ class AdminPage extends React.Component {
 
           {value === 0 &&
             <TabContainer>
-              <h2><i className="fa fa-server" /> Servers</h2>
+              <h2><i className="fa fa-server mr-2" /> Servers</h2>
               <a> {this.props.intl.formatRelative(this.props.servers_update)} </a>
 
               <ModalAddServer />
@@ -98,7 +98,7 @@ class AdminPage extends React.Component {
           {value === 1 &&
             <TabContainer>
               <div>
-                <h2>Users</h2>
+                <h2><i className="fa fa-users mr-2" /> Users</h2>
                 <a> {this.props.intl.formatRelative(this.props.users_update)} </a>
                 <UserTable users={this.props.users} />
               </div>
@@ -106,7 +106,7 @@ class AdminPage extends React.Component {
           }
           {value === 2 &&
             <TabContainer><div>
-              <h2>White-List</h2>
+              <h2><i className="fa fa-address-book-o mr-2" />White-List</h2>
               <a> {this.props.intl.formatRelative(this.props.whitelist_update)} </a>
               <ModalAddWhiteList />
               <WhiteListTable users={this.props.whitelist} />
@@ -115,9 +115,9 @@ class AdminPage extends React.Component {
           }
           {value === 3 &&
             <TabContainer><div>
-              <h2>User to Servers Managment
-                 <div className="pill data">
-                  {this.props.u2s.length} Runing
+              <h2><i className="fa fa-heartbeat mr-2" />User to Servers Management
+                 <div className="pill data ml-2">
+                  {this.props.u2s.length} Running
           </div>
               </h2>
               <a> {this.props.intl.formatRelative(this.props.u2s_update)} </a>
@@ -127,7 +127,7 @@ class AdminPage extends React.Component {
             </TabContainer>
           }
         </Paper>
-        
+
       </React.Fragment>
     );
   }
