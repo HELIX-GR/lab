@@ -161,20 +161,6 @@ module.exports = function (grunt) {
       options: {
         mode: '0644',
       },
-      'apidoc': {
-        expand: true,
-        filter: 'isFile',
-        cwd: 'apidoc/docs/',
-        src: ['**/*'],
-        dest: '<%= targetDir %>/docs/',
-      },
-      'jsdoc': {
-        expand: true,
-        filter: 'isFile',
-        cwd: 'jsdoc',
-        src: ['**/*'],
-        dest: '<%= targetDir %>/docs/core-client',
-      },
       'helix-lab-scripts': {
         files: [{
           expand: true,
@@ -269,32 +255,6 @@ module.exports = function (grunt) {
       },
     },
 
-    // Generate API documentation
-    apidoc: {
-      'lab-action': {
-        src: "apidoc/src/lab-action",
-        dest: "apidoc/docs/lab-action",
-        template: "apidoc/template",
-        options: {
-          debug: false,
-          includeFilters: [".*\\.js$"]
-        }
-      }
-    },
-
-    // Generate JavaScript documentation
-    jsdoc: {
-      'helix-lab': {
-        src: [
-          '<%= sourceDir %>/js/**/*.js',
-          '!<%= sourceDir %>/js/__tests__/**/*.js',
-        ],
-        options: {
-          destination: 'jsdoc',
-        }
-      },
-    },
-
   });
 
   //
@@ -308,8 +268,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-eslint');
-  grunt.loadNpmTasks('grunt-apidoc');
-  grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-browserify');
 
   //
@@ -328,8 +286,6 @@ module.exports = function (grunt) {
     grunt.log.writeln('Building in [' + (process.env.NODE_ENV || 'development') + '] mode');
   });
 
-  grunt.registerTask('docs', ['apidoc', 'jsdoc', 'copy:apidoc', 'copy:jsdoc']);
-
   grunt.registerTask('browserify:vendor', [
     'browserify:vendor-util', 'browserify:vendor-react',
   ]);
@@ -342,9 +298,9 @@ module.exports = function (grunt) {
     ['browserify:vendor-util', 'browserify:vendor-react'] :
     ['browserify:vendor-util', 'browserify:vendor-react', 'uglify:vendor']);
 
-  grunt.registerTask('build', ['build:helix-lab', 'build:vendor', 'copy:assets', 'copy:helix-lab-i18n-data', 'copy:helix-lab-fonts' ]);
+  grunt.registerTask('build', ['build:helix-lab', 'build:vendor', 'copy:assets', 'copy:helix-lab-i18n-data', 'copy:helix-lab-fonts']);
 
-  grunt.registerTask('develop', ['mode', 'clean', 'build', 'docs', 'copy', 'watch']);
+  grunt.registerTask('develop', ['mode', 'clean', 'build', 'copy', 'watch']);
 
   grunt.registerTask('default', ['mode', 'clean', 'build', 'copy']);
 };
