@@ -58,21 +58,20 @@ class AdminPage extends React.Component {
 
     const { value } = this.state;
     return (
-      <div >
-        <div className="row" >
-          <div className="breadcrumbs-pagination" >
-            <div className="breadcrumbs">
-              <a className="breadcrumbs-part">
-                <span className="fa fa-key"></span>
-                <span className="header-text">Admin Panel</span>
-              </a>
-            </div>
+      <React.Fragment>
+        <div className="breadcrumbs-pagination" >
+          <div className="breadcrumbs">
+            <a className="breadcrumbs-part">
+              <span className="fa fa-key"></span>
+              <span className="header-text">Admin Panel</span>
+            </a>
           </div>
 
         </div>
+        
         <div className="top-border-lab" />
 
-        <Paper>
+        <Paper className="mb-5">
           <Tabs
             value={this.state.value}
             onChange={this.handleChange}
@@ -128,7 +127,8 @@ class AdminPage extends React.Component {
             </TabContainer>
           }
         </Paper>
-      </div>
+        
+      </React.Fragment>
     );
   }
 }

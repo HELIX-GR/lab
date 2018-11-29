@@ -21,22 +21,38 @@ $layout-fixed-width :1366px;
 @import 'components/login';
 @import 'components/map';
 
- /*
+/*
   * Custom rules
   */
- 
- .menu-wrapper .menu-item .active-link {
-   border-bottom: 3px solid;
- }
- 
- /*
+
+.menu-wrapper .menu-item .active-link {
+  border-bottom: 3px solid;
+}
+
+/*
   * Override bootstrap defaults
   */
- 
- .modal-open {
-   overflow: auto;
- }
- 
- .modal-content {
-   border-radius: 0px;
- }
+
+.modal-open {
+  overflow: auto;
+}
+
+.modal-content {
+  border-radius: 0px;
+}
+
+/**
+  * Override Material
+  */
+
+div[class*="MuiPaper-rounded"] {
+  border-radius: 0px;
+}
+
+div[class*="MuiPaper-elevation"] {
+  box-shadow: none;
+}
+
+button[class*="MuiTab"]:focus {
+  outline: none;
+}

@@ -71,25 +71,25 @@ class App extends React.Component {
           <section className="main-results-page-content">
             <div className="results-main-content">
               <h2>
-              <i className="fa fa-cog fa-spin"></i> Under construction <i className="fa fa-cog fa-spin"></i>
+                <i className="fa fa-cog fa-spin"></i> Under construction <i className="fa fa-cog fa-spin"></i>
               </h2>
             </div>
           </section>)} />
-          <Route exact={true} path="/guides" render={() => (
+        <Route exact={true} path="/guides" render={() => (
           <section className="main-results-page-content">
             <div className="results-main-content">
               <h2>
-              <i className="fa fa-cog fa-spin"></i> Under construction <i className="fa fa-cog fa-spin"></i>
+                <i className="fa fa-cog fa-spin"></i> Under construction <i className="fa fa-cog fa-spin"></i>
               </h2>
             </div>
           </section>)} />
         <Route exact={true} path="/admin" render={() => (
           <section className="main-results-page-content">
-            <div className="results-main-content">
+            <div className="results-main-content" style={{ flexDirection: 'column' }}>
               <AdminPage />
             </div>
           </section>)} />
-          <Route  component={Page404}  />
+        <Route component={Page404} />
       </Switch>
     );
     return (
