@@ -50,7 +50,6 @@ class UploadModal extends React.Component {
     if (path.startsWith('/')) {
       path = path.slice(1);
     }
-    console.log("path : ", path);
     this.setState({
       isUploading: true,
     });
@@ -89,7 +88,6 @@ class UploadModal extends React.Component {
                     console.error('rejected file:', rejected);
                   }
                   const file = accepted && accepted.length && accepted[0];
-                  console.log(file);
                   this.setState({
                     file: file,
                     isUploading: false,

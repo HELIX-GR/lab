@@ -78,11 +78,9 @@ export const startNowAction = (hub_id) => (dispatch, getState) => {
   dispatch(alter_button_stage(2));
   return appService.startJupyter(hub_id, token).then(
     (r) => {
-      console.log(r);
       dispatch(got_server(r));
     },
     (err) => {
-      console.log(err);
       toast.error('Failed to start server: ' + err.message);
       dispatch(alter_button_stage(0));
       throw err;
@@ -94,7 +92,6 @@ export const getUserInfoAction = () => (dispatch, getState) => {
   return appService.getUserServerInfo().then(
     (r) => {
       if (r) {
-        console.log(r);
         dispatch(got_status(r.hub_server, r.target,3));
       }
       else {
@@ -112,7 +109,6 @@ export const stopServerAction = (hub_id) => (dispatch, getState) => {
   //dispatch(asked_server_to_start(2));
   return appService.stopJupyter(hub_id, token).then(
     (r) => {
-      console.log(r);
       dispatch(alter_button_stage(0));
 
     },

@@ -199,7 +199,6 @@ class Results extends React.Component {
     const {
       search: { result = { count: 0, pageSize: 10 }, loading, text }
     } = this.props;
-    console.log(result);
     const _t = this.context.intl.formatMessage;
 
     return (

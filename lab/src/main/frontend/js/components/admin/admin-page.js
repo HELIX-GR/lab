@@ -38,7 +38,7 @@ class AdminPage extends React.Component {
   };
 
   handleEdit = (e) => {
-    console.log(e);
+
   }
 
   componentWillMount() {

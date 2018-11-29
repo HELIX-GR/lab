@@ -23,12 +23,11 @@ class ModalEditServer extends React.Component {
     };
   }
 
-
   handleClose() {
     this.setState({ show_modal: false });
   }
+
   handleOpen() {
-    console.log(this.props.data);
     this.setState({
       show_modal: !this.state.show_modal,
       id: this.props.data.id,
@@ -39,14 +38,16 @@ class ModalEditServer extends React.Component {
 
     });
   }
+
   handleShow() {
     this.setState({ show_modal: !this.state.show_modal });
   }
+
   handleChange(data) {
     this.setState({ data });
   }
+
   handleSubmit() {
-    console.log(this.state.data);
     this.props.editServer(this.props.data.id, this.state.data)
       .then(this.setState({ show_modal: false }));
 
@@ -81,7 +82,5 @@ function mapStateToProps(state) {
   };
 }
 const mapDispatchToProps = (dispatch) => bindActionCreators({ editServer }, dispatch);
-
-
 
 export default ModalEditServer = connect(mapStateToProps, mapDispatchToProps)(ModalEditServer);

@@ -45,7 +45,6 @@ class ModalAddServer extends React.Component {
     this.setState({ data });
   }
   handleSubmit() {
-    console.log(this.state.data);
     this.props.addNewServer(this.state.data)
       .then(this.setState({ show_modal: false }));
 
