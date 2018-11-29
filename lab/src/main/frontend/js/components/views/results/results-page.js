@@ -5,6 +5,10 @@ import * as PropTypes from 'prop-types';
 import moment from '../../../moment-localized';
 
 import {
+  Link,
+} from 'react-router-dom';
+
+import {
   bindActionCreators
 } from 'redux';
 
@@ -22,13 +26,12 @@ import {
 } from '../../../ducks/ui/views/search';
 
 import {
-  EnumCatalog,
+  buildPath,
   EnumFacet,
+  StaticRoutes,
 } from '../../../model';
 
 import Pagination from './pagination';
-
-
 
 class Results extends React.Component {
 
@@ -45,12 +48,6 @@ class Results extends React.Component {
   static contextTypes = {
     intl: PropTypes.object,
   };
-
-  componentWillMount() {
-    if (this.props.search.text == "") {
-      this.props.searchAll("");
-    } 
-  }
 
   toggleMore(e, key) {
     e.preventDefault();
@@ -69,9 +66,9 @@ class Results extends React.Component {
   search(pageIndex) {
     const { text } = this.props.search;
 
-   // if (this.isTextValid(text)) {
+    if (this.isTextValid(text)) {
       this.props.searchAll(text, true, pageIndex);
-   // }
+    }
   }
 
   onTextChanged(value) {
@@ -88,9 +85,9 @@ class Results extends React.Component {
 
     const { text } = this.props.search;
 
-    //if (this.isTextValid(text)) {
+    if (this.isTextValid(text)) {
       this.props.searchAll(text);
-    //}
+    }
 
   }
   onPageChange(index) {
@@ -156,7 +153,7 @@ class Results extends React.Component {
       const modifiedAt = moment(r.metadata_modified).parseZone();
       const age = moment.duration(moment() - modifiedAt);
       const date = age.asHours() < 24 ?
-        ('Before ' + age.humanize()):
+        ('Before ' + age.humanize()) :
         <FormattedDate value={r.metadata_modified} day='numeric' month='numeric' year='numeric' />;
 
       return (
@@ -165,11 +162,11 @@ class Results extends React.Component {
             {date}
           </div>
           <h3 className="title">
-            <a href={`${host}/${r.id}`}>
+            <Link to={buildPath(StaticRoutes.NOTEBOOK, [r.id])}>
               {r.title}
-            </a>
+            </Link>
           </h3>
-          <div className="notes"> {r.notes.length<=220 ? r.notes :r.notes.substring(0,220)+"..."} </div>
+          <div className="notes"> {r.notes.length <= 220 ? r.notes : r.notes.substring(0, 220) + "..."} </div>
           <div className="service">
             <a href="#">{r.organization.title}</a>
           </div>
@@ -178,9 +175,9 @@ class Results extends React.Component {
             {r.tags && r.tags.length !== 0 &&
               r.tags.map(tag => {
                 return (
-                  <a href="#" className="tag-box" key={tag.id}>
+                  <a href="#" className="tag-box" key={tag}>
                     <div>
-                      {tag.name}
+                      {tag}
                     </div>
                   </a>
                 );
@@ -255,7 +252,7 @@ class Results extends React.Component {
 
               <div className="main-results-border-bottom">
                 <label className="order-by" htmlFor="order-by">Ταξινόμηση κατά
-                  <select name="order-by" id="order-by" value="">
+                  <select name="order-by" id="order-by" value="" onChange={(e) => null}>
                     <option value="1">
                       Σχετικότητα
                     </option>
