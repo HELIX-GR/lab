@@ -12,3 +12,8 @@ export const EnumFacet = {
   Organization: 'organizations',
   Tag: 'tags',
 };
+
+export const EnumLocale = {
+  EL: 'el',
+  EN: 'en-GB',
+};

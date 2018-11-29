@@ -9,6 +9,7 @@ export {
 export {
   EnumCatalog,
   EnumFacet,
+  EnumLocale,
 } from './enum';
 
 export {

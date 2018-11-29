@@ -8,6 +8,7 @@ import { FormattedMessage, } from 'react-intl';
 import {
   buildPath,
   DynamicRoutes,
+  EnumLocale,
   StaticRoutes,
   WordPressPages,
 } from '../../model';
@@ -25,8 +26,9 @@ class Header extends React.Component {
     locale: 'en-GB',
   }
 
-  changeLocale() {
-    const locale = (this.props.locale === 'el' ? 'en-GB' : 'el');
+  changeLocale(e, locale) {
+    e.preventDefault();
+
     this.props.changeLocale(locale);
   }
 
@@ -47,6 +49,7 @@ class Header extends React.Component {
         </div>
 
         <div className="menu-wrapper">
+
           <nav className="nav-menu">
             <ul className="menu-items">
               <li id="menu-item-data" className="menu-item domain-item">
@@ -66,7 +69,7 @@ class Header extends React.Component {
                 <ul className="sub-menu">
                   <li><Link to={'/filesystem'}> <FormattedMessage id="header.files" defaultMessage="My Files" /></Link></li>
                   <li><Link to={'/results'}> <FormattedMessage id="header.guides" defaultMessage="Guides" /></Link></li>
-                  <li><a href={StaticRoutes.CORE+"/news/view/300"}> <FormattedMessage id="header.courses" defaultMessage="Courses" /></a></li>
+                  <li><a href={StaticRoutes.CORE + "/news/view/300"}> <FormattedMessage id="header.courses" defaultMessage="Courses" /></a></li>
                   <li><a href={StaticRoutes.NBVIEWER}>
                     NBviewer
                 </a></li>
@@ -96,8 +99,8 @@ class Header extends React.Component {
                   <FormattedMessage id="header.news" defaultMessage="News" />
                 </a>
                 <ul className="sub-menu">
-                  <li> <a href="https://hellenicdataservice.gr/news"><span>News </span></a></li>
-                  <li> <a href="https://hellenicdataservice.gr/events"><span>Events</span></a></li>
+                  <li> <a href="https://hellenicdataservice.gr/news/"><span>News </span></a></li>
+                  <li> <a href="https://hellenicdataservice.gr/news/events/"><span>Events</span></a></li>
                 </ul>
               </li>
               {authenticated && this.props.profile.roles.includes('ROLE_ADMIN') &&
@@ -105,15 +108,20 @@ class Header extends React.Component {
                   <Link to={'/admin'}> Admin </Link>
                 </li>
               }
+
+              <li id="menu-item-lang" className="menu-item aux-item has-sub-menu">
+                <a href="" onClick={(e) => e.preventDefault()}>{this.locale}</a>
+                <ul className="sub-menu">
+                  <li>
+                    <a href="" onClick={(e) => this.changeLocale(e, this.props.locale === EnumLocale.EL ? EnumLocale.EN : EnumLocale.EL)}>
+                      {this.props.locale === EnumLocale.EL ? 'EN' : 'ΕΛ'}
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
             </ul>
           </nav>
-
-
-          <div className="language-selector" onClick={this.changeLocale}>
-            <a href="#">
-              {this.locale}
-            </a>
-          </div>
 
           {!authenticated &&
             <div className="account-item">
@@ -122,6 +130,7 @@ class Header extends React.Component {
               </a>
             </div>
           }
+
           {authenticated &&
             <div className="account-item">
               <nav className="nav-menu">
@@ -147,13 +156,14 @@ class Header extends React.Component {
           }
 
           <div className="search-item">
-            <NavLink to={StaticRoutes.LABHOME}><a href="#">
+            <Link to={StaticRoutes.LABHOME}>
               <i className="fa fa-search"></i>
-            </a>
-            </NavLink>
+            </Link>
           </div>
+
         </div>
-      </header>
+
+      </header >
     );
   }
 }

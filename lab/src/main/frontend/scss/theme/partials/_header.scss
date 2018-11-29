@@ -95,24 +95,22 @@
     @include position(absolute, 0 0 null 0);
     img.logo-image {
       height: 103px;
-      margin-top: 50px;
+      margin-top: 45px;
       margin-left: 50px;
     }
     .menu-wrapper {
       @include position(absolute, 0 0 null null);
-      margin-top: 42px;
+      margin-top: 50px;
       margin-right: 20px;
       padding-right: 30px;
       nav.nav-menu {
         float: left;
         ul.menu-items {
           li.menu-item {
-            height: 45px;
             font-weight: 400;
             font-size: 20px;
             color: $main-black;
-            letter-spacing: .005em;
-            line-height: 1.2;
+            line-height: 35px;
             float: left;
             padding-left: 10px;
             padding-right: 10px;
@@ -135,7 +133,7 @@
             a {
               color: inherit;
               vertical-align: middle;
-              line-height: 43px;
+              line-height: 35px;
               transition: all .1s ease-in-out;
               -webkit-transition: all .1s ease-in-out;
               -moz-transition: all .1s ease-in-out;
@@ -149,14 +147,14 @@
               display: none;
               position: absolute;
               padding: 0;
-              top: 45px;
+              top: 36px;
               right: 0;
               line-height: 18px;
               li {
                 padding-top: 11px;
                 padding-bottom: 11px;
-                padding-left: 15px;
-                padding-right: 15px;
+                padding-left: 10px;
+                padding-right: 10px;
                 margin-top: 1px;
                 a {
                   vertical-align: middle;
@@ -172,25 +170,43 @@
               }
             }
             &#menu-item-data {
-              margin-right: 4px;
+              margin-right: 5px;
               a.active-link {
                 border-color: $data-color;
               }
             }
             &#menu-item-pubs {
-              margin-right: 6px;
+              margin-left: 5px;
+              margin-right: 5px;
               a.active-link {
                 border-color: $pubs-color;
               }
             }
             &#menu-item-lab {
-              margin-right: 30px;
+              margin-left: 5px;
+              margin-right: 20px;
             }
             &#menu-item-project {
-
+              margin-left: 20px;
+              margin-right: 5px;
             }
             &#menu-item-news {
-              margin-right: 25px;
+              margin-left: 5px;
+              margin-right: 20px;
+            }
+            &#menu-item-lang {
+              margin-left: 20px;
+              margin-right: 20px;
+              .sub-menu {
+                min-width: unset;
+                top: 32px;
+                width: 100%;
+                li {
+                  a {
+                    font-size: 20px;
+                  }
+                }
+              }
             }
             &#menu-item-account {
               padding: 0px;
@@ -198,76 +214,58 @@
           }
         }
       }
-      .language-selector {
-        float: left;
-        a {
-          height: 45px;
-          font-weight: 400;
-          font-size: 1.35rem;
-          color: $main-black;
-          letter-spacing: .005em;
-          float: left;
-          padding-left: 14px;
-          padding-right: 15px;
-          vertical-align: middle;
-          line-height: 44px;
-          transition: all .2s ease-in-out;
-          -webkit-transition: all .2s ease-in-out;
-          -moz-transition: all .2s ease-in-out;
-          -o-transition: all .2s ease-in-out;
-          &:hover {
-            text-decoration: none;
-            cursor: pointer; // opacity: .5;
-          }
-        }
-      }
       .account-item {
         float: left;
         position: relative;
+        margin-left: 20px;
+        margin-right: 5px;
         a {
-          height: 45px;
           font-weight: 400;
           font-size: 20px;
           color: $main-black;
-          letter-spacing: .005em;
-          line-height: 1.2;
-          padding-left: 15px;
-          padding-right: 13px;
-          vertical-align: middle;
-          line-height: 37px;
+          padding-left: 10px;
+          padding-right: 10px;
           transition: all .2s ease-in-out;
           -webkit-transition: all .2s ease-in-out;
           -moz-transition: all .2s ease-in-out;
           -o-transition: all .2s ease-in-out;
+          line-height: 35px;
           img {
             height: 30px;
+            margin-bottom: 2px;
+          }
+        }
+        .account-icon {
+          border-radius: 50px;
+        }
+        &.logged-off {
+          .account-icon {
+            opacity: 0.5;
           }
         }
       }
       .search-item {
         float: left;
         position: relative;
-        top: 4px;
-        margin-left: 10px;
+        margin-left: 15px;
         a {
-          height: 45px;
+          height: 35px;
+          width: 35px;
           border-radius: 50%;
           font-weight: 400;
-          font-size: 15px;
+          font-size: 16px;
           text-align: center;
           background-color: $main-black;
           color: white;
-          letter-spacing: .005em;
           float: left;
-          vertical-align: middle;
-          line-height: 35px;
-          height: 34px;
-          width: 34px;
-          line-height: 34px;
+          line-height: 19px;
           transition: all .2s ease-in-out;
           -webkit-transition: all .2s ease-in-out;
           -moz-transition: all .2s ease-in-out;
           -o-transition: all .2s ease-in-out;
+          i {
+            padding: 9px 10px 10px 10px;
+          }
         }
       }
     }
