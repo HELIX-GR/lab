@@ -142,6 +142,10 @@ module.exports = function (grunt) {
       options: {
         banner: '/*! Package: <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
         sourceMap: true,
+        compress: {
+          // Workaround for https://github.com/mishoo/UglifyJS2/issues/3274
+          collapse_vars: false,
+        },
       },
       'helix-lab': {
         files: {
