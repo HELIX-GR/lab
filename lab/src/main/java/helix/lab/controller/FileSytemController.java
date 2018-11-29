@@ -250,7 +250,7 @@ public class FileSytemController extends BaseController {
             	Files.createDirectories(dir);
             }
             
-            Package pack = this.searchService.queryById(id);
+            Package pack = this.searchService.getDataset(id);
             final Path target = fileNamingStrategy.resolvePath(userName, "Published/"+pack.getResources().get(0).getName());
 
             URL url= new URL(pack.getResources().get(0).getUrl());// Gets the first resource!!!

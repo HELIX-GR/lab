@@ -5,14 +5,13 @@ import org.springframework.stereotype.Service;
 
 import helix.lab.model.ckan.CatalogResult;
 import helix.lab.model.ckan.CkanCatalogQuery;
+import helix.lab.model.ckan.Package;
 
 @Service
 public class SearchService {
 
     @Autowired
-    private CkanServiceProxy     ckanServiceProxy;
-
-
+    private CkanServiceProxy ckanServiceProxy;
 
     public CatalogResult<?> queryData(String term) {
         final CkanCatalogQuery query = new CkanCatalogQuery();
@@ -23,19 +22,12 @@ public class SearchService {
         return this.ckanServiceProxy.getPackages(query, false);
     }
 
-    
-    public helix.lab.model.ckan.Package queryById(String term) {
-    	
-        return this.ckanServiceProxy.getPackageById(term);
+    public Package getDataset(String id) {
+        return this.ckanServiceProxy.getPackage(id);
     }
 
-	
     public CatalogResult<?> queryData(CkanCatalogQuery query) {
         return this.ckanServiceProxy.getPackages(query, true);
     }
-    
-    
 
-
-   
 }

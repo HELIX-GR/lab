@@ -68,14 +68,13 @@ public class CkanServiceProxy {
 
     public CatalogResult<Package> getPackages(CkanCatalogQuery query, boolean includeFacets) throws ApplicationException {
         try {
-            // Documentation: http://docs.ckan.org/en/latest/api/index.html
-
             // CKAN start index starts from 0
+            final ServiceConfiguration endpoint = this.ckanConfiguration;
             final URIBuilder builder = new URIBuilder()
-                .setScheme(this.ckanConfiguration.getScheme())
-                .setHost(this.ckanConfiguration.getHost())
-                .setPort(this.ckanConfiguration.getPort())
-                .setPath(this.composePath("/api/action/package_search"))
+                .setScheme(endpoint.getScheme())
+                .setHost(endpoint.getHost())
+                .setPort(endpoint.getPort())
+                .setPath(this.composePath("api/action/package_search"))
                 .addParameter("q", query.getTerm())
                 .addParameter("sort", "relevance asc, metadata_modified desc")
                 .addParameter("rows", Integer.toString(query.getPageSize()))
@@ -113,25 +112,59 @@ public class CkanServiceProxy {
         return null;
     }
 
+    public Package getPackage(String id) {
+        try {
+            final ServiceConfiguration endpoint = this.ckanConfiguration;
+
+            final URIBuilder builder = new URIBuilder()
+                .setScheme(endpoint.getScheme())
+                .setHost(endpoint.getHost())
+                .setPort(endpoint.getPort())
+                .setPath(this.composePath("api/action/package_show"))
+                .addParameter("id", id);
+
+            final URI uri = builder.build();
+
+            final HttpUriRequest request = RequestBuilder.post(uri)
+                .addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .build();
+
+            try (CloseableHttpResponse response = (CloseableHttpResponse) this.httpClient.execute(request)) {
+                if (response.getStatusLine().getStatusCode() != 200) {
+                    throw ApplicationException.fromMessage("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+                }
+                return this.parsePackage(response);
+            }
+        } catch (final ApplicationException ex) {
+            throw ex;
+        } catch (final Exception ex) {
+            this.handleException(ex);
+        }
+        return null;
+    }
+    
     public CkanMetadata getMetadata() {
         final CkanMetadata metadata = new CkanMetadata();
 
-        metadata.setLicenses(this.getLicenses());
-        metadata.setFormats(this.getFormats());
-        metadata.setTags(this.getTags());
-        metadata.setGroups(this.getGroups());
-        metadata.setOrganizations(this.getOrganizations());
-
-
         try {
+            final ServiceConfiguration endpoint = this.ckanConfiguration;
             final String host = new URIBuilder()
-                .setScheme(this.ckanConfiguration.getScheme())
-                .setHost(this.ckanConfiguration.getHost())
-                .setPort(this.ckanConfiguration.getPort())
+                .setScheme(endpoint.getScheme())
+                .setHost(endpoint.getHost())
+                .setPort(endpoint.getPort())
                 .build()
                 .toString();
             metadata.setHost(host);
+
+            metadata.setLicenses(this.getLicenses());
+            metadata.setFormats(this.getFormats());
+            metadata.setTags(this.getTags());
+            metadata.setGroups(this.getGroups());
+            metadata.setOrganizations(this.getOrganizations());
         } catch (final URISyntaxException e) {
+            // Ignore
+        } catch (final Exception e) {
             // Ignore
         }
 
@@ -336,6 +369,23 @@ public class CkanServiceProxy {
         throw ApplicationException.fromMessage("Failed to read response");
     }
 
+    private Package parsePackage(HttpResponse response) {
+        try (InputStream contentStream = response.getEntity().getContent()) {
+            final ObjectResponse<Package> ckanResponse =
+                this.objectMapper.readValue(contentStream, new TypeReference<ObjectResponse<Package>>() { });
+
+            if(ckanResponse.isSuccess()) {
+                return ckanResponse.getResult();
+            }
+            return null;
+
+        } catch (final IOException ex) {
+            logger.error("An I/O exception has occured while reading the response content", ex);
+        }
+
+        throw ApplicationException.fromMessage("Failed to read response");
+    }
+    
     private ArrayResponse<Organization> parseOrganizations(HttpResponse response) {
         try (InputStream contentStream = response.getEntity().getContent()) {
             return this.objectMapper.readValue(contentStream, new TypeReference<ArrayResponse<Organization>>() { });
@@ -417,7 +467,7 @@ public class CkanServiceProxy {
 
         return "";
     }
-    // Create a new dataset in CKAN
+
     public Object createNewDataset(PublishRequest query, String package_id, String principal) throws ApplicationException {
         try {
             // Documentation: http://docs.ckan.org/en/latest/api/index.html
@@ -471,9 +521,6 @@ public class CkanServiceProxy {
         return null;
     }
 
-    
-    
-    // Create a new resource  in CKAN
     public Object createNewResource(PublishRequest query, File  file, String package_id) throws ApplicationException {
         try {
             // Documentation: http://docs.ckan.org/en/latest/api/index.html
@@ -526,55 +573,6 @@ public class CkanServiceProxy {
             this.handleException(ex);
         }
         return null;
-    }
-    
-    //------------------------- pachage show ----------------------------------------TODO
-    public Package getPackageById(String id) throws ApplicationException {
-        try {
-            // Documentation: http://docs.ckan.org/en/latest/api/index.html
-
-            // CKAN start index starts from 0
-            final URIBuilder builder = new URIBuilder()
-                .setScheme(this.ckanConfiguration.getScheme())
-                .setHost(this.ckanConfiguration.getHost())
-                .setPort(this.ckanConfiguration.getPort())
-                .setPath(this.composePath("/api/action/package_show"))
-                .addParameter("id", id);
-          
-            final URI uri = builder.build();
-            final HttpUriRequest request = RequestBuilder.post(uri)
-                .addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-                .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .build();
-
-            try (CloseableHttpResponse response = (CloseableHttpResponse) this.httpClient.execute(request)) {
-                if (response.getStatusLine().getStatusCode() != 200) {
-                    throw ApplicationException.fromMessage("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
-                }
-                final Package ckanResponse = this.parseOnePackageShow(response);
-                
-                return ckanResponse;
-            }
-        } catch (final ApplicationException ex) {
-            throw ex;
-        } catch (final Exception ex) {
-            this.handleException(ex);
-        }
-        return null;
-    }
-    
-    
-    private Package parseOnePackageShow(HttpResponse response) {
-        try (InputStream contentStream = response.getEntity().getContent()) {
-            final ObjectResponse<Package> ckanResponse =
-                this.objectMapper.readValue(contentStream, new TypeReference<ObjectResponse<Package>>() { });
-            return ckanResponse.getResult();
-
-        } catch (final IOException ex) {
-            logger.error("An I/O exception has occured while reading the response content", ex);
-        }
-
-        throw ApplicationException.fromMessage("Failed to read response");
     }
 
 }

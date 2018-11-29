@@ -289,5 +289,120 @@
         }
       }
     }
+    .format-label[data-format=csv],
+    .format-label[data-format*=csv] {
+      background-image: url("../../images/icons/filetypes/svg/csv.svg");
+    }
+    .format-label[data-format=ipynb],
+    .format-label[data-format*=ipynb] {
+      background-image: url("../../images/icons/filetypes/svg/ipynb.svg");
+    }
+    .format-label[data-format=zip],
+    .format-label[data-format*=zip] {
+      background-image: url("../../images/icons/filetypes/svg/zip.svg");
+    }
+    .format-label[data-format=xml],
+    .format-label[data-format*=xml] {
+      background-image: url("../../images/icons/filetypes/svg/xml.svg");
+    }
+    .format-label[data-format=json],
+    .format-label[data-format*=json] {
+      background-image: url("../../images/icons/filetypes/svg/json.svg");
+    }
+    .format-label[data-format=geojson],
+    .format-label[data-format*=geojson] {
+      background-image: url("../../images/icons/filetypes/svg/geojson.svg");
+    }
+    .format-label[data-format=gml],
+    .format-label[data-format*=gml] {
+      background-image: url("../../images/icons/filetypes/svg/gml.svg");
+    }
+    .format-label[data-format=html],
+    .format-label[data-format*=html] {
+      background-image: url("../../images/icons/filetypes/svg/html.svg");
+    }
+    .format-label[data-format=kml],
+    .format-label[data-format*=kml] {
+      background-image: url("../../images/icons/filetypes/svg/kml.svg");
+    }
+    .format-label[data-format=jpg],
+    .format-label[data-format*=jpg] {
+      background-image: url("../../images/icons/filetypes/svg/jpg.svg");
+    }
+    .format-label[data-format=jpeg],
+    .format-label[data-format*=jpeg] {
+      background-image: url("../../images/icons/filetypes/svg/jpg.svg");
+    }
+    .format-label[data-format=png],
+    .format-label[data-format*=png] {
+      background-image: url("../../images/icons/filetypes/svg/png.svg");
+    }
+    .format-label[data-format=ods],
+    .format-label[data-format*=ods] {
+      background-image: url("../../images/icons/filetypes/svg/ods.svg");
+    }
+    .format-label[data-format=odt],
+    .format-label[data-format*=odt] {
+      background-image: url("../../images/icons/filetypes/svg/odt.svg");
+    }
+    .format-label[data-format=pdf],
+    .format-label[data-format*=pdf] {
+      background-image: url("../../images/icons/filetypes/svg/pdf.svg");
+    }
+    .format-label[data-format=wms],
+    .format-label[data-format*=wms] {
+      background-image: url("../../images/icons/filetypes/svg/wms.svg");
+    }
+    .format-label[data-format=wfs],
+    .format-label[data-format*=wfs] {
+      background-image: url("../../images/icons/filetypes/svg/wfs.svg");
+    }
+    .format-label[data-format=rdf],
+    .format-label[data-format*=rdf] {
+      background-image: url("../../images/icons/filetypes/svg/rdf.svg");
+    }
+    .format-label[data-format=tiff],
+    .format-label[data-format*=tiff] {
+      background-image: url("../../images/icons/filetypes/svg/tiff.svg");
+    }
+    .format-label[data-format=txt],
+    .format-label[data-format*=txt] {
+      background-image: url("../../images/icons/filetypes/svg/txt.svg");
+    }
+    .format-label[data-format=shp],
+    .format-label[data-format*=shp],
+    .format-label[data-format=shapefile],
+    .format-label[data-format*=shapefile],
+    .format-label[data-format=shape],
+    .format-label[data-format*=shape] {
+      background-image: url("../../images/icons/filetypes/svg/shapefile.svg");
+    }
+    .format-label[data-format=xls],
+    .format-label[data-format*=xls] {
+      background-image: url("../../images/icons/filetypes/svg/xls.svg");
+    }
+    .format-label[data-format=gpx],
+    .format-label[data-format*=gpx] {
+      background-image: url("../../images/icons/filetypes/svg/gpx.svg");
+    }
+    .format-label[data-format=sqlite],
+    .format-label[data-format*=sqlite],
+    .format-label[data-format=geopackage],
+    .format-label[data-format*=geopackage],
+      {
+      background-image: url("../../images/icons/filetypes/svg/sqlite.svg");
+    }
+    .format-label[data-format=wcs],
+    .format-label[data-format*=wcs] {
+      background-image: url("../../images/icons/filetypes/svg/wcs.svg");
+    }
+    .format-label[data-format=wps],
+    .format-label[data-format*=wps] {
+      background-image: url("../../images/icons/filetypes/svg/wps.svg");
+    }
+    .format-label[data-format=csw],
+    .format-label[data-format*=csw] {
+      background-image: url("../../images/icons/filetypes/svg/csw.svg");
+    }
   }
 }

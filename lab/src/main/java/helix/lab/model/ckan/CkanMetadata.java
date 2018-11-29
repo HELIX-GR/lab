@@ -1,5 +1,6 @@
 package helix.lab.model.ckan;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CkanMetadata {
@@ -25,7 +26,7 @@ public class CkanMetadata {
     }
 
     public List<License> getLicenses() {
-        return this.licenses;
+        return (this.licenses == null ? new ArrayList<License>() : this.licenses);
     }
 
     public void setLicenses(List<License> licenses) {
@@ -33,7 +34,7 @@ public class CkanMetadata {
     }
 
     public List<String> getFormats() {
-        return this.formats;
+        return (this.formats == null ? new ArrayList<String>() : this.formats);
     }
 
     public void setFormats(List<String> formats) {
@@ -41,7 +42,7 @@ public class CkanMetadata {
     }
 
     public List<Tag> getTags() {
-        return this.tags;
+        return (this.tags == null ? new ArrayList<Tag>() : this.tags);
     }
 
     public void setTags(List<Tag> tags) {
@@ -49,7 +50,7 @@ public class CkanMetadata {
     }
 
     public List<Group> getGroups() {
-        return this.groups;
+        return (this.groups == null ? new ArrayList<Group>() : this.groups);
     }
 
     public void setGroups(List<Group> groups) {
@@ -57,7 +58,7 @@ public class CkanMetadata {
     }
 
     public List<Organization> getOrganizations() {
-        return this.organizations;
+        return (this.organizations == null ? new ArrayList<Organization>() : this.organizations);
     }
 
     public void setOrganizations(List<Organization> organizations) {

@@ -10,17 +10,20 @@ const LABHOME = '/';
 const RESULTS = '/results';
 const NEWS = '/news';
 const PROJECT = '/project/*';
-const NBVIEWER= 'http://nbviewer.jupyter.org';
+const NBVIEWER = 'http://nbviewer.jupyter.org';
+const CKAN = 'https://notebooks.dev.hellenicdataservice.gr/';
 const CORE = 'https://hellenicdataservice.gr';
-
+const NOTEBOOK = '/notebook/:id';
 
 export const StaticRoutes = {
+  CKAN,
   CORE,
   LABHOME,
   RESULTS,
   NEWS,
   PROJECT,
-  NBVIEWER
+  NBVIEWER,
+  NOTEBOOK,
 };
 
 /**

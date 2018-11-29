@@ -2,7 +2,9 @@ package helix.lab.model.ckan;
 
 public class ObjectResponse<T> extends Response {
 
-    private T result;
+    private boolean success;
+
+    private T       result;
 
     public T getResult() {
         return this.result;
@@ -10,6 +12,16 @@ public class ObjectResponse<T> extends Response {
 
     public void setResult(T result) {
         this.result = result;
+    }
+
+    @Override
+    public boolean isSuccess() {
+        return this.success;
+    }
+
+    @Override
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
 }

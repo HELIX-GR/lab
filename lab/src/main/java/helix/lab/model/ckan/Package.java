@@ -1,8 +1,11 @@
 package helix.lab.model.ckan;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Package {
@@ -15,8 +18,6 @@ public class Package {
     private String                           authorEmail;
     @JsonProperty("id")
     private String                           id;
-    @JsonProperty("license_title")
-    private String                           licenseTitle;
     @JsonProperty("maintainer")
     private String                           maintainer;
     @JsonProperty("maintainer_email")
@@ -45,8 +46,22 @@ public class Package {
     private String                           revisionId;
     @JsonProperty("identifier")
     private List<String>                     identifier;
-    @JsonProperty("tags")
-    private List<Tag>                     tags;
+    @JsonProperty("dataset_category")
+    private List<String>                     categories;
+    @JsonProperty("isopen")
+    private boolean                          open;
+    @JsonIgnore()
+    private List<String>                     closedTags;
+    @JsonIgnore()
+    private List<Tag>                        tags;
+    @JsonProperty("license_url")
+    private String                           licenseUrl;
+    @JsonProperty("license_title")
+    private String                           licenseTitle;
+    @JsonProperty("datacite")
+    private DataCite                         datacite;
+    @JsonProperty("name")
+    private String                           name;
 
     public String getCreatorUserId() {
         return this.creatorUserId;
@@ -200,13 +215,66 @@ public class Package {
         this.identifier = identifier;
     }
 
-	public List<Tag> getTags() {
-		return tags;
-	}
+    public List<String> getCategories() {
+        return this.categories;
+    }
 
-	public void setTags(List<Tag> tags) {
-		this.tags = tags;
-	}
-    
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
+    }
+
+    public boolean isOpen() {
+        return this.open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
+
+    public String getLicenseUrl() {
+        return this.licenseUrl;
+    }
+
+    public void setLicenseUrl(String licenseUrl) {
+        this.licenseUrl = licenseUrl;
+    }
+
+    public DataCite getDatacite() {
+        return this.datacite;
+    }
+
+    public void setDatacite(DataCite datacite) {
+        this.datacite = datacite;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @JsonProperty("tags")
+    public List<String> getTags() {
+        List<String> result = new ArrayList<String>();
+        if (this.tags != null) {
+            result.addAll(this.tags.stream().map(Tag::getDisplayName).collect(Collectors.toList()));
+        }
+        if (this.closedTags != null) {
+            result.addAll(this.closedTags);
+        }
+        return result;
+    }
+
+    @JsonProperty("tags")
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    @JsonProperty("closed_tag")
+    public void setClosedTags(List<String> closedTags) {
+        this.closedTags = closedTags;
+    }
 
 }

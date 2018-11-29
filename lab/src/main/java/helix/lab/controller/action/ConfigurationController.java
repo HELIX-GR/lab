@@ -19,27 +19,25 @@ public class ConfigurationController extends BaseController {
     private SamlConfiguration samlConfiguration;
 
     @Autowired
-    private MetadataManager metadata;
+    private MetadataManager   metadata;
 
     @Autowired
-    private CkanServiceProxy ckanServiceProxy;
-    
-	@RequestMapping(value = "/action/configuration/{locale}", method = RequestMethod.GET)
-	public RestResponse<ClientConfiguration> getConfiguration(String locale) {
-		return RestResponse.result(this.createConfiguration());
-	}
+    private CkanServiceProxy  ckanServiceProxy;
 
-	private ClientConfiguration createConfiguration() {
-		final ClientConfiguration config = new ClientConfiguration();
+    @RequestMapping(value = "/action/configuration/{locale}", method = RequestMethod.GET)
+    public RestResponse<ClientConfiguration> getConfiguration(String locale) {
+        return RestResponse.result(this.createConfiguration());
+    }
 
-		//config.setOsm(this.mapConfiguration.getOsm());
-		//config.setBingMaps(this.mapConfiguration.getBingMaps());
-		config.setDefaultIdentityProvider(this.samlConfiguration.getDefaultProvider());
+    private ClientConfiguration createConfiguration() {
+        final ClientConfiguration config = new ClientConfiguration();
 
-		config.setCkan(this.ckanServiceProxy.getMetadata());
-		this.metadata.getIDPEntityNames().stream().forEach(config::addIdentityProvider);
+        config.setDefaultIdentityProvider(this.samlConfiguration.getDefaultProvider());
+        config.setCkan(this.ckanServiceProxy.getMetadata());
 
-		return config;
-	}
+        this.metadata.getIDPEntityNames().stream().forEach(config::addIdentityProvider);
+
+        return config;
+    }
 
 }

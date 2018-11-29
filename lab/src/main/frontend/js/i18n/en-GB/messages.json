@@ -24,26 +24,51 @@
   "labsearch": {
     "placeholder": "Search for Notebooks"
   },
-  "server-list":{
+  "server-list": {
     "servers": "Available Servers"
   },
-  "filetable":{
+  "filetable": {
     "FileName": "File Name",
     "FileType": "File Type",
     "FileSize": "File Size",
     "LastModified": "Last Modified",
     "LastUpdate": "Last Update: "
   },
-  "featured":{
-    "first":{
-      "title":"What is HELIX Lab?",
-      "description": "It’s your own private data infrastructure for learning, sharing, and building with data. You can bring your own data or use our open scientific data, interactively code in your language of choice, experiment over dedicated Big Data clusters or our HPC, and share your work with others." ,
-      "text": "Learn more about Lab and how to use it." 
+  "featured": {
+    "first": {
+      "title": "What is HELIX Lab?",
+      "description": "It’s your own private data infrastructure for learning, sharing, and building with data. You can bring your own data or use our open scientific data, interactively code in your language of choice, experiment over dedicated Big Data clusters or our HPC, and share your work with others.",
+      "text": "Learn more about Lab and how to use it."
     },
-    "second":{
-      "title":"Academic Support",
-      "description":"Integrate Lab in your official undergraduate, postgraduate or seminar curricula. Organize courses with your own data, exercises, and tests.  Your students can learn about statistics, data management, and machine learning. No infrastructure, installation, or setup costs!",
-      "text": "See the list of courses." 
+    "second": {
+      "title": "Academic Support",
+      "description": "Integrate Lab in your official undergraduate, postgraduate or seminar curricula. Organize courses with your own data, exercises, and tests.  Your students can learn about statistics, data management, and machine learning. No infrastructure, installation, or setup costs!",
+      "text": "See the list of courses."
     }
-      }
+  },
+  "notebook": {
+    "publisher": "Publisher",
+    "subjects": "Subjects",
+    "license": "License",
+    "publication": "PUBLICATION: ",
+    "last-revision": "LAST REVISION: ",
+    "notebook": "Notebook",
+    "resources": "DATA AND RESOURCES",
+    "no-description": "No description",
+    "open-data-license": "This notebook satisfies the Open Definition.",
+    "buttons": {
+      "download": "DOWNLOAD",
+      "view": "VIEW"
+    }
+  },
+  "favorite": {
+    "login-required": "Please login to add result to favorites",
+    "add-error-notebook": "Failed to add notebook to favorites",
+    "remove-error-notebook": "Failed to remove notebook from favorites"
+  },
+  "tooltip": {
+    "add-favorite": "Add to favorites",
+    "remove-favorite": "Remove from favorite",
+    "add-to-user-folder": "Add to my folder"
+  }
 }

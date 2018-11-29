@@ -13,7 +13,7 @@ public class Resource {
     private String       id;
 
     @JsonProperty("size")
-    private String       size;
+    private Long         size;
 
     @JsonProperty("state")
     private String       state;
@@ -70,11 +70,11 @@ public class Resource {
         this.id = id;
     }
 
-    public String getSize() {
+    public Long getSize() {
         return this.size;
     }
 
-    public void setSize(String size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 

@@ -2,8 +2,6 @@ package helix.lab.model.ckan;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import helix.lab.model.ckan.CatalogResult;
-
 public class CkanCatalogResult<T> extends CatalogResult<T> {
 
     @JsonProperty("facets")

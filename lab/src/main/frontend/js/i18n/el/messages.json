@@ -24,27 +24,51 @@
   "labsearch": {
     "placeholder": "Αναζητήστε Notebooks"
   },
-  "server-list":{
+  "server-list": {
     "servers": "Διαθέσιμοι Kernels"
   },
-  "filetable":{
+  "filetable": {
     "FileName": "Όνομα Αρχείου",
     "FileType": "Τύπος Αρχείου",
     "FileSize": "Μέγεθος Αρχείου",
     "LastModified": "Τροποποιήθηκε",
     "LastUpdate": "Τελευταία ενημέρωση: "
   },
-  "featured":{
-    "first":{
-      "title":"What is HELIX Lab?",
-      "description": "It’s your own private data infrastructure for learning, sharing, and building with data. You can bring your own data or use our open scientific data, interactively code in your language of choice, experiment over dedicated Big Data clusters or our HPC, and share your work with others." ,
-      "text": "Learn more about Lab and how to use it." 
+  "featured": {
+    "first": {
+      "title": "What is HELIX Lab?",
+      "description": "It’s your own private data infrastructure for learning, sharing, and building with data. You can bring your own data or use our open scientific data, interactively code in your language of choice, experiment over dedicated Big Data clusters or our HPC, and share your work with others.",
+      "text": "Learn more about Lab and how to use it."
     },
-    "second":{
-      "title":"Academic Support",
-      "description":"Integrate Lab in your official undergraduate, postgraduate or seminar curricula. Organize courses with your own data, exercises, and tests.  Your students can learn about statistics, data management, and machine learning. No infrastructure, installation, or setup costs!",
-      "text": "See the list of courses." 
+    "second": {
+      "title": "Academic Support",
+      "description": "Integrate Lab in your official undergraduate, postgraduate or seminar curricula. Organize courses with your own data, exercises, and tests.  Your students can learn about statistics, data management, and machine learning. No infrastructure, installation, or setup costs!",
+      "text": "See the list of courses."
     }
-      }
-  
+  },
+  "notebook": {
+    "publisher": "Εκδότης",
+    "subjects": "Θέματα",
+    "license": "Άδεια",
+    "publication": "ΔΗΜΟΣΙΕΥΣΗ: ",
+    "last-revision": "ΤΕΛΕΥΤΑΙΑ ΑΝΑΝΕΩΣΗ: ",
+    "notebook": "Notebook",
+    "resources": "ΔΕΔΟΜΕΝΑ ΚΑΙ ΠΟΡΟΙ",
+    "no-description": "Καμία περιγραφή",
+    "open-data-license": "Το notebook είναι Ανοικτό.",
+    "buttons": {
+      "download": "ΜΕΤΑΦΟΡΤΩΣΗ",
+      "view": "ΠΡΟΒΟΛΗ"
+    }
+  },
+  "favorite": {
+    "login-required": "Παρακαλώ συνδεθείτε για να προσθέσετε το αποτέλεσμα στα αγαπημένα σας",
+    "add-error-notebook": "Αποτυχία προσθήκης notebook δεδομένων στα αγαπημένα",
+    "remove-error-notebook": "Αποτυχία διαγραφής notebook από τα αγαπημένα"
+  },
+  "tooltip": {
+    "add-favorite": "Προσθήκη στα αγαπημένα",
+    "remove-favorite": "Διαγραφή από τα αγαπημένα",
+    "add-to-user-folder": "Προσθήκη στα αρχεία μου"
+  }
 }

@@ -3,7 +3,6 @@
  */
 
 $layout-fixed-width :1366px;
-
 @import 'theme/theme';
 
 /*
@@ -11,22 +10,33 @@ $layout-fixed-width :1366px;
  */
 
 @import 'vendor/react-toastify';
+@import 'vendor/react-table';
 
 /*
  * Import HELIX react components
  */
-@import 'components/debug-console';
+
+@import 'components/advanced-search';
+@import 'components/checkbox';
 @import 'components/login';
 @import 'components/map';
 
-
-@import 'vendor/react-table';
-
-
-/*
- * Override bootstrap defaults
- */
-
-.modal-open {
-  overflow: auto;
-}
+ /*
+  * Custom rules
+  */
+ 
+ .menu-wrapper .menu-item .active-link {
+   border-bottom: 3px solid;
+ }
+ 
+ /*
+  * Override bootstrap defaults
+  */
+ 
+ .modal-open {
+   overflow: auto;
+ }
+ 
+ .modal-content {
+   border-radius: 0px;
+ }
