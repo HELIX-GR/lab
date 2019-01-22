@@ -2,11 +2,11 @@
 /logs
 /.secrets
 /secrets
-
+/config
 /data/
 
 
-src/main/resources/config/application.properties
+src/main/resources/config/application*.properties
 
 !.mvn/wrapper/maven-wrapper.jar
 
