@@ -49,16 +49,16 @@ public class DataDirectoryConfiguration
     }
     
     @PostConstruct
-    private void initialize() throws IOException
+    private void checkDirectories() throws IOException
     {
-        // Prepare directory hierarchy
+        Assert.state(Files.isDirectory(tempDir) && Files.isWritable(tempDir), 
+            "Expected an existing writable directory for tempDir");
         
         for (Path dataDir: Arrays.asList(tempDir, catalogDataDir, userDataDir)) {
-            try {
-                Files.createDirectories(dataDir);
-            } catch (FileAlreadyExistsException ex) {
-                // no-op: already exists
-            }
+            if (!Files.isDirectory(dataDir))
+                throw new IllegalStateException("Expected a directory: " + dataDir);
+            if (!Files.isWritable(dataDir))
+                throw new IllegalStateException("The directory is not writable: " + dataDir);
         }
     }
     

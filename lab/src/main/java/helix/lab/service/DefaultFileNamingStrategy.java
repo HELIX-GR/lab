@@ -22,6 +22,8 @@ import helix.lab.model.FileInfo;
 @Service
 public class DefaultFileNamingStrategy implements FileNamingStrategy
 {
+    private static final String WORKING_DIR_NAME = "work";
+    
     @Autowired
     private Path userDataDirectory;
 
@@ -36,7 +38,7 @@ public class DefaultFileNamingStrategy implements FileNamingStrategy
     public Path getUserDir(String userName)
     {
         Assert.isTrue(userName.length() > 0, "Expected a valid (> 0) user id");
-        return userDataDirectory.resolve(userName);
+        return userDataDirectory.resolve(Paths.get(WORKING_DIR_NAME, userName));
     }
 
     @Override
