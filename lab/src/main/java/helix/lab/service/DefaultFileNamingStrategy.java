@@ -38,7 +38,7 @@ public class DefaultFileNamingStrategy implements FileNamingStrategy
     public Path getUserDir(String userName)
     {
         Assert.isTrue(userName.length() > 0, "Expected a valid (> 0) user id");
-        return userDataDirectory.resolve(Paths.get(WORKING_DIR_NAME, userName));
+        return userDataDirectory.resolve(Paths.get(userName, WORKING_DIR_NAME));
     }
 
     @Override
