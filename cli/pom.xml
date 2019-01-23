@@ -76,27 +76,18 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            
-            <!-- Define helper Ant tasks -->
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
-                        <!-- Create a symbolic link to current target JAR -->
-                        <id>link-to-target-jar</id>
-                        <phase>package</phase>
-                        <goals><goal>run</goal></goals>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
                         <configuration>
-                            <target>
-                                <symlink overwrite="yes" link="${project.build.directory}/${project.artifactId}.jar" 
-                                    resource="${project.artifactId}-${project.version}.jar"/>
-                            </target>
+                            <classifier>exec</classifier>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-
+            
         </plugins>
     </build>
 

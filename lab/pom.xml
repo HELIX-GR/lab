@@ -164,6 +164,7 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
+        
         <dependency>
             <!-- The org.apache.commons:commons-io artifact was renamed to commons-io:commons-io -->
             <groupId>commons-io</groupId>
@@ -189,6 +190,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>exec</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -197,7 +208,6 @@
                 <version>1.2</version>
                 <configuration>
                     <skip>${frontend.skip}</skip>
-                    <!--<installDirectory>target</installDirectory>-->
                 </configuration>
                 <executions>
                      <execution>
