@@ -5,10 +5,7 @@
 
 /data/
 
-
-src/main/resources/config/application.properties
-
-!.mvn/wrapper/maven-wrapper.jar
+/.deploy-scripts/
 
 ### STS ###
 .apt_generated
