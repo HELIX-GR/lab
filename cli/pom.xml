@@ -76,16 +76,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>exec</classifier>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             
             <!-- Define helper Ant tasks -->
@@ -100,7 +90,7 @@
                         <configuration>
                             <target>
                                 <symlink overwrite="yes" link="${project.build.directory}/${project.artifactId}.jar" 
-                                    resource="${project.artifactId}-${project.version}-exec.jar"/>
+                                    resource="${project.artifactId}-${project.version}.jar"/>
                             </target>
                         </configuration>
                     </execution>
