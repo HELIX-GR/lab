@@ -14,7 +14,6 @@ public class ClientResources {
     }
 
     public ResourceServerProperties getResource() {
-    	System.out.println(this.resource);
         return this.resource;
     }
 
