@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import helix.lab.model.user.AccountToServerEntity;
+import helix.lab.domain.AccountToServerEntity;
 
 @Repository
 @Transactional(readOnly = true)

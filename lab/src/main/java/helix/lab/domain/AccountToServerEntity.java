@@ -1,4 +1,4 @@
-package helix.lab.model.user;
+package helix.lab.domain;
 
 import java.time.ZonedDateTime;
 
@@ -15,11 +15,10 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import gr.helix.core.common.domain.AccountEntity;
-import helix.lab.model.admin.HubServerEntity;
 
 @Entity(name = "AccountToServerEntity")
 @Table(
-    schema = "helix_lab", name = "account_to_server",
+    schema = "lab", name = "account_to_server",
     uniqueConstraints = {
         @UniqueConstraint(name = "uq_account_to_server_server_url", columnNames = {"`server_url`"}),
     })
@@ -27,7 +26,7 @@ public class AccountToServerEntity {
 
 	@Id
     @Column(name = "`id`", updatable = false)
-    @SequenceGenerator(sequenceName = "helix_lab.account_to_server_id_seq", name = "account_to_server_id_seq", allocationSize = 1)
+    @SequenceGenerator(sequenceName = "lab.account_to_server_id_seq", name = "account_to_server_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "account_to_server_id_seq", strategy = GenerationType.SEQUENCE)
     Integer id;
 

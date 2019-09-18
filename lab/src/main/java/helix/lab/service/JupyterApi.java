@@ -10,7 +10,7 @@ import java.net.URL;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import helix.lab.model.admin.HubServerEntity;
+import helix.lab.domain.HubServerEntity;
 import helix.lab.model.hub.HubUserResponse;
 import helix.lab.model.user.HubUserCreate;
 

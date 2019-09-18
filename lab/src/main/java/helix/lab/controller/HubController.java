@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gr.helix.core.common.model.RestResponse;
 import helix.lab.controller.action.BaseController;
+import helix.lab.domain.AccountToServerEntity;
+import helix.lab.domain.HubServerEntity;
 import helix.lab.model.HubServerResponse;
-import helix.lab.model.admin.HubServerEntity;
 import helix.lab.model.hub.HubUserResponse;
 import helix.lab.model.hub.ServerInfoResponse;
-import helix.lab.model.user.AccountToServerEntity;
 import helix.lab.repository.HubServerRepository;
 import helix.lab.service.JupyterApi;
 

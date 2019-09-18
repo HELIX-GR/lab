@@ -23,7 +23,7 @@ import gr.helix.core.common.model.Error;
 import gr.helix.core.common.model.ErrorCode;
 import gr.helix.core.common.model.RestResponse;
 import helix.lab.controller.action.BaseController;
-import helix.lab.model.admin.HubServerEntity;
+import helix.lab.domain.HubServerEntity;
 import helix.lab.model.admin.ServerRegistrationRequest;
 import helix.lab.repository.HubServerRepository;
 import helix.lab.service.JupyterApi;

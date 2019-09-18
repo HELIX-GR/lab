@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gr.helix.core.common.model.RestResponse;
 import helix.lab.controller.action.BaseController;
-import helix.lab.model.user.AccountToServerEntity;
+import helix.lab.domain.AccountToServerEntity;
 import helix.lab.service.JupyterApi;
 
 @RestController

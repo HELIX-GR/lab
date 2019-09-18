@@ -29,7 +29,7 @@ import gr.helix.core.common.model.EnumRole;
 
 @Entity(name = "account_white_list")
 @Table(
-	    schema = "helix_lab", name = "account_white_list",
+	    schema = "lab", name = "account_white_list",
 	    uniqueConstraints = {
 	        @UniqueConstraint(name = "uq_account_white_list_email", columnNames = {"`email`"}),
 	    })
@@ -37,7 +37,7 @@ public class AccountWhiteListEntry {
 
 	@Id()
 	@Column(name = "id")
-	@SequenceGenerator(sequenceName = "helix_lab.account_white_list_id_seq", name = "account_white_list_id_seq", allocationSize = 1, initialValue = 1)
+	@SequenceGenerator(sequenceName = "lab.account_white_list_id_seq", name = "account_white_list_id_seq", allocationSize = 1, initialValue = 1)
 	@GeneratedValue(generator = "account_white_list_id_seq", strategy = GenerationType.SEQUENCE)
 	private int id;
 

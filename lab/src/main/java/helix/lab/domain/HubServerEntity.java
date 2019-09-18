@@ -1,4 +1,4 @@
-package helix.lab.model.admin;
+package helix.lab.domain;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -17,10 +17,11 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import helix.lab.model.HubServerResponse;
+import helix.lab.model.admin.ServerRegistrationRequest;
 
 @Entity(name = "HubServerEntity")
 @Table(
-    schema = "helix_lab", name = "hub_server",
+    schema = "lab", name = "hub_server",
     uniqueConstraints = {
         @UniqueConstraint(name = "uq_hub_server_server_url", columnNames = {"`server_url`"})
     })
@@ -29,7 +30,7 @@ public class HubServerEntity {
 	
 	@Id
     @Column(name = "`id`", updatable = false)
-    @SequenceGenerator(sequenceName = "helix_lab.server_id_seq", name = "server_id_seq", allocationSize = 1)
+    @SequenceGenerator(sequenceName = "lab.server_id_seq", name = "server_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "server_id_seq", strategy = GenerationType.SEQUENCE)
 	private Integer id;
 	

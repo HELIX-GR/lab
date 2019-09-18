@@ -1,4 +1,4 @@
-package helix.lab.model.admin;
+package helix.lab.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,12 +12,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "HubServerTags")
-@Table(schema = "helix_lab", name = "`hub_server_tags`")
+@Table(schema = "lab", name = "`hub_server_tags`")
 public class HubServerTagsEntity {
 
 	@Id()
     @Column(name = "`id`")
-    @SequenceGenerator(sequenceName = "helix_lab.hub_server_tags_id_seq", name = "hub_server_tags_id_seq", allocationSize = 1)
+    @SequenceGenerator(sequenceName = "lab.hub_server_tags_id_seq", name = "hub_server_tags_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "hub_server_tags_id_seq", strategy = GenerationType.SEQUENCE)
     int id;
 
