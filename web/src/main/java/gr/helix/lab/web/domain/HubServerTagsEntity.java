@@ -15,11 +15,16 @@ import javax.validation.constraints.NotNull;
 @Table(schema = "lab", name = "`hub_server_tags`")
 public class HubServerTagsEntity {
 
-	@Id()
-    @Column(name = "`id`")
-    @SequenceGenerator(sequenceName = "lab.hub_server_tags_id_seq", name = "hub_server_tags_id_seq", allocationSize = 1)
+	@Id
+	@Column(name = "`id`", updatable = false)
+	@SequenceGenerator(
+        schema = "lab",
+        sequenceName = "hub_server_tags_id_seq",
+        name = "hub_server_tags_id_seq",
+        allocationSize = 1
+    )
     @GeneratedValue(generator = "hub_server_tags_id_seq", strategy = GenerationType.SEQUENCE)
-    int id;
+	int id;
 
     @NotNull
     @ManyToOne(targetEntity=HubServerEntity.class)

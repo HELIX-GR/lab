@@ -29,8 +29,13 @@ public class HubServerEntity {
 
 	
 	@Id
-    @Column(name = "`id`", updatable = false)
-    @SequenceGenerator(sequenceName = "lab.server_id_seq", name = "server_id_seq", allocationSize = 1)
+	@Column(name = "`id`", updatable = false)
+	@SequenceGenerator(
+        schema = "lab",
+        sequenceName = "server_id_seq",
+        name = "server_id_seq",
+        allocationSize = 1
+    )
     @GeneratedValue(generator = "server_id_seq", strategy = GenerationType.SEQUENCE)
 	private Integer id;
 	

@@ -28,9 +28,14 @@ import gr.helix.core.common.model.EnumRole;
     })
 public class AccountRoleWhiteListEntity {
 
-    @Id()
-    @Column(name = "`id`")
-    @SequenceGenerator(sequenceName = "lab.account_role_white_list_id_seq", name = "account_role_white_list_id_seq", allocationSize = 1)
+	@Id
+	@Column(name = "`id`", updatable = false)
+	@SequenceGenerator(
+        schema = "lab",
+        sequenceName = "account_role_white_list_id_seq",
+        name = "account_role_white_list_id_seq",
+        allocationSize = 1
+    )
     @GeneratedValue(generator = "account_role_white_list_id_seq", strategy = GenerationType.SEQUENCE)
     int           Integer;
 

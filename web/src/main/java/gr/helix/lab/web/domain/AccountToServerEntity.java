@@ -25,8 +25,13 @@ import gr.helix.core.common.domain.AccountEntity;
 public class AccountToServerEntity {
 
 	@Id
-    @Column(name = "`id`", updatable = false)
-    @SequenceGenerator(sequenceName = "lab.account_to_server_id_seq", name = "account_to_server_id_seq", allocationSize = 1)
+	@Column(name = "`id`", updatable = false)
+	@SequenceGenerator(
+        schema = "lab",
+        sequenceName = "account_to_server_id_seq",
+        name = "account_to_server_id_seq",
+        allocationSize = 1
+    )
     @GeneratedValue(generator = "account_to_server_id_seq", strategy = GenerationType.SEQUENCE)
     Integer id;
 

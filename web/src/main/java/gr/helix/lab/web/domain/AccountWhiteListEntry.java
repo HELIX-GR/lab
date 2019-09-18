@@ -35,10 +35,16 @@ import gr.helix.core.common.model.EnumRole;
 	    })
 public class AccountWhiteListEntry {
 
-	@Id()
-	@Column(name = "id")
-	@SequenceGenerator(sequenceName = "lab.account_white_list_id_seq", name = "account_white_list_id_seq", allocationSize = 1, initialValue = 1)
-	@GeneratedValue(generator = "account_white_list_id_seq", strategy = GenerationType.SEQUENCE)
+
+	@Id
+	@Column(name = "`id`", updatable = false)
+	@SequenceGenerator(
+        schema = "lab",
+        sequenceName = "account_white_list_id_seq",
+        name = "account_white_list_id_seq",
+        allocationSize = 1
+    )
+    @GeneratedValue(generator = "account_white_list_id_seq", strategy = GenerationType.SEQUENCE)
 	private int id;
 
 
