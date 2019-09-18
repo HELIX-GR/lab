@@ -21,7 +21,6 @@
             <DefaultRolloverStrategy max="10" />
         </RollingFile>
 
-        <!--
         <JDBC name="table" tableName="web.log4j_message">
             <ConnectionFactory 
                 class="gr.helix.core.common.logging.jdbc.ConnectionFactory" method="dataSource" />
@@ -34,13 +33,15 @@
             <Column name="client_address" pattern="%X{client.remote-address}" isUnicode="false" />
             <Column name="username" pattern="%X{client.username}" isUnicode="false" />
         </JDBC>
-        -->
 
     </Appenders>
     
     <Loggers>
+        <Logger name="org.hibernate.SQL" level="WARN"></Logger>
+
         <Root level="INFO">
             <AppenderRef ref="console" />
+            <AppenderRef ref="table" />
             <AppenderRef ref="file" />
         </Root>
     </Loggers>
