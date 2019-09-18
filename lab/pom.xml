@@ -4,104 +4,117 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>helix-lab</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>helix-lab-web</artifactId>
+	<name>[helix-lab] Web</name>
 
-    <name>[helix-lab] Lab</name>
-    <description>The Lab project for Helix</description>
+    <packaging>jar</packaging>
 
     <parent>
         <groupId>gr.helix</groupId>
         <artifactId>helix-lab-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
     
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-        <apache.csv.version>1.5</apache.csv.version>
-        <frontend.skip>false</frontend.skip>
-        <node.version>v8.11.1</node.version>
-        <node.env>production</node.env>
-    </properties>
-    
-    <profiles>
-        <profile>
-            <id>develop</id>
-            <properties>
-                <node.env>development</node.env>
-            </properties>
-        </profile>
-    </profiles>
+	<properties>
+    	<!-- Project properties -->
+		<frontend.skip>false</frontend.skip>
+		<node.version>v10.16.3</node.version>
+		<node.env>production</node.env>
 
+    	<!-- Plugin versions -->
+    	<frontend-maven-plugin.version>1.8.0</frontend-maven-plugin.version>
+
+    	<!-- Dependency versions -->
+		<apache.csv.version>1.7</apache.csv.version>
+    	<commons-io.version>2.6</commons-io.version>
+    	<spring-security-saml2-core.version>1.0.9.RELEASE</spring-security-saml2-core.version>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>develop</id>
+			<properties>
+				<frontend.skip>true</frontend.skip>
+			</properties>
+		</profile>
+	</profiles>
+
+	<repositories>
+
+		<repository>
+			<id>Shibboleth</id>
+			<name>Shibboleth Repository</name>
+			<url>https://build.shibboleth.net/nexus/content/repositories/releases/</url>
+		</repository>
+
+	</repositories>
+	
     <dependencies>
 
-        <dependency>
-            <groupId>gr.helix</groupId>
-            <artifactId>helix-core-common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>gr.helix</groupId>
+			<artifactId>helix-core-common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
         <!-- Spring-Boot starter dependencies -->
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-cache</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.security.oauth.boot</groupId>
-            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-            <version>2.0.0.RELEASE</version>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.security.oauth.boot</groupId>
+			<artifactId>spring-security-oauth2-autoconfigure</artifactId>
+			<version>${spring-boot.version}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.security.extensions</groupId>
-            <artifactId>spring-security-saml2-core</artifactId>
-            <version>1.0.3.RELEASE</version>
-        </dependency>
+		<dependency>
+        	<groupId>org.springframework.security.extensions</groupId>
+        	<artifactId>spring-security-saml2-core</artifactId>
+        	<version>${spring-security-saml2-core.version}</version>
+    	</dependency>
 
-        <dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session</artifactId>
-            <version>1.3.3.RELEASE</version>
-        </dependency>
+		<dependency>
+  			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-jdbc</artifactId>
+		</dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
             <exclusions>
                 <exclusion> 
                     <!-- org.json:json is a direct dependency -->
@@ -109,201 +122,246 @@
                     <artifactId>android-json</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
+		</dependency>
 
-        <!-- If packaging to WAR, mark dependency on embedded server as provided -->
+		<!-- If packaging to WAR, mark dependency on embedded server as provided -->
 
-        <!--
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        -->
+		<!--
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		-->
 
         <!-- JDBC drivers -->
 
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 
-        <!-- log4j2 lifecycle hooks in web context -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-web</artifactId>
-        </dependency>
+		<!-- log4j2 lifecycle hooks in web context -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-web</artifactId>
+		</dependency>
 
-        <!-- HTTP client -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-        </dependency>
-        
-        <!-- Apache HttpClient Mime -->
+		<!-- HTTP client -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+		
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpmime</artifactId>
         </dependency>
 
         <!-- CSV reader -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-csv</artifactId>
-            <version>${apache.csv.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>${apache.csv.version}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
         
         <dependency>
-            <!-- The org.apache.commons:commons-io artifact was renamed to commons-io:commons-io -->
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.5</version>
+            <version>${commons-io.version}</version>
         </dependency>
 
+		<!-- TODO: Check if used? -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20180813</version>
         </dependency>
+        
     </dependencies>
-
-    <organization>
-        <name>IMIS, Institute for the Management of Information Systems</name>
-        <url>http://www.imsi.athenarc.gr/en</url>
-    </organization>
 
     <build>
         <plugins>
             
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>exec</classifier>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+			<!-- Use Spring-Boot to package as standalone executable JAR -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<classifier>exec</classifier>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 
-            <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.2</version>
-                <configuration>
-                    <skip>${frontend.skip}</skip>
-                </configuration>
-                <executions>
-                     <execution>
-                        <id>node-install</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                        <configuration>
-                            <nodeVersion>${node.version}</nodeVersion>
-                        </configuration>
-                     </execution>
-                     <execution>
-                        <id>npm-install</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install</arguments>
-                        </configuration>
-                     </execution>
-                     <execution>
-                        <id>grunt-build</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>grunt</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>default</arguments>
-                            <environmentVariables>
-                                <NODE_ENV>${node.env}</NODE_ENV>
-                            </environmentVariables>
-                        </configuration>
-                     </execution>
-                </executions>
-            </plugin>
-        </plugins>
+			<!-- Copy additional resources under target directory -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<!-- Copy generated (ie compiled) frontend resources to target public directory -->
+					<execution>
+						<id>copy-frontend-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/classes/public</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.build.directory}/frontend</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!-- Configure frontend builds -->
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>${frontend-maven-plugin.version}</version>
+				<configuration>
+					<skip>${frontend.skip}</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<id>node-install</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<nodeVersion>${node.version}</nodeVersion>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm-install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<arguments>install</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>grunt-build</id>
+						<goals>
+							<goal>grunt</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<arguments>default</arguments>
+							<environmentVariables>
+								<NODE_ENV>${node.env}</NODE_ENV>
+							</environmentVariables>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
         
+			<!-- Define helper Ant tasks -->
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<!-- Create a symbolic link to current target JAR -->
+						<id>link-to-target-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<symlink overwrite="yes"
+									link="${project.build.directory}/${project.artifactId}.jar"
+									resource="${project.artifactId}-${project.version}-exec.jar" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+		
         <pluginManagement>
 
             <plugins>
 
                 <plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <version>1.0.0</version>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>com.github.eirslett</groupId>
-                                        <artifactId>frontend-maven-plugin</artifactId>
-                                        <versionRange>[0.0,)</versionRange>
-                                        <goals>
-                                            <goal>install-node-and-npm</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore />
-                                    </action>
-                                </pluginExecution>
 
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>com.github.eirslett</groupId>
-                                        <artifactId>frontend-maven-plugin</artifactId>
-                                        <versionRange>[0.0,)</versionRange>
-                                        <goals>
-                                            <goal>npm</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore />
-                                    </action>
-                                </pluginExecution>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.github.eirslett</groupId>
+										<artifactId>frontend-maven-plugin</artifactId>
+										<versionRange>[0.0,)</versionRange>
+										<goals>
+											<goal>install-node-and-npm</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
 
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>com.github.eirslett</groupId>
-                                        <artifactId>frontend-maven-plugin</artifactId>
-                                        <versionRange>[0.0,)</versionRange>
-                                        <goals>
-                                            <goal>grunt</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore />
-                                    </action>
-                                </pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.github.eirslett</groupId>
+										<artifactId>frontend-maven-plugin</artifactId>
+										<versionRange>[0.0,)</versionRange>
+										<goals>
+											<goal>npm</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
 
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
-                </plugin>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.github.eirslett</groupId>
+										<artifactId>frontend-maven-plugin</artifactId>
+										<versionRange>[0.0,)</versionRange>
+										<goals>
+											<goal>grunt</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
 
             </plugins>
 
