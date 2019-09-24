@@ -115,13 +115,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-            <exclusions>
-                <exclusion> 
-                    <!-- org.json:json is a direct dependency -->
-                    <groupId>com.vaadin.external.google</groupId>
-                    <artifactId>android-json</artifactId>
-                </exclusion>
-            </exclusions>
 		</dependency>
 
 		<!-- If packaging to WAR, mark dependency on embedded server as provided -->
@@ -183,13 +176,6 @@
             <version>${commons-io.version}</version>
         </dependency>
 
-		<!-- TODO: Check if used? -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20180813</version>
-        </dependency>
-        
     </dependencies>
 
     <build>
