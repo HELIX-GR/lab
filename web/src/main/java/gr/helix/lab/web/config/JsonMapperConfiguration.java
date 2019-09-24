@@ -34,10 +34,10 @@ public class JsonMapperConfiguration {
 	}
 
 	private void configureFeatures(ObjectMapper objectMapper) {
-		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-		objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
 
-		objectMapper.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
+        objectMapper.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
 	}
 
 }

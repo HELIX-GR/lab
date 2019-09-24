@@ -9,18 +9,10 @@ public class ServiceConfiguration {
     private int    port;
 
     private String path;
-    
+
     private String apikey;
-    
-    public String getPublisherOrganization() {
-		return publisherOrganization;
-	}
 
-	public void setPublisherOrganization(String publisherOrganization) {
-		this.publisherOrganization = publisherOrganization;
-	}
-
-	private String publisherOrganization;
+    private String publisherOrganization;
 
     public String getScheme() {
         return this.scheme;
@@ -54,13 +46,20 @@ public class ServiceConfiguration {
         this.path = path;
     }
 
-	public String getApikey() {
-		return apikey;
-	}
+    public String getApikey() {
+        return this.apikey;
+    }
 
-	public void setApikey(String apikey) {
-		this.apikey = apikey;
-	}
-    
+    public void setApikey(String apikey) {
+        this.apikey = apikey;
+    }
+
+    public String getPublisherOrganization() {
+        return this.publisherOrganization;
+    }
+
+    public void setPublisherOrganization(String publisherOrganization) {
+        this.publisherOrganization = publisherOrganization;
+    }
 
 }
