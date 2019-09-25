@@ -24,11 +24,11 @@ class ModalAddServer extends React.Component {
         name: "",
         url: "",
         description: "",
-        admin_token: "",
+        token: "",
         available: false,
-        ram: 1,
-        cpus: 1,
-        role_eligible: "ROLE_STANDARD"
+        memory: 1024,
+        virtualCores: 1,
+        eligibleRole: "ROLE_STANDARD"
       }
     };
   }

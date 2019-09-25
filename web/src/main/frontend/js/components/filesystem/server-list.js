@@ -1,17 +1,8 @@
 import React from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
 import ActionInfo from '@material-ui/icons/Info';
-import Divider from '@material-ui/core/Divider';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import { FormattedTime, FormattedMessage } from 'react-intl';
-import { UncontrolledTooltip } from 'reactstrap';
-
-
-
 
 const ServerList2 = ({ servers, onClick, selectedIndex }) => (
   <div>
@@ -28,7 +19,7 @@ const ServerList2 = ({ servers, onClick, selectedIndex }) => (
             <i className="fa fa-server"></i>
           </Avatar>
 
-          <ListItemText primary={row.name} secondary={row.description} />{//row.started_at ? <FormattedTime value={row.started_at} day='numeric' month='numeric' year='numeric' /> : "---"} />
+          <ListItemText primary={row.name} secondary={row.description} />{//row.startedAt ? <FormattedTime value={row.startedAt} day='numeric' month='numeric' year='numeric' /> : "---"} />
           }
         </ListItem>
       )
@@ -53,15 +44,15 @@ const ServerList = ({ servers, onClick, selectedIndex }) => (
           key={row.id}
           value={row.id}>
           <div className="date-of-entry">
-            <div>{row.started_at ? <FormattedTime value={row.started_at} day='numeric' month='numeric' year='numeric' /> : "---"} </div>
+            <div>{row.startedAt ? <FormattedTime value={row.startedAt} day='numeric' month='numeric' year='numeric' /> : "---"} </div>
           </div>
           <h3 className="title">
             <a className="mr-2" >{row.name} </a>
             <div className="pill data">
-              {row.ram}GB RAM
+              {row.memory}GB RAM
           </div>
             <div className="pill data">
-              {row.vcpu} VC
+              {row.virtualCores} VC
           </div>
           </h3>
 

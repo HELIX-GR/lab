@@ -35,7 +35,7 @@ export default (state = initialState, action) => {
     case SHOW_LOGIN_MODAL:
       return {
         ...state,
-        show_login: action.show_login * !(state.loggedIn),
+        show_login: action.show_login && !state.loggedIn,
       };
     case REQUEST_LOGOUT:
       return state; // no-op  

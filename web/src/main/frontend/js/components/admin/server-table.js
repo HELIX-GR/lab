@@ -45,8 +45,8 @@ export class AdminTable extends React.Component {
       },
       {
         Header: 'Last Modified',
-        id: 'started_at',
-        accessor: 'started_at',
+        id: 'startedAt',
+        accessor: 'startedAt',
         Cell: props => (
           <FormattedTime value={props.value} day='numeric' month='numeric' year='numeric' />
         ),
@@ -54,7 +54,7 @@ export class AdminTable extends React.Component {
       },
       {
         Header: 'Role Eligible',
-        accessor: 'role_eligible',
+        accessor: 'eligibleRole',
       },];
 
     const { rowsPerPage, page } = this.state;

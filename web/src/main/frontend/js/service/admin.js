@@ -11,41 +11,43 @@ const api = {
   },
 
   getUsersToServers: () => {
-    return actions.get('/action/admin/users_to_servers');
+    return actions.get('/action/admin/servers/activity');
   },
 
-  deleteUserToServer: (u2s_id, token) => {
-    return actions.post('action/admin/close_u2s/'+ u2s_id, token);
+  deleteUserToServer: (regId, token) => {
+    return actions.delete(`action/admin/server/registration/${regId}`, token);
   },
 
   addServer: (serverData, token) => {
-    return actions.post('/action/admin/add_server', token, serverData);
+    return actions.post('/action/admin/server', token, serverData);
   },
 
-  editServer: (id,serverData, token) => {
-    return actions.post('/action/admin/edit_server/'+id, token, serverData);
+  editServer: (id, serverData, token) => {
+    return actions.post(`/action/admin/server/${id}`, token, serverData);
   },
 
-  grandRole: (id, role, token) => {
-    return actions.put('/action/admin/grand_role/' + id, token, role);
+  grantRole: (userId, role, token) => {
+    return actions.post(`/action/admin/user/${userId}/role/${role}`, token);
   },
 
-  revokeRole: (id, role, token) => {
-    return actions.put('/action/admin/revoke_role/' + id, token, role);
+  revokeRole: (userId, role, token) => {
+    return actions.delete(`/action/admin/user/${userId}/role/${role}`, token);
   },
-  //----------------------------White list ----------------------------
+
   getWhiteList: () => {
-    return actions.get('/action/admin/white_list/users');
-  },
-  addWhiteListUser: (userInfo, token) => {
-    return actions.post('/action/admin/white_list/create', token, userInfo);
-  },
-  grandWLRole: (id, role, token) => {
-    return actions.put('/action/admin/white_list/grand_role/' + id, token, role);
+    return actions.get('/action/admin/white-list/users');
   },
 
-  revokeWLRole: (id, role, token) => {
-    return actions.put('/action/admin/white_list/revoke_role/' + id, token, role);
+  addWhiteListUser: (userInfo, token) => {
+    return actions.post('/action/admin/white-list/user', token, userInfo);
+  },
+
+  grantWhiteListRole: (userId, role, token) => {
+    return actions.post(`/action/admin/white-list/user/${userId}/role/${role}`, token);
+  },
+
+  revokeWhiteListRole: (userId, role, token) => {
+    return actions.delete(`/action/admin/white-list/user/${userId}/role/${role}`, token);
   },
 };
 

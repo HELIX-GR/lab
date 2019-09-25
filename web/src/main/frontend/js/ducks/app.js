@@ -37,7 +37,7 @@ export default (state = initialState, action) => {
         ...state,
         target: action.target,
         server_stage: action.server_stage,
-        selected_hub: action.hub_server,
+        selected_hub: action.server,
       };
     case SET_SELECTED_HUB:
       return {
@@ -60,10 +60,10 @@ const got_server = (r) => ({
   target: r,
 });
 
-const got_status = (hub_server, target, server_stage) => ({
+const got_status = (server, target, server_stage) => ({
   type: GOT_STATUS,
   target,
-  hub_server,
+  server,
   server_stage,
 });
 
@@ -92,7 +92,7 @@ export const getUserInfoAction = () => (dispatch, getState) => {
   return appService.getUserServerInfo().then(
     (r) => {
       if (r) {
-        dispatch(got_status(r.hub_server, r.target,3));
+        dispatch(got_status(r.server, r.target,3));
       }
       else {
         dispatch(got_status(null, null, 0));

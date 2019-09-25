@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Courses } from './landing/courses';
-import { StaticRoutes, buildPath } from '../../model/routes';
+import { StaticRoutes } from '../../model/routes';
 
 import {
   FormattedMessage,

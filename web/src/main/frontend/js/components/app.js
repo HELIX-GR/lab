@@ -133,7 +133,7 @@ function mapStateToProps(state) {
     username: state.user.username,
     show_login: state.user.show_login,
     target: state.app.target || null,
-    admin: state.admin.isadmin,
+    admin: state.admin.isAdmin,
   };
 }
 

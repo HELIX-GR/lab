@@ -1,9 +1,8 @@
 import React from "react";
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { grand_role, revoke_role } from '../../ducks/admin';
+import { grantRole, revokeRole } from '../../ducks/admin';
 import { FormattedTime } from 'react-intl';
 import _ from 'lodash';
 import Table from '@material-ui/core/Table';
@@ -14,7 +13,6 @@ import TableRow from '@material-ui/core/TableRow';
 import TableFooter from '@material-ui/core/TableFooter';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import SimpleAppBar from './admin-user-toolbar';
 import { withStyles } from '@material-ui/core/styles';
 
 const all_roles = ["ROLE_STUDENT", "ROLE_ACADEMIC", "ROLE_TESTER", "ROLE_ADMIN"];
@@ -49,9 +47,9 @@ export class UserTable extends React.Component {
   }
   updateCheck(is, r, user_id, index) {
     if (is) {
-      this.props.grand_role(user_id, r);
+      this.props.grantRole(user_id, r);
     } else {
-      this.props.revoke_role(user_id, r);
+      this.props.revokeRole(user_id, r);
     }
 
   }
@@ -149,7 +147,7 @@ function mapStateToProps(state) {
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ grand_role, revoke_role }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ grantRole, revokeRole }, dispatch);
 
 
 

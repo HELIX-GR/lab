@@ -9,7 +9,7 @@ import ModalAddServer from './modal-add-server';
 import { AdminTable } from './server-table';
 import { UserTable } from './user-table';
 import { U2sTable } from './u2s-table';
-import { FormattedTime, injectIntl } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
 import { WhiteListTable } from "./white-list-table";
 import ModalAddWhiteList from './madal-add-white-list';

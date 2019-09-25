@@ -3,7 +3,6 @@ import { default as catalogService } from '../../../service/search';
 
 // Model
 import {
-  EnumCatalog,
   EnumFacet,
 } from '../../../model';
 

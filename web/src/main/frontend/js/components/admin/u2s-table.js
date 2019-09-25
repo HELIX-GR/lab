@@ -34,6 +34,7 @@ export class U2sTable extends React.Component {
         Header: 'ID',
         accessor: 'id',
         maxWidth: 33,
+        show: false,
       },
       {
         Header: 'Name',

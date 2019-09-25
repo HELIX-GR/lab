@@ -85,26 +85,22 @@ class WhiteListForm extends Component {
             fullWidth={true}
           />
           <br />
+          <TextField
+            className={classes.textField}
+            select
+            label="Role eligible"
+            value={this.state.roles[0]}
+            onChange={this.handleChangeRole}
+            helperText="What role to give this User?"
+          >
+            <MenuItem key={'ROLE_STANDARD'} value={'ROLE_STANDARD'}> Standard </MenuItem>
+            <MenuItem key={'ROLE_STANDARD_STUDENT'} value={'ROLE_STANDARD_STUDENT'}> Standard Student</MenuItem>
+            <MenuItem key={'ROLE_STANDARD_ACADEMIC'} value={'ROLE_STANDARD_ACADEMIC'}> Standard Academic</MenuItem>
+            <MenuItem key={'ROLE_BETA'} value={'ROLE_BETA'}> Beta Tester</MenuItem>
+            <MenuItem key={'ROLE_BETA_STUDENT'} value={'ROLE_BETA_STUDENT'}> Beta Tester Student</MenuItem>
+            <MenuItem key={'ROLE_BETA_ACADEMIC'} value={'ROLE_BETA_ACADEMIC'}> Beta Tester Academic </MenuItem>
 
-          <div>
-
-            <TextField
-              select
-              label="Role eligible"
-              value={this.state.roles[0]}
-              onChange={this.handleChangeRole}
-              helperText="What role to give this User?"
-            >
-              <MenuItem key={'ROLE_STANDARD'} value={'ROLE_STANDARD'}> Standard </MenuItem>
-              <MenuItem key={'ROLE_STANDARD_STUDENT'} value={'ROLE_STANDARD_STUDENT'}> Standard Student</MenuItem>
-              <MenuItem key={'ROLE_STANDARD_ACADEMIC'} value={'ROLE_STANDARD_ACADEMIC'}> Standard Academic</MenuItem>
-              <MenuItem key={'ROLE_BETA'} value={'ROLE_BETA'}> Beta Tester</MenuItem>
-              <MenuItem key={'ROLE_BETA_STUDENT'} value={'ROLE_BETA_STUDENT'}> Beta Tester Student</MenuItem>
-              <MenuItem key={'ROLE_BETA_ACADEMIC'} value={'ROLE_BETA_ACADEMIC'}> Beta Tester Academic </MenuItem>
-
-            </TextField>
-          </div>
-
+          </TextField>
         </form>
         <br />
         <br />

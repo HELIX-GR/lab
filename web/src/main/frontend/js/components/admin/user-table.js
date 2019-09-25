@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { grand_role, revoke_role } from '../../ducks/admin';
+import { grantRole, revokeRole } from '../../ducks/admin';
 import { FormattedTime } from 'react-intl';
 
 import Checkbox from '@material-ui/core/Checkbox';
@@ -32,9 +32,9 @@ export class UserTable extends React.Component {
 
   updateCheck(is, r, user_id) {
     if (is) {
-      this.props.grand_role(user_id, r);
+      this.props.grantRole(user_id, r);
     } else {
-      this.props.revoke_role(user_id, r);
+      this.props.revokeRole(user_id, r);
     }
 
   }
@@ -55,6 +55,7 @@ export class UserTable extends React.Component {
         Header: 'ID',
         accessor: 'id',
         maxWidth: 33,
+        show: false,
       },
       {
         Header: 'Username',
@@ -84,7 +85,7 @@ export class UserTable extends React.Component {
             accessor: 'roles',
             Cell: props => (<Checkbox
               checked={props.value.includes(name)}
-              onChange={(e, is) => { this.updateCheck(is, name, props.row.id); }}
+              onChange={(e, is) => { console.log(props); this.updateCheck(is, name, props.row.id); }}
             />
             ),
             width: 60,
@@ -119,7 +120,7 @@ function mapStateToProps(state) {
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ grand_role, revoke_role }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ grantRole, revokeRole }, dispatch);
 
 
 

@@ -15,7 +15,7 @@ import {
 } from '../../ducks/user';
 
 import {
-  StaticRoutes, EnumCatalog,
+  StaticRoutes,
 } from '../../model';
 
 import {
@@ -26,10 +26,6 @@ import {
   toggleAdvanced,
   toggleSearchFacet,
 } from '../../ducks/ui/views/search';
-
-import {
-  Result
-} from '../helpers';
 
 import {
   default as AdvancedSearchModal,
@@ -109,7 +105,7 @@ class SearchPage extends React.Component {
   }
 
   render() {
-    const { advanced, partialResult: { visible, catalogs }, loading, text } = this.props.search;
+    const { advanced, loading, text } = this.props.search;
     const _t = this.context.intl.formatMessage;
 
     return (

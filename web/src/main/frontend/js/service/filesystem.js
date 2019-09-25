@@ -31,11 +31,11 @@ module.exports = {
   },
 
   publish: (data, token) => {
-    return actions.post('/action/file-system/publish', token, data);
+    return actions.post('/action/file-system/notebook', token, data);
   },
 
   getNotebook: (id, token) => {
-    return actions.get('/action/file-system/getNotebook/'+id);
+    return actions.get(`/action/file-system/notebook/${id}`, token);
   },
 
 };

@@ -54,6 +54,7 @@ export class WhiteListTable extends React.Component {
         Header: 'ID',
         accessor: 'id',
         maxWidth: 33,
+        show: false,
       },
       {
         Header: 'email',

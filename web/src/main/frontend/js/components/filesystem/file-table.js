@@ -43,7 +43,7 @@ export default function FileTable({ props }) {
               <TableRow
                 hover
                 onClick={event => handleRowClick(event, index, row.type, row.name)}
-                onDoubleClick= {event => handleRowDoubleClick(event, index, row.type, row.name)}
+                onDoubleClick={event => handleRowDoubleClick(event, index, row.type, row.name)}
                 key={index}
                 selected={row.name === selected_file}>
                 <TableCell width="66px" >{row.type === 'Folder' ?
@@ -95,7 +95,7 @@ export default function FileTable({ props }) {
           <TableRow >
             <TableCell />
             <TableCell width="300px">
-              {last_update && <FormattedMessage id="filetable.LastUpdate" defaultMessage="Last Update: " /> }
+              {last_update && <FormattedMessage id="filetable.LastUpdate" defaultMessage="Last Update: " />}
               {last_update && formatRelative(last_update)}
             </TableCell>
           </TableRow>

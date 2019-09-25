@@ -1,13 +1,5 @@
 import * as React from 'react';
-import { Link, } from 'react-router-dom';
 
-import {
-  buildPath,
-  DynamicRoutes,
-  ExternalRoutes,
-  StaticRoutes,
-  WordPressPages,
-} from '../../model';
 class Footer extends React.Component {
 
   constructor(props) {
@@ -27,7 +19,7 @@ class Footer extends React.Component {
             <div className="footer-column about">
               <h3 className="footer-column-title">
                 About
-            </h3>
+              </h3>
               <ul>
                 <li><a href="#">Αρχική</a></li>
                 <li><a href="http://hellenicdataservice.gr/project/page/about">Το έργο</a></li>
@@ -38,7 +30,7 @@ class Footer extends React.Component {
             <div className="footer-column research">
               <h3 className="footer-column-title">
                 Έρευνα
-            </h3>
+              </h3>
               <ul>
                 <li><a href="https://data.hellenicdataservice.gr">Data</a></li>
                 <li><a href="https://pubs.hellenicdataservice.gr">Publications</a></li>
@@ -50,7 +42,7 @@ class Footer extends React.Component {
             <div className="footer-column partners">
               <h3 className="footer-column-title">
                 Συνεργάτες
-            </h3>
+              </h3>
               <ul>
                 <li>
                   <a href="https://www.athena-innovation.gr/">

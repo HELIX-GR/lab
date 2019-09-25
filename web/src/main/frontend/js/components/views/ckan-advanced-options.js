@@ -24,8 +24,8 @@ class CkanAdvancedOptions extends React.Component {
   }
 
   static propTypes = {
+    config: PropTypes.object.isRequired,
     facets: PropTypes.object.isRequired,
-    metadata: PropTypes.object.isRequired,
     minOptions: PropTypes.number,
     toggleFacet: PropTypes.func.isRequired,
   }

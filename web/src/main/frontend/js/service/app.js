@@ -2,16 +2,16 @@ const actions = require('./api/fetch-actions');
 
 var api = {
 
-  startJupyter: (server_id,token) => {
-    return actions.post('/action/start/'+server_id, token);
+  startJupyter: (serverId, token) => {
+    return actions.post(`/action/server/start/${serverId}`, token);
   },
 
-  stopJupyter: (server_id, token ) => {
-    return actions.delete('/action/stop/'+server_id, token);
+  stopJupyter: (serverId, token) => {
+    return actions.delete(`/action/server/stop/${serverId}`, token);
   },
 
   getUserServerInfo: () => {
-    return actions.get('/action/user/server_info');
+    return actions.get('/action/user/server');
   },
 
 };

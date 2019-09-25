@@ -52,7 +52,7 @@ class ModalEditServer extends React.Component {
       .then(this.setState({ show_modal: false }));
 
   }
-
+  
   render() {
     return (
       <div>

@@ -31,11 +31,11 @@ class ServerForm extends Component {
       name: this.props.data.name || "",
       url: this.props.data.url || "",
       description: this.props.data.description || "",
-      admin_token: this.props.data.admin_token || "",
+      token: this.props.data.token || "",
       available: this.props.data.available,
-      ram: this.props.data.ram,
-      cpus: this.props.data.vcpu,
-      role_eligible: "ROLE_STANDARD",
+      memory: this.props.data.memory,
+      virtualCores: this.props.data.virtualCores,
+      eligibleRole: "ROLE_STANDARD",
       tags: this.props.data.tags || [],
     };
 
@@ -50,7 +50,7 @@ class ServerForm extends Component {
   }
 
   handleChangeRole = (value) => {
-    this.setState({ role_eligible: value }, () => { this.props.change(this.state); });
+    this.setState({ eligibleRole: value }, () => { this.props.change(this.state); });
   }
 
   handleChangeTags = (newValue, actionMeta) => {
@@ -90,8 +90,8 @@ class ServerForm extends Component {
           <Input type="url" name="url" id="url" value={this.state.url} placeholder="A valid url" onChange={this.handleChange} />
         </FormGroup>
         <FormGroup>
-          <Label for="admin_token">Admin token</Label>
-          <Input type="text" name="admin_token" id="admin_token" placeholder="A valid admin token for the server" onChange={this.handleChange} />
+          <Label for="token">Admin token</Label>
+          <Input type="text" name="token" id="token" value={this.state.token} placeholder="A valid admin token for the server" onChange={this.handleChange} />
         </FormGroup>
         <FormGroup>
           <Label for="description">Description</Label>
@@ -100,26 +100,26 @@ class ServerForm extends Component {
         <Row >
           <Col md={6}>
             <FormGroup>
-              <Label for="role_eligible">Select role eligible</Label>
+              <Label for="eligibleRole">Select role eligible</Label>
               <Select
-                id="role_eligible"
+                id="eligibleRole"
                 title="Choose the role a user must have to see this server?"
                 options={options}
-                value={this.getValue(this.state.role_eligible)}
+                value={this.getValue(this.state.eligibleRole)}
                 onChange={e => this.handleChangeRole(e.value)}
               />
             </FormGroup>
           </Col>
           <Col md={3}>
             <FormGroup>
-              <Label for="ram">Ram</Label>
-              <Input type="number" name="ram" id="ram" value={this.state.ram} onChange={this.handleChange} />
+              <Label for="memory">Ram</Label>
+              <Input type="number" name="memory" id="memory" value={this.state.memory} onChange={this.handleChange} />
             </FormGroup>
           </Col>
           <Col md={3}>
             <FormGroup>
-              <Label for="cpus">Virtual CPUs</Label>
-              <Input type="number" name="cpus" id="cpus" value={this.state.cpus} onChange={this.handleChange} />
+              <Label for="virtualCores">Virtual CPUs</Label>
+              <Input type="number" name="virtualCores" id="virtualCores" value={this.state.virtualCores} onChange={this.handleChange} />
             </FormGroup>
           </Col>
         </Row>

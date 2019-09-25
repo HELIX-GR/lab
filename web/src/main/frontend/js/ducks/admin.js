@@ -11,7 +11,7 @@ const GOT_WHITELIST = 'admin/GOT_WHITELIST';
 const GOT_EDITED_WHITELIST = 'admin/GOT_EDITED_WHITELIST';
 
 const initialState = {
-  isadmin: false,
+  isAdmin: false,
   servers: [],
   users: [],
   whitelist: [],
@@ -122,12 +122,12 @@ export const requestServers = () => (dispatch) => {
 export const addNewServer = (server_data) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
   return adminService.addServer(server_data, token).then(
-    (r) => {
+    () => {
       toast.success("Server registered");
       dispatch(requestServers());
     },
     (err) => {
-      toast.error('Failed to add server: ' + err.message);
+      toast.error('Failed to add server');
       throw err;
     });
 };
@@ -135,7 +135,7 @@ export const addNewServer = (server_data) => (dispatch, getState) => {
 export const editServer = (id, server_data) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
   return adminService.editServer(id, server_data, token).then(
-    (r) => {
+    () => {
       toast.success("Server edited");
       dispatch(requestServers());
     },
@@ -172,7 +172,7 @@ export const requestUsersToServers = () => (dispatch) => {
 export const deleteUserToServer = (id) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
   return adminService.deleteUserToServer(id, token).then(
-    (r) => {
+    () => {
       this.requestUsersToServers();
     },
     (err) => {
@@ -181,11 +181,11 @@ export const deleteUserToServer = (id) => (dispatch, getState) => {
     });
 };
 
-export const grand_role = (id, role) => (dispatch, getState) => {
+export const grantRole = (id, role) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
   var { admin } = getState();
   var ind = admin.users.findIndex((e) => (e.id === id));
-  return adminService.grandRole(id, role, token).then(
+  return adminService.grantRole(id, role, token).then(
     (r) => {
       dispatch(gotEditedUser(r, ind));
     },
@@ -195,7 +195,7 @@ export const grand_role = (id, role) => (dispatch, getState) => {
     });
 };
 
-export const revoke_role = (id, role) => (dispatch, getState) => {
+export const revokeRole = (id, role) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
   var { admin } = getState();
   var ind = admin.users.findIndex((e) => (e.id === id));
@@ -226,7 +226,7 @@ export const grand_WL_role = (id, role) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
   var { admin } = getState();
   var ind = admin.whitelist.findIndex((e) => (e.id === id));
-  return adminService.grandWLRole(id, role, token).then(
+  return adminService.grantWhiteListRole(id, role, token).then(
     (r) => {
       dispatch(gotEditedWhiteList(r, ind));
     },
@@ -240,7 +240,7 @@ export const revoke_WL_role = (id, role) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
   var { admin } = getState();
   var ind = admin.whitelist.findIndex((e) => (e.id === id));
-  return adminService.revokeWLRole(id, role, token).then(
+  return adminService.revokeWhiteListRole(id, role, token).then(
     (r) => {
       dispatch(gotEditedWhiteList(r, ind));
     },
@@ -254,11 +254,11 @@ export const revoke_WL_role = (id, role) => (dispatch, getState) => {
 export const addWhiteList = (userInfo) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
   return adminService.addWhiteListUser(userInfo, token).then(
-    (r) => {
+    () => {
       dispatch(requestWhiteList());
     },
     (err) => {
-      toast.error('Failed to add user to White List: ' + err.message);
+      toast.error('Failed to add user to White List');
       throw err;
     });
 };
