@@ -3,6 +3,7 @@ package gr.helix.lab.web.service;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.opensaml.saml2.core.Attribute;
@@ -10,6 +11,7 @@ import org.opensaml.xml.schema.impl.XSAnyImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
@@ -17,16 +19,13 @@ import org.springframework.stereotype.Service;
 
 import gr.helix.core.common.domain.AccountEntity;
 import gr.helix.core.common.model.EnumRole;
+import gr.helix.core.common.model.user.AccountProfile;
 import gr.helix.core.common.repository.AccountRepository;
 import gr.helix.lab.web.model.security.User;
 
 @Service
 public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 
-	@Autowired
-	AccountRepository acountrepository;
-	
-	
     private static final Logger logger = LoggerFactory.getLogger(SAMLUserDetailsServiceImpl.class);
 
     private final static String ATTRIBUTE_USERNAME ="uid";
@@ -35,10 +34,14 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
     private final static String ATTRIBUTE_FAMILY_NAME ="familyName";
     private final static String ATTRIBUTE_GIVEN_NAME ="givenName";
 
+    @Autowired
+    private AccountRepository        accountRepository;
+
+    @Autowired
+    private CustomUserDetailsService userService;
+
     @Override
     public Object loadUserBySAML(SAMLCredential credential) throws UsernameNotFoundException {
-        System.out.println(credential.toString());
-
         final String userID = credential.getNameID().getValue();
 
         // https://ldap.com/ldap-oid-reference-guide/
@@ -70,34 +73,40 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
                 }
             });
 
-        if (StringUtils.isBlank(ATTRIBUTE_USERNAME)) {
+        // A user name is required
+        if (StringUtils.isBlank(attributes.get(ATTRIBUTE_USERNAME))) {
             logger.error("Cannot map SAML credential attributes to user");
             throw new UsernameNotFoundException(userID);
         }
-        
-        // find if the user has logged in before
-        System.out.println(attributes.toString());
-        AccountEntity accountE = acountrepository.findOneByEmail(attributes.get(ATTRIBUTE_MAIL));
-        if (accountE !=null) {
-        	//update info
-            accountE.setName(attributes.get(ATTRIBUTE_GIVEN_NAME),attributes.get(ATTRIBUTE_FAMILY_NAME));
-            accountE.setRegistered(ZonedDateTime.now());
-            
-            return new User(accountE.toDto(), "");
-        }else {
-        	final AccountEntity account = new AccountEntity(attributes.get(ATTRIBUTE_USERNAME),attributes.get(ATTRIBUTE_MAIL));
-            account.setName(attributes.get(ATTRIBUTE_GIVEN_NAME),attributes.get(ATTRIBUTE_FAMILY_NAME));
-            account.grant(EnumRole.ROLE_USER, null);
-            account.setRegistered(ZonedDateTime.now());
 
-            acountrepository.save(account);
-
-
-            return new User(account.toDto(), "");
-
+        // An email is required
+        if (StringUtils.isBlank(attributes.get(ATTRIBUTE_MAIL))) {
+            logger.error("A valid email address is required for user {}.", attributes.get(ATTRIBUTE_USERNAME));
+            throw new UsernameNotFoundException("A valid email address is required.");
         }
-        
 
+        // Load user data from database and assign roles
+        UserDetails user;
+        try {
+            user = this.userService.loadUserByUsername(attributes.get(ATTRIBUTE_MAIL));
+        } catch (final UsernameNotFoundException ex) {
+            // Create user
+            final AccountEntity newAccount = new AccountEntity(attributes.get(ATTRIBUTE_USERNAME), attributes.get(ATTRIBUTE_MAIL));
+
+            newAccount.setName(attributes.get(ATTRIBUTE_GIVEN_NAME), attributes.get(ATTRIBUTE_FAMILY_NAME));
+            newAccount.setRegistered(ZonedDateTime.now());
+            newAccount.grant(EnumRole.ROLE_USER, null);
+
+            user = this.userService.createUser(newAccount);
+        }
+
+        // Get profile from database
+        final Optional<AccountProfile> profile = this.accountRepository.getProfileByEmail(attributes.get(ATTRIBUTE_MAIL));
+        if (profile.isPresent()) {
+            ((User) user).getAccount().setProfile(profile.get());
+        }
+
+        return user;
     }
 
     private String getValue(Attribute attr) {

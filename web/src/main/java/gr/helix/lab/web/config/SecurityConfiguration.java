@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -31,6 +33,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -70,6 +73,7 @@ import org.springframework.security.saml.processor.HTTPRedirectDeflateBinding;
 import org.springframework.security.saml.processor.HTTPSOAP11Binding;
 import org.springframework.security.saml.processor.SAMLBinding;
 import org.springframework.security.saml.processor.SAMLProcessorImpl;
+import org.springframework.security.saml.storage.EmptyStorageFactory;
 import org.springframework.security.saml.trust.httpclient.TLSProtocolConfigurer;
 import org.springframework.security.saml.trust.httpclient.TLSProtocolSocketFactory;
 import org.springframework.security.saml.util.VelocityFactory;
@@ -81,36 +85,54 @@ import org.springframework.security.saml.websso.WebSSOProfileConsumerHoKImpl;
 import org.springframework.security.saml.websso.WebSSOProfileConsumerImpl;
 import org.springframework.security.saml.websso.WebSSOProfileImpl;
 import org.springframework.security.saml.websso.WebSSOProfileOptions;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
+import org.springframework.security.web.authentication.DelegatingAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.CompositeFilter;
 
+import gr.helix.core.common.repository.AccountRepository;
 import gr.helix.lab.web.logging.filter.MappedDiagnosticContextFilter;
-import gr.helix.lab.web.service.DefaultUserDetailsService;
+import gr.helix.lab.web.service.CustomUserDetailsService;
 import gr.helix.lab.web.service.OAuthUserInfoTokenServices;
 import gr.helix.lab.web.service.SAMLUserDetailsServiceImpl;
+
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true)
 @EnableOAuth2Client
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    private static final String                API_REG_EX    = "/api/v\\d+/.*";
+
+    private static final String                ACTION_REG_EX = "/action/.*";
+
     private Timer                              backgroundTaskTimer;
 
     private MultiThreadedHttpConnectionManager multiThreadedHttpConnectionManager;
 
-    private final RegexRequestMatcher          samlMatcher = new RegexRequestMatcher("/saml/.*", null);
+    private final RegexRequestMatcher          samlMatcher   = new RegexRequestMatcher("/saml/.*", null);
+
+    private final Pattern                      csrfMethods   = Pattern.compile("^(POST|PUT|DELETE)$");
 
     @Autowired
-    private SamlConfiguration samlConfiguration;
+    AccountRepository                          accountRepository;
+
+    @Autowired
+    OAuthUserInfoDetailResolver                userInfoDetailResolver;
+
+    @Autowired
+    private SamlConfiguration                  samlConfiguration;
 
     @PostConstruct
     public void init() {
@@ -127,7 +149,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private SAMLUserDetailsServiceImpl samlUserDetailsServiceImpl;
-    
 
     /**
      * Initialization of the velocity engine
@@ -183,9 +204,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      *
      * @return
      */
+    @Profile("production")
+    @Qualifier("SAMLContextProviderImpl")
     @Bean
-    public SAMLContextProviderImpl contextProvider() {
+    public SAMLContextProviderImpl contextProviderWithHttpSessionStorage() {
         return new SAMLContextProviderImpl();
+    }
+
+    /**
+     * Provider of default SAML Context
+     *
+     * See https://docs.spring.io/spring-security-saml/docs/current/reference/html/chapter-troubleshooting.html
+     *
+     * @return
+     */
+    @Profile("!production")
+    @Qualifier("SAMLContextProviderImpl")
+    @Bean
+    public SAMLContextProviderImpl contextProviderWithEmptyStorage() {
+        final SAMLContextProviderImpl provider = new SAMLContextProviderImpl();
+        provider.setStorageFactory(new EmptyStorageFactory());
+        return provider;
     }
 
     /**
@@ -247,11 +286,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public WebSSOProfileConsumerHoKImpl hokWebSSOProfile() {
         return new WebSSOProfileConsumerHoKImpl();
     }
-
-//    @Bean
-//    public SingleLogoutProfile logoutprofile() {
-//        return new SingleLogoutProfileImpl();
-//    }
 
     /**
      * Central storage of cryptographic keys
@@ -417,7 +451,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public SAMLWebSSOHoKProcessingFilter samlWebSSOHoKProcessingFilter() throws Exception {
         final SAMLWebSSOHoKProcessingFilter samlWebSSOHoKProcessingFilter = new SAMLWebSSOHoKProcessingFilter();
-        //samlWebSSOHoKProcessingFilter.setAuthenticationSuccessHandler(this.successRedirectHandler());
         samlWebSSOHoKProcessingFilter.setAuthenticationManager(this.authenticationManager());
         samlWebSSOHoKProcessingFilter.setAuthenticationFailureHandler(this.authenticationFailureHandler());
         return samlWebSSOHoKProcessingFilter;
@@ -428,7 +461,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public SAMLProcessingFilter samlWebSSOProcessingFilter() throws Exception {
         final SAMLProcessingFilter samlWebSSOProcessingFilter = new SAMLProcessingFilter();
         samlWebSSOProcessingFilter.setAuthenticationManager(this.authenticationManager());
-        //samlWebSSOProcessingFilter.setAuthenticationSuccessHandler(this.successRedirectHandler());
         samlWebSSOProcessingFilter.setAuthenticationFailureHandler(this.authenticationFailureHandler());
         return samlWebSSOProcessingFilter;
     }
@@ -499,11 +531,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public FilterChainProxy samlFilter() throws Exception {
         final List<SecurityFilterChain> chains = new ArrayList<SecurityFilterChain>();
         chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/login/**"), this.samlEntryPoint()));
-        //chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/logout/**"), this.samlLogoutFilter()));
         chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/metadata/**"), this.metadataDisplayFilter()));
         chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/SSO/**"), this.samlWebSSOProcessingFilter()));
         chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/SSOHoK/**"), this.samlWebSSOHoKProcessingFilter()));
-        //chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/SingleLogout/**"), this.samlLogoutProcessingFilter()));
         chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/discovery/**"), this.samlIDPDiscovery()));
         return new FilterChainProxy(chains);
     }
@@ -521,63 +551,90 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Autowired
-    DefaultUserDetailsService  userService;
+    public SimpleUrlAuthenticationFailureHandler oauth2FailureHandler() {
+        final SimpleUrlAuthenticationFailureHandler handler = new SimpleUrlAuthenticationFailureHandler();
+        handler.setDefaultFailureUrl("/error/401");
+        return handler;
+    }
 
     @Autowired
-    OAuth2ClientContext oauth2ClientContext;
+    @Qualifier("defaultUserDetailsService")
+    CustomUserDetailsService userService;
+
+    @Autowired
+    OAuth2ClientContext      oauth2ClientContext;
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        final LinkedHashMap<RequestMatcher, AuthenticationEntryPoint> map = new LinkedHashMap<RequestMatcher, AuthenticationEntryPoint>();
+
+        map.put(new RegexRequestMatcher(API_REG_EX, null), new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+        map.put(new RegexRequestMatcher(ACTION_REG_EX, null), new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+
+        final DelegatingAuthenticationEntryPoint entryPoint = new DelegatingAuthenticationEntryPoint(map);
+        entryPoint.setDefaultEntryPoint(new LoginUrlAuthenticationEntryPoint("/"));
+
+        return entryPoint;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.antMatcher("/**")
-		    .authorizeRequests()  
-                .antMatchers("/",
-                             // Site parts
-                             "/admin/",
-                             "/error/**",
-                			 "/filesystem/",
-                			 "/notebook/**",
-                             "/results/",
-                			 // Assets
-                             "/favicon.ico",
-                             "/css/**",
-                             "/fonts/**",
-                             "/i18n/**",
-                             "/images/**",
-                             "/js/**",
-                             "/vendor/**",
-                             // Authentication endpoints
-                             "/login**",
-                             "/logged-in",
-                             "/logged-out",
-                             "/error**",
-                             // SAML endpoints
-                             "/saml/**",
-                             // Public action API endpoints
-                             "/action/configuration/**",
-                             "/action/ckan/**",
-                             "/action/catalog/**").permitAll();
+        http.authorizeRequests()
+            // Public
+            .antMatchers(
+                "/",
+                // Site parts
+                "/admin/",
+                "/error/**",
+                "/filesystem/",
+                "/notebook/**",
+                "/results/",
+                // Assets
+                "/favicon.ico",
+                "/css/**",
+                "/fonts/**",
+                "/i18n/**",
+                "/images/**",
+                "/js/**",
+                "/vendor/**",
+                // Authentication endpoints
+                "/login**",
+                "/logged-out",
+                // Error pages
+                "/error**",
+                // SAML endpoints
+                "/saml/**",
+                // Public action API endpoints
+                "/action/catalog/**",
+                "/action/ckan/**",
+                "/action/configuration/**"
+             ).permitAll()
+            // Private action API endpoints
+            .antMatchers(
+                "/logged-in",
+                "/logout",
+                "/action/**"
+            ).authenticated()
+            .anyRequest().authenticated();
 
         http.csrf().requireCsrfProtectionMatcher((HttpServletRequest req) -> {
-            final String method = req.getMethod();
-
             // Disable for SAML
             if (this.samlMatcher.matches(req)) {
                 return false;
             }
             // Include all state-changing methods
-            if (method.equals("POST") || method.equals("PUT") || method.equals("DELETE")) {
+            if (this.csrfMethods.matcher(req.getMethod()).matches()) {
                 return true;
             }
 
             return false;
         });
 
-        http.exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+        http.exceptionHandling().authenticationEntryPoint(this.authenticationEntryPoint());
 
         http.formLogin()
             .loginPage("/login")
-            .failureUrl("/login?error")
+            .failureUrl("/error/401")
             .defaultSuccessUrl("/logged-in", true)
             .usernameParameter("username")
             .passwordParameter("password");
@@ -589,26 +646,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .clearAuthentication(true)
             .permitAll();
 
-        //http.httpBasic().authenticationEntryPoint(this.samlEntryPoint());
-
         http.addFilterBefore(this.metadataGeneratorFilter(), ChannelProcessingFilter.class);
-        http.addFilterBefore(this.ssoFilter(), BasicAuthenticationFilter.class);
+        http.addFilterBefore(this.oauth2Filter(), BasicAuthenticationFilter.class);
         http.addFilterAfter(this.samlFilter(), BasicAuthenticationFilter.class);
         http.addFilterAfter(new MappedDiagnosticContextFilter(), SwitchUserFilter.class);
     }
 
-    private Filter ssoFilter() {
+    private Filter oauth2Filter() {
         final CompositeFilter filter = new CompositeFilter();
         final List<Filter> filters = new ArrayList<>();
 
-        filters.add(this.ssoFilter(this.google(), "/login/google"));
-        filters.add(this.ssoFilter(this.github(), "/login/github"));
+        filters.add(this.oauth2Filter(this.google(), "/login/google"));
+        filters.add(this.oauth2Filter(this.github(), "/login/github"));
+        filters.add(this.oauth2Filter(this.helix(), "/login/helix"));
         filter.setFilters(filters);
 
         return filter;
     }
 
-    private Filter ssoFilter(ClientResources client, String path) {
+    private Filter oauth2Filter(ClientResources client, String path) {
         final OAuth2ClientAuthenticationProcessingFilter filter = new OAuth2ClientAuthenticationProcessingFilter(path);
 
         final OAuth2RestTemplate template = new OAuth2RestTemplate(client.getClient(), this.oauth2ClientContext);
@@ -616,12 +672,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         final OAuthUserInfoTokenServices tokenServices = new OAuthUserInfoTokenServices(
             client.getResource().getUserInfoUri(),
             client.getClient().getClientId(),
-            this.userService);
+            this.userService,
+            this.userInfoDetailResolver,
+            this.accountRepository);
 
         tokenServices.setRestTemplate(template);
 
         filter.setRestTemplate(template);
         filter.setTokenServices(tokenServices);
+
+        filter.setAuthenticationFailureHandler(this.oauth2FailureHandler());
 
         return filter;
     }
@@ -639,6 +699,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    @ConfigurationProperties("helix")
+    public ClientResources helix() {
+        return new ClientResources();
+    }
+
+    @Bean
     public FilterRegistrationBean<OAuth2ClientContextFilter> oauth2ClientFilterRegistration(OAuth2ClientContextFilter filter) {
         final FilterRegistrationBean<OAuth2ClientContextFilter> registration = new FilterRegistrationBean<OAuth2ClientContextFilter>();
         registration.setFilter(filter);
@@ -652,7 +718,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         builder.eraseCredentials(true);
 
         builder.authenticationProvider(this.samlAuthenticationProvider());
-        
     }
 
 }
