@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "HubServerTag")
-@Table(schema = "lab", name = "`hub_server_tags`")
+@Table(schema = "lab", name = "`hub_server_tag`")
 public class HubServerTagEntity {
 
 	@Id

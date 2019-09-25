@@ -15,13 +15,13 @@ import gr.helix.lab.web.domain.AccountServerEntity;
 @Transactional(readOnly = true)
 public interface AccountServerRepository extends JpaRepository<AccountServerEntity, Integer> {
 
-    @Query(value = "SELECT * FROM lab.account_to_server a WHERE a.account = :userid", nativeQuery = true)
+    @Query(value = "SELECT * FROM lab.account_server a WHERE a.account = :userid", nativeQuery = true)
     public List<AccountServerEntity> findAllServersByUserId(@Param("userid") int userid);
 
-    @Query(value = "SELECT * FROM lab.account_to_server a  WHERE a.server_id = :server_id", nativeQuery = true)
+    @Query(value = "SELECT * FROM lab.account_server a  WHERE a.server_id = :server_id", nativeQuery = true)
     public List<AccountServerEntity> findAllByServerId(@Param("server_id") String server_id);
 
-    @Query(value = "SELECT * FROM lab.account_to_server a WHERE a.started_at > :start", nativeQuery = true)
+    @Query(value = "SELECT * FROM lab.account_server a WHERE a.started_at > :start", nativeQuery = true)
     public List<AccountServerEntity> findByRegisteredAfter(@Param("start") ZonedDateTime start);
 
 }

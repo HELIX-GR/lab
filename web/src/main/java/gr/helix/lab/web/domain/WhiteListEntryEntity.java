@@ -27,7 +27,7 @@ import gr.helix.lab.web.model.admin.WhiteListEntry;
 
 @Entity(name = "WhiteListEntry")
 @Table(
-    schema = "lab", name = "account_white_list",
+    schema = "lab", name = "white_list",
     uniqueConstraints = {
         @UniqueConstraint(name = "uq_account_white_list_email", columnNames = {"`email`"}),
     }

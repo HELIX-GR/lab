@@ -22,7 +22,7 @@ import gr.helix.core.common.model.EnumRole;
 
 @Entity(name = "WhiteListEntryRole")
 @Table(
-    schema = "lab", name = "`account_role_white_list`",
+    schema = "lab", name = "`white_list_role`",
     uniqueConstraints = {
         @UniqueConstraint(name = "uq_account_role_white_list", columnNames = {"`wl_account`", "`role`"})
     }

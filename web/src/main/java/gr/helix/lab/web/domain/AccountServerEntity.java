@@ -19,7 +19,7 @@ import gr.helix.lab.web.model.admin.ClientServerRegistration;
 
 @Entity(name = "AccountServer")
 @Table(
-    schema = "lab", name = "account_to_server",
+    schema = "lab", name = "account_server",
     uniqueConstraints = {
         @UniqueConstraint(name = "uq_account_to_server_server_url", columnNames = {"`server_url`"}),
     }
