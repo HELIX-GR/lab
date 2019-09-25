@@ -13,11 +13,12 @@ public enum FileSystemErrorCode implements ErrorCode {
     PATH_NOT_FOUND,
     PATH_NOT_EMPTY,
     NOT_ENOUGH_SPACE,
+    EXTENSION_NOT_SUPPORTED,
     ;
 
     @Override
     public String key() {
-        return (this.getClass().getSimpleName() + '.' + name());
+        return (this.getClass().getSimpleName() + '.' + this.name());
     }
 
 }

@@ -2,6 +2,7 @@ package gr.helix.lab.web.controller.action.admin;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -9,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,150 +18,137 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import gr.helix.core.common.domain.AccountEntity;
+import gr.helix.core.common.model.ApplicationException;
+import gr.helix.core.common.model.BasicErrorCode;
 import gr.helix.core.common.model.EnumRole;
-import gr.helix.core.common.model.Error;
-import gr.helix.core.common.model.ErrorCode;
 import gr.helix.core.common.model.RestResponse;
+import gr.helix.core.common.model.user.Account;
+import gr.helix.core.common.repository.AccountRepository;
 import gr.helix.lab.web.controller.action.BaseController;
 import gr.helix.lab.web.domain.HubServerEntity;
-import gr.helix.lab.web.model.admin.ServerRegistrationRequest;
+import gr.helix.lab.web.model.admin.AdminErrorCode;
+import gr.helix.lab.web.model.admin.ClientServer;
+import gr.helix.lab.web.model.admin.ClientServerRegistrationRequest;
 import gr.helix.lab.web.repository.HubServerRepository;
-import gr.helix.lab.web.service.JupyterApi;
+import gr.helix.lab.web.service.JupyterHubClient;
 
-/**
- * Actions for querying and updating admin data
- */
 @RestController
 @Secured({"ROLE_ADMIN"})
 @RequestMapping(produces = "application/json")
-public class AdminController extends BaseController{
+public class AdminController extends BaseController {
 
-	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
-	@Autowired
-	HubServerRepository hsr;
-	
-	
-	JupyterApi japi= new JupyterApi();
+    @Autowired
+    AccountRepository           accountRepository;
 
+    @Autowired
+    HubServerRepository         hubServerRepository;
 
-	@RequestMapping(value = "action/admin/servers", method = RequestMethod.GET)
-	public RestResponse<?> getServers() {
+    @Autowired
+    JupyterHubClient            jupyterHubClient;
 
-			List<HubServerEntity> hse = hsr.findAll();
-			System.out.println(hse);
-			return RestResponse.result(hse);
-			//return RestResponse.error(BasicErrorCode.IO_ERROR, "An unknown error has occurred");
-	   
-	}
-	
-	@RequestMapping(value = "action/admin/users", method = RequestMethod.GET)
-	public RestResponse<?> getUsers() {
-			List<AccountEntity> accounts = aer.findAll();
-			return RestResponse.result(accounts);
-			//return RestResponse.error(BasicErrorCode.IO_ERROR, "An unknown error has occurred");
-	   
-	}
-	
-	
-	@RequestMapping(value = "action/admin/grand_role/{user_id}", method = RequestMethod.PUT)
-	public RestResponse<?> grand_role(Authentication Authentication, @PathVariable int user_id, @RequestBody EnumRole role,  BindingResult results) {
-		System.out.println("................................................");
-		System.out.println(role.toString());
-	        try {
-	        	//((OptionalValidatorFactoryBean) validator).validate(request, results);
-	            
-	            if (results.hasErrors()) {
-	                
-	                return RestResponse.error((Error) results.getFieldErrors());
-	            }	           
-	             Optional<AccountEntity> account =  aer.findById(user_id);
-	             AccountEntity acc = account.get();
-	             
-	             acc.grant(role, aer.findById(currentUserId()).get());
-	            return RestResponse.result(aer.save(acc));
-	        } catch (Exception ex) {
-	            logger.error(ex.getMessage(), ex);
+    @RequestMapping(value = "action/admin/servers", method = RequestMethod.GET)
+    public RestResponse<?> getServers() {
+        final List<ClientServer> servers = this.hubServerRepository.findAll().stream()
+            .map(s -> s.toDto())
+            .collect(Collectors.toList());
 
-	            return RestResponse.error((ErrorCode) ex,ex.getMessage());
-	        }
+        return RestResponse.result(servers);
+    }
 
-	}
-	
-	@RequestMapping(value = "action/admin/revoke_role/{user_id}", method = RequestMethod.PUT)
-	public RestResponse<?> revoke_role(Authentication Authentication, @PathVariable int user_id, @RequestBody EnumRole role,  BindingResult results) {
-		System.out.println("................................................");
-		System.out.println(role.toString());
-	        try {
-	        	//((OptionalValidatorFactoryBean) validator).validate(request, results);
-	            
-	            if (results.hasErrors()) {
-	                
-	                return RestResponse.error((Error) results.getFieldErrors());
-	            }	           
-	             Optional<AccountEntity> account =  aer.findById(user_id);
-	             AccountEntity acc = account.get();
-	             
-	             acc.revoke(role);
-	            return RestResponse.result(aer.save(acc));
-	        } catch (Exception ex) {
-	            logger.error(ex.getMessage(), ex);
+    @RequestMapping(value = "action/admin/users", method = RequestMethod.GET)
+    public RestResponse<?> getUsers() {
+        final List<Account> accounts = this.accountRepository.findAll().stream()
+            .map(a -> a.toDto())
+            .collect(Collectors.toList());
 
-	            return RestResponse.error((ErrorCode) ex,ex.getMessage());
-	        }
+        return RestResponse.result(accounts);
+    }
 
-	}
-	
-	
-	@RequestMapping(value = "action/admin/add_server", method = RequestMethod.POST)
-	public RestResponse<?> add_server(Authentication Authentication, @RequestBody @Valid ServerRegistrationRequest request,  BindingResult results) {
-		System.out.println("................................................");
-		System.out.println(request.toString());
-	        try {
-	        	//((OptionalValidatorFactoryBean) validator).validate(request, results);
-	            
-	            if (results.hasErrors()) {
-	                
-	                return RestResponse.error((Error) results.getFieldErrors());
-	            }
-	            HubServerEntity hse = new HubServerEntity(request);
-	            hse.setTags(request.getTags());
-	            // TODO Ping server 
-	           // japi.api_request(hse,"info", "GET", null);// get info about server //test
-	           // japi.api_request(hse,"users", "GET", null);// get all users of server db //test
-	             //hsr.save(hse);
-	            return RestResponse.result(hsr.save(hse));
-	        } catch (Exception ex) {
-	            logger.error(ex.getMessage(), ex);
+    @RequestMapping(value = "action/admin/user/{userId}/role/{role}", method = RequestMethod.POST)
+    public RestResponse<?> grantUserRole(@PathVariable int userId, @PathVariable EnumRole role) {
+        final Optional<AccountEntity> account = this.accountRepository.findById(userId);
+        if (!account.isPresent()) {
+            return RestResponse.error(AdminErrorCode.ACCOUNT_NOT_FOUND, "Account was not found");
+        }
 
-	            return RestResponse.error((ErrorCode) ex,ex.getMessage());
-	        }
+        final Optional<AccountEntity> grantedBy = this.accountRepository.findById(this.currentUserId());
 
-	}
-	
-	
-	@RequestMapping(value = "action/admin/edit_server/{server_id}", method = RequestMethod.POST)
-	public RestResponse<?> edit_server(Authentication Authentication, @PathVariable int server_id, @RequestBody @Valid ServerRegistrationRequest request,  BindingResult results) {
-	        try {
-	        	//((OptionalValidatorFactoryBean) validator).validate(request, results);
-	            
-	            if (results.hasErrors()) {
-	                
-	                return RestResponse.error((Error) results.getFieldErrors());
-	            }	           
-	             Optional<HubServerEntity> hse =  hsr.findById(server_id);
-	             HubServerEntity temp= hse.get();
-	             
-	             temp.update(request);
-	             temp.setTags(request.getTags());
-	            return RestResponse.result(hsr.save(temp));
-	        } catch (Exception ex) {
-	            logger.error(ex.getMessage(), ex);
+        account.get().grant(role, grantedBy.get());
+        this.accountRepository.save(account.get());
 
-	            return RestResponse.error((ErrorCode) ex,ex.getMessage());
-	        }
+        return RestResponse.result(account.get().toDto());
+    }
 
-	}
-	
-	
+    @RequestMapping(value = "action/admin/user/{userId}/role/{role}", method = RequestMethod.DELETE)
+    public RestResponse<?> revokeUserRole(@PathVariable int userId, @PathVariable EnumRole role) {
+        final Optional<AccountEntity> account = this.accountRepository.findById(userId);
+        if (!account.isPresent()) {
+            return RestResponse.error(AdminErrorCode.ACCOUNT_NOT_FOUND, "Account was not found");
+        }
+
+        account.get().revoke(role);
+        this.accountRepository.save(account.get());
+
+        return RestResponse.result(account.get().toDto());
+    }
+
+    @RequestMapping(value = "action/admin/server", method = RequestMethod.POST)
+    public RestResponse<?> addServer(@RequestBody @Valid ClientServerRegistrationRequest request, BindingResult results) {
+        try {
+            // Validate request data
+            if (results.hasErrors()) {
+                return RestResponse.invalid(results.getFieldErrors());
+            }
+
+            // Check server status
+            this.jupyterHubClient.getHubStatus(request.getUrl(), request.getToken());
+
+            final HubServerEntity server = new HubServerEntity(request);
+
+            this.hubServerRepository.save(server);
+
+            return RestResponse.result(server.toDto());
+        } catch (final ApplicationException ex) {
+            return RestResponse.error(ex.toError());
+        } catch (final Exception ex) {
+            logger.error(ex.getMessage(), ex);
+
+            return RestResponse.error(BasicErrorCode.UNKNOWN, "An unknown error has occurred");
+        }
+    }
+
+    @RequestMapping(value = "action/admin/server/{serverId}", method = RequestMethod.POST)
+    public RestResponse<?> updateServer(
+        @PathVariable int serverId, @RequestBody @Valid ClientServerRegistrationRequest request, BindingResult results
+    ) {
+        try {
+            // Validate request data
+            if (results.hasErrors()) {
+                return RestResponse.invalid(results.getFieldErrors());
+            }
+
+            final Optional<HubServerEntity> server = this.hubServerRepository.findById(serverId);
+            if(!server.isPresent()) {
+                return RestResponse.error(AdminErrorCode.HUB_SERVER_NOT_FOUND, "Server was not found");
+            }
+
+            // Check server status
+            this.jupyterHubClient.getHubStatus(request.getUrl(), request.getToken());
+
+            server.get().update(request);
+
+            this.hubServerRepository.save(server.get());
+
+            return RestResponse.result(server.get().toDto());
+        } catch (final ApplicationException ex) {
+            return RestResponse.error(ex.toError());
+        } catch (final Exception ex) {
+            logger.error(ex.getMessage(), ex);
+
+            return RestResponse.error(BasicErrorCode.UNKNOWN, "An unknown error has occurred");
+        }
+    }
+
 }

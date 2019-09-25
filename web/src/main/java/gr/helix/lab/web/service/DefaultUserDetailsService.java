@@ -8,50 +8,46 @@ import org.springframework.stereotype.Service;
 import gr.helix.core.common.domain.AccountEntity;
 import gr.helix.core.common.model.EnumRole;
 import gr.helix.core.common.repository.AccountRepository;
-import gr.helix.lab.web.domain.AccountWhiteListEntry;
+import gr.helix.lab.web.domain.WhiteListEntryEntity;
+import gr.helix.lab.web.domain.WhiteListEntryRoleEntity;
 import gr.helix.lab.web.model.security.User;
-import gr.helix.lab.web.repository.AccountWhiteListRepository;
+import gr.helix.lab.web.repository.WhiteListRepository;
 
 @Service
-public class DefaultUserDetailsService implements EditedUserDetailsService {
+public class DefaultUserDetailsService implements CustomUserDetailsService {
 
     @Autowired
-    private AccountRepository accountRepository;
-    
+    private AccountRepository   accountRepository;
+
     @Autowired
-    private AccountWhiteListRepository accountWLRepository;
+    private WhiteListRepository whiteListRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    	System.out.println(username);
-        AccountEntity accountEntity = this.accountRepository.findOneByUsername(username);
-        if (accountEntity == null) {
-        	accountEntity = this.accountRepository.findOneByEmail(username);
-        	if (accountEntity == null) {
-        		throw new UsernameNotFoundException(username);
+        final AccountEntity account = this.accountRepository.findOneByEmail(username);
+
+        if (account == null) {
+            throw new UsernameNotFoundException(username);
         }
-        	
-        }
-        return new User(accountEntity.toDto(), accountEntity.getPassword());
+
+        return new User(account.toDto(), account.getPassword());
     }
 
-	@Override
-	public User createUser(AccountEntity a) {
-		AccountWhiteListEntry whitelisted = accountWLRepository.findOneByEmail(a.getEmail());
-		
-		if (whitelisted==null) {
-			a.grant(EnumRole.ROLE_USER, null);
-		}else
-		{
-			for (EnumRole role : whitelisted.getRoles()) {
-				a.grant(role, null);//TODO transfer grunted by?
-			}
-		}
-		accountRepository.save(a);
-		return new User(a.toDto(), a.getPassword());
-	}
+    @Override
+    public User createUser(AccountEntity account) {
+        final WhiteListEntryEntity entry = this.whiteListRepository.findOneByEmail(account.getEmail());
 
-    
+        if (entry == null) {
+            account.grant(EnumRole.ROLE_USER, null);
+        } else {
+            for (final WhiteListEntryRoleEntity role : entry.getRoles()) {
+                account.grant(role.getRole(), null);
+            }
+        }
+        this.accountRepository.save(account);
+
+        return new User(account.toDto(), account.getPassword());
+    }
+
 }
 
-   

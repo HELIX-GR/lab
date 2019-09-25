@@ -2,7 +2,6 @@ package gr.helix.lab.web.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,27 +17,26 @@ import org.springframework.util.StringUtils;
 import gr.helix.lab.web.model.DirectoryInfo;
 import gr.helix.lab.web.model.FileInfo;
 
-
 @Service
 public class DefaultFileNamingStrategy implements FileNamingStrategy
 {
-    private static final String WORKING_DIR_NAME = "work";
-    
+    private static final String WORKING_DIR_SUFFIX = "work";
+
     @Autowired
     private Path userDataDirectory;
 
     @Override
-    public DirectoryInfo getUserDirectoryInfo(String string) throws IOException
+    public DirectoryInfo getUserDirectoryInfo(String userName) throws IOException
     {
-        final Path userDir = getUserDir(string, true);
-        return createDirectoryInfo("/", userDir, "");
+        final Path userDir = this.getUserDir(userName, true);
+        return this.createDirectoryInfo("/", userDir, "");
     }
 
     @Override
     public Path getUserDir(String userName)
     {
         Assert.isTrue(userName.length() > 0, "Expected a valid (> 0) user id");
-        return userDataDirectory.resolve(Paths.get(userName, WORKING_DIR_NAME));
+        return this.userDataDirectory.resolve(Paths.get(userName, WORKING_DIR_SUFFIX));
     }
 
     @Override
@@ -46,12 +44,10 @@ public class DefaultFileNamingStrategy implements FileNamingStrategy
         throws IOException
     {
         Assert.isTrue(userName.length()  > 0, "Expected a valid (> 0) user id");
-        Path userDir = getUserDir(userName);
+        final Path userDir = this.getUserDir(userName);
 
         if (createIfNotExists) {
-            try {
-                Files.createDirectory(userDir);
-            } catch (FileAlreadyExistsException ex) {}
+            Files.createDirectories(userDir);
         }
 
         return userDir;
@@ -61,7 +57,7 @@ public class DefaultFileNamingStrategy implements FileNamingStrategy
     public Path resolvePath(String userName, String relativePath)
     {
         Assert.isTrue(!StringUtils.isEmpty(relativePath), "Expected a non-empty path");
-        return resolvePath(userName, Paths.get(relativePath));
+        return this.resolvePath(userName, Paths.get(relativePath));
     }
 
     @Override
@@ -70,7 +66,7 @@ public class DefaultFileNamingStrategy implements FileNamingStrategy
         Assert.isTrue(userName.length() > 0, "Expected a valid (> 0) user id");
         Assert.notNull(relativePath, "Expected a non-null path");
         Assert.isTrue(!relativePath.isAbsolute(), "Expected a relative path to be resolved");
-        Path userDir = getUserDir(userName);
+        final Path userDir = this.getUserDir(userName);
         return userDir.resolve(relativePath);
     }
 
@@ -78,17 +74,17 @@ public class DefaultFileNamingStrategy implements FileNamingStrategy
     {
         final File file = path.toFile();
 
-        final DirectoryInfo di = new DirectoryInfo(name, relativePath, toZonedDateTime(file.lastModified()), "Folder");
+        final DirectoryInfo di = new DirectoryInfo(name, relativePath, this.toZonedDateTime(file.lastModified()), "Folder");
 
-        for (File f : file.listFiles()) {
+        for (final File f : file.listFiles()) {
         	if (!f.getName().startsWith(".")) {// Hidden files.
-        		
-        	
+
+
             if (f.isDirectory()) {
-                di.addFolder(createDirectoryInfo(f.getName(), f.toPath(), relativePath + f.getName() + "/"));
+                di.addFolder(this.createDirectoryInfo(f.getName(), f.toPath(), relativePath + f.getName() + "/"));
             }
             if (f.isFile()) {
-                di.addFile(createFileInfo(f, relativePath));
+                di.addFile(this.createFileInfo(f, relativePath));
             }}
         }
 
@@ -98,12 +94,12 @@ public class DefaultFileNamingStrategy implements FileNamingStrategy
     private FileInfo createFileInfo(File file, String path)
     {
         return new FileInfo(
-            file.length(), file.getName(), path + file.getName(), toZonedDateTime(file.lastModified()), "File");
+            file.length(), file.getName(), path + file.getName(), this.toZonedDateTime(file.lastModified()), "File");
     }
 
     private ZonedDateTime toZonedDateTime(long millis)
     {
-        Instant i = Instant.ofEpochMilli(millis);
+        final Instant i = Instant.ofEpochMilli(millis);
         return ZonedDateTime.ofInstant(i, ZoneOffset.UTC);
     }
 }

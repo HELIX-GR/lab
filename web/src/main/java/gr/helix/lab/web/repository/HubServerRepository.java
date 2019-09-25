@@ -14,6 +14,10 @@ import gr.helix.lab.web.domain.HubServerEntity;
 @Transactional(readOnly = true)
 public interface HubServerRepository extends JpaRepository<HubServerEntity, Integer> {
 
-	@Query(value = "SELECT * FROM Helix_lab.hub_server a WHERE a.role_eligible = :role_eligible AND available= true", nativeQuery = true)
+    @Query(
+        value = "SELECT * FROM lab.hub_server a WHERE a.role_eligible = :role_eligible AND available = true",
+        nativeQuery = true
+    )
     public List<HubServerEntity> findAllByRole(@Param("role_eligible") String role_eligible);
+
 }

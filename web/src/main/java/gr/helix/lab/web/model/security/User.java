@@ -71,6 +71,14 @@ public class User implements UserDetails {
         return this.account.getLang();
     }
 
+    public String getEmail() {
+        return this.account.getEmail();
+    }
+
+    public boolean hasRole(EnumRole role) {
+        return this.account.hasRole(role);
+    }
+
     public Account getAccount() {
         return this.account;
     }

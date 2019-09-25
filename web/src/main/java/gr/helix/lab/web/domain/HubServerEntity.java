@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,18 +18,19 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import gr.helix.lab.web.model.HubServerResponse;
-import gr.helix.lab.web.model.admin.ServerRegistrationRequest;
+import gr.helix.core.common.model.EnumRole;
+import gr.helix.lab.web.model.admin.ClientServer;
+import gr.helix.lab.web.model.admin.ClientServerRegistrationRequest;
 
-@Entity(name = "HubServerEntity")
+@Entity(name = "HubServer")
 @Table(
     schema = "lab", name = "hub_server",
     uniqueConstraints = {
         @UniqueConstraint(name = "uq_hub_server_server_url", columnNames = {"`server_url`"})
-    })
+    }
+)
 public class HubServerEntity {
 
-	
 	@Id
 	@Column(name = "`id`", updatable = false)
 	@SequenceGenerator(
@@ -37,190 +40,189 @@ public class HubServerEntity {
         allocationSize = 1
     )
     @GeneratedValue(generator = "server_id_seq", strategy = GenerationType.SEQUENCE)
-	private Integer id;
-	
-	@Column(name = "`name`")
-	private String name;
-	
-	@Column(name = "`description`")
-	private String description;
-	
-	@Column(name = "`server_url`")
-	private String url;
-	
-	@Column(name = "`available`")
-	private Boolean available;
-	
-	@Column(name = "`admin_token`")
-	private String admin_token;
-	
-	@Column(name = "`started_at`")
-	private ZonedDateTime started_at;
-	
-	@Column(name = "`role_eligible`")
-	private String role_eligible;
-	
-	@Column(name = "`ram`")
-	private float ram;
-	
-	@Column(name = "`vcpu`")
-	private float vcpu;
-	
-	@OneToMany(targetEntity=HubServerTagsEntity.class,mappedBy = "hub_server", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    List<HubServerTagsEntity> tags   = new ArrayList<>();
-	
+    private Integer          id;
 
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "`name`")
+    private String           name;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(name = "`description`")
+    private String           description;
 
-	public String getName() {
-		return name;
-	}
+    @Column(name = "`server_url`")
+    private String           url;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Column(name = "`available`")
+    private Boolean          available;
 
-	public String getDescription() {
-		return description;
-	}
+    @Column(name = "`admin_token`")
+    private String           token;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    @Column(name = "`started_at`")
+    private ZonedDateTime    startedAt;
 
-	public String getUrl() {
-		return url;
-	}
+    @Enumerated(EnumType.STRING)
+    @Column(name = "`role_eligible`")
+    private EnumRole         eligibleRole;
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    @Column(name = "`ram`")
+    private long             memory;
 
-	public Boolean getAvailable() {
-		return available;
-	}
+    @Column(name = "`vcpu`")
+    private int              virtualCores;
 
-	public void setAvailable(Boolean available) {
-		this.available = available;
-	}
+    @OneToMany(
+        targetEntity = HubServerTagEntity.class,
+        mappedBy = "server",
+        fetch = FetchType.LAZY,
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    List<HubServerTagEntity> tags = new ArrayList<>();
 
-	public String getAdmin_token() {
-		return admin_token;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public void setAdmin_token(String admin_token) {
-		this.admin_token = admin_token;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getRole_eligible() {
-		return role_eligible;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public void setRole_eligible(String role_eligible) {
-		this.role_eligible = role_eligible;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public ZonedDateTime getStarted_at() {
-		return started_at;
-	}
+    public String getUrl() {
+        return this.url;
+    }
 
-	public void setStarted_at(ZonedDateTime started_at) {
-		this.started_at = started_at;
-	}
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	
-	public float getRam() {
-		return ram;
-	}
+    public Boolean getAvailable() {
+        return this.available;
+    }
 
-	public void setRam(float ram) {
-		this.ram = ram;
-	}
+    public void setAvailable(Boolean available) {
+        this.available = available;
+    }
 
-	public float getVcpu() {
-		return vcpu;
-	}
+    public String getToken() {
+        return this.token;
+    }
 
-	public void setVcpu(float vcpu) {
-		this.vcpu = vcpu;
-	}
+    public void setToken(String token) {
+        this.token = token;
+    }
 
-	public List<String> getTags() {
-		List<String> r = new ArrayList<String>();
-		for (final HubServerTagsEntity ar : this.tags) {
-            r.add(ar.tag);
-        }
-        return r;	}
+    public ZonedDateTime getStartedAt() {
+        return this.startedAt;
+    }
 
- 
-	public boolean hasTheTag(String tag) {
-        for (final HubServerTagsEntity hste: this.tags) {
-            if (tag == hste.getTag()) {
+    public void setStartedAt(ZonedDateTime startedAt) {
+        this.startedAt = startedAt;
+    }
+
+    public EnumRole getEligibleRole() {
+        return this.eligibleRole;
+    }
+
+    public void setEligibleRole(EnumRole eligibleRole) {
+        this.eligibleRole = eligibleRole;
+    }
+
+    public long getMemory() {
+        return this.memory;
+    }
+
+    public void setMemory(long memory) {
+        this.memory = memory;
+    }
+
+    public int getVirtualCores() {
+        return this.virtualCores;
+    }
+
+    public void setVirtualCores(int virtualCores) {
+        this.virtualCores = virtualCores;
+    }
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public List<HubServerTagEntity> getTags() {
+        return this.tags;
+    }
+
+    public boolean hasTag(String value) {
+        for (final HubServerTagEntity tag : this.tags) {
+            if (tag.getValue().equals(value)) {
                 return true;
             }
         }
         return false;
     }
-	
-	public void setTags(List<String> tags) {
-		this.tags.removeAll(this.tags);
-		for (String a:tags) {
-			if (!hasTheTag(a)) {
-			this.tags.add(new HubServerTagsEntity(this, a));
-			}
-		}
-		
-	}
-	
-	public HubServerEntity() {
-		
-	}
-	public void update(ServerRegistrationRequest request) {
-		this.name = request.getName();
-		this.description = request.getDescription();
-		this.url = request.getUrl();
-		this.available = request.getAvailable();
-		this.admin_token = request.getAdmin_token();
-		this.role_eligible = request.getRole_eligible();
-		this.started_at = ZonedDateTime.now();
-		this.ram = request.getRam();
-		this.vcpu = request.getCpus();
-		
-	//	this.tags = request.getTags();
-	}
-	
-	public HubServerEntity(ServerRegistrationRequest request) {
-		this.name = request.getName();
-		this.description = request.getDescription();
-		this.url = request.getUrl();
-		this.available = request.getAvailable();
-		this.admin_token = request.getAdmin_token();
-		this.role_eligible = request.getRole_eligible();
-		this.started_at = ZonedDateTime.now();
-		this.ram = request.getRam();
-		this.vcpu = request.getCpus();
-	//	this.tags = request.getTags();
-	}
 
-	public HubServerResponse toHubServerResponse() {
-		HubServerResponse resp= new HubServerResponse(id, name);
+    public HubServerEntity() {
 
-		resp.setDescription(description);
-		resp.setRam(ram);
-		resp.setUrl(url);
-		resp.setVcpu(vcpu);
-		resp.setStarted_at(started_at);
-		resp.setTags(this.getTags());
-	
-		return resp;
-	}
-	
-	
-	
+    }
+
+    public void update(ClientServerRegistrationRequest request) {
+        this.name = request.getName();
+        this.description = request.getDescription();
+        this.url = request.getUrl();
+        this.available = request.getAvailable();
+        this.token = request.getToken();
+        this.eligibleRole = request.getEligibleRole();
+        this.memory = request.getMemory();
+        this.virtualCores = request.getVirtualCores();
+
+        this.tags.clear();
+        request.getTags().stream()
+            .forEach(tag -> {
+                this.tags.add(new HubServerTagEntity(this, tag));
+            });
+    }
+
+    public HubServerEntity(ClientServerRegistrationRequest request) {
+        this.name = request.getName();
+        this.description = request.getDescription();
+        this.url = request.getUrl();
+        this.available = request.getAvailable();
+        this.token = request.getToken();
+        this.eligibleRole = request.getEligibleRole();
+        this.startedAt = ZonedDateTime.now();
+        this.memory = request.getMemory();
+        this.virtualCores = request.getVirtualCores();
+
+        request.getTags().stream()
+            .forEach(tag -> {
+                this.tags.add(new HubServerTagEntity(this, tag));
+            });
+    }
+
+    public ClientServer toDto() {
+        final ClientServer record = new ClientServer();
+
+        record.setAvailable(this.available);
+        record.setDescription(this.description);
+        record.setEligibleRole(this.eligibleRole);
+        record.setId(this.id);
+        record.setMemory(this.memory);
+        record.setName(this.name);
+        record.setStartedAt(this.startedAt);
+        record.setToken(this.token);
+        record.setUrl(this.url);
+        record.setVirtualCores(this.virtualCores);
+
+        this.tags.stream().forEach(tag -> record.getTags().add(tag.getValue()));
+
+        return record;
+    }
+
 }

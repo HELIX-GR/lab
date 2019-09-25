@@ -15,14 +15,16 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import gr.helix.core.common.domain.AccountEntity;
+import gr.helix.lab.web.model.admin.ClientServerRegistration;
 
-@Entity(name = "AccountToServerEntity")
+@Entity(name = "AccountServer")
 @Table(
     schema = "lab", name = "account_to_server",
     uniqueConstraints = {
         @UniqueConstraint(name = "uq_account_to_server_server_url", columnNames = {"`server_url`"}),
-    })
-public class AccountToServerEntity {
+    }
+)
+public class AccountServerEntity {
 
 	@Id
 	@Column(name = "`id`", updatable = false)
@@ -33,35 +35,36 @@ public class AccountToServerEntity {
         allocationSize = 1
     )
     @GeneratedValue(generator = "account_to_server_id_seq", strategy = GenerationType.SEQUENCE)
-    Integer id;
+    Integer         id;
 
-	@Column(name = "`name`")
-    String name;
-	
-	@NotNull
-    @ManyToOne(targetEntity=AccountEntity.class)
+    @Column(name = "`name`")
+    String          name;
+
+    @NotNull
+    @ManyToOne(targetEntity = AccountEntity.class)
     @JoinColumn(name = "account", nullable = false)
-    AccountEntity account;
-	
-	@NotNull
-    @ManyToOne(targetEntity=HubServerEntity.class)
-    @JoinColumn(name = "server_id", nullable = false)
-	HubServerEntity hub_server;
-	
-	@Column(name = "`server_url`")
-    String url;
-	
-	@Column(name = "`started_at`",insertable = false)
-    ZonedDateTime startedAt;
-	
-	@Column(name = "`state`")
-	String state;
+    AccountEntity   account;
 
-	public AccountToServerEntity() {
-	}
+    @NotNull
+    @ManyToOne(targetEntity = HubServerEntity.class)
+    @JoinColumn(name = "server_id", nullable = false)
+    HubServerEntity server;
+
+    /**
+     * The URL where the server can be accessed (typically
+     * /user/:name/:server.name/)
+     */
+    @Column(name = "`server_url`")
+    String          url;
+
+    @Column(name = "`started_at`", insertable = false)
+    ZonedDateTime   startedAt;
+
+    @Column(name = "`state`")
+    String          state;
 
 	public Integer getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Integer id) {
@@ -69,7 +72,7 @@ public class AccountToServerEntity {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -77,7 +80,7 @@ public class AccountToServerEntity {
 	}
 
 	public AccountEntity getAccount() {
-		return account;
+		return this.account;
 	}
 
 	public void setAccount(AccountEntity account) {
@@ -85,15 +88,15 @@ public class AccountToServerEntity {
 	}
 
 	public HubServerEntity getHubServer() {
-		return hub_server;
+		return this.server;
 	}
 
-	public void setHubServer(HubServerEntity hubServer) {
-		this.hub_server = hubServer;
+	public void setHubServer(HubServerEntity server) {
+		this.server = server;
 	}
 
 	public String getUrl() {
-		return url;
+		return this.url;
 	}
 
 	public void setUrl(String url) {
@@ -101,7 +104,7 @@ public class AccountToServerEntity {
 	}
 
 	public ZonedDateTime getStartedAt() {
-		return startedAt;
+		return this.startedAt;
 	}
 
 	public void setStartedAt(ZonedDateTime startedAt) {
@@ -109,22 +112,25 @@ public class AccountToServerEntity {
 	}
 
 	public String getState() {
-		return state;
+		return this.state;
 	}
 
 	public void setState(String state) {
 		this.state = state;
 	}
 
-	public AccountToServerEntity(String name, @NotNull AccountEntity account, @NotNull HubServerEntity hubServer,
-			String url) {
-		super();
-		this.name = name;
-		this.account = account;
-		this.hub_server = hubServer;
-		this.url = url;
-	}
-	
-	
+    public ClientServerRegistration toDto() {
+        final ClientServerRegistration record = new ClientServerRegistration();
+
+        record.setAccount(this.account.toDto());
+        record.setServer(this.server.toDto());
+        record.setId(this.id);
+        record.setName(this.name);
+        record.setStartedAt(this.startedAt);
+        record.setState(this.state);
+        record.setUrl(this.url);
+
+        return record;
+    }
 
 }

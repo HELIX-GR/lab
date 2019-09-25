@@ -11,9 +11,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-@Entity(name = "HubServerTags")
+@Entity(name = "HubServerTag")
 @Table(schema = "lab", name = "`hub_server_tags`")
-public class HubServerTagsEntity {
+public class HubServerTagEntity {
 
 	@Id
 	@Column(name = "`id`", updatable = false)
@@ -29,43 +29,37 @@ public class HubServerTagsEntity {
     @NotNull
     @ManyToOne(targetEntity=HubServerEntity.class)
     @JoinColumn(name = "hub_server", nullable = false)
-    HubServerEntity hub_server;
+    HubServerEntity server;
 
     @NotNull
     @Column(name = "`tag`", nullable = false)
-    String tag;
+    String value;
 
-	public int getId() {
-		return id;
+    public HubServerEntity getServer() {
+        return this.server;
+    }
+
+    public void setServer(HubServerEntity server) {
+        this.server = server;
+    }
+
+    public String getValue() {
+        return this.value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public HubServerTagEntity() {};
+
+	public HubServerTagEntity(HubServerEntity server, String value) {
+		this.server = server;
+		this.value = value;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public HubServerEntity getHub_server() {
-		return hub_server;
-	}
-
-	public void setHub_server(HubServerEntity hub_server) {
-		this.hub_server = hub_server;
-	}
-
-	public String getTag() {
-		return tag;
-	}
-
-	public void setTag(String tag) {
-		this.tag = tag;
-	}
-
-	public HubServerTagsEntity(@NotNull HubServerEntity hub_server, @NotNull String tag) {
-		super();
-		this.hub_server = hub_server;
-		this.tag = tag;
-	}
-	
-	public HubServerTagsEntity() {};
-	    
-	    
 }

@@ -88,23 +88,18 @@ public class ProxyController {
 
 	private void writeToResponse(HttpResponse proxiedResponse, HttpServletResponse response) throws IOException {
 		for (final Header header : proxiedResponse.getAllHeaders()) {
-			if ((!header.getName().equals(this.TRANSFER_ENCONDING_HEADER))
-					|| (!header.getValue().equals(this.TRANSFER_ENCONDING_CHUNKED))) {
+			if ((!header.getName().equals(this.TRANSFER_ENCONDING_HEADER)) ||
+				(!header.getValue().equals(this.TRANSFER_ENCONDING_CHUNKED))) {
 				response.addHeader(header.getName(), header.getValue());
 			}
 		}
 
-		OutputStream output = null;
-		InputStream input = null;
-
-		try {
-			input = proxiedResponse.getEntity().getContent();
-			output = response.getOutputStream();
-			IOUtils.copy(input, output);
-		} finally {
-			IOUtils.closeQuietly(output);
-			IOUtils.closeQuietly(input);
-		}
+        try (
+            InputStream input = proxiedResponse.getEntity().getContent();
+            OutputStream output = response.getOutputStream();
+        ) {
+            IOUtils.copy(input, output);
+        }
 	}
 
 	private void handleError(Exception ex, HttpServletResponse response) throws IOException {

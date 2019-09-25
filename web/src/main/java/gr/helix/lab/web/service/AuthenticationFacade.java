@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import gr.helix.core.common.model.EnumRole;
 import gr.helix.lab.web.model.security.User;
 
 
@@ -52,6 +53,15 @@ public class AuthenticationFacade implements IAuthenticationFacade {
     }
 
     @Override
+    public String getCurrentUserEmail() {
+        final Authentication authentication = this.getAuthentication();
+        if (authentication == null) {
+            return null;
+        }
+        return ((User) authentication.getPrincipal()).getEmail();
+    }
+
+    @Override
     public Locale getCurrentUserLocale() {
         final Authentication authentication = this.getAuthentication();
         if (authentication == null) {
@@ -60,6 +70,27 @@ public class AuthenticationFacade implements IAuthenticationFacade {
         final String lang = ((User) authentication.getPrincipal()).getLang();
 
         return Locale.forLanguageTag(lang);
+    }
+
+    @Override
+    public EnumRole[] getRoles() {
+        final Authentication authentication = this.getAuthentication();
+        if (authentication == null) {
+            return new EnumRole[] {};
+        }
+        return ((User) authentication.getPrincipal()).getAuthorities().stream()
+            .map(a -> EnumRole.fromString(a.getAuthority()))
+            .toArray(EnumRole[]::new);
+    }
+
+
+    @Override
+    public boolean hasRole(EnumRole role) {
+        final Authentication authentication = this.getAuthentication();
+        if (authentication == null) {
+            return false;
+        }
+        return ((User) authentication.getPrincipal()).hasRole(role);
     }
 
 }

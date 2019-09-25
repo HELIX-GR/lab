@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import gr.helix.core.common.model.EnumRole;
 import gr.helix.core.common.model.RestResponse;
 import gr.helix.core.common.model.user.Account;
 import gr.helix.lab.web.service.AuthenticationFacade;

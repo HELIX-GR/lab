@@ -8,12 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomeController {
-    
+
     private static final String clientRoutes[] = {
         "/",
         "/admin/",
         "/error/",
         "/filesystem/",
+        "/main/",
         "/notebook/",
         "/results/",
     };
@@ -24,11 +25,16 @@ public class HomeController {
         if (this.isClientRoute(request.getServletPath())) {
             return "index";
         }
-        return "redirect:/";
+        return "redirect:/main/";
     }
-    
-    @RequestMapping("/notebook/*")
-    public String notebook(HttpSession session, HttpServletRequest request) {
+
+    @RequestMapping({
+        "/admin/**",
+        "/error/**",
+        "/main/**",
+        "/notebook/**"
+    })
+    public String reactRoutes(HttpSession session, HttpServletRequest request) {
         return "index";
     }
 

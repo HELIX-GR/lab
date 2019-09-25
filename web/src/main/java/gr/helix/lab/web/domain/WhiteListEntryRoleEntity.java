@@ -20,13 +20,14 @@ import javax.validation.constraints.NotNull;
 import gr.helix.core.common.domain.AccountEntity;
 import gr.helix.core.common.model.EnumRole;
 
-@Entity(name = "AccountRoleWhiteList")
+@Entity(name = "WhiteListEntryRole")
 @Table(
     schema = "lab", name = "`account_role_white_list`",
     uniqueConstraints = {
         @UniqueConstraint(name = "uq_account_role_white_list", columnNames = {"`wl_account`", "`role`"})
-    })
-public class AccountRoleWhiteListEntity {
+    }
+)
+public class WhiteListEntryRoleEntity {
 
 	@Id
 	@Column(name = "`id`", updatable = false)
@@ -37,12 +38,12 @@ public class AccountRoleWhiteListEntity {
         allocationSize = 1
     )
     @GeneratedValue(generator = "account_role_white_list_id_seq", strategy = GenerationType.SEQUENCE)
-    int           Integer;
+    int           id;
 
     @NotNull
-    @ManyToOne(targetEntity=AccountWhiteListEntry.class)
+    @ManyToOne(targetEntity=WhiteListEntryEntity.class)
     @JoinColumn(name = "wl_account", nullable = false)
-    AccountWhiteListEntry wlaccount;
+    WhiteListEntryEntity entry;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -56,33 +57,56 @@ public class AccountRoleWhiteListEntity {
     @JoinColumn(name = "`granted_by`")
     AccountEntity grantedBy;
 
-    AccountRoleWhiteListEntity() {
+    protected WhiteListEntryRoleEntity() {
+
     }
 
-    public AccountRoleWhiteListEntity(AccountWhiteListEntry account, EnumRole role) {
+    public WhiteListEntryRoleEntity(WhiteListEntryEntity account, EnumRole role) {
         this(account, role, null, null);
     }
 
-    public AccountRoleWhiteListEntity(AccountWhiteListEntry account, EnumRole role, ZonedDateTime grantedAt, AccountEntity grantedBy) {
-        this.wlaccount = account;
+    public WhiteListEntryRoleEntity(WhiteListEntryEntity entry, EnumRole role, ZonedDateTime grantedAt, AccountEntity grantedBy) {
+        this.entry = entry;
         this.role = role;
         this.grantedAt = grantedAt;
         this.grantedBy = grantedBy;
     }
 
-    public AccountWhiteListEntry getAccount() {
-        return this.wlaccount;
+    public WhiteListEntryEntity getEntry() {
+        return this.entry;
+    }
+
+    public void setEntry(WhiteListEntryEntity entry) {
+        this.entry = entry;
     }
 
     public EnumRole getRole() {
         return this.role;
     }
 
+    public void setRole(EnumRole role) {
+        this.role = role;
+    }
+
     public ZonedDateTime getGrantedAt() {
         return this.grantedAt;
+    }
+
+    public void setGrantedAt(ZonedDateTime grantedAt) {
+        this.grantedAt = grantedAt;
     }
 
     public AccountEntity getGrantedBy() {
         return this.grantedBy;
     }
+
+    public void setGrantedBy(AccountEntity grantedBy) {
+        this.grantedBy = grantedBy;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+
 }
