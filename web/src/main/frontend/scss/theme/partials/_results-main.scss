@@ -119,6 +119,7 @@
     }
     &.results-lab {
       background-color: $lab-color;
+      border-top: 15px solid $lab-color;
       section.main-results-page-content .results-main-content section.results-main-sidebar .search-form-wrapper .landing-search-form {
         .main-form-content {
           border-bottom-color: $lab-color;
