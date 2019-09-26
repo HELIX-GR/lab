@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 
 import {
   DynamicRoutes,
+  EnumAuthProvider,
   ErrorPages,
   Pages,
   StaticRoutes,
@@ -32,7 +33,7 @@ import { AdminPage } from './admin';
 import { Filesystem } from './filesystem';
 import { NotebookDetails } from './views';
 
-import { setLoginFormVisibility } from '../ducks/user';
+import { toggleLoginDialog } from '../ducks/user';
 import { startNotebookServer } from '../ducks/server';
 
 class App extends React.Component {
@@ -42,8 +43,19 @@ class App extends React.Component {
 
     this.state = {
       username: null,
-      showLoginForm: false,
     };
+
+    this.toggleLoginDialog = this.toggleLoginDialog.bind(this);
+  }
+
+  toggleLoginDialog() {
+    const { authProviders = [] } = this.props.config;
+
+    if ((authProviders.length === 1) && (authProviders[0] === EnumAuthProvider.HELIX)) {
+      window.location = StaticRoutes.LOGIN.HELIX;
+    } else {
+      this.props.toggleLoginDialog();
+    }
   }
 
   render() {
@@ -117,26 +129,33 @@ class App extends React.Component {
           closeOnClick
           pauseOnHover
         />
-        <Header />
-        {routes}
-        <LoginForm showIt={this.props.setLoginFormVisibility} />
-        <Footer />
 
-      </div>);
+        <LoginForm
+          toggle={this.toggleLoginDialog}
+          visible={this.props.showLoginForm}
+        />
+
+        <Header />
+
+        {routes}
+
+        <Footer />
+      </div>
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
+    config: state.config,
     username: state.user.username,
     showLoginForm: state.user.showLoginForm,
-    admin: state.admin.isAdmin,
   };
-}
+};
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  setLoginFormVisibility,
   startNotebookServer,
+  toggleLoginDialog,  
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -4,9 +4,10 @@
     "el": "Greek"
   },
   "login": {
-    "forgot-password": "Forgot password?",
+    "forgot-password": "Forgot your password?",
     "login": "Login",
-    "subtitle": "Sign-in into your account"
+    "subtitle": "Sign-in into your account",
+    "failure": "The username or password is incorrect"
   },
   "header": {
     "files": "My Files",

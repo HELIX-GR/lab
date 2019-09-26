@@ -1,20 +1,29 @@
-import React from "react";
-import { connect } from 'react-redux';
-import {  FormattedMessage, } from 'react-intl';
-import PropTypes from 'prop-types';
-import {  Modal, } from 'reactstrap';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+import * as ReactRedux from 'react-redux';
+
+import {
+  Modal,
+} from 'reactstrap';
+
 
 import {
   NavLink,
 } from 'react-router-dom';
 
 import {
+  FormattedMessage,
+} from 'react-intl';
+
+import {
   toast,
 } from 'react-toastify';
 
 import {
-  Pages
-} from '../../model/routes';
+  EnumAuthProvider,
+  Pages,
+  StaticRoutes,
+} from '../../model';
 
 import {
   getConfiguration,
@@ -25,7 +34,6 @@ import {
   refreshProfile,
 } from '../../ducks/user';
 
-
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
@@ -33,20 +41,14 @@ class LoginForm extends React.Component {
     this._submit = this._submit.bind(this);
 
     this.state = {
-      username: props.username || '',
+      username: '',
       password: '',
     };
   }
 
   static propTypes = {
-    showIt: PropTypes.func.isRequired,
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      username: nextProps.username || '',
-      password: '',
-    });
+    toggle: PropTypes.func.isRequired,
+    visible: PropTypes.bool.isRequired,
   }
 
   _submit($event) {
@@ -57,22 +59,8 @@ class LoginForm extends React.Component {
     this.props.submit(username, password, this.props.i18n.locale);
   }
 
-  componentWillMount() {
-    this.state.showLoginForm = this.props.showLoginForm;
-  }
-
-  handleClose() {
-    this.props.showIt(!this.state.showLoginForm);
-
-  }
-
-  handleShow() {
-    this.props.showIt(true);
-  }
-
-
   render() {
-    const { defaultIdentityProvider: idp } = this.props.config;
+    const { authProviders, defaultIdentityProvider: idp } = this.props.config;
 
     return (
       <Modal
@@ -82,7 +70,7 @@ class LoginForm extends React.Component {
         style={{ maxWidth: '780px' }}
         toggle={this.props.toggle}>
         <div id="login-form">
-          <a href="" className="close" onClick={(e) => { e.preventDefault(); this.props.showIt(false); }}></a>
+          <a href="" className="close" onClick={(e) => { e.preventDefault(); this.props.toggle(); }}></a>
           <div className="title">
             <FormattedMessage id="login.subtitle" defaultMessage="Sign-in into your account" />
           </div>
@@ -90,51 +78,82 @@ class LoginForm extends React.Component {
 
             <form onSubmit={this._submit}>
 
-              <div className="text-center username">
-                <input type="text" className="input-text" placeholder="username"
-                  value={this.state.username}
-                  onChange={(ev) => this.setState({ username: ev.target.value })}
-                />
-              </div>
+              {authProviders.indexOf(EnumAuthProvider.Forms) !== -1 &&
+                <React.Fragment>
+                  <div className="text-center username">
+                    <input type="text" className="input-text" placeholder="username"
+                      value={this.state.username}
+                      onChange={(ev) => this.setState({ username: ev.target.value })}
+                    />
+                  </div>
 
-              <div className="text-center password">
-                <input type="password" className="input-text" placeholder="password"
-                  value={this.state.password}
-                  onChange={(ev) => this.setState({ password: ev.target.value })}
-                />
-              </div>
+                  <div className="text-center password">
+                    <input type="password" className="input-text" placeholder="password"
+                      value={this.state.password}
+                      onChange={(ev) => this.setState({ password: ev.target.value })}
+                    />
+                  </div>
 
-              <div className="text-center forgot-password" >
-                <NavLink className="forgot-password" to={Pages.ResetPassword}>
-                  <FormattedMessage id="login.forgot-password" defaultMessage="Forgot your password?" />
-                </NavLink>
-              </div>
+                  <div className="text-center forgot-password" >
+                    <NavLink className="forgot-password" to={Pages.ResetPassword}>
+                      <FormattedMessage id="login.forgot-password" defaultMessage="Forgot your password?" />
+                    </NavLink>
+                  </div>
 
-              <div className="login-helix">
-                <button type="submit" name="helix" className="helix">
-                  <FormattedMessage id="login.login" defaultMessage="Login" disabled/>
-                </button>
-              </div>
+                  <div className="login-helix">
+                    <button type="submit" name="helix" className="helix">
+                      <FormattedMessage id="login.login" defaultMessage="Login" />
+                    </button>
+                  </div>
 
-              <div className="text-separator">
-                <span className="text-center">OR</span>
-              </div>
+                  {authProviders.length !== 1 &&
+                    <div className="text-separator">
+                      <span className="text-center">OR</span>
+                    </div>
+                  }
 
-              <div className="login-google">
-                <a href="/login/google">
-                  <button type="button" name="google" className="oauth">
-                    <span>Google</span>
-                  </button>
-                </a>
-              </div>
+                </React.Fragment>
+              }
 
-              <div className="login-academic">
-                <a href={idp ? `/saml/login?idp=${idp}` : '/saml/login'}>
-                  <button type="button" name="academic" className="academic" disabled>
-                    <span>Academic Login</span>
-                  </button>
-                </a>
-              </div>
+              {authProviders.indexOf(EnumAuthProvider.Google) !== -1 &&
+                <div className="login-google">
+                  <a href={StaticRoutes.LOGIN.GOOGLE}>
+                    <button type="button" name="google" className="oauth">
+                      <span>Google</span>
+                    </button>
+                  </a>
+                </div>
+              }
+
+              {authProviders.indexOf(EnumAuthProvider.GitHub) !== -1 &&
+                <div className="login-github">
+                  <a href={StaticRoutes.LOGIN.GITHUB}>
+                    <button type="button" name="github" className="oauth">
+                      <span>GitHub</span>
+                    </button>
+                  </a>
+                </div>
+              }
+
+              {authProviders.indexOf(EnumAuthProvider.HELIX) !== -1 &&
+                <div className="login-helix">
+                  <a href={StaticRoutes.LOGIN.HELIX}>
+                    <button type="button" name="helix" className="oauth">
+                      <span>HELIX</span>
+                    </button>
+                  </a>
+                </div>
+              }
+
+              {authProviders.indexOf(EnumAuthProvider.SAML) !== -1 &&
+                <div className="login-academic">
+                  <a href={idp ? `${StaticRoutes.LOGIN.SAML}?idp=${idp}` : StaticRoutes.LOGIN.SAML}>
+                    <button type="button" name="academic" className="academic">
+                      <span>Academic Login</span>
+                    </button>
+                  </a>
+                </div>
+              }
 
             </form>
 
@@ -145,10 +164,13 @@ class LoginForm extends React.Component {
   }
 }
 
+//
+// Container component
+//
+
 const mapStateToProps = (state) => ({
   config: state.config,
   i18n: state.i18n,
-  visible: state.user.showLoginForm,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -159,15 +181,13 @@ const mapDispatchToProps = (dispatch) => ({
       .then(
         () => {
           toast.dismiss();
-          dispatch(this.props.showIt(false));
         },
         () => {
           toast.dismiss();
-          toast.error(<FormattedMessage id="login.failure" defaultMessage="The username or password is incorrect." />);
+          toast.error(<FormattedMessage id="login.failure" />);
         })
       .catch(() => null)
   ),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
-
+export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(LoginForm);

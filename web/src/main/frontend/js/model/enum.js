@@ -23,3 +23,11 @@ export const EnumLocale = {
   EL: 'el',
   EN: 'en-GB',
 };
+
+export const EnumAuthProvider = {
+  Forms: 'Forms',
+  Google: 'Google',
+  GitHub: 'GitHub',
+  HELIX: 'HELIX',
+  SAML: 'SAML',
+};

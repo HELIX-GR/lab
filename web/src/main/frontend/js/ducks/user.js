@@ -18,7 +18,7 @@ const PROFILE_SAVE_SUCCESS = 'user/PROFILE_SAVE_SUCCESS';
 const SERVERS_REQUEST = 'users/SERVERS_REQUEST';
 const SERVERS_SUCCESS = 'users/SERVERS_SUCCESS';
 
-const SHOW_LOGIN_FORM = 'user/SHOW_LOGIN_FORM';
+const TOGGLE_LOGIN_DIALOG = 'user/TOGGLE_LOGIN_DIALOG';
 
 // Initial state
 
@@ -77,10 +77,10 @@ export default (state = initialState, action) => {
         servers: action.servers,
       };
 
-    case SHOW_LOGIN_FORM:
+    case TOGGLE_LOGIN_DIALOG:
       return {
         ...state,
-        showLoginForm: action.showLoginForm && !state.lastLogin,
+        showLoginForm: !state.showLoginForm,
       };
 
     default:
@@ -136,9 +136,8 @@ const serversSuccess = (servers, timestamp) => ({
   timestamp,
 });
 
-export const setLoginFormVisibility = (showLoginForm) => ({
-  type: SHOW_LOGIN_FORM,
-  showLoginForm,
+export const toggleLoginDialog = () => ({
+  type: TOGGLE_LOGIN_DIALOG,
 });
 
 // Thunk actions

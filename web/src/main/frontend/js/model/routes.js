@@ -15,11 +15,22 @@ const NOTEBOOK_VIEWER = 'http://nbviewer.jupyter.org';
 const PROJECT = '/project/*';
 const RESULTS = '/results/';
 
+const GOOGLE = '/login/google';
+const GITHUB = '/login/github';
+const HELIX = '/login/helix';
+const SAML = '/saml/login';
+
 export const StaticRoutes = {
   ADMIN,
   CORE,
   FILESYSTEM,
   HOME,
+  LOGIN: {
+    GITHUB,
+    GOOGLE,
+    HELIX,
+    SAML,
+  },
   NEWS,
   NOTEBOOK_VIEWER,
   PROJECT,

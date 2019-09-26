@@ -7,6 +7,7 @@ export {
 } from './routes';
 
 export {
+  EnumAuthProvider,
   EnumCatalog,
   EnumCkanFacet,
   EnumFacet,

@@ -8,11 +8,7 @@ import FileTable from './file-table';
 import { toast, } from 'react-toastify';
 import { StaticRoutes, } from '../../model';
 import { withRouter, } from 'react-router-dom';
-import { setLoginFormVisibility } from '../../ducks/user';
 
-/**
- * Table example 
- */
 class FileSystem extends Component {
   constructor(props) {
     super(props);
@@ -33,7 +29,6 @@ class FileSystem extends Component {
           folder: this.props.filesystem
         }));
     } else {
-      this.props.setLoginFormVisibility(true);
       this.props.history.push(StaticRoutes.HOME);
     }
 
@@ -203,7 +198,7 @@ function mapStateToProps(state) {
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ getFilesystem, setTablePath, createFolder, setNewFolder, setLoginFormVisibility }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ getFilesystem, setTablePath, createFolder, setNewFolder }, dispatch);
 
 
 FileSystem = connect(mapStateToProps, mapDispatchToProps)(injectIntl(FileSystem));

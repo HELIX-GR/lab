@@ -4,9 +4,10 @@
     "el": "Ελληνικά"
   },
   "login": {
-    "forgot-password": "Forgot password?",
-    "login": "Login",
-    "subtitle": "Sign-in into your account"
+    "forgot-password": "Ξεχάσατε το κωδικό σας;",
+    "login": "Είσοδος",
+    "subtitle": "Εισοδος στο λογαριασμό σας",
+    "failure": "Το όνομα χρήστη ή/και ο κωδικός είναι λάθος"
   },
   "header": {
     "files": "Τα Αρχεία μου",

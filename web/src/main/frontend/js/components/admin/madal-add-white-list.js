@@ -18,9 +18,6 @@ class ModalAddWhiteList extends React.Component {
 
     };
   }
-  componentWillMount() {
-    this.state.showLoginForm = this.props.showLoginForm;
-  }
 
   handleClose() {
     this.setState({ open: false });
