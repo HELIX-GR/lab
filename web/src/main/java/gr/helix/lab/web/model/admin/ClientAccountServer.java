@@ -2,7 +2,7 @@ package gr.helix.lab.web.model.admin;
 
 public class ClientAccountServer {
 
-    private String       target;
+    private String       endpoint;
 
     private ClientServer server;
 
@@ -10,17 +10,17 @@ public class ClientAccountServer {
 
     }
 
-    public ClientAccountServer(String target, ClientServer server) {
-        this.target = target;
+    public ClientAccountServer(String endpoint, ClientServer server) {
+        this.endpoint = endpoint;
         this.server = server;
     }
 
-    public String getTarget() {
-        return this.target;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
-    public void setTarget(String target) {
-        this.target = target;
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
     }
 
     public ClientServer getServer() {
