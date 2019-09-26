@@ -67,12 +67,12 @@ class NotebookDetails extends React.Component {
   }
 
   get organizationLogo() {
-    const { search: { notebook: n } } = this.props;
+    const { ckan, search: { notebook: n } } = this.props;
 
     if (n && n.organization) {
       const image = n.organization.image_url;
       if (image) {
-        const url = image.startsWith('http') ? image : `${StaticRoutes.CKAN}/uploads/group/${image}`;
+        const url = image.startsWith('http') ? image : `${ckan.host}/uploads/group/${image}`;
 
         return (
           <div className="image">
@@ -322,6 +322,7 @@ class NotebookDetails extends React.Component {
 
 
 const mapStateToProps = (state) => ({
+  ckan: state.config.ckan,
   search: state.ui.search,
   username: state.user.username,
 });

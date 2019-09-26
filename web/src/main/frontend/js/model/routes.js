@@ -7,7 +7,6 @@ import pathToRegexp from 'path-to-regexp';
  * Static routes
  */
 const ADMIN = '/admin/';
-const CKAN = 'https://notebooks.dev.hellenicdataservice.gr/';
 const CORE = 'https://hellenicdataservice.gr';
 const FILESYSTEM = '/filesystem/';
 const HOME = '/';
@@ -18,7 +17,6 @@ const RESULTS = '/results/';
 
 export const StaticRoutes = {
   ADMIN,
-  CKAN,
   CORE,
   FILESYSTEM,
   HOME,
