@@ -58,6 +58,12 @@ public class CkanServiceProxy {
 
     private static final Logger  logger = LoggerFactory.getLogger(CkanServiceProxy.class);
 
+    private static final int HTTP_PORT = 80;
+    private static final int HTTPS_PORT = 443;
+
+    private static final String HTTP_SCHEME = "HTTP";
+    private static final String HTTPS_SCHEME = "HTTPS";
+
     private ObjectMapper         objectMapper;
 
     private HttpClient           httpClient;
@@ -86,10 +92,7 @@ public class CkanServiceProxy {
     public CatalogResult<Package> getPackages(CkanCatalogQuery query, boolean includeFacets) throws ApplicationException {
         try {
             // CKAN start index starts from 0
-            final URIBuilder builder = new URIBuilder()
-                .setScheme(this.ckanConfiguration.getScheme())
-                .setHost(this.ckanConfiguration.getHost())
-                .setPort(this.ckanConfiguration.getPort())
+            final URIBuilder builder = this.createURIBuilder()
                 .setPath(this.composePath("api/action/package_search"))
                 .addParameter("q", query.getTerm())
                 .addParameter("sort", "relevance asc, metadata_modified desc")
@@ -130,10 +133,7 @@ public class CkanServiceProxy {
 
     public Package getPackage(String id) {
         try {
-            final URIBuilder builder = new URIBuilder()
-                .setScheme(this.ckanConfiguration.getScheme())
-                .setHost(this.ckanConfiguration.getHost())
-                .setPort(this.ckanConfiguration.getPort())
+            final URIBuilder builder = this.createURIBuilder()
                 .setPath(this.composePath("api/action/package_show"))
                 .addParameter("id", id);
 
@@ -162,10 +162,7 @@ public class CkanServiceProxy {
         final CkanMetadata metadata = new CkanMetadata();
 
         try {
-            final String host = new URIBuilder()
-                .setScheme(this.ckanConfiguration.getScheme())
-                .setHost(this.ckanConfiguration.getHost())
-                .setPort(this.ckanConfiguration.getPort())
+            final String host = this.createURIBuilder()
                 .build()
                 .toString();
             metadata.setHost(host);
@@ -203,10 +200,7 @@ public class CkanServiceProxy {
 
     private List<License> getLicenses() {
         try {
-            final URI uri = new URIBuilder()
-                .setScheme(this.ckanConfiguration.getScheme())
-                .setHost(this.ckanConfiguration.getHost())
-                .setPort(this.ckanConfiguration.getPort())
+            final URI uri = this.createURIBuilder()
                 .setPath(this.composePath("api/action/license_list"))
                 .build();
 
@@ -234,10 +228,7 @@ public class CkanServiceProxy {
 
     private List<String> getFormats() {
         try {
-            final URI uri = new URIBuilder()
-                .setScheme(this.ckanConfiguration.getScheme())
-                .setHost(this.ckanConfiguration.getHost())
-                .setPort(this.ckanConfiguration.getPort())
+            final URI uri = this.createURIBuilder()
                 .setPath(this.composePath("api/action/format_autocomplete"))
                 .setParameter("q", "")
                 .setParameter("limit", "1000")
@@ -267,10 +258,7 @@ public class CkanServiceProxy {
 
     private List<Tag> getTags() {
         try {
-            final URI uri = new URIBuilder()
-                .setScheme(this.ckanConfiguration.getScheme())
-                .setHost(this.ckanConfiguration.getHost())
-                .setPort(this.ckanConfiguration.getPort())
+            final URI uri = this.createURIBuilder()
                 .setPath(this.composePath("api/action/tag_list"))
                 .setParameter("all_fields", "true")
                 .build();
@@ -299,10 +287,7 @@ public class CkanServiceProxy {
 
     private List<Organization> getOrganizations() {
         try {
-            final URI uri = new URIBuilder()
-                .setScheme(this.ckanConfiguration.getScheme())
-                .setHost(this.ckanConfiguration.getHost())
-                .setPort(this.ckanConfiguration.getPort())
+            final URI uri = this.createURIBuilder()
                 .setPath(this.composePath("api/action/organization_list"))
                 .setParameter("limit", "1000")
                 .setParameter("all_fields", "true")
@@ -332,10 +317,7 @@ public class CkanServiceProxy {
 
     private List<Group> getGroups() {
         try {
-            final URI uri = new URIBuilder()
-                .setScheme(this.ckanConfiguration.getScheme())
-                .setHost(this.ckanConfiguration.getHost())
-                .setPort(this.ckanConfiguration.getPort())
+            final URI uri = this.createURIBuilder()
                 .setPath(this.composePath("api/action/group_list"))
                 .setParameter("limit", "1000")
                 .setParameter("all_fields", "true")
@@ -502,10 +484,7 @@ public class CkanServiceProxy {
         final String packageId = UUID.randomUUID().toString();
 
         try {
-            final URI uri = new URIBuilder()
-                .setScheme(this.ckanConfiguration.getScheme())
-                .setHost(this.ckanConfiguration.getHost())
-                .setPort(this.ckanConfiguration.getPort())
+            final URI uri = this.createURIBuilder()
                 .setPath(this.composePath("/api/action/package_create"))
                 .build();
 
@@ -552,10 +531,7 @@ public class CkanServiceProxy {
 
     public Resource createResource(PublishRequest query, File  file, String package_id) throws ApplicationException {
         try {
-            final URI uri = new URIBuilder()
-                .setScheme(this.ckanConfiguration.getScheme())
-                .setHost(this.ckanConfiguration.getHost())
-                .setPort(this.ckanConfiguration.getPort())
+            final URI uri = this.createURIBuilder()
                 .setPath(this.composePath("/api/action/resource_create"))
                 .build();
 
@@ -589,6 +565,22 @@ public class CkanServiceProxy {
             this.handleException(ex);
         }
         return null;
+    }
+
+    private URIBuilder createURIBuilder() {
+        final ServiceConfiguration config = this.ckanConfiguration;
+
+        final URIBuilder builder = new URIBuilder()
+            .setScheme(config.getScheme())
+            .setHost(config.getHost());
+
+        if ((config.getScheme().equalsIgnoreCase(HTTP_SCHEME) && config.getPort() != HTTP_PORT) ||
+            (config.getScheme().equalsIgnoreCase(HTTPS_SCHEME) && config.getPort() != HTTPS_PORT))
+        {
+            builder.setPort(config.getPort());
+        }
+
+        return builder;
     }
 
 }
