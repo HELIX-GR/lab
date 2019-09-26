@@ -3,7 +3,7 @@ import * as ReactRedux from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { changeLocale, } from '../../ducks/i18n';
-import { logout, modalLoginAction } from '../../ducks/user';
+import { logout, setLoginFormVisibility } from '../../ducks/user';
 import { FormattedMessage, } from 'react-intl';
 import {
   buildPath,
@@ -121,7 +121,7 @@ class Header extends React.Component {
 
           {!authenticated &&
             <div className="account-item">
-              <a onClick={(e) => this.props.modalLoginAction(true)}>
+              <a onClick={(e) => this.props.setLoginFormVisibility(true)}>
                 <img className="account-icon" src="/images/svg/Avatar.svg" alt="Account tab" />
               </a>
             </div>
@@ -172,7 +172,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   changeLocale,
   logout,
-  modalLoginAction,
+  setLoginFormVisibility,
 }, dispatch);
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => ({

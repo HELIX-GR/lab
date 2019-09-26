@@ -5,8 +5,7 @@ import { Button as Btn } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Form, FormGroup, Label, Input } from 'reactstrap';
 
-import Button from '@material-ui/core/Button';
-import { publishFile } from '../../ducks/config';
+import { publishNotebook } from '../../ducks/notebook';
 import { toast, } from 'react-toastify';
 import CreatableSelect from 'react-select/lib/Creatable';
 
@@ -29,7 +28,7 @@ class PublishModal extends React.Component {
     filename: '',
     filerename: '',
     isPublishing: false,
-    path: this.props.table_path,
+    path: this.props.tablePath,
     lang: "Python"
   };
 
@@ -45,9 +44,9 @@ class PublishModal extends React.Component {
   handleOpen = () => {
     this.setState({
       open: true,
-      path: this.props.table_path,
-      filename: this.props.selected_file,
-      filerename: this.props.selected_file,
+      path: this.props.tablePath,
+      filename: this.props.selectedFile,
+      filerename: this.props.selectedFile,
     });
   };
 
@@ -66,7 +65,7 @@ class PublishModal extends React.Component {
   };
 
   handlePublish = () => {
-    let path = this.props.table_path;
+    let path = this.props.tablePath;
     if (path.startsWith('/')) {
       path = path.slice(1);
     }
@@ -77,7 +76,7 @@ class PublishModal extends React.Component {
 
     let { title, filename, filerename, description, lang, tags } = this.state;
     if (this.getFileExtension(filename) == "ipynb") {
-      this.props.publishFile({ title, path, filename, filerename, description, lang, tags })
+      this.props.publishNotebook({ title, path, filename, filerename, description, lang, tags })
         .then((fs) => {
           this.handleClose();
         })
@@ -108,7 +107,7 @@ class PublishModal extends React.Component {
   };
 
   render() {
-    const show = this.getFileExtension(this.props.selected_file) == "ipynb";
+    const show = this.getFileExtension(this.props.selectedFile) == "ipynb";
     return (show &&
       <div className="filesystem-btn">
         <a data="PUBLISH NOTEBOOK" onClick={this.handleOpen}>
@@ -166,14 +165,14 @@ class PublishModal extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    filesystem: state.config.filesystem,
-    table_path: state.config.table_path,
-    selected_file: state.config.selected_file,
+    filesystem: state.filesystem.data,
+    tablePath: state.filesystem.tablePath,
+    selectedFile: state.filesystem.selectedFile,
   };
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ publishFile }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ publishNotebook }, dispatch);
 
 
 

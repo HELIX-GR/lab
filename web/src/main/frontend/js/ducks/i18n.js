@@ -2,65 +2,69 @@ import i18n from '../service/i18n';
 import moment from '../moment-localized';
 
 // Actions
+
 const SET_LOCALE = 'locale/SET_LOCALE';
-const REQUEST_MESSAGES = 'locale/REQUEST_MESSAGES';
-const LOAD_MESSAGES = 'locale/LOAD_MESSAGES';
+
+const MESSAGES_REQUEST = 'locale/MESSAGES_REQUEST';
+const MESSAGES_SUCCESS = 'locale/MESSAGES_SUCCESS';
+
+// Reducer
 
 const initialState = {
   locale: '',
   messages: {},
 };
 
-// Reducer
 export default (state = initialState, action) => {
   switch (action.type) {
-    case REQUEST_MESSAGES:
-      return state; // no-op
-    case LOAD_MESSAGES: {
+    case SET_LOCALE:
+      return {
+        ...state,
+        locale: action.locale,
+      };
+
+    case MESSAGES_SUCCESS: {
       moment.locale(action.locale);
 
       const newState = { ...state };
       newState.messages[action.locale] = action.messages;
       return newState;
     }
-    case SET_LOCALE:
-      return {
-        ...state,
-        locale: action.locale,
-      };
+
     default:
       return state;
   }
 };
 
 // Action Creators
+
 export const setLocale = (locale) => ({
   type: SET_LOCALE,
   locale,
 });
 
-const loadMessages = (locale, messages) => ({
-  type: LOAD_MESSAGES,
+const messagesRequest = (locale) => ({
+  type: MESSAGES_REQUEST,
+  locale,
+});
+
+const messagesSuccess = (locale, messages) => ({
+  type: MESSAGES_SUCCESS,
   locale,
   messages,
 });
 
-const requestMessages = (locale) => ({
-  type: REQUEST_MESSAGES,
-  locale,
-});
-
 // Thunk actions
-const fetchMessages = (locale) => (dispatch) => {
-  dispatch(requestMessages(locale));
+
+const getMessages = (locale) => (dispatch) => {
+  dispatch(messagesRequest(locale));
+
   return i18n.getMessages(locale)
-    .then(r => dispatch(loadMessages(locale, r)));
+    .then(r => dispatch(messagesSuccess(locale, r)));
 };
 
 export const changeLocale = (locale) => (dispatch) => {
   dispatch(setLocale(locale));
 
-  dispatch(fetchMessages(locale))
-    .catch(
-      () => console.warn("No messages for locale " + locale));
+  return dispatch(getMessages(locale));
 };

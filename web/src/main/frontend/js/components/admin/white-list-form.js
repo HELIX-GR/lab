@@ -22,13 +22,6 @@ const styles = theme => ({
   },
 });
 
-const styles2 = {
-  customWidth: {
-    width: 150,
-  },
-};
-
-
 class WhiteListForm extends Component {
   constructor(props) {
     super(props);

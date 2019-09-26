@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { grantRole, revokeRole } from '../../ducks/admin';
+import { grantUserRole, revokeUserRole } from '../../ducks/admin';
 import { FormattedTime } from 'react-intl';
 import _ from 'lodash';
 import Table from '@material-ui/core/Table';
@@ -47,9 +47,9 @@ export class UserTable extends React.Component {
   }
   updateCheck(is, r, user_id, index) {
     if (is) {
-      this.props.grantRole(user_id, r);
+      this.props.grantUserRole(user_id, r);
     } else {
-      this.props.revokeRole(user_id, r);
+      this.props.revokeUserRole(user_id, r);
     }
 
   }
@@ -147,7 +147,7 @@ function mapStateToProps(state) {
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ grantRole, revokeRole }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ grantUserRole, revokeUserRole }, dispatch);
 
 
 

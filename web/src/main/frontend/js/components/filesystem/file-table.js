@@ -16,7 +16,7 @@ import _ from 'lodash';
 
 
 export default function FileTable({ props }) {
-  const { data, new_folder, handleRowClick, handleRowDoubleClick, formatRelative, handleCreateFolder, setNewFolder, folder, last_update, handleNameChange, value_folder, selected_file } = props;
+  const { data, newFolder, handleRowClick, handleRowDoubleClick, formatRelative, handleCreateFolder, setNewFolder, folder, last_update, handleNameChange, value_folder, selectedFile } = props;
   return (
     <div className="filesystem-box">
       <Table >
@@ -31,7 +31,7 @@ export default function FileTable({ props }) {
         </TableHead>
 
         <TableBody>
-          {(_.isEmpty(data) && !new_folder) ?
+          {(_.isEmpty(data) && !newFolder) ?
             <TableRow >
               <TableCell />
               <TableCell width="300px" style={{ textAlign: 'center' }}> No Data </TableCell>
@@ -45,7 +45,7 @@ export default function FileTable({ props }) {
                 onClick={event => handleRowClick(event, index, row.type, row.name)}
                 onDoubleClick={event => handleRowDoubleClick(event, index, row.type, row.name)}
                 key={index}
-                selected={row.name === selected_file}>
+                selected={row.name === selectedFile}>
                 <TableCell width="66px" >{row.type === 'Folder' ?
                   <i className="fa fa-folder" />
                   : row.type === 'file' ?
@@ -60,7 +60,7 @@ export default function FileTable({ props }) {
                 </TableCell>
               </TableRow>
             )))}
-          {new_folder ?
+          {newFolder ?
             <TableRow key={"NewFile"} >
               <TableCell width="66px" >
                 <i className="fa fa-folder" />

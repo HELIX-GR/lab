@@ -4,12 +4,12 @@ import {
   flatten,
 } from 'flat';
 
-import * as api from './api/i18n';
+import i18n from './api/i18n';
 
 export default {
 
   getMessages: (locale) => {
-    return api.getMessages(locale).then(r => {
+    return i18n.getMessages(locale).then(r => {
       if (_.isEmpty(r) || !_.isObject(r)) {
         throw new Error('Expected a non-empty object with keyed messages!');
       } else {
@@ -17,6 +17,6 @@ export default {
         return flatten(r);
       }
     });
-  }
+  },
 
 };

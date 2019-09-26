@@ -1,12 +1,10 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import WhiteListForm from './white-list-form';
-import { addWhiteList } from '../../ducks/admin';
+import { addWhiteListUser } from '../../ducks/admin';
 import Button from '@material-ui/core/Button';
-
-
 
 class ModalAddWhiteList extends React.Component {
   constructor(props) {
@@ -17,11 +15,11 @@ class ModalAddWhiteList extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       open: false,
-      
+
     };
   }
   componentWillMount() {
-    this.state.show_login = this.props.show_login;
+    this.state.showLoginForm = this.props.showLoginForm;
   }
 
   handleClose() {
@@ -34,7 +32,7 @@ class ModalAddWhiteList extends React.Component {
 
 
   handleSubmit(userInfo) {
-    this.props.addWhiteList(userInfo);
+    this.props.addWhiteListUser(userInfo);
   }
 
   render() {
@@ -48,7 +46,7 @@ class ModalAddWhiteList extends React.Component {
         >
           <ModalHeader toggle={this.handleClose}> Users White List </ModalHeader>
           <ModalBody>
-            <WhiteListForm finish={this.handleSubmit} onClose={this.handleClose}/>
+            <WhiteListForm finish={this.handleSubmit} onClose={this.handleClose} />
 
           </ModalBody>
 
@@ -65,7 +63,7 @@ function mapStateToProps(state) {
   };
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ addWhiteList, }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ addWhiteListUser, }, dispatch);
 
 
 

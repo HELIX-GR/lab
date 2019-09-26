@@ -1,12 +1,7 @@
-const fetch = require('isomorphic-fetch');
+import fetch from 'isomorphic-fetch';
 
-import {
-  checkStatus,
-} from '../util/check-fetch-status';
-
-import {
-  checkError,
-} from '../util/check-json';
+import checkError from '../util/check-json';
+import checkStatus from '../util/check-fetch-status';
 
 export default (url, method, token, body, headers) => fetch(url, {
   method,
@@ -18,6 +13,6 @@ export default (url, method, token, body, headers) => fetch(url, {
   body,
 })
   .then(checkStatus)
-  .then(res => res.json())
+  .then(response => response.json())
   .then(checkError)
-  .then(r => r.result);
+  .then(response => response.result);

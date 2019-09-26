@@ -1,6 +1,6 @@
-const actions = require('./api/fetch-actions');
+import actions from './api/fetch-actions';
 
-var api = {
+export default {
 
   getProfile: () => {
     return actions.get('/action/user/profile');
@@ -29,6 +29,5 @@ var api = {
   logout: (token) => {
     return actions.submit('/logout', token, null);
   },
-};
 
-module.exports = api;
+};

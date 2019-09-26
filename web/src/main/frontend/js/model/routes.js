@@ -65,9 +65,7 @@ export const ErrorPages = {
  * API routes
  */
 export const api = {
-  SearchAll: '/action/catalog/query',
   SearchCkan: '/action/ckan/query',
-  SearchOpenaire: '/action/openaire/query',
 };
 
 /**

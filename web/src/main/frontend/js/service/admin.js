@@ -1,7 +1,7 @@
-import * as actions from './api/fetch-actions';
+import actions from './api/fetch-actions';
 
+export default {
 
-const api = {
   getServers: () => {
     return actions.get('/action/admin/servers');
   },
@@ -10,27 +10,27 @@ const api = {
     return actions.get('/action/admin/users');
   },
 
-  getUsersToServers: () => {
+  getUserServers: () => {
     return actions.get('/action/admin/servers/activity');
-  },
-
-  deleteUserToServer: (regId, token) => {
-    return actions.delete(`action/admin/server/registration/${regId}`, token);
   },
 
   addServer: (serverData, token) => {
     return actions.post('/action/admin/server', token, serverData);
   },
 
-  editServer: (id, serverData, token) => {
+  updateServer: (id, serverData, token) => {
     return actions.post(`/action/admin/server/${id}`, token, serverData);
   },
 
-  grantRole: (userId, role, token) => {
+  removeUserServer: (regId, token) => {
+    return actions.delete(`action/admin/server/registration/${regId}`, token);
+  },
+
+  grantUserRole: (userId, role, token) => {
     return actions.post(`/action/admin/user/${userId}/role/${role}`, token);
   },
 
-  revokeRole: (userId, role, token) => {
+  revokeUserRole: (userId, role, token) => {
     return actions.delete(`/action/admin/user/${userId}/role/${role}`, token);
   },
 
@@ -49,6 +49,5 @@ const api = {
   revokeWhiteListRole: (userId, role, token) => {
     return actions.delete(`/action/admin/white-list/user/${userId}/role/${role}`, token);
   },
-};
 
-export default api;
+};

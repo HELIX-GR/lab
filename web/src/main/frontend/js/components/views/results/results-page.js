@@ -18,12 +18,12 @@ import {
 } from 'react-router-dom';
 
 import {
-  changeText,
+  setText,
   search as searchAll,
   setResultVisibility,
   toggleAdvanced,
   toggleSearchFacet,
-} from '../../../ducks/ui/views/search';
+} from '../../../ducks/search';
 
 import {
   buildPath,
@@ -81,7 +81,7 @@ class Results extends React.Component {
   }
 
   onTextChanged(value) {
-    this.props.changeText(value);
+    this.props.setText(value);
   }
 
   onFacetChanged(facet, value) {
@@ -195,7 +195,7 @@ class Results extends React.Component {
 
   render() {
     const {
-      search: { result = { count: 0, pageSize: 2 }, loading, text }
+      search: { result, loading, text }
     } = this.props;
     const _t = this.context.intl.formatMessage;
 
@@ -263,7 +263,7 @@ class Results extends React.Component {
             </section>
 
             <section className="results-main-result-set">
-              {result.results &&
+              {result &&
                 <Pagination
                   className="top"
                   pageIndex={result.pageIndex}
@@ -280,12 +280,12 @@ class Results extends React.Component {
                   </select>
                 </label>
                 <div className="main-results-result-count">
-                  Βρέθηκαν {result.count} Notebooks
+                  Βρέθηκαν {result ? result.count : 0} Notebooks
                 </div>
               </div>
 
               <div className="result-items">
-                {result.results && this.renderResults(result)}
+                {result && this.renderResults(result)}
 
               </div>
 
@@ -293,7 +293,7 @@ class Results extends React.Component {
 
               </div>
 
-              {result.results &&
+              {result &&
                 <Pagination
                   className="bottom"
                   pageIndex={result.pageIndex}
@@ -317,7 +317,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  changeText,
+  setText,
   searchAll,
   toggleAdvanced,
   toggleSearchFacet,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as PropTypes from 'prop-types';
-import { Col, Row, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Col, Row, Form, FormGroup, Label, Input } from 'reactstrap';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/lib/Creatable';
 

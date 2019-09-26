@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Dropzone from 'react-dropzone';
 import { Button as Btn } from 'reactstrap';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalHeader, ModalFooter } from 'reactstrap';
 import formatFileSize from '../../util/file-size';
-import { uploadFile } from '../../ducks/config';
+import { uploadFile } from '../../ducks/filesystem';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { toast, } from 'react-toastify';
 
@@ -18,7 +18,7 @@ class UploadModal extends React.Component {
     file: null,
     newFolderName: '',
     isUploading: false,
-    path: this.props.table_path,
+    path: this.props.tablePath,
   };
 
 
@@ -46,7 +46,7 @@ class UploadModal extends React.Component {
 
   handleUpload = () => {
 
-    let path = this.props.table_path;
+    let path = this.props.tablePath;
     if (path.startsWith('/')) {
       path = path.slice(1);
     }
@@ -142,8 +142,8 @@ class UploadModal extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    filesystem: state.config.filesystem,
-    table_path: state.config.table_path,
+    filesystem: state.filesystem.data,
+    tablePath: state.filesystem.tablePath,
   };
 }
 

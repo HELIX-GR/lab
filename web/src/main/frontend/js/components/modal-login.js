@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import {  FormattedMessage, } from 'react-intl';
 import PropTypes from 'prop-types';
 import {  Modal, } from 'reactstrap';
@@ -59,11 +58,11 @@ class ModalLogin extends React.Component {
   }
 
   componentWillMount() {
-    this.state.show_login = this.props.show_login;
+    this.state.showLoginForm = this.props.showLoginForm;
   }
 
   handleClose() {
-    this.props.showIt(!this.state.show_login);
+    this.props.showIt(!this.state.showLoginForm);
 
   }
 
@@ -149,7 +148,7 @@ class ModalLogin extends React.Component {
 const mapStateToProps = (state) => ({
   config: state.config,
   i18n: state.i18n,
-  visible: state.user.show_login,
+  visible: state.user.showLoginForm,
 });
 
 const mapDispatchToProps = (dispatch) => ({

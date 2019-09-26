@@ -19,13 +19,13 @@ import {
 } from '../../model';
 
 import {
-  changeText,
+  setText,
   search as searchAll,
   searchAutoComplete,
   setResultVisibility,
   toggleAdvanced,
   toggleSearchFacet,
-} from '../../ducks/ui/views/search';
+} from '../../ducks/search';
 
 import {
   default as AdvancedSearchModal,
@@ -85,7 +85,7 @@ class SearchPage extends React.Component {
   }
 
   onTextChanged(value, refresh = true) {
-    this.props.changeText(value);
+    this.props.setText(value);
 
     if ((refresh) && (this.isTextValid(value))) {
       this.searchAutoComplete(value);
@@ -150,7 +150,7 @@ class SearchPage extends React.Component {
                   </div>
 
                   {text &&
-                    <SearchResult visible={text.length > 3} text={text || ""} result={this.props.search.partialResult.catalogs} />
+                    <SearchResult visible={text.length > 3} text={text || ""} result={this.props.search.partialResult.data} />
                   }
                 </div>
 
@@ -193,7 +193,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  changeText,
+  setText,
   logout,
   searchAll,
   searchAutoComplete,

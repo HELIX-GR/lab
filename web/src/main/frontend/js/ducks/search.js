@@ -1,43 +1,43 @@
 // Services
-import { default as catalogService } from '../../../service/search';
+import { default as catalogService } from '../service/search';
 
 // Model
 import {
   EnumFacet,
-} from '../../../model';
+} from '../model';
 
 // Actions
+
 const ADVANCED_SEARCH_TOGGLE = 'ui/search-page/ADVANCED_SEARCH_TOGGLE';
 const SET_RESULT_VISIBILITY = 'ui/search-page/SET_RESULT_VISIBILITY';
 const SET_SEARCH_FACET = 'ui/search-page/SET_SEARCH_FACET';
 const TEXT_CHANGE = 'ui/search-page/TEXT_CHANGE';
 
 const SEARCH_REQUEST = 'ui/search-page/SEARCH_REQUEST';
-const SEARCH_RESPONSE = 'ui/search-page/SEARCH_RESPONSE';
+const SEARCH_SUCCESS = 'ui/search-page/SEARCH_SUCCESS';
 
 const SEARCH_AUTOCOMPLETE_REQUEST = 'ui/search-page/SEARCH_AUTOCOMPLETE_REQUEST';
-const SEARCH_AUTOCOMPLETE_RESPONSE = 'ui/search-page/SEARCH_AUTOCOMPLETE_RESPONSE';
+const SEARCH_AUTOCOMPLETE_SUCCESS = 'ui/search-page/SEARCH_AUTOCOMPLETE_SUCCESS';
 
 const NOTEBOOK_REQUEST = 'ui/search-page/NOTEBOOK_REQUEST';
-const NOTEBOOK_RESPONSE = 'ui/search-page/NOTEBOOK_RESPONSE';
+const NOTEBOOK_SUCCESS = 'ui/search-page/NOTEBOOK_SUCCESS';
 
 // Reducer
+
 const initialState = {
   advanced: false,
   facets: Object.keys(EnumFacet).reduce((result, key) => { result[EnumFacet[key]] = []; return result; }, {}),
   loading: false,
   notebook: null,
   partialResult: {
+    data: null,
     visible: false,
-    catalogs: {},
   },
-  result: {
-    catalogs: {},
-  },
+  result: null,
   text: "",
 };
 
-function facetReducer(state, action) {
+const facetReducer = (state, action) => {
   switch (action.type) {
     case SET_SEARCH_FACET:
       return {
@@ -50,7 +50,7 @@ function facetReducer(state, action) {
     default:
       return state;
   }
-}
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -94,25 +94,25 @@ export default (state = initialState, action) => {
         loading: true,
         partialResult: {
           visible: false,
-          catalogs: {},
+          data: null,
         }
       };
 
-    case SEARCH_RESPONSE:
+    case SEARCH_SUCCESS:
       return {
         ...state,
         loading: false,
         result: action.data,
       };
 
-    case SEARCH_AUTOCOMPLETE_RESPONSE:
+    case SEARCH_AUTOCOMPLETE_SUCCESS:
       return {
         ...state,
         advanced: false,
         loading: false,
         partialResult: {
           visible: true,
-          catalogs: action.data,
+          data: action.data,
         },
       };
 
@@ -123,7 +123,7 @@ export default (state = initialState, action) => {
         notebook: null,
       };
 
-    case NOTEBOOK_RESPONSE:
+    case NOTEBOOK_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -136,7 +136,8 @@ export default (state = initialState, action) => {
 };
 
 // Action creators
-export const changeText = (value) => ({
+
+export const setText = (value) => ({
   type: TEXT_CHANGE,
   value,
 });
@@ -156,58 +157,57 @@ export const setResultVisibility = (visible) => ({
   visible,
 });
 
-const catalogSearchKeywordBegin = (term) => ({
+const searchByKeywordRequest = (term) => ({
   type: SEARCH_AUTOCOMPLETE_REQUEST,
   term,
 });
 
-const catalogSearchKeywordComplete = (data) => ({
-  type: SEARCH_AUTOCOMPLETE_RESPONSE,
+const searchByKeywordSuccess = (data) => ({
+  type: SEARCH_AUTOCOMPLETE_SUCCESS,
   data,
 });
 
 
-const catalogSearchBegin = (term) => ({
+const searchRequest = (term) => ({
   type: SEARCH_REQUEST,
   term,
 });
 
-const catalogSearchComplete = (data) => ({
-  type: SEARCH_RESPONSE,
+const searchSuccess = (data) => ({
+  type: SEARCH_SUCCESS,
   data,
 });
 
-const getNotebookBegin = (id) => ({
+const notebookRequest = (id) => ({
   type: NOTEBOOK_REQUEST,
   id,
 });
 
-const getNotebookComplete = (data) => ({
-  type: NOTEBOOK_RESPONSE,
+const notebookSuccess = (data) => ({
+  type: NOTEBOOK_SUCCESS,
   data,
 });
 
 // Thunk actions
+
 export const searchAutoComplete = (term) => (dispatch, getState) => {
   const { meta: { csrfToken: token } } = getState();
 
-  dispatch(catalogSearchKeywordBegin(term));
-  return catalogService.searchKeyword(token, term)
+  dispatch(searchByKeywordRequest(term));
+
+  return catalogService.searchByKeyword(token, term)
     .then((data) => {
-      dispatch(catalogSearchKeywordComplete(data));
+      dispatch(searchByKeywordSuccess(data));
       return data;
-    })
-    .catch((err) => {
-      // TODO: Add error handling
-      console.error('Failed loading catalog data:', err);
     });
 };
 
 export const search = (term, advanced = false, pageIndex = 0, pageSize = 10) => (dispatch, getState) => {
   const { meta: { csrfToken: token }, ui: { search: { facets } } } = getState();
 
-  dispatch(changeText(term));
-  dispatch(catalogSearchBegin(term));
+  dispatch(setText(term));
+  dispatch(searchRequest(term));
+
   return catalogService.search(token, {
     pageIndex,
     pageSize,
@@ -215,26 +215,19 @@ export const search = (term, advanced = false, pageIndex = 0, pageSize = 10) => 
     facets: advanced ? facets : null,
   })
     .then((data) => {
-      dispatch(catalogSearchComplete(data));
+      dispatch(searchSuccess(data));
       return (data);
-    })
-    .catch((err) => {
-      // TODO: Add error handling
-      console.error('Failed loading catalog data:', err);
     });
 };
 
 export const searchById = (id) => (dispatch, getState) => {
   const { meta: { csrfToken: token } } = getState();
 
-  dispatch(getNotebookBegin(id));
+  dispatch(notebookRequest(id));
+
   return catalogService.searchById(token, id)
     .then((data) => {
-      dispatch(getNotebookComplete(data));
+      dispatch(notebookSuccess(data));
       return (data);
-    })
-    .catch((err) => {
-      // TODO: Add error handling
-      console.error('Failed loading catalog data:', err);
     });
 };

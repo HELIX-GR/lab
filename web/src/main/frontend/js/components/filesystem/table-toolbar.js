@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
-import Button from '@material-ui/core/Button';
 import ServerButton from './servers-button';
-import { getFilesystem, createFolder, deletePath, setNewFolder } from '../../ducks/config';
+import { getFilesystem, createFolder, deletePath, setNewFolder } from '../../ducks/filesystem';
 import UploadModal from './upload-modal';
 import PublishModal from './publish-modal';
 import { toast, } from 'react-toastify';
@@ -30,13 +29,13 @@ class TableToolbar extends React.Component {
     this.props.getFilesystem("");
   }
   handleDelete = () => {
-    if (!this.props.selected_file) {
+    if (!this.props.selectedFile) {
       toast.warn("Chose a File or empty Folder");
 
-    } else if (this.props.table_path !== "/") {
-      this.props.deletePath(this.props.table_path + "/" + this.props.selected_file);
+    } else if (this.props.tablePath !== "/") {
+      this.props.deletePath(this.props.tablePath + "/" + this.props.selectedFile);
     } else {
-      this.props.deletePath("/" + this.props.selected_file);
+      this.props.deletePath("/" + this.props.selectedFile);
     }
   }
 
@@ -65,13 +64,13 @@ class TableToolbar extends React.Component {
             </div>
             <PublishModal />
 
-            {!this.props.selected_hub ?
+            {!this.props.selectedHub ?
               null
-              : this.props.target ?
+              : this.props.endpoint ?
                 <div className="filesystem-btn">
-                  <a data="RUN " target="_blank" href={this.props.target}>
+                  <a data="RUN " target="_blank" href={this.props.endpoint}>
                     {
-                      //+ "/notebooks/" + this.props.table_path + this.props.selected_file
+                      //+ "/notebooks/" + this.props.tablePath + this.props.selectedFile
                     }
                     <img src="/images/svg/SVG/run.svg" title="Run" /></a>
                 </div> : null}
@@ -87,10 +86,10 @@ class TableToolbar extends React.Component {
               <img className="image-icon" src="/images/svg/SVG/delete.svg" title="Delete" />
             </Button>
             <PublishModal />
-            {!this.props.selected_hub ?
+            {!this.props.selectedHub ?
               null
-              : this.props.target ?
-                <Button variant="fab" label="Play" mini={true} style={style} target="_blank" href={this.props.target + "/notebooks/" + this.props.table_path + this.props.selected_file}>
+              : this.props.endpoint ?
+                <Button variant="fab" label="Play" mini={true} style={style} target="_blank" href={this.props.endpoint + "/notebooks/" + this.props.tablePath + this.props.selectedFile}>
                   <img className="image-icon" src="/images/svg/SVG/run.svg" title="Run" />
             </Button> : null}*/}
           </div>
@@ -105,19 +104,19 @@ class TableToolbar extends React.Component {
 
 }
 TableToolbar.propTypes = {
-  table_path: PropTypes.string.isRequired,
-  selected_file: PropTypes.string.isRequired,
-  target: PropTypes.string,
+  tablePath: PropTypes.string.isRequired,
+  selectedFile: PropTypes.string.isRequired,
+  endpoint: PropTypes.string,
 };
 
 
 function mapStateToProps(state) {
   return {
-    filesystem: state.config.filesystem,
-    table_path: state.config.table_path,
-    selected_file: state.config.selected_file,
-    target: state.app.target,
-    selected_hub: state.app.selected_hub,
+    filesystem: state.filesystem.data,
+    tablePath: state.filesystem.tablePath,
+    selectedFile: state.filesystem.selectedFile,
+    endpoint: state.server.endpoint,
+    selectedHub: state.server.selectedHub,
   };
 }
 

@@ -1,12 +1,9 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import ServerForm from './server-form';
-import { addNewServer } from '../../ducks/admin';
+import { addServer } from '../../ducks/admin';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 
@@ -45,7 +42,7 @@ class ModalAddServer extends React.Component {
     this.setState({ data });
   }
   handleSubmit() {
-    this.props.addNewServer(this.state.data)
+    this.props.addServer(this.state.data)
       .then(this.setState({ show_modal: false }));
 
   }
@@ -75,7 +72,7 @@ function mapStateToProps(state) {
   return {
   };
 }
-const mapDispatchToProps = (dispatch) => bindActionCreators({ addNewServer }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ addServer }, dispatch);
 
 
 

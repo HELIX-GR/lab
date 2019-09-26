@@ -3,12 +3,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import ServerList from './server-list';
-import { getUserServers } from '../../ducks/user';
-import { setSelectedHub } from '../../ducks/app';
+import { getServers } from '../../ducks/user';
+import { setSelectedHub } from '../../ducks/server';
 import { FormattedMessage } from 'react-intl';
-import { Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 
-import { startNowAction, stopServerAction, getUserInfoAction } from '../../ducks/app';
+import { startNotebookServer, stopNotebookServer, getUserServer } from '../../ducks/server';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 
@@ -24,8 +23,8 @@ class ServerButton extends React.Component {
   }
   componentWillMount() {
     if (this.props.user !== null) {
-      this.props.getUserServers();
-      this.props.getUserInfoAction();
+      this.props.getServers();
+      this.props.getUserServer();
     }
   }
 
@@ -45,10 +44,10 @@ class ServerButton extends React.Component {
   }
 
   render() {
-    const { server_stage } = this.props;
+    const { serverStage } = this.props;
     return (
       <div>
-        {server_stage == 0 &&
+        {serverStage == 0 &&
           <div id="Popover1" className="button-notebook" onClick={this.toggle}>
             <FormattedMessage id="Server.ChoseBtn" defaultMessage="Servers" />
             <i className="fa fa-crosshairs"></i>
@@ -67,21 +66,21 @@ class ServerButton extends React.Component {
           </div>
 
         }
-        {server_stage == 1 &&
-          <div className="button-notebook" onClick={() => this.props.startNowAction(this.props.selected_hub.id)}>
-            {this.props.selected_hub && this.props.selected_hub.name}
+        {serverStage == 1 &&
+          <div className="button-notebook" onClick={() => this.props.startNotebookServer(this.props.selectedHub.id)}>
+            {this.props.selectedHub && this.props.selectedHub.name}
             <i className="fa fa-play"></i>
           </div>
         }
 
-        {server_stage == 2 && <div className="button-notebook animation" onClick={() => this.props.startNowAction(this.props.selected_hub.id)}>
-          {this.props.selected_hub.name}
+        {serverStage == 2 && <div className="button-notebook animation" onClick={() => this.props.startNotebookServer(this.props.selectedHub.id)}>
+          {this.props.selectedHub.name}
           <i className="fa fa-server"></i>
         </div>
         }
 
-        {server_stage == 3 &&
-          <div className="button-notebook" onClick={() => this.props.stopServerAction(this.props.selected_hub.id)}>
+        {serverStage == 3 &&
+          <div className="button-notebook" onClick={() => this.props.stopNotebookServer(this.props.selectedHub.id)}>
             <FormattedMessage id="Server.StopBtn" defaultMessage="Close Server" />
             <i className="fa fa-stop"></i>
           </div>}
@@ -94,15 +93,19 @@ class ServerButton extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    target: state.app.target,
+    selectedHub: state.server.selectedHub,
+    serverStage: state.server.serverStage,
     servers: state.user.servers,
     user: state.user,
-    selected_hub: state.app.selected_hub,
-    server_stage: state.app.server_stage,
   };
 }
 
-
-const mapDispatchToProps = (dispatch) => bindActionCreators({ getUserServers, setSelectedHub, startNowAction, stopServerAction, getUserInfoAction }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  getServers,
+  getUserServer,
+  setSelectedHub,
+  startNotebookServer,
+  stopNotebookServer,
+}, dispatch);
 
 export default ServerButton = connect(mapStateToProps, mapDispatchToProps)(ServerButton);

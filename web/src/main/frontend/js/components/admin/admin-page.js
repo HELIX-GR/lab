@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { requestServers, requestUsers, requestUsersToServers, requestWhiteList } from '../../ducks/admin';
+import { getServers, getUsers, getUserServers, getWhiteList } from '../../ducks/admin';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -49,10 +49,10 @@ class AdminPage extends React.Component {
     }
   }
   _getServers() {
-    this.props.requestServers();
-    this.props.requestUsers();
-    this.props.requestWhiteList();
-    this.props.requestUsersToServers();
+    this.props.getServers();
+    this.props.getUsers();
+    this.props.getWhiteList();
+    this.props.getUserServers();
   }
   render() {
 
@@ -88,7 +88,7 @@ class AdminPage extends React.Component {
           {value === 0 &&
             <TabContainer>
               <h2><i className="fa fa-server mr-2" /> Servers</h2>
-              <a> {this.props.intl.formatRelative(this.props.servers_update)} </a>
+              <a> {this.props.intl.formatRelative(this.props.serversLastUpdate)} </a>
 
               <ModalAddServer />
               <AdminTable servers={this.props.servers} serverEdit={this.handleEdit} />
@@ -99,7 +99,7 @@ class AdminPage extends React.Component {
             <TabContainer>
               <div>
                 <h2><i className="fa fa-users mr-2" /> Users</h2>
-                <a> {this.props.intl.formatRelative(this.props.users_update)} </a>
+                <a> {this.props.intl.formatRelative(this.props.usersLastUpdate)} </a>
                 <UserTable users={this.props.users} />
               </div>
             </TabContainer>
@@ -107,7 +107,7 @@ class AdminPage extends React.Component {
           {value === 2 &&
             <TabContainer><div>
               <h2><i className="fa fa-address-book-o mr-2" />White-List</h2>
-              <a> {this.props.intl.formatRelative(this.props.whitelist_update)} </a>
+              <a> {this.props.intl.formatRelative(this.props.whitelistLastUpdate)} </a>
               <ModalAddWhiteList />
               <WhiteListTable users={this.props.whitelist} />
             </div>
@@ -117,11 +117,11 @@ class AdminPage extends React.Component {
             <TabContainer><div>
               <h2><i className="fa fa-heartbeat mr-2" />User to Servers Management
                  <div className="pill data ml-2">
-                  {this.props.u2s.length} Running
+                  {this.props.userServers.length} Running
           </div>
               </h2>
-              <a> {this.props.intl.formatRelative(this.props.u2s_update)} </a>
-              <U2sTable u2s={this.props.u2s} />
+              <a> {this.props.intl.formatRelative(this.props.userServersLastUpdate)} </a>
+              <U2sTable userServers={this.props.userServers} />
 
             </div>
             </TabContainer>
@@ -137,18 +137,18 @@ class AdminPage extends React.Component {
 function mapStateToProps(state) {
   return {
     servers: state.admin.servers,
-    servers_update: state.admin.servers_update,
+    serversLastUpdate: state.admin.serversLastUpdate,
     users: state.admin.users,
-    users_update: state.admin.users_update,
+    usersLastUpdate: state.admin.usersLastUpdate,
     whitelist: state.admin.whitelist,
-    whitelist_update: state.admin.whitelist_update,
-    u2s: state.admin.u2s,
-    u2s_update: state.admin.u2s_update,
+    whitelistLastUpdate: state.admin.whitelistLastUpdate,
+    userServers: state.admin.userServers,
+    userServersLastUpdate: state.admin.userServersLastUpdate,
     profile: state.user.profile,
   };
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ requestServers, requestUsers, requestUsersToServers, requestWhiteList }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ getServers, getUsers, getUserServers, getWhiteList }, dispatch);
 
 AdminPage = connect(mapStateToProps, mapDispatchToProps)(injectIntl(AdminPage));
 export default withRouter(AdminPage);

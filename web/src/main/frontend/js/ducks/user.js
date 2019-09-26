@@ -1,49 +1,54 @@
-const _ = require('lodash');
-const moment = require('moment');
-const userService = require('../service/user');
+import _ from 'lodash';
+import moment from '../moment-localized';
+
+import userService from '../service/user';
+
 // Actions
-export const LOGIN = 'user/LOGIN';
-export const LOGOUT = 'user/LOGOUT';
-const REQUEST_LOGIN = 'user/REQUEST_LOGIN';
-const REQUEST_LOGOUT = 'user/REQUEST_LOGOUT';
-const REQUEST_PROFILE = 'user/REQUEST_PROFILE';
-const LOAD_PROFILE = 'user/LOAD_PROFILE';
-const REQUEST_SAVE_PROFILE = 'user/REQUEST_SAVE_PROFILE';
-const SAVED_PROFILE = 'user/SAVED_PROFILE';
-export const SHOW_LOGIN_MODAL = 'user/SHOW_LOGIN_MODAL';
-const GOT_SERVERS = 'users/GOT_SERVERS';
+
+const LOGIN_REQUEST = 'user/LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'user/LOGIN_SUCCESS';
+
+const LOGOUT_REQUEST = 'user/LOGOUT_REQUEST';
+export const LOGOUT_SUCCESS = 'user/LOGOUT_SUCCESS';
+
+const PROFILE_REQUEST = 'user/PROFILE_REQUEST';
+const PROFILE_SUCCESS = 'user/PROFILE_SUCCESS';
+const PROFILE_SAVE_REQUEST = 'user/PROFILE_SAVE_REQUEST';
+const PROFILE_SAVE_SUCCESS = 'user/PROFILE_SAVE_SUCCESS';
+const SERVERS_REQUEST = 'users/SERVERS_REQUEST';
+const SERVERS_SUCCESS = 'users/SERVERS_SUCCESS';
+
+const SHOW_LOGIN_FORM = 'user/SHOW_LOGIN_FORM';
+
+// Initial state
 
 const initialState = {
-  username: null,
-  loggedIn: null,
+  lastLogin: null,
   profile: null,
-  show_login: false,
   servers: [],
+  showLoginForm: false,
+  username: null,
 };
+
+// Reducer
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case REQUEST_LOGIN:
-      return state; // no-op
-    case LOGIN:
+    case SERVERS_REQUEST:
+      return state;
+
+    case LOGIN_SUCCESS:
       return {
-        username: action.username,
-        loggedIn: action.timestamp,
+        lastLogin: action.timestamp,
         profile: null,
-        show_login: false,
+        showLoginForm: false,
+        username: action.username,
       };
-    case SHOW_LOGIN_MODAL:
-      return {
-        ...state,
-        show_login: action.show_login && !state.loggedIn,
-      };
-    case REQUEST_LOGOUT:
-      return state; // no-op  
-    case LOGOUT:
+
+    case LOGOUT_SUCCESS:
       return initialState;
-    case REQUEST_PROFILE:
-      return state; // no-op
-    case LOAD_PROFILE:
+
+    case PROFILE_SUCCESS:
       return {
         ...state,
         profile: {
@@ -52,25 +57,32 @@ export default (state = initialState, action) => {
           _savedAt: action.timestamp, // in sync with server
         },
         username: action.profile.username || null,
-        loggedIn: action.timestamp,
+        lastLogin: action.timestamp,
       };
-    case REQUEST_SAVE_PROFILE:
-      return state; // no-op
-    case SAVED_PROFILE:
+
+    case PROFILE_SAVE_SUCCESS:
       return {
         ...state,
         username: state.profile.username || null,
-        loggedIn: state.profile._updatedAt,
+        lastLogin: state.profile._updatedAt,
         profile: {
           ...state.profile,
           _savedAt: state.profile._updatedAt, // in sync again
         },
       };
-    case GOT_SERVERS:
+
+    case SERVERS_SUCCESS:
       return {
         ...state,
         servers: action.servers,
       };
+
+    case SHOW_LOGIN_FORM:
+      return {
+        ...state,
+        showLoginForm: action.showLoginForm && !state.lastLogin,
+      };
+
     default:
       return state;
   }
@@ -78,129 +90,111 @@ export default (state = initialState, action) => {
 
 // Action Creators
 
-const requestLogin = (username) => ({
-  type: REQUEST_LOGIN,
+const loginRequest = (username) => ({
+  type: LOGIN_REQUEST,
   username,
 });
 
-const loggedIn = (username, token, timestamp) => ({
-  type: LOGIN,
+const loginSuccess = (username, token, timestamp) => ({
+  type: LOGIN_SUCCESS,
   username,
   token,
   timestamp,
 });
 
-const requestLogout = () => ({
-  type: REQUEST_LOGOUT,
+const logoutRequest = () => ({
+  type: LOGOUT_REQUEST,
 });
 
-const loggedOut = (token, timestamp) => ({
-  type: LOGOUT,
+const logoutSuccess = (token, timestamp) => ({
+  type: LOGOUT_SUCCESS,
   token,
   timestamp,
 });
 
-export const modalLoginAction = (show_login) => ({
-  type: SHOW_LOGIN_MODAL,
-  show_login,
+const profileRequest = () => ({
+  type: PROFILE_REQUEST,
 });
 
-const requestProfile = () => ({
-  type: REQUEST_PROFILE,
-});
-
-const loadProfile = (profile, timestamp) => ({
-  type: LOAD_PROFILE,
+const profileSuccess = (profile, timestamp) => ({
+  type: PROFILE_SUCCESS,
   profile,
   timestamp,
 });
 
-const requestSaveProfile = () => ({
-  type: REQUEST_SAVE_PROFILE,
+const profileSaveRequest = () => ({
+  type: PROFILE_SAVE_REQUEST,
 });
 
-const savedProfile = () => ({
-  type: SAVED_PROFILE,
+const profileSaveSuccess = () => ({
+  type: PROFILE_SAVE_SUCCESS,
 });
 
-const gotServers = (servers, timestamp) => ({
-  type: GOT_SERVERS,
+const serversSuccess = (servers, timestamp) => ({
+  type: SERVERS_SUCCESS,
   servers,
   timestamp,
 });
 
-
-
-
-
+export const setLoginFormVisibility = (showLoginForm) => ({
+  type: SHOW_LOGIN_FORM,
+  showLoginForm,
+});
 
 // Thunk actions
+
 export const login = (username, password) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
-  dispatch(requestLogin(username));
+
+  dispatch(loginRequest(username));
+
   return userService.login(username, password, token).then(
     (r) => {
       var t = moment().valueOf();
-      dispatch(loggedIn(username, r.csrfToken, t));
-    },
-    (err) => {
-      console.error('Failed login: ' + err.message);
-      throw err;
+      dispatch(loginSuccess(username, r.csrfToken, t));
     });
 };
 
 export const logout = () => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
-  dispatch(requestLogout());
+
+  dispatch(logoutRequest());
+
   return userService.logout(token).then(
     (r) => {
       var t = moment().valueOf();
-      dispatch(loggedOut(r.csrfToken, t));
-    },
-    (err) => {
-      console.error('Failed logout');
-      throw err;
+      dispatch(logoutSuccess(r.csrfToken, t));
     });
 };
 
 export const refreshProfile = () => (dispatch) => {
-  dispatch(requestProfile());
+  dispatch(profileRequest());
+
   return userService.getProfile().then(
     (p) => {
       var t = moment().valueOf();
-      dispatch(loadProfile(p, t));
-    },
-    (err) => {
-      console.warn('Cannot load user profile: ' + err.message);
-      throw err;
+      dispatch(profileSuccess(p, t));
     });
 };
 
 export const saveProfile = () => (dispatch, getState) => {
   var { meta: { csrfToken: token }, user: { profile } } = getState();
-  if (_.isEmpty(profile))
-    return Promise.reject('The user profile is empty!');
 
-  dispatch(requestSaveProfile());
+  if (_.isEmpty(profile)) {
+    return Promise.reject('The user profile is empty!');
+  }
+
+  dispatch(profileSaveRequest());
+
   return userService.saveProfile(profile, token).then(
-    () => dispatch(savedProfile()),
-    (err) => {
-      console.error('Cannot save user profile: ' + err.message);
-      throw err;
-    });
+    () => dispatch(profileSaveSuccess())
+  );
 };
 
-
-// Thunk actions
-export const getUserServers = () => (dispatch) => {
+export const getServers = () => (dispatch) => {
   return userService.getServers().then(
     (r) => {
       var t = moment().valueOf();
-      dispatch(gotServers(r, t));
-    },
-    (err) => {
-      console.error('Failed to get servers: ' + err.message);
-      throw err;
+      dispatch(serversSuccess(r, t));
     });
 };
-

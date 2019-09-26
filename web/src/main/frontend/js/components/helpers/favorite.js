@@ -8,8 +8,6 @@ import {
   EnumCatalog
 } from '../../model';
 
-const catalogs = Object.keys(EnumCatalog).map(k => EnumCatalog[k]);
-
 class Favorite extends React.Component {
 
   constructor(props) {
@@ -28,7 +26,6 @@ class Favorite extends React.Component {
 
   static propTypes = {
     active: PropTypes.bool.isRequired,
-    catalog: PropTypes.oneOf(catalogs).isRequired,
     description: PropTypes.string,
     handle: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
@@ -45,10 +42,10 @@ class Favorite extends React.Component {
   onClick(e) {
     e.preventDefault();
 
-    const { catalog, handle, title, description, url } = this.props;
+    const { handle, title, description, url } = this.props;
 
     this.props.onClick({
-      catalog,
+      catalog: EnumCatalog.LAB,
       description,
       handle,
       title,

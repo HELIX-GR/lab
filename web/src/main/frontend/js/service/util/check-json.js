@@ -1,14 +1,15 @@
 import _ from 'lodash';
 
 import {
-  EnumErrorLevel,
   ServerError,
 } from '../../model/error';
 
-export function checkError(r) {
-  if (_.isEmpty(r.errors)) {
-    return r;
+const checkError = (response) => {
+  if (_.isEmpty(response.errors)) {
+    return response;
   } else {
-    throw new ServerError(r.errors);
+    throw new ServerError(response.errors);
   }
-}
+};
+
+export default checkError;

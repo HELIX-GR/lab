@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import { FormattedTime } from 'react-intl';
 import ReactTable from "react-table";
-import { deleteUserToServer } from "./../../ducks/admin";
+import { removeUserServer } from "./../../ducks/admin";
 
 const all_roles = ["ROLE_STANDARD", "ROLE_STANDARD_STUDENT", "ROLE_STANDARD_ACADEMIC", "ROLE_BETA", "ROLE_BETA_STUDENT", "ROLE_BETA_ACADEMIC"];
 
@@ -56,7 +56,7 @@ export class U2sTable extends React.Component {
       {
         Header: '',
         Cell: props => (
-          <button onClick={() => (this.props.deleteUserToServer(props.original.id))}>
+          <button onClick={() => (this.props.removeUserServer(props.original.id))}>
             <i className="fa fa-trash"></i>
           </button>
         ),
@@ -66,7 +66,7 @@ export class U2sTable extends React.Component {
 
 
 
-    var data = this.props.u2s;
+    var data = this.props.userServers;
     const { rowsPerPage, page } = this.state;
     //const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
@@ -92,7 +92,7 @@ function mapStateToProps(state) {
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ deleteUserToServer }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ removeUserServer }, dispatch);
 
 
 

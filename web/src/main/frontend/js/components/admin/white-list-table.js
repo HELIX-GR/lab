@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { grand_WL_role, revoke_WL_role } from '../../ducks/admin';
+import { grantWhiteListRole, revokeWhiteList } from '../../ducks/admin';
 import { FormattedTime } from 'react-intl';
 
 import Checkbox from '@material-ui/core/Checkbox';
@@ -31,9 +31,9 @@ export class WhiteListTable extends React.Component {
 
   updateCheck(is, r, user_id) {
     if (is) {
-      this.props.grand_WL_role(user_id, r);
+      this.props.grantWhiteListRole(user_id, r);
     } else {
-      this.props.revoke_WL_role(user_id, r);
+      this.props.revokeWhiteList(user_id, r);
     }
 
   }
@@ -87,9 +87,6 @@ export class WhiteListTable extends React.Component {
           });
         }));
 
-
-
-
     var data = this.props.users;
     const { rowsPerPage, page } = this.state;
     //const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
@@ -117,7 +114,7 @@ function mapStateToProps(state) {
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ grand_WL_role, revoke_WL_role }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ grantWhiteListRole, revokeWhiteList }, dispatch);
 
 
 

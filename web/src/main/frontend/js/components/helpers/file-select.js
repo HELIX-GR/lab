@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import { FormattedTime } from 'react-intl';
-import { Row, Button } from 'reactstrap';
+import { Button } from 'reactstrap';
 
 import decorateField from './form-field';
 import formatFileSize from '../../util/file-size';

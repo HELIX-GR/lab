@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { getFilesystem, createFolder, setTablePath, setNewFolder } from '../../ducks/config';
+import { getFilesystem, createFolder, setTablePath, setNewFolder } from '../../ducks/filesystem';
 import TableToolbar from './table-toolbar';
 import FileTable from './file-table';
 import { toast, } from 'react-toastify';
 import { StaticRoutes, } from '../../model';
 import { withRouter, } from 'react-router-dom';
-import { modalLoginAction } from '../../ducks/user';
+import { setLoginFormVisibility } from '../../ducks/user';
 
 /**
  * Table example 
@@ -22,7 +22,7 @@ class FileSystem extends Component {
     this.state = {
       folder: this.findFolderFromPath() || this.props.filesystem,
       value_folder: "Folder Name",
-      last_update: this.props.last_update,
+      updatedAt: this.props.updatedAt,
     };
   }
 
@@ -33,7 +33,7 @@ class FileSystem extends Component {
           folder: this.props.filesystem
         }));
     } else {
-      this.props.modalLoginAction(true);
+      this.props.setLoginFormVisibility(true);
       this.props.history.push(StaticRoutes.LABHOME);
     }
 
@@ -49,7 +49,7 @@ class FileSystem extends Component {
   }
 
   findFolderFromPath(path) {
-    const currentPath = path || (this.state && this.state.folder && this.state.folder.path) || this.props.table_path || '/';
+    const currentPath = path || (this.state && this.state.folder && this.state.folder.path) || this.props.tablePath || '/';
 
     let folder = this.props.filesystem;
 
@@ -107,8 +107,8 @@ class FileSystem extends Component {
     if (type === 'file') {
       this.props.setTablePath(folder.path, name);
 
-      if (this.props.target != null) {
-        window.open(this.props.target + "/notebooks/" + this.props.table_path + this.props.selected_file, "_blank");
+      if (this.props.endpoint != null) {
+        window.open(this.props.endpoint + "/notebooks/" + this.props.tablePath + this.props.selectedFile, "_blank");
       }
       else {
         toast.warn(<FormattedMessage id="Toast.NoServer" defaultMessage="You need to start a Notebook Server First" />);
@@ -158,7 +158,7 @@ class FileSystem extends Component {
           ...folder.folders,
           ...folder.files,
         ],
-        new_folder: this.props.new_folder,
+        newFolder: this.props.newFolder,
         handleRowClick: this.handleRowClick,
         handleRowDoubleClick: this.handleRowDoubleClick,
         formatRelative: this.props.intl.formatRelative,
@@ -167,8 +167,8 @@ class FileSystem extends Component {
         folder,
         handleNameChange: this.handleNameChange,
         value_folder,
-        last_update: this.props.last_update,
-        selected_file: this.props.selected_file
+        updatedAt: this.props.updatedAt,
+        selectedFile: this.props.selectedFile
       }} />
     );
   }
@@ -192,18 +192,18 @@ class FileSystem extends Component {
 
 function mapStateToProps(state) {
   return {
-    filesystem: state.config.filesystem,
-    new_folder: state.config.new_folder,
-    last_update: state.config.last_updated,
-    selected_file: state.config.selected_file,
+    filesystem: state.filesystem.data,
+    newFolder: state.filesystem.newFolder,
+    updatedAt: state.filesystem.updatedAt,
+    selectedFile: state.filesystem.selectedFile,
     user: state.user,
-    table_path: state.config.table_path,
-    target: state.app.target,
+    tablePath: state.filesystem.tablePath,
+    endpoint: state.server.endpoint,
   };
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ getFilesystem, setTablePath, createFolder, setNewFolder, modalLoginAction }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ getFilesystem, setTablePath, createFolder, setNewFolder, setLoginFormVisibility }, dispatch);
 
 
 FileSystem = connect(mapStateToProps, mapDispatchToProps)(injectIntl(FileSystem));

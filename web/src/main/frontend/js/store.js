@@ -19,7 +19,7 @@ var middleware = [
 /* global process */
 if (process.env.NODE_ENV != 'production') {
   // The logger middleware should always be last
-  // middleware.push(ReduxLogger.createLogger({ colors: {} }));
+  middleware.push(ReduxLogger.createLogger({ colors: {} }));
 }
 
 var initialState = {};

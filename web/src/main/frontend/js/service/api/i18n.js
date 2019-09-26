@@ -1,4 +1,4 @@
-const fetch = require('isomorphic-fetch');
+import fetch from 'isomorphic-fetch';
 
 import {
   checkStatus,
@@ -6,7 +6,7 @@ import {
 
 const credentials = 'same-origin';
 
-export const getMessages = (locale) => {
+const getMessages = (locale) => {
   return fetch(`/i18n/${locale}/messages.json`, { credentials })
     .then(checkStatus)
     .then(res => res.json());

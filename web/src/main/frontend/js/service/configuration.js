@@ -1,9 +1,9 @@
-import * as actions from './api/fetch-actions';
-
-const getConfiguration = (locale) => {
-  return actions.get(`/action/configuration/${locale}`);
-};
+import actions from './api/fetch-actions';
 
 export default {
-  getConfiguration,
+
+  getConfiguration: (locale) => {
+    return actions.get(`/action/configuration/${locale}`);
+  },
+
 };

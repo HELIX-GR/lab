@@ -3,8 +3,6 @@ import * as ReactRedux from 'react-redux';
 import * as ReactIntl from 'react-intl';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { basename, history } from '../history';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import App from "./app.js";
 
 //

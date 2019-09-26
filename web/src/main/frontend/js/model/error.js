@@ -10,7 +10,6 @@ const ErrorLevelValues = {
   [EnumErrorLevel.ERROR]: 2,
 };
 
-
 export class ServerError extends Error {
 
   constructor(errors) {

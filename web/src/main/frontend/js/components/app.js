@@ -16,8 +16,8 @@ import {
 import { Pages, StaticRoutes, ErrorPages } from '../model/routes';
 
 import ModalLogin from './modal-login';
-import { modalLoginAction } from '../ducks/user';
-import { startNowAction } from '../ducks/app';
+import { setLoginFormVisibility } from '../ducks/user';
+import { startNotebookServer } from '../ducks/server';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Filesystem from './filesystem/filesystem';
 import AdminPage from './admin/admin-page';
@@ -34,15 +34,15 @@ class App extends React.Component {
 
     this.state = {
       username: null,
-      show_login: false,
+      showLoginForm: false,
     };
   }
   render() {
     var start_now = () => { };
     if (!this.props.username) {
-      start_now = () => { this.props.modalLoginAction(true); };
+      start_now = () => { this.props.setLoginFormVisibility(true); };
     } else {
-      start_now = this.props.startNowAction;
+      start_now = this.props.startNotebookServer;
     }
 
     const routes = (
@@ -122,7 +122,7 @@ class App extends React.Component {
         />
         <Header />
         {routes}
-        <ModalLogin showIt={this.props.modalLoginAction} />
+        <ModalLogin showIt={this.props.setLoginFormVisibility} />
         <Footer />
 
       </div>);
@@ -131,13 +131,12 @@ class App extends React.Component {
 function mapStateToProps(state) {
   return {
     username: state.user.username,
-    show_login: state.user.show_login,
-    target: state.app.target || null,
+    showLoginForm: state.user.showLoginForm,
     admin: state.admin.isAdmin,
   };
 }
 
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ modalLoginAction, startNowAction, }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ setLoginFormVisibility, startNotebookServer, }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

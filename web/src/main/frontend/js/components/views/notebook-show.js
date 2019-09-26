@@ -10,12 +10,12 @@ import {
 
 import {
   getNotebookToFilesystem,
-} from '../../ducks/config';
+} from '../../ducks/notebook';
 
 import {
   search as searchAll,
   searchById,
-} from '../../ducks/ui/views/search';
+} from '../../ducks/search';
 
 import {
   FormattedMessage,
@@ -237,7 +237,6 @@ class NotebookShow extends React.Component {
                   <div className="result-icons">
                     <Favorite
                       active={this.isFavoriteActive(n.id)}
-                      catalog="LAB"
                       description={n.notes}
                       handle={n.id}
                       onClick={this.toggleFavorite}

@@ -1,65 +1,78 @@
-import adminService from '../service/admin';
-import { toast, } from 'react-toastify';
-
 import moment from '../moment-localized';
 
-const GOT_SERVERS = 'admin/GOT_SERVERS';
-const GOT_USERS = 'admin/GOT_USERS';
-const GOT_USERS_TO_SERVERS = 'admin/GOT_USERS_TO_SERVERS';
-const GOT_EDITED_USERS = 'admin/GOT_EDITED_USERS';
-const GOT_WHITELIST = 'admin/GOT_WHITELIST';
-const GOT_EDITED_WHITELIST = 'admin/GOT_EDITED_WHITELIST';
+import adminService from '../service/admin';
+
+// Actions
+
+const SERVERS_SUCCESS = 'admin/SERVERS_SUCCESS';
+const USER_ROLE_SUCCESS = 'admin/USER_ROLE_SUCCESS';
+const USER_SERVERS_SUCCESS = 'admin/USER_SERVERS_SUCCESS';
+const USERS_SUCCESS = 'admin/USERS_SUCCESS';
+const WHITE_LIST_ROLE_SUCCESS = 'admin/WHITE_LIST_ROLE_SUCCESS';
+const WHITELIST_SUCCESS = 'admin/WHITELIST_SUCCESS';
+
+// Reducer
 
 const initialState = {
   isAdmin: false,
   servers: [],
+  serversLastUpdate: null,
   users: [],
+  usersLastUpdate: null,
+  userServers: [],
+  userServersLastUpdate: null,
   whitelist: [],
-  u2s: [],
+  whitelistLastUpdate: null,
 };
-
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case GOT_SERVERS:
+    case SERVERS_SUCCESS:
       return {
         ...state,
         servers: action.servers,
-        servers_update: action.timestamp,
+        serversLastUpdate: action.timestamp,
       };
-    case GOT_USERS:
+
+    case USERS_SUCCESS:
       return {
         ...state,
         users: action.users,
-        users_update: action.timestamp,
+        usersLastUpdate: action.timestamp,
       };
-    case GOT_WHITELIST:
+
+    case WHITELIST_SUCCESS:
       return {
         ...state,
         whitelist: action.whitelist,
-        whitelist_update: action.timestamp,
+        whitelistLastUpdate: action.timestamp,
       };
-    case GOT_EDITED_USERS:
-      state.users.splice(action.ind, 1, action.user);
+
+    case USER_SERVERS_SUCCESS:
+      return {
+        ...state,
+        userServers: action.userServers,
+        userServersLastUpdate: action.timestamp,
+      };
+
+    case USER_ROLE_SUCCESS:
+      state.users.splice(action.index, 1, action.user);
+
       return {
         ...state,
         users: [
           ...state.users,
         ]
       };
-    case GOT_EDITED_WHITELIST:
-      state.whitelist.splice(action.ind, 1, action.user);
+
+    case WHITE_LIST_ROLE_SUCCESS:
+      state.whitelist.splice(action.index, 1, action.user);
+
       return {
         ...state,
         whitelist: [
           ...state.whitelist,
         ]
-      };
-    case GOT_USERS_TO_SERVERS:
-      return {
-        ...state,
-        u2s: action.u2s,
-        u2s_update: action.timestamp,
       };
 
     default:
@@ -67,198 +80,146 @@ export default (state = initialState, action) => {
   }
 };
 
-
 // Action Creators
 
-const gotServers = (servers, timestamp) => ({
-  type: GOT_SERVERS,
+const getServersSuccess = (servers, timestamp) => ({
+  type: SERVERS_SUCCESS,
   servers,
   timestamp,
 });
 
-const gotUsers = (users, timestamp) => ({
-  type: GOT_USERS,
+const getUsersSuccess = (users, timestamp) => ({
+  type: USERS_SUCCESS,
   users,
   timestamp,
 });
 
-const gotWhiteList = (whitelist, timestamp) => ({
-  type: GOT_WHITELIST,
+const getWhiteListSuccess = (whitelist, timestamp) => ({
+  type: WHITELIST_SUCCESS,
   whitelist,
   timestamp,
 });
-const gotUsersToServers = (u2s, timestamp) => ({
-  type: GOT_USERS_TO_SERVERS,
-  u2s,
+
+const getUserServersSuccess = (userServers, timestamp) => ({
+  type: USER_SERVERS_SUCCESS,
+  userServers,
   timestamp,
 });
 
-const gotEditedUser = (user, ind) => ({
-  type: GOT_EDITED_USERS,
+const updateUserRoleSuccess = (user, index) => ({
+  type: USER_ROLE_SUCCESS,
   user,
-  ind,
+  index,
 });
 
-const gotEditedWhiteList = (user, ind) => ({
-  type: GOT_EDITED_WHITELIST,
+const updateWhiteListRoleSuccess = (user, index) => ({
+  type: WHITE_LIST_ROLE_SUCCESS,
   user,
-  ind,
+  index,
 });
-
 
 // Thunk actions
-export const requestServers = () => (dispatch) => {
+
+export const getServers = () => (dispatch) => {
   return adminService.getServers().then(
     (r) => {
       var t = moment().valueOf();
-      dispatch(gotServers(r, t));
-    },
-    (err) => {
-      console.error('Failed to get servers: ' + err.message);
-      throw err;
+      dispatch(getServersSuccess(r, t));
     });
 };
 
-export const addNewServer = (server_data) => (dispatch, getState) => {
+export const addServer = (server_data) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
-  return adminService.addServer(server_data, token).then(
-    () => {
-      toast.success("Server registered");
-      dispatch(requestServers());
-    },
-    (err) => {
-      toast.error('Failed to add server');
-      throw err;
-    });
+
+  return adminService.addServer(server_data, token);
 };
 
-export const editServer = (id, server_data) => (dispatch, getState) => {
+export const updateServer = (id, server_data) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
-  return adminService.editServer(id, server_data, token).then(
-    () => {
-      toast.success("Server edited");
-      dispatch(requestServers());
-    },
-    (err) => {
-      toast.error('Failed to edit server: ' + err.message);
-      throw err;
-    });
+
+  return adminService.updateServer(id, server_data, token);
 };
 
-export const requestUsers = () => (dispatch) => {
+export const getUsers = () => (dispatch) => {
   return adminService.getUsers().then(
     (r) => {
       var t = moment().valueOf();
-      dispatch(gotUsers(r, t));
-    },
-    (err) => {
-      console.error('Failed to get Users: ' + err.message);
-      throw err;
+      dispatch(getUsersSuccess(r, t));
     });
 };
 
-export const requestUsersToServers = () => (dispatch) => {
-  return adminService.getUsersToServers().then(
+export const getUserServers = () => (dispatch) => {
+  return adminService.getUserServers().then(
     (r) => {
       var t = moment().valueOf();
-      dispatch(gotUsersToServers(r, t));
-    },
-    (err) => {
-      console.error('Failed to get Users: ' + err.message);
-      throw err;
+      dispatch(getUserServersSuccess(r, t));
     });
 };
 
-export const deleteUserToServer = (id) => (dispatch, getState) => {
+export const removeUserServer = (id) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
-  return adminService.deleteUserToServer(id, token).then(
+  return adminService.removeUserServer(id, token).then(
     () => {
-      this.requestUsersToServers();
-    },
-    (err) => {
-      console.error('Failed to Detele Server of a user: ' + err.message);
-      throw err;
+      this.getUserServers();
     });
 };
 
-export const grantRole = (id, role) => (dispatch, getState) => {
-  var { meta: { csrfToken: token } } = getState();
-  var { admin } = getState();
-  var ind = admin.users.findIndex((e) => (e.id === id));
-  return adminService.grantRole(id, role, token).then(
+export const grantUserRole = (id, role) => (dispatch, getState) => {
+  var { admin: { users }, meta: { csrfToken: token } } = getState();
+
+  var index = users.findIndex((u) => (u.id === id));
+
+  return adminService.grantUserRole(id, role, token).then(
     (r) => {
-      dispatch(gotEditedUser(r, ind));
-    },
-    (err) => {
-      console.error('Failed to grand role: ' + err.message);
-      throw err;
+      dispatch(updateUserRoleSuccess(r, index));
     });
 };
 
-export const revokeRole = (id, role) => (dispatch, getState) => {
-  var { meta: { csrfToken: token } } = getState();
-  var { admin } = getState();
-  var ind = admin.users.findIndex((e) => (e.id === id));
-  return adminService.revokeRole(id, role, token).then(
+export const revokeUserRole = (id, role) => (dispatch, getState) => {
+  var { admin: { users }, meta: { csrfToken: token } } = getState();
+
+  var index = users.findIndex((e) => (e.id === id));
+
+  return adminService.revokeUserRole(id, role, token).then(
     (r) => {
-      dispatch(gotEditedUser(r, ind));
-    },
-    (err) => {
-      console.error('Failed to revoke role: ' + err.message);
-      throw err;
+      dispatch(updateUserRoleSuccess(r, index));
     });
 };
 
-
-export const requestWhiteList = () => (dispatch) => {
+export const getWhiteList = () => (dispatch) => {
   return adminService.getWhiteList().then(
     (r) => {
       var t = moment().valueOf();
-      dispatch(gotWhiteList(r, t));
-    },
-    (err) => {
-      console.error('Failed to get White List: ' + err.message);
-      throw err;
+      dispatch(getWhiteListSuccess(r, t));
     });
 };
 
-export const grand_WL_role = (id, role) => (dispatch, getState) => {
-  var { meta: { csrfToken: token } } = getState();
-  var { admin } = getState();
-  var ind = admin.whitelist.findIndex((e) => (e.id === id));
+export const grantWhiteListRole = (id, role) => (dispatch, getState) => {
+  var { admin: { whitelist }, meta: { csrfToken: token } } = getState();
+
+  var index = whitelist.findIndex((e) => (e.id === id));
+
   return adminService.grantWhiteListRole(id, role, token).then(
     (r) => {
-      dispatch(gotEditedWhiteList(r, ind));
-    },
-    (err) => {
-      console.error('Failed to grand role: ' + err.message);
-      throw err;
+      dispatch(updateWhiteListRoleSuccess(r, index));
     });
 };
 
-export const revoke_WL_role = (id, role) => (dispatch, getState) => {
-  var { meta: { csrfToken: token } } = getState();
-  var { admin } = getState();
-  var ind = admin.whitelist.findIndex((e) => (e.id === id));
+export const revokeWhiteList = (id, role) => (dispatch, getState) => {
+  var { admin: { whitelist }, meta: { csrfToken: token } } = getState();
+
+  var index = whitelist.findIndex((e) => (e.id === id));
+
   return adminService.revokeWhiteListRole(id, role, token).then(
     (r) => {
-      dispatch(gotEditedWhiteList(r, ind));
-    },
-    (err) => {
-      toast.error('Failed to revoke role: ' + err.message);
-      throw err;
+      dispatch(updateWhiteListRoleSuccess(r, index));
     });
 };
 
-
-export const addWhiteList = (userInfo) => (dispatch, getState) => {
+export const addWhiteListUser = (userInfo) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
   return adminService.addWhiteListUser(userInfo, token).then(
     () => {
-      dispatch(requestWhiteList());
-    },
-    (err) => {
-      toast.error('Failed to add user to White List');
-      throw err;
+      dispatch(getWhiteList());
     });
 };

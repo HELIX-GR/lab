@@ -10,12 +10,11 @@ class SearchResult extends React.Component {
   static propTypes = {
     visible: PropTypes.bool.isRequired,
     text: PropTypes.string,
-    result: PropTypes.object.isRequired,
+    result: PropTypes.object,
   }
 
   render() {
-    const notebooks = this.props.result;
-    const text = this.props.text;
+    const { result: notebooks, text } = this.props;
     const showNotebooks = (this.props.visible && notebooks && notebooks.results && notebooks.results.length !== 0);
     return (
       <div
@@ -28,14 +27,6 @@ class SearchResult extends React.Component {
       >
         {showNotebooks &&
           <div className="landing-live-search-group lab">
-            <div className="results-header">
-              <div className="results-title">
-                Lab
-              </div>
-              <a className="all-link">
-                all Lab
-              </a>
-            </div>
             <div className="search-results">
               {this.renderNotebooks(notebooks.results, text)}
             </div>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Button from '@material-ui/core/Button';
 import ServerForm from './server-form';
-import { editServer } from '../../ducks/admin';
+import { updateServer } from '../../ducks/admin';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import * as PropTypes from 'prop-types';
 
@@ -48,7 +48,7 @@ class ModalEditServer extends React.Component {
   }
 
   handleSubmit() {
-    this.props.editServer(this.props.data.id, this.state.data)
+    this.props.updateServer(this.props.data.id, this.state.data)
       .then(this.setState({ show_modal: false }));
 
   }
@@ -81,6 +81,6 @@ function mapStateToProps(state) {
   return {
   };
 }
-const mapDispatchToProps = (dispatch) => bindActionCreators({ editServer }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ updateServer }, dispatch);
 
 export default ModalEditServer = connect(mapStateToProps, mapDispatchToProps)(ModalEditServer);

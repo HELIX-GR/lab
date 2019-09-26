@@ -1,13 +1,11 @@
-const actions = require('./api/fetch-actions');
+import actions from './api/fetch-actions';
 
 function relativePath(path) {
-  if (path.startsWith('/')) {
-    return path.slice(1);
-  }
-  return path;
+  return (path.startsWith('/')) ? path.slice(1) : path;
 }
 
-module.exports = {
+export default {
+
   fetch: (token) => {
     return actions.get(`/action/file-system`, token);
   },
@@ -28,14 +26,6 @@ module.exports = {
     }));
 
     return actions.submit('/action/file-system/upload', token, form);
-  },
-
-  publish: (data, token) => {
-    return actions.post('/action/file-system/notebook', token, data);
-  },
-
-  getNotebook: (id, token) => {
-    return actions.get(`/action/file-system/notebook/${id}`, token);
   },
 
 };
