@@ -40,9 +40,9 @@ import {
   Code,
 } from 'react-content-loader';
 
-const PARAM_ID = 'uuid';
+const PARAM_ID = 'id';
 
-class NotebookShow extends React.Component {
+class NotebookDetails extends React.Component {
 
   constructor(props) {
     super(props);
@@ -138,7 +138,7 @@ class NotebookShow extends React.Component {
       return null;
     }
 
-    return (StaticRoutes.NBVIEWER + "/url/" + url.replace("http://", "").replace("https://", ""));
+    return (StaticRoutes.NOTEBOOK_VIEWER + "/url/" + url.replace("http://", "").replace("https://", ""));
   }
 
   scrollToTop() {
@@ -338,4 +338,4 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
 });
 
-export default NotebookShow = ReactRedux.connect(mapStateToProps, mapDispatchToProps, mergeProps)(NotebookShow);
+export default NotebookDetails = ReactRedux.connect(mapStateToProps, mapDispatchToProps, mergeProps)(NotebookDetails);

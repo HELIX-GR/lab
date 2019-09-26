@@ -27,9 +27,9 @@ import {
 
 import {
   buildPath,
+  DynamicRoutes,
   EnumCatalog,
   EnumCkanFacet,
-  StaticRoutes,
 } from '../../../model';
 
 import {
@@ -154,7 +154,7 @@ class Results extends React.Component {
           url={`${host}/notebook/${n.id}`}
         />
         <h3 className="title">
-          <Link to={buildPath(StaticRoutes.NOTEBOOK, [n.id])}>
+          <Link to={buildPath(DynamicRoutes.NOTEBOOK_DETAILS, [n.id])}>
             {n.title.length > MAX_TITLE_LENGTH ? `${n.title.substring(0, MAX_TITLE_LENGTH)} ...` : n.title}
           </Link>
           <div className="pill lab ml-1">

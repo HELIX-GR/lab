@@ -44,7 +44,7 @@ class SecureRoute extends React.Component {
 
     if (!authenticated) {
       return (
-        <Redirect to={StaticRoutes.LABHOME} />
+        <Redirect to={StaticRoutes.HOME} />
       );
     }
     if (this.hasAnyRole(roles)) {

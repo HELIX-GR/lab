@@ -45,7 +45,7 @@ class AdminPage extends React.Component {
     if (this.props.profile.roles.includes('ROLE_ADMIN')) {
       this._getServers();
     } else {
-      this.props.history.push(StaticRoutes.LABHOME);
+      this.props.history.push(StaticRoutes.HOME);
     }
   }
   _getServers() {

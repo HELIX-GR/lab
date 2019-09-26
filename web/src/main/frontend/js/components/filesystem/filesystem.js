@@ -34,7 +34,7 @@ class FileSystem extends Component {
         }));
     } else {
       this.props.setLoginFormVisibility(true);
-      this.props.history.push(StaticRoutes.LABHOME);
+      this.props.history.push(StaticRoutes.HOME);
     }
 
   }

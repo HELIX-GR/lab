@@ -14,19 +14,19 @@ import {
 
 import {
   Pages
-} from '../model/routes';
+} from '../../model/routes';
 
 import {
   getConfiguration,
-} from '../ducks/config';
+} from '../../ducks/config';
 
 import {
   login,
   refreshProfile,
-} from '../ducks/user';
+} from '../../ducks/user';
 
 
-class ModalLogin extends React.Component {
+class LoginForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -169,5 +169,5 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModalLogin);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
 

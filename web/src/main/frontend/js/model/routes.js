@@ -6,34 +6,39 @@ import pathToRegexp from 'path-to-regexp';
 /**
  * Static routes
  */
-const LABHOME = '/';
-const RESULTS = '/results/';
-const NEWS = '/news/';
-const PROJECT = '/project/*';
-const NBVIEWER = 'http://nbviewer.jupyter.org';
+const ADMIN = '/admin/';
 const CKAN = 'https://notebooks.dev.hellenicdataservice.gr/';
 const CORE = 'https://hellenicdataservice.gr';
-const NOTEBOOK = '/notebook/:id';
+const FILESYSTEM = '/filesystem/';
+const HOME = '/';
+const NEWS = '/news/';
+const NOTEBOOK_VIEWER = 'http://nbviewer.jupyter.org';
+const PROJECT = '/project/*';
+const RESULTS = '/results/';
 
 export const StaticRoutes = {
+  ADMIN,
   CKAN,
   CORE,
-  LABHOME,
-  RESULTS,
+  FILESYSTEM,
+  HOME,
   NEWS,
+  NOTEBOOK_VIEWER,
   PROJECT,
-  NBVIEWER,
-  NOTEBOOK,
+  RESULTS,
 };
 
 /**
  * Dynamic routes
  */
 const NEWS_DETAILS = 'https://hellenicdataservice.gr/news/view/:id';
+const NOTEBOOK_DETAILS = '/notebook/:id';
 const PROJECT_PAGE = 'https://hellenicdataservice.gr/project/page/:name';
+
 
 export const DynamicRoutes = {
   NEWS_DETAILS,
+  NOTEBOOK_DETAILS,
   PROJECT_PAGE,
 };
 

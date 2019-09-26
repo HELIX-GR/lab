@@ -43,7 +43,7 @@ class Header extends React.Component {
       <header className="header">
 
         <div className="logo-area">
-          <NavLink to={StaticRoutes.LABHOME}>
+          <NavLink to={StaticRoutes.HOME}>
             <img className="logo-image" src="/images/svg/Lab-logo.svg" alt="Helix Lab" />
           </NavLink>
         </div>
@@ -70,7 +70,7 @@ class Header extends React.Component {
                   <li><Link to={'/filesystem/'}> <FormattedMessage id="header.files" defaultMessage="My Files" /></Link></li>
                   <li><a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/" target="_blank"><FormattedMessage id="header.guides" defaultMessage="Guides" /></a></li>
                   <li><a href="https://jupyterlab.readthedocs.io/en/latest/user/interface.html" target="_blank"><FormattedMessage id="header.courses" defaultMessage="Courses" /></a></li>
-                  <li><a href={StaticRoutes.NBVIEWER}>NBviewer</a></li>
+                  <li><a href={StaticRoutes.NOTEBOOK_VIEWER}>NBviewer</a></li>
                 </ul>
               </li>
               <li id="menu-item-project" className="menu-item aux-item has-sub-menu">
@@ -152,7 +152,7 @@ class Header extends React.Component {
           }
 
           <div className="search-item">
-            <Link to={StaticRoutes.LABHOME}>
+            <Link to={StaticRoutes.HOME}>
               <i className="fa fa-search"></i>
             </Link>
           </div>
