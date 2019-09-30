@@ -10,12 +10,41 @@
     "failure": "Το όνομα χρήστη ή/και ο κωδικός είναι λάθος"
   },
   "header": {
+    "courses-professor": "Διαχείριση Μαθημάτων",
+    "courses-student": "Τα Μαθήματα μου",
     "files": "Τα Αρχεία μου",
     "guides": "Οδηγοί",
     "courses": "Μαθήματα",
     "whatislab": "Τι είναι το Lab?",
     "about": "Το έργο",
     "news": "Νέα"
+  },
+  "footer": {
+    "columns": {
+      "about": {
+        "title": "Σχετικά",
+        "links": {
+          "home": "Αρχική",
+          "what-is-helix": "Το έργο",
+          "contact": "Επικοινωνία",
+          "terms-of-use": "Όροι χρήσης"
+        }
+      },
+      "research": {
+        "title": "Έρευνα",
+        "links": {
+          "data": "Data",
+          "pubs": "Publications",
+          "lab": "Lab",
+          "topics": "Θεματικές",
+          "organizations": "Οργανισμοί"
+        }
+      },
+      "partners": {
+        "title": "Συνεργάτες"
+      }
+    },
+    "copyright": "© 2018 HELIX. All rights reserved."
   },
   "pills": {
     "data": "DATA",
