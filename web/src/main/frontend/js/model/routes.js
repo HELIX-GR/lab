@@ -4,6 +4,15 @@
 import pathToRegexp from 'path-to-regexp';
 
 /**
+ * External routes
+ */
+export const ExternalRoutes = {
+  Data: 'https://data.hellenicdataservice.gr',
+  Lab: 'https://lab.hellenicdataservice.gr',
+  Pubs: 'https://pubs.hellenicdataservice.gr',
+};
+
+/**
  * Static routes
  */
 const ADMIN = '/admin/';

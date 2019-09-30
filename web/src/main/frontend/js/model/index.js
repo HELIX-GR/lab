@@ -2,6 +2,7 @@ export {
   buildPath,
   DynamicRoutes,
   ErrorPages,
+  ExternalRoutes,
   Pages,
   StaticRoutes,
 } from './routes';
