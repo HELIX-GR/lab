@@ -1,3 +1,5 @@
+import * as RoleNames from './role';
+
 export {
   buildPath,
   DynamicRoutes,
@@ -18,3 +20,7 @@ export {
 export {
   WordPressPages,
 } from './wordpress-pages';
+
+export const Roles = {
+  ...RoleNames,
+};

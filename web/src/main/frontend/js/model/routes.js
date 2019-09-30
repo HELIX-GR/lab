@@ -17,6 +17,8 @@ export const ExternalRoutes = {
  */
 const ADMIN = '/admin/';
 const CORE = 'https://hellenicdataservice.gr';
+const COURSES = '/courses';
+const COURSES_ADMIN = '/courses/admin';
 const FILESYSTEM = '/filesystem/';
 const HOME = '/';
 const NEWS = '/news/';
@@ -32,6 +34,8 @@ const SAML = '/saml/login';
 export const StaticRoutes = {
   ADMIN,
   CORE,
+  COURSES,
+  COURSES_ADMIN,
   FILESYSTEM,
   HOME,
   LOGIN: {

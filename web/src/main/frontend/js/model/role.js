@@ -1,0 +1,11 @@
+export const USER = 'ROLE_USER';
+export const ADMIN = 'ROLE_ADMIN';
+export const DEVELOPER = 'ROLE_DEVELOPER';
+
+export const STANDARD = 'ROLE_STANDARD';
+export const STANDARD_ACADEMIC = 'ROLE_STANDARD_ACADEMIC';
+export const STANDARD_STUDENT = 'ROLE_STANDARD_STUDENT';
+
+export const BETA = 'ROLE_BETA';
+export const BETA_ACADEMIC = 'ROLE_BETA_ACADEMIC';
+export const BETA_STUDENT = 'ROLE_BETA_STUDENT';
