@@ -12,6 +12,8 @@ public class HomeController {
     private static final String clientRoutes[] = {
         "/",
         "/admin/",
+        "/course/",
+        "/courses/",
         "/error/",
         "/filesystem/",
         "/main/",
@@ -30,6 +32,8 @@ public class HomeController {
 
     @RequestMapping({
         "/admin/**",
+        "/course/**",
+        "/courses/**",
         "/error/**",
         "/main/**",
         "/notebook/**"
