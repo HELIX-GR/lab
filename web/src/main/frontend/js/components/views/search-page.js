@@ -105,7 +105,7 @@ class SearchPage extends React.Component {
   }
 
   render() {
-    const { advanced, loading, text } = this.props.search;
+    const { advanced, loading, partialResult: { visible }, text } = this.props.search;
     const _t = this.context.intl.formatMessage;
 
     return (
@@ -125,7 +125,6 @@ class SearchPage extends React.Component {
                     value={text}
                     onChange={(e) => this.onTextChanged(e.target.value)}
                     onFocus={() => this.props.setResultVisibility(true)}
-                    onBlur={() => this.props.setResultVisibility(false)}
                     ref={this.textInput}
                   />
                   <div
@@ -149,9 +148,13 @@ class SearchPage extends React.Component {
                     </div>
                   </div>
 
-                  {text &&
-                    <SearchResult visible={text.length > 3} text={text || ""} result={this.props.search.partialResult.data} />
-                  }
+                  <SearchResult
+                    hide={() => this.props.setResultVisibility(false)}
+                    navigate={(url) => this.props.history.push(url)}
+                    result={this.props.search.partialResult.data}
+                    search={() => this.search(false)}
+                    visible={visible && !loading}
+                  />
                 </div>
 
                 <button
