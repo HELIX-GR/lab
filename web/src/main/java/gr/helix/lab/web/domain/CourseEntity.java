@@ -68,11 +68,15 @@ public class CourseEntity {
 
     @NotNull
     @Column(name = "`active`")
-    boolean                   active   = false;
+    boolean                   active    = false;
 
     @NotNull
     @Column(name = "`deleted`")
-    boolean                   deleted  = false;
+    boolean                   deleted   = false;
+
+    @Column(name = "`link`")
+    String                    link;
+
 
     @OneToMany(
         targetEntity = CourseStudentEntity.class,
@@ -176,6 +180,14 @@ public class CourseEntity {
         return this.files;
     }
 
+    public String getLink() {
+        return this.link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
     public Course toDto() {
         final Course record = new Course();
 
@@ -184,11 +196,12 @@ public class CourseEntity {
         record.setDeleted(this.deleted);
         record.setDescription(this.description);
         record.setId(this.id);
+        record.setLink(this.link);
         record.setProfessor(this.professor.getId(), this.professor.getFullName());
         record.setSemester(this.semester);
         record.setTitle(this.title);
         record.setUpdatedOn(this.updatedOn);
-        record.getSemester();
+        record.setYear(this.year);
 
         this.students.stream().forEach(s -> record.getStudents().add(s.toDto()));
 
@@ -200,6 +213,7 @@ public class CourseEntity {
     public void merge(Course course) {
         this.active = course.isActive();
         this.description = course.getDescription();
+        this.link = course.getLink();
         this.semester = course.getSemester();
         this.title = course.getTitle();
         this.year = course.getYear();

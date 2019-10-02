@@ -32,6 +32,8 @@ public class Course {
 
     private boolean                   deleted;
 
+    private String                    link;
+
     public Integer getId() {
         return this.id;
     }
@@ -118,6 +120,14 @@ public class Course {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public String getLink() {
+        return this.link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 
 }
