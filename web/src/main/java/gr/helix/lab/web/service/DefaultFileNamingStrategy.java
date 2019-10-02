@@ -29,7 +29,7 @@ public class DefaultFileNamingStrategy implements FileNamingStrategy
     public DirectoryInfo getUserDirectoryInfo(String userName) throws IOException
     {
         final Path userDir = this.getUserDir(userName, true);
-        return this.createDirectoryInfo("/", userDir, "");
+        return this.createDirectoryInfo("", userDir, "/");
     }
 
     @Override
@@ -77,15 +77,14 @@ public class DefaultFileNamingStrategy implements FileNamingStrategy
         final DirectoryInfo di = new DirectoryInfo(name, relativePath, this.toZonedDateTime(file.lastModified()), "Folder");
 
         for (final File f : file.listFiles()) {
-        	if (!f.getName().startsWith(".")) {// Hidden files.
-
-
-            if (f.isDirectory()) {
-                di.addFolder(this.createDirectoryInfo(f.getName(), f.toPath(), relativePath + f.getName() + "/"));
+            if (!f.getName().startsWith(".")) {
+                if (f.isDirectory()) {
+                    di.addFolder(this.createDirectoryInfo(f.getName(), f.toPath(), relativePath + f.getName() + "/"));
+                }
+                if (f.isFile()) {
+                    di.addFile(this.createFileInfo(f, relativePath));
+                }
             }
-            if (f.isFile()) {
-                di.addFile(this.createFileInfo(f, relativePath));
-            }}
         }
 
         return di;
