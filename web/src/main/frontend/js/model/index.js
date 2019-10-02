@@ -13,6 +13,7 @@ export {
   EnumAuthProvider,
   EnumCatalog,
   EnumCkanFacet,
+  EnumCourseAction,
   EnumFacet,
   EnumLocale,
 } from './enum';
@@ -20,6 +21,10 @@ export {
 export {
   WordPressPages,
 } from './wordpress-pages';
+
+export {
+  ServerError,
+} from './error';
 
 export const Roles = {
   ...RoleNames,

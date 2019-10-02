@@ -18,7 +18,7 @@ class UploadModal extends React.Component {
     file: null,
     newFolderName: '',
     isUploading: false,
-    path: this.props.tablePath,
+    path: this.props.path,
   };
 
 
@@ -45,18 +45,22 @@ class UploadModal extends React.Component {
 
 
   handleUpload = () => {
+    toast.dismiss();
 
-    let path = this.props.tablePath;
+    let path = this.props.path;
     if (path.startsWith('/')) {
       path = path.slice(1);
     }
+
     this.setState({
       isUploading: true,
     });
-    let file = this.state.file;
+
+    const file = this.state.file;
+
     this.props.uploadFile({ path, filename: file.name, }, file)
-      .then(fs => {
-        toast.success("The file is uploaded!");
+      .then(() => {
+        toast.success(`File ${file.name} has been uploaded successfully`);
         this.setState({
           file: null,
           newFolderName: '',
@@ -65,7 +69,7 @@ class UploadModal extends React.Component {
         });
       })
       .catch((err) => {
-        toast.error("Can't upload file!");
+        toast.error(err.errors[0].description);
         this.setState({
           isUploading: false,
         });
@@ -143,7 +147,7 @@ class UploadModal extends React.Component {
 function mapStateToProps(state) {
   return {
     filesystem: state.filesystem.data,
-    tablePath: state.filesystem.tablePath,
+    path: state.filesystem.path,
   };
 }
 

@@ -1,1 +1,1 @@
-export { default as Filesystem } from './filesystem';
+export { default as FileSystem } from './filesystem';

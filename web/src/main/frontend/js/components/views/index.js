@@ -1,7 +1,5 @@
-export { default as Footer } from './footer';
-export { default as Header } from './header';
-export { default as LabFeatured } from './lab-featured';
+export { default as CourseProfessorExplorer } from './course-professor-explorer';
+export { default as CourseStudentExplorer } from './course-student-explorer';
+export { default as Main } from './main';
+export { default as MainResults } from './main-results';
 export { default as NotebookDetails } from './notebook-details';
-export { default as ResultPage } from './results/results-page';
-export { default as SearchPage } from './search-page';
-export { default as SearchResult } from './search-result';

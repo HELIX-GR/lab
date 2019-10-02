@@ -5,7 +5,7 @@ import notebookService from '../service/notebook';
 
 // Actions
 
-const PUBLISH_NOTEBOOK_SUCCESS = 'config/PUBLISH_NOTEBOOK_SUCCESS';
+const PUBLISH_NOTEBOOK_SUCCESS = 'notebook/PUBLISH_NOTEBOOK_SUCCESS';
 
 // Reducer
 

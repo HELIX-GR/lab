@@ -28,7 +28,7 @@ class PublishModal extends React.Component {
     filename: '',
     filerename: '',
     isPublishing: false,
-    path: this.props.tablePath,
+    path: this.props.path,
     lang: "Python"
   };
 
@@ -44,7 +44,7 @@ class PublishModal extends React.Component {
   handleOpen = () => {
     this.setState({
       open: true,
-      path: this.props.tablePath,
+      path: this.props.path,
       filename: this.props.selectedFile,
       filerename: this.props.selectedFile,
     });
@@ -65,7 +65,7 @@ class PublishModal extends React.Component {
   };
 
   handlePublish = () => {
-    let path = this.props.tablePath;
+    let path = this.props.path;
     if (path.startsWith('/')) {
       path = path.slice(1);
     }
@@ -166,7 +166,7 @@ class PublishModal extends React.Component {
 function mapStateToProps(state) {
   return {
     filesystem: state.filesystem.data,
-    tablePath: state.filesystem.tablePath,
+    path: state.filesystem.path,
     selectedFile: state.filesystem.selectedFile,
   };
 }

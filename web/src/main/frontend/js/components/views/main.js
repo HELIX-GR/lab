@@ -28,15 +28,13 @@ import {
 } from '../../ducks/search';
 
 import {
-  default as AdvancedSearchModal,
-} from './advanced-search-modal';
-
-import SearchResult from './search-result';
+  AdvancedSearchModal,
+} from './shared-parts';
 
 import {
-  LabFeatured,
-} from './';
-
+  Featured,
+  Result,
+} from './main-parts';
 
 const KEYSTROKE_INTERVAL = 800;
 
@@ -148,7 +146,7 @@ class SearchPage extends React.Component {
                     </div>
                   </div>
 
-                  <SearchResult
+                  <Result
                     hide={() => this.props.setResultVisibility(false)}
                     navigate={(url) => this.props.history.push(url)}
                     result={this.props.search.partialResult.data}
@@ -171,7 +169,7 @@ class SearchPage extends React.Component {
           </div>
         </section>
 
-        <LabFeatured />
+        <Featured />
 
         <AdvancedSearchModal
           config={this.props.config.ckan}
@@ -212,4 +210,5 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 });
 
 SearchPage = ReactRedux.connect(mapStateToProps, mapDispatchToProps, mergeProps)(SearchPage);
+
 export default withRouter(SearchPage);

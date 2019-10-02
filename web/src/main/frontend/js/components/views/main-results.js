@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 import * as PropTypes from 'prop-types';
 
-import moment from '../../../moment-localized';
+import moment from '../../moment-localized';
 
 import {
   bindActionCreators
@@ -23,14 +23,14 @@ import {
   setResultVisibility,
   toggleAdvanced,
   toggleSearchFacet,
-} from '../../../ducks/search';
+} from '../../ducks/search';
 
 import {
   buildPath,
   DynamicRoutes,
   EnumCatalog,
   EnumCkanFacet,
-} from '../../../model';
+} from '../../model';
 
 import {
   toast,
@@ -38,13 +38,12 @@ import {
 
 import {
   Favorite,
-} from '../../helpers';
+} from '../helpers';
 
 import {
-  default as CkanAdvancedOptions,
-} from '../ckan-advanced-options';
-
-import Pagination from './pagination';
+  CkanAdvancedOptions,
+  Pagination,
+} from './shared-parts';
 
 const MAX_TITLE_LENGTH = 77;
 const MAX_NOTES_LENGTH = 192;

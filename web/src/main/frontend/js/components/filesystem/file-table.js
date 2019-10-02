@@ -16,13 +16,28 @@ import _ from 'lodash';
 
 
 export default function FileTable({ props }) {
-  const { data, newFolder, handleRowClick, handleRowDoubleClick, formatRelative, handleCreateFolder, setNewFolder, folder, last_update, handleNameChange, value_folder, selectedFile } = props;
+  const {
+    data,
+    folder,
+    folderName,
+    formatRelative,
+    handleCreateFolder,
+    handleNameChange,
+    handleRowClick,
+    handleRowDoubleClick,
+    last_update,
+    newFolder,
+    selectedFile,
+    setNewFolder,
+    showFoldersOnly,
+  } = props;
+
   return (
     <div className="filesystem-box">
       <Table >
         <TableHead>
           <TableRow  >
-            <TableCell width="66px" tooltip="The ID">  </TableCell>
+            <TableCell width="66px"></TableCell>
             <TableCell tooltip="File Name"><FormattedMessage id="filetable.FileName" defaultMessage="File Name" /></TableCell>
             <TableCell tooltip="File type"><FormattedMessage id="filetable.FileType" defaultMessage="File Type" /></TableCell>
             <TableCell tooltip="File Size"><FormattedMessage id="filetable.FileSize" defaultMessage="File Size" /></TableCell>
@@ -39,27 +54,29 @@ export default function FileTable({ props }) {
               <TableCell />
               <TableCell />
             </TableRow>
-            : (data.map((row, index) => (
-              <TableRow
-                hover
-                onClick={event => handleRowClick(event, index, row.type, row.name)}
-                onDoubleClick={event => handleRowDoubleClick(event, index, row.type, row.name)}
-                key={index}
-                selected={row.name === selectedFile}>
-                <TableCell width="66px" >{row.type === 'Folder' ?
-                  <i className="fa fa-folder" />
-                  : row.type === 'file' ?
-                    <i className="fa fa-file" />
-                    : <i className="fa fa-file-code" />}
-                </TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.type}</TableCell>
-                <TableCell>{formatFileSize(row.size)}</TableCell>
-                <TableCell>
-                  {formatRelative(row.createdOn)}
-                </TableCell>
-              </TableRow>
-            )))}
+            : (data
+              .filter(row => !showFoldersOnly || row.type === 'Folder')
+              .map((row, index) => (
+                <TableRow
+                  hover
+                  onClick={event => handleRowClick(event, index, row.type, row.name)}
+                  onDoubleClick={event => handleRowDoubleClick(event, index, row.type, row.name)}
+                  key={index}
+                  selected={row.name === selectedFile}>
+                  <TableCell width="66px" >{row.type === 'Folder' ?
+                    <i className="fa fa-folder" />
+                    : row.type === 'file' ?
+                      <i className="fa fa-file" />
+                      : <i className="fa fa-file-code" />}
+                  </TableCell>
+                  <TableCell>{row.name}</TableCell>
+                  <TableCell>{row.type}</TableCell>
+                  <TableCell>{formatFileSize(row.size)}</TableCell>
+                  <TableCell>
+                    {formatRelative(row.createdOn)}
+                  </TableCell>
+                </TableRow>
+              )))}
           {newFolder ?
             <TableRow key={"NewFile"} >
               <TableCell width="66px" >
@@ -68,17 +85,17 @@ export default function FileTable({ props }) {
               <TableCell>
                 <TextField
                   id="text-field-controlled"
-                  value={value_folder}
+                  value={folderName}
                   onChange={event => { handleNameChange(event.target.value); }}
                 />
               </TableCell>
               <TableCell>
-                <Button variant="fab" mini={true} secondary={true} style={{
+                <Button variant="fab" mini={true} style={{
                   marginRight: 20,
-                }} onClick={(e) => { handleCreateFolder(folder.path + value_folder); }} >
+                }} onClick={(e) => { handleCreateFolder(folder.path + folderName); }} >
                   <ActionDone />
                 </Button>
-                <Button variant="fab" mini={true} secondary={true} style={{
+                <Button variant="fab" mini={true} style={{
                   marginRight: 20,
                 }}
                   onClick={(e) => {
@@ -91,6 +108,7 @@ export default function FileTable({ props }) {
             : null
           }
         </TableBody>
+
         <TableFooter >
           <TableRow >
             <TableCell />

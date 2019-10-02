@@ -1,30 +1,50 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { withRouter, } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { getFilesystem, createFolder, setTablePath, setNewFolder } from '../../ducks/filesystem';
+
+import {
+  StaticRoutes,
+} from '../../model';
+
 import TableToolbar from './table-toolbar';
 import FileTable from './file-table';
-import { toast, } from 'react-toastify';
-import { StaticRoutes, } from '../../model';
-import { withRouter, } from 'react-router-dom';
+
+import {
+  createFolder,
+  getFileSystem,
+  setNewFolder,
+  setPath,
+} from '../../ducks/filesystem';
 
 class FileSystem extends Component {
+
   constructor(props) {
     super(props);
 
-    this.handleNameChange = this.handleNameChange.bind(this);
-
     this.state = {
       folder: this.findFolderFromPath() || this.props.filesystem,
-      value_folder: "Folder Name",
+      folderName: 'Folder Name',
       updatedAt: this.props.updatedAt,
     };
+
+    this.handleNameChange = this.handleNameChange.bind(this);
+  }
+
+  static defaultProps = {
+    showFoldersOnly: false,
+  }
+
+  get selectedPath() {
+    return this.props.value ? typeof this.props.value === 'object' ? this.props.value.path : this.props.value : null;
   }
 
   componentWillMount() {
     if (this.props.user.profile !== null) {
-      this.props.getFilesystem("")
+      this.props.getFileSystem('')
         .then(this.setState({
           folder: this.props.filesystem
         }));
@@ -33,18 +53,15 @@ class FileSystem extends Component {
     }
 
   }
+
   handleNameChange(value) {
     this.setState({
-      value_folder: value,
+      folderName: value,
     });
   }
 
-  get selectedPath() {
-    return this.props.value ? typeof this.props.value === 'object' ? this.props.value.path : this.props.value : null;
-  }
-
-  findFolderFromPath(path) {
-    const currentPath = path || (this.state && this.state.folder && this.state.folder.path) || this.props.tablePath || '/';
+  findFolderFromPath(path = null) {
+    const currentPath = path || (this.state && this.state.folder && this.state.folder.path) || this.props.path || '/';
 
     let folder = this.props.filesystem;
 
@@ -53,15 +70,6 @@ class FileSystem extends Component {
         folder = folder.folders.find((f) => f.name === name);
       }
     });
-    return folder;
-  }
-
-
-  _getParentDir(level) {
-    let folder = this.props.filesystem;
-    while (folder) {
-      folder = folder.folders;
-    }
     return folder;
   }
 
@@ -80,40 +88,46 @@ class FileSystem extends Component {
   }
 
   handleCreateFolder = (path) => {
+    toast.dismiss();
+
     this.props.createFolder(path)
-      .then(this.props.setNewFolder(false))
-      .then(this.props.getFilesystem(""))
-      .then(this.setState({
-        value_folder: "Folder Name",
-        folder: this.findFolderFromPath(this.state.folder.path),
-      }));
+      .then(() => {
+        this.props.setNewFolder(false);
+
+        this.setState({
+          folderName: "Folder Name",
+          folder: this.findFolderFromPath(this.state.folder.path),
+        });
+      })
+      .catch(err => {
+        toast.error(err.errors[0].description);
+      });
   };
 
 
   handleRowClick = (event, index, type, name) => {
     const folder = this.findFolderFromPath();
-    this.props.setTablePath(folder.path, name);
 
+    this.props.setPath(folder, name);
   };
 
   handleRowDoubleClick = (event, index, type, name) => {
     const folder = this.findFolderFromPath();
 
     if (type === 'file') {
-      this.props.setTablePath(folder.path, name);
+      this.props.setPath(folder, name);
 
       if (this.props.endpoint != null) {
-        window.open(this.props.endpoint + "/notebooks/" + this.props.tablePath + this.props.selectedFile, "_blank");
+        window.open(this.props.endpoint + "/notebooks/" + this.props.path + this.props.selectedFile, "_blank");
       }
       else {
         toast.warn(<FormattedMessage id="Toast.NoServer" defaultMessage="You need to start a Notebook Server First" />);
       }
     } else if (type === 'Folder') {
       this.setState({ folder: folder.folders[index] });
-      this.props.setTablePath(folder.folders[index].path, "");
+      this.props.setPath(folder.folders[index], "");
     }
   };
-
 
   renderHeader() {
     const folder = this.findFolderFromPath();
@@ -140,13 +154,13 @@ class FileSystem extends Component {
           </div>
         </div>
       </div>
-
     );
   }
 
   renderBrowser() {
-    const { value_folder } = this.state;
+    const { folderName } = this.state;
     const folder = this.findFolderFromPath();
+
     return (
       <FileTable props={{
         data: [
@@ -161,29 +175,34 @@ class FileSystem extends Component {
         setNewFolder: this.props.setNewFolder,
         folder,
         handleNameChange: this.handleNameChange,
-        value_folder,
+        folderName,
         updatedAt: this.props.updatedAt,
-        selectedFile: this.props.selectedFile
+        selectedFile: this.props.selectedFile,
+        showFoldersOnly: this.props.showFoldersOnly,
       }} />
     );
   }
 
   render() {
+    const { header = true, serverButton = true, upload = true } = this.props;
 
     return (
       <React.Fragment>
-        {this.renderHeader()}
+        {header && this.renderHeader()}
         <div className="top-border-lab" />
 
-
-        <TableToolbar />
-        {this.renderBrowser()}
+        <div className="background-white mb-5">
+          <TableToolbar
+            serverButton={serverButton}
+            upload={upload}
+          />
+          {this.renderBrowser()}
+        </div>
 
       </React.Fragment>
     );
   }
 }
-
 
 function mapStateToProps(state) {
   return {
@@ -192,14 +211,19 @@ function mapStateToProps(state) {
     updatedAt: state.filesystem.updatedAt,
     selectedFile: state.filesystem.selectedFile,
     user: state.user,
-    tablePath: state.filesystem.tablePath,
+    path: state.filesystem.path,
     endpoint: state.server.endpoint,
   };
 }
 
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  createFolder,
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ getFilesystem, setTablePath, createFolder, setNewFolder }, dispatch);
-
+  getFileSystem,
+  setNewFolder,
+  setPath,
+}, dispatch);
 
 FileSystem = connect(mapStateToProps, mapDispatchToProps)(injectIntl(FileSystem));
+
 export default withRouter(FileSystem);

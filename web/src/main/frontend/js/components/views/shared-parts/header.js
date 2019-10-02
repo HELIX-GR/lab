@@ -1,18 +1,25 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+
 import { bindActionCreators } from 'redux';
-import { changeLocale, } from '../../ducks/i18n';
-import { logout, toggleLoginDialog } from '../../ducks/user';
+import { Link, NavLink } from 'react-router-dom';
 import { FormattedMessage, } from 'react-intl';
+
+import { changeLocale, } from '../../../ducks/i18n';
+import { logout, toggleLoginDialog } from '../../../ducks/user';
+
 import {
   buildPath,
   DynamicRoutes,
   EnumLocale,
+  Roles,
   StaticRoutes,
   WordPressPages,
-} from '../../model';
+} from '../../../model';
 
+import {
+  SecureContent,
+} from '../../helpers';
 
 class Header extends React.Component {
 
@@ -67,10 +74,17 @@ class Header extends React.Component {
                   Lab
                 </NavLink>
                 <ul className="sub-menu">
-                  <li><Link to={'/filesystem/'}> <FormattedMessage id="header.files" defaultMessage="My Files" /></Link></li>
+                  <SecureContent roles={Roles.ALL}>
+                    <li><Link to={StaticRoutes.FILESYSTEM}><FormattedMessage id="header.files" /></Link></li>
+                  </SecureContent>
+                  <SecureContent roles={[Roles.BETA_STUDENT, Roles.STANDARD_STUDENT]}>
+                    <li><Link to={StaticRoutes.COURSES}><FormattedMessage id="header.courses-student" /></Link></li>
+                  </SecureContent>
+                  <SecureContent roles={[Roles.BETA_ACADEMIC, Roles.STANDARD_ACADEMIC]}>
+                    <li><Link to={StaticRoutes.COURSES_ADMIN}><FormattedMessage id="header.courses-professor" /></Link></li>
+                  </SecureContent>
                   <li><a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/" target="_blank"><FormattedMessage id="header.guides" defaultMessage="Guides" /></a></li>
                   <li><a href="https://jupyterlab.readthedocs.io/en/latest/user/interface.html" target="_blank"><FormattedMessage id="header.courses" defaultMessage="Courses" /></a></li>
-                  <li><a href={StaticRoutes.NOTEBOOK_VIEWER}>NBviewer</a></li>
                 </ul>
               </li>
               <li id="menu-item-project" className="menu-item aux-item has-sub-menu">
@@ -78,16 +92,16 @@ class Header extends React.Component {
                   <FormattedMessage id="header.about" defaultMessage="About" />
                 </a>
                 <ul className="sub-menu">
-                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.WhatIsHelix])}>  <span>What is HELIX?</span></a> </li>
-                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Services])}> <span> Services </span></a></li>
-                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.FAQ])}><span>FAQ</span></a></li>
-                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.PublishData])}><span>Publish Data </span></a></li>
-                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Software])}><span>Software </span></a></li>
-                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Project])}><span>The project </span></a></li>
-                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Media])}><span>Media </span></a></li>
-                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.AcknowledgeHelix])}><span>Acknowledge Helix </span></a></li>
-                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Contact])}><span>Contact </span></a></li>
-                  <li> <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.TermsOfUse])}><span>Terms of use </span></a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.WhatIsHelix])}><span>What is HELIX?</span></a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Services])}><span> Services </span></a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.FAQ])}><span>FAQ</span></a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.PublishData])}><span>Publish Data </span></a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Software])}><span>Software </span></a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Project])}><span>The project </span></a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Media])}><span>Media </span></a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.AcknowledgeHelix])}><span>Acknowledge Helix </span></a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Contact])}><span>Contact </span></a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.TermsOfUse])}><span>Terms of use </span></a></li>
                 </ul>
               </li>
               <li id="menu-item-news" className="menu-item aux-item has-sub-menu">
@@ -95,8 +109,8 @@ class Header extends React.Component {
                   <FormattedMessage id="header.news" defaultMessage="News" />
                 </a>
                 <ul className="sub-menu">
-                  <li> <a href="https://hellenicdataservice.gr/news/"><span>News </span></a></li>
-                  <li> <a href="https://hellenicdataservice.gr/news/events/"><span>Events</span></a></li>
+                  <li><a href="https://hellenicdataservice.gr/news/"><span>News </span></a></li>
+                  <li><a href="https://hellenicdataservice.gr/news/events/"><span>Events</span></a></li>
                 </ul>
               </li>
               {authenticated && this.props.profile.roles.includes('ROLE_ADMIN') &&
@@ -143,7 +157,7 @@ class Header extends React.Component {
                       <li><a href="#">Help</a></li>
                       <li><a href="#">Settings</a></li>
                       <li><a href="#" onClick={() => this.props.logout()}>Log out</a></li>
-                      <li> <a href="https://goo.gl/forms/BusjilnDlJhIDrN32" target="_blank"> Report a bug <i className="fa fa-bug"></i></a></li>
+                      <li><a href="https://goo.gl/forms/BusjilnDlJhIDrN32" target="_blank"> Report a bug <i className="fa fa-bug"></i></a></li>
                     </ul>
                   </li>
                 </ul>

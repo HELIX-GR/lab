@@ -12,7 +12,7 @@ import {
   ExternalRoutes,
   StaticRoutes,
   WordPressPages,
-} from '../../model';
+} from '../../../model';
 
 class Footer extends React.Component {
 

@@ -6,10 +6,9 @@ import classnames from 'classnames';
 import {
   buildPath,
   DynamicRoutes,
-} from '../../model';
+} from '../../../model';
 
-
-class SearchResult extends React.Component {
+class Result extends React.Component {
 
   static propTypes = {
     hide: PropTypes.func.isRequired,
@@ -101,4 +100,4 @@ class SearchResult extends React.Component {
   }
 }
 
-export default SearchResult;
+export default Result;

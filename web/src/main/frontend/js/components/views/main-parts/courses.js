@@ -1,6 +1,5 @@
 import React from "react";
 
-
 export const Courses = ({ info }) => (
   <div className="featured-lab-container container-fluid">
     <div className="row">
@@ -18,9 +17,9 @@ export const Courses = ({ info }) => (
               <a href={r.link.ref}> {r.link.text} </a>
             </div>
           </div>
-        </div>)
-      )}
+        </div>
+      ))}
+
     </div>
   </div>
-
 );

@@ -9,6 +9,7 @@ import {
   EnumAuthProvider,
   ErrorPages,
   Pages,
+  Roles,
   StaticRoutes,
 } from '../model';
 
@@ -25,12 +26,17 @@ import {
 import {
   Footer,
   Header,
-  ResultPage,
-  SearchPage,
+} from './views/shared-parts';
+
+import {
+  CourseProfessorExplorer,
+  CourseStudentExplorer,
+  Main,
+  MainResults,
 } from './views';
 
 import { AdminPage } from './admin';
-import { Filesystem } from './filesystem';
+import { FileSystem } from './filesystem';
 import { NotebookDetails } from './views';
 
 import { toggleLoginDialog } from '../ducks/user';
@@ -78,11 +84,30 @@ class App extends React.Component {
 
         <Route exact path={StaticRoutes.HOME} render={() => (
           <div>
-            <SearchPage changeLocale={() => { }} locale={'en'} logout={() => { }} />
+            <Main changeLocale={() => { }} locale={'en'} logout={() => { }} />
           </div>
         )} />
 
-        <Route path={StaticRoutes.RESULTS} component={ResultPage} />
+        <Route path={StaticRoutes.RESULTS} component={MainResults} />
+
+        <SecureRoute roles={[Roles.BETA_STUDENT, Roles.STANDARD_STUDENT]}
+          exact path={StaticRoutes.COURSES} component={CourseStudentExplorer}
+        />
+
+        <SecureRoute exact path={StaticRoutes.COURSES_ADMIN} roles={[Roles.BETA_ACADEMIC, Roles.STANDARD_ACADEMIC]} render={() => (
+          <React.Fragment>
+            <div className="border-placeholder"></div>
+            <div>
+              <div>
+                <section className="main-results-page-content">
+                  <div className="results-main-content" style={{ flexDirection: 'column' }}>
+                    <CourseProfessorExplorer />
+                  </div>
+                </section>
+              </div>
+            </div>
+          </React.Fragment>
+        )} />
 
         <SecureRoute exact path={StaticRoutes.FILESYSTEM} render={() => (
           <React.Fragment>
@@ -91,7 +116,7 @@ class App extends React.Component {
               <div>
                 <section className="main-results-page-content">
                   <div className="results-main-content" style={{ flexDirection: 'column' }}>
-                    <Filesystem />
+                    <FileSystem />
                   </div>
                 </section>
               </div>
@@ -99,7 +124,7 @@ class App extends React.Component {
           </React.Fragment>
         )} />
 
-        <SecureRoute exact path={StaticRoutes.ADMIN} roles={['ROLE_ADMIN']} render={() => (
+        <SecureRoute exact path={StaticRoutes.ADMIN} roles={[Roles.ADMIN]} render={() => (
           <React.Fragment>
             <div className="border-placeholder"></div>
             <section className="main-results-page-content">
@@ -155,7 +180,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   startNotebookServer,
-  toggleLoginDialog,  
+  toggleLoginDialog,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

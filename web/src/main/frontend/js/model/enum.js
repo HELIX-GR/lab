@@ -31,3 +31,8 @@ export const EnumAuthProvider = {
   HELIX: 'HELIX',
   SAML: 'SAML',
 };
+
+export const EnumCourseAction = {
+  COPY_FILES: 'copy-files',
+  DELETE: 'delete',
+};

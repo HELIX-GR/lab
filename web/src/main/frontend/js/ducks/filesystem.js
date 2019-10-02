@@ -4,10 +4,11 @@ import filesystemService from '../service/filesystem';
 
 // Actions
 
-const FILESYSTEM_REQUEST = 'config/FILESYSTEM_REQUEST';
-const FILESYSTEM_SUCCESS = 'config/FILESYSTEM_SUCCESS';
-const SET_NEW_FOLDER = 'config/SET_NEW_FOLDER';
-const SET_TABLE_PATH = 'config/SET_TABLE_PATH';
+const FILESYSTEM_REQUEST = 'file-system/FILESYSTEM_REQUEST';
+const FILESYSTEM_SUCCESS = 'file-system/FILESYSTEM_SUCCESS';
+const SET_NEW_FOLDER = 'file-system/SET_NEW_FOLDER';
+const SET_PATH = 'file-system/SET_PATH';
+const DELETE_PATH_SUCCESS = 'file-system/DELETE_PATH_SUCCESS';
 
 // Reducer
 
@@ -17,13 +18,14 @@ const initialState = {
     count: 0,
     files: [],
     folders: [],
-    name: "",
-    path: "/",
+    name: '',
+    path: '',
   },
   // UI state
   newFolder: false,
-  selectedFile: "",
-  tablePath: "/",
+  path: '',
+  selectedFile: '',
+  selectedFolder: null,
   updatedAt: null,
 };
 
@@ -34,23 +36,28 @@ export default (state = initialState, action) => {
         ...state,
         data: {
           ...action.filesystem,
-          name: "",
-          path: "/",
         },
         updatedAt: action.timestamp,
       };
 
-    case SET_TABLE_PATH:
+    case SET_PATH:
       return {
         ...state,
-        tablePath: action.tablePath,
-        selectedFile: action.selectedFile,
+        path: action.folder.path,
+        selectedFile: action.file,
+        selectedFolder: action.folder ? action.folder.folders.find(f => f.name === action.file) || null : null,
       };
 
     case SET_NEW_FOLDER:
       return {
         ...state,
         newFolder: action.newFolder,
+      };
+
+    case DELETE_PATH_SUCCESS:
+      return {
+        ...state,
+        selectedFile: '',
       };
 
     default:
@@ -60,20 +67,20 @@ export default (state = initialState, action) => {
 
 // Action Creators
 
-const filesystemRequest = () => ({
+const getFileSystemRequest = () => ({
   type: FILESYSTEM_REQUEST,
 });
 
-const filesystemSuccess = (filesystem, timestamp) => ({
+const getFileSystemSuccess = (filesystem, timestamp) => ({
   type: FILESYSTEM_SUCCESS,
   filesystem,
   timestamp,
 });
 
-export const setTablePath = (tablePath, selectedFile) => ({
-  type: SET_TABLE_PATH,
-  tablePath,
-  selectedFile,
+export const setPath = (folder, file) => ({
+  type: SET_PATH,
+  folder,
+  file,
 });
 
 export const setNewFolder = (newFolder) => ({
@@ -81,17 +88,21 @@ export const setNewFolder = (newFolder) => ({
   newFolder,
 });
 
+const deletePathSuccess = () => ({
+  type: DELETE_PATH_SUCCESS,
+});
+
 // Thunk actions
 
-export const getFilesystem = () => (dispatch, getState) => {
+export const getFileSystem = () => (dispatch, getState) => {
   const { meta: { csrfToken: token } } = getState();
 
-  dispatch(filesystemRequest());
+  dispatch(getFileSystemRequest());
 
   return filesystemService.fetch(token)
     .then((fs) => {
       var t = moment().valueOf();
-      dispatch(filesystemSuccess(fs, t));
+      dispatch(getFileSystemSuccess(fs, t));
     });
 };
 
@@ -101,7 +112,7 @@ export const createFolder = (path) => (dispatch, getState) => {
   return filesystemService.createFolder(path, token)
     .then((fs) => {
       var t = moment().valueOf();
-      dispatch(filesystemSuccess(fs, t));
+      dispatch(getFileSystemSuccess(fs, t));
     });
 };
 
@@ -111,7 +122,8 @@ export const deletePath = (path) => (dispatch, getState) => {
   return filesystemService.deletePath(path, token)
     .then((fs) => {
       var t = moment().valueOf();
-      dispatch(filesystemSuccess(fs, t));
+      dispatch(deletePathSuccess());
+      dispatch(getFileSystemSuccess(fs, t));
     });
 };
 
@@ -121,6 +133,6 @@ export const uploadFile = (data, file) => (dispatch, getState) => {
   return filesystemService.upload(data, file, token)
     .then((fs) => {
       var t = moment().valueOf();
-      dispatch(filesystemSuccess(fs, t));
+      dispatch(getFileSystemSuccess(fs, t));
     });
 };

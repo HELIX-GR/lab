@@ -3,11 +3,11 @@ import * as PropTypes from 'prop-types';
 
 import {
   EnumCkanFacet,
-} from '../../model';
+} from '../../../model';
 
 import {
   Checkbox,
-} from '../helpers';
+} from '../../helpers';
 
 class CkanAdvancedOptions extends React.Component {
 
