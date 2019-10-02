@@ -125,5 +125,34 @@
     },
     "view-less": "Λιγότερα",
     "view-more": "Περισσότερα"
+  },
+  "breadcrumb": {
+    "results": "ΑΠΟΤΕΛΕΣΜΑΤΑ",
+    "all": "ΟΛΑ"
+  },
+  "course": {
+    "action": {
+      "delete": {
+        "success": "Course '{title}' has been deleted successfully",
+        "failure": "Delete operation has failed"
+      }, 
+      "copy-files": {
+        "success": "Copied {count} files for course '{title}'",
+        "failure": "Copy operation has failed"
+      }
+    },
+    "error": {
+      "load": "Failed to load courses"
+    },
+    "modal": {
+      "title": {
+        "copy-files": "{title} - Copy Files",
+        "delete": "Delete Course"
+      },
+      "message": {
+        "delete": "Do you want to delete your registration for course '{title}' permanently?"
+      }
+    },
+    "last-modified": "lasted saved {when}"
   }
 }
