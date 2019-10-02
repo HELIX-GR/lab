@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,8 +108,9 @@ public class HubController extends BaseController {
             // specific Jupyter Hub instance
             if (StringUtils.isBlank(hubUser.getServer())) {
                 final String dataDir = this.fileNamingStrategy.getUserDir(username, true).toString();
+                final URIBuilder builder = new URIBuilder(hubServer.get().getUrl());
 
-                final NotebookServerRequest initRequest = new NotebookServerRequest(hubServer.get().getUrl(), username, dataDir);
+                final NotebookServerRequest initRequest = new NotebookServerRequest(builder.getHost(), username, dataDir);
 
                 if(this.jupyterHubService.initializeNotebookServer(initRequest)) {
                     this.jupyterHubClient.startServer(hubServer.get().getUrl(), hubServer.get().getToken(), username);
