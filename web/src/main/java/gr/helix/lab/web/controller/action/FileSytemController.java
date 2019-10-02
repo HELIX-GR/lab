@@ -94,9 +94,7 @@ public class FileSytemController extends BaseController {
             final Path dir = this.fileNamingStrategy.resolvePath(userName, request.getPath());
 
             if (Files.exists(dir)) {
-                return RestResponse.error(
-                    FileSystemErrorCode.PATH_ALREADY_EXISTS,
-                    String.format("The directory already exists: %s", request.getPath()));
+                return RestResponse.error(FileSystemErrorCode.PATH_ALREADY_EXISTS, "A folder with the same name already exists");
             }
 
             Files.createDirectories(dir);
@@ -166,7 +164,7 @@ public class FileSytemController extends BaseController {
             final Path absolutePath = this.fileNamingStrategy.resolvePath(userName, relativePath);
 
             if (Files.exists(absolutePath)) {
-                return RestResponse.error(FileSystemErrorCode.PATH_ALREADY_EXISTS, "File with the same name already exists");
+                return RestResponse.error(FileSystemErrorCode.PATH_ALREADY_EXISTS, "A file with the same name already exists");
             }
 
             final InputStream in = new ByteArrayInputStream(file.getBytes());

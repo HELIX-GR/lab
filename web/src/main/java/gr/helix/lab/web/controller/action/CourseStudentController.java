@@ -145,6 +145,13 @@ public class CourseStudentController extends BaseController {
             }
         }
 
+        if (sourceAbsolute.equals(targetAbsolute)) {
+            return RestResponse.error(
+                CourseErrorCode.PATH_TARGET_EQUAL_TO_SOURCE,
+                "Target directory is the same with the source directory"
+            );
+        }
+
         // 1. Copy files
         // 2. Update last copy operation date for the selected registration
         // 3. Update database record

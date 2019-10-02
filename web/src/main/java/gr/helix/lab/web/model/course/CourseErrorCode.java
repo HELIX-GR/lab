@@ -16,6 +16,7 @@ public enum CourseErrorCode implements ErrorCode {
     PATH_EXISTS,
     PATH_NOT_EMPTY,
     PATH_NOT_FOUND,
+    PATH_TARGET_EQUAL_TO_SOURCE,
     IO_ERROR,
 
     IMPORT_ERROR,
