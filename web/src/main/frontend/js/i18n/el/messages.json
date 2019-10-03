@@ -146,13 +146,17 @@
     },
     "modal": {
       "title": {
-        "copy-files": "{title} - Copy Files",
-        "delete": "Delete Course"
+        "copy-files": "{title} - Αντιγραφή αρχείων",
+        "delete": "Διαγραφή Μαθήματος"
       },
       "message": {
-        "delete": "Do you want to delete your registration for course '{title}' permanently?"
+        "delete": "Θέλετε να γίνει διαγραφή της καταχώρησης για το μάθημα '{title}';"
       }
     },
-    "last-modified": "lasted saved {when}"
+    "last-modified": "Τελευταία ενημέρωση {when}",
+    "search" : {
+      "placeholder": "Αναζήτηση Μαθημάτων",
+      "years": "Έτος"
+    }
   }
 }

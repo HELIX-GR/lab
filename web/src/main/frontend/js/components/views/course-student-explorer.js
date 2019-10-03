@@ -1,5 +1,7 @@
+import _ from 'lodash';
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
+import * as PropTypes from 'prop-types';
 
 import { bindActionCreators } from 'redux';
 import { toast, } from 'react-toastify';
@@ -15,6 +17,7 @@ import {
 } from '../../ducks/course-student';
 
 import {
+  CourseAdvancedOptions,
   CourseCard,
   CourseCopyFilesModal,
   CourseDeleteModal,
@@ -27,10 +30,22 @@ class CourseStudentExplorer extends React.Component {
 
     this.state = {
       action: null,
+      courses: [],
+      orderBy: 'title',
       selected: null,
       showModal: false,
+      text: '',
+      years: {},
     };
+
+    this.textInput = React.createRef();
+
+    this.onYearSelect = this.onYearSelect.bind(this);
   }
+
+  static contextTypes = {
+    intl: PropTypes.object,
+  };
 
   handleAction(action, course = null) {
     switch (action) {
@@ -59,16 +74,89 @@ class CourseStudentExplorer extends React.Component {
     });
   }
 
+  onTextChanged(text) {
+    this.setState({
+      text,
+    });
+  }
+
+  onSearch(e) {
+    e.preventDefault();
+
+    this.search();
+  }
+
+  onYearSelect(year, selected) {
+    this.setState(state => ({
+      years: {
+        ...state.years,
+        [year]: !selected,
+      },
+    }));
+
+    // Refresh UI on the text tick
+    setTimeout(() => this.search(), 0);
+  }
+
+  onOrderChange(orderBy) {
+    this.setState({
+      orderBy,
+    });
+
+    // Refresh UI on the text tick
+    setTimeout(() => this.search(), 0);
+  }
+
   componentDidMount() {
     this.props.getCourses()
+      .then(courses => {
+        const years = {};
+        _.uniqBy(courses, 'year').forEach(c => {
+          years[c.year] = false;
+        });
+
+        this.setState({
+          years,
+        });
+
+        this.search();
+      })
       .catch(() => {
         toast.error('course.error.load');
       });
   }
 
+  search() {
+    const { courses: data } = this.props;
+    const { orderBy, text, years } = this.state;
+
+    const courses = data.filter(c => {
+      if (text && c.title.indexOf(text) === -1) {
+        return false;
+      }
+      const selectedYears = Object.keys(years).filter(y => years[y]).map(y => Number(y));
+
+      if (selectedYears.length !== 0) {
+        return !!selectedYears.find(y => y === c.year);
+      }
+
+      return true;
+    });
+
+    this.setState({
+      courses: _.orderBy(
+        courses,
+        orderBy === 'title' ? ['title', 'year'] : ['year', 'title'],
+        orderBy === 'title' ? ['asc', 'desc'] : ['desc', 'asc']
+      ),
+    });
+  }
+
   render() {
-    const { action, selected = null, showModal } = this.state;
-    const { courses = [] } = this.props;
+    const { action, courses, orderBy, selected = null, showModal, text, years } = this.state;
+    const { courses: allCourses } = this.props;
+
+    const _t = this.context.intl.formatMessage;
 
     return (
       <React.Fragment>
@@ -98,6 +186,56 @@ class CourseStudentExplorer extends React.Component {
 
               <section className="results-main-sidebar">
 
+                <div className="search-form-wrapper">
+
+                  <form className="landing-search-form">
+
+                    <div className="main-form-content">
+                      <input
+                        type="text"
+                        autoComplete="off"
+                        outline="off"
+                        className="landing-search-text"
+                        name="landing-search-text"
+                        placeholder={_t({ id: 'course.search.placeholder' })}
+                        value={text}
+                        onChange={(e) => this.onTextChanged(e.target.value)}
+                        ref={this.textInput}
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      name="landing-search-button"
+                      className="landing-search-button"
+                      onClick={(e) => this.onSearch(e)}
+                    >
+                      <i className="fa fa-search"></i>
+                    </button>
+
+                  </form>
+                </div>
+
+                <div className="main-results-advanced-search">
+
+                  <h4 className="header">
+                    {_t({ id: 'results.advanced-search' })}
+                  </h4>
+
+
+                  <div className="border-bottom-bar">
+
+                  </div>
+                </div>
+
+                {allCourses.length !== 0 &&
+                  <CourseAdvancedOptions
+                    minOptions={4}
+                    toggleYear={this.onYearSelect}
+                    years={years}
+                  />
+                }
+
               </section>
 
               <section className="results-main-result-set">
@@ -111,9 +249,9 @@ class CourseStudentExplorer extends React.Component {
                 <div className="main-results-border-bottom">
                   <label className="order-by" htmlFor="order-by">
                     Ταξινόμηση κατά
-                    <select name="order-by" id="order-by" value="" onChange={(e) => null}>
-                      <option value="1">Ημερομηνία Εισαγωγής</option>
-                      <option value="2">Έτος Διδασκαλίας</option>
+                    <select name="order-by" id="order-by" value={orderBy} onChange={(e) => this.onOrderChange(e.target.value)}>
+                      <option value="title">Τίτλος</option>
+                      <option value="year">Έτος Διδασκαλίας</option>
                     </select>
                   </label>
                   <div className="main-results-result-count">
