@@ -83,8 +83,8 @@ class Footer extends React.Component {
               </ul>
             </div>
           </div>
-          <div className="d-flex flex-wrap justify-content-center p-4">
-            <img src="/images/eu-logo.jpg" alt="" className="eu-logo" />
+          <div className="eu-logo">
+            <img src="/images/eu-logo.jpg" alt="" />
           </div>
           <div className="copyright-notes">
             {_t({ id: 'footer.copyright' })}
