@@ -1188,16 +1188,21 @@
         .course-list {
           display: flex;
           flex-direction: row;
+          flex-wrap: wrap;
           justify-content: space-between;
 
           .course-card {
             position: relative;
-            flex: 0 1 45%;
-            height: 260px;
+            flex: 0 1 48%;
+            height: 300px;
             background: #FFFFFF 0% 0% no-repeat padding-box;
             float: left;
-            margin: 20px 0px;
+            margin: 10px 0px;
             padding: 10px 10px 0px 10px;
+
+            &.course-card-admin {
+              height: 200px;
+            }
 
             .title {
               font-size: 25px;
@@ -1216,6 +1221,14 @@
               display: none;
 
               .action {
+                &.action-users {
+                  padding-left: 6px;
+                }
+
+                &.action-set-files {
+                  padding-left: 7px;
+                }
+
                 float: left;
                 padding-left: 9px;
                 width: 32px;
@@ -1254,6 +1267,7 @@
 
             &.placeholder {
               background: #E5E5E5 0% 0% no-repeat padding-box;
+              height: 200px;
 
               .title {
                 color: #B2B2B2;

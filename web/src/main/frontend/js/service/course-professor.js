@@ -19,22 +19,26 @@ export default {
   },
 
   getStudents: (id) => {
-    return actions.get(`/action/course/${id}/students`);
+    return actions.get(`/action/course/${id}/registrations`);
   },
 
   addStudentToCourse: (id, registration, token) => {
-    return actions.post(`/action/course/${id}/student`, token, registration);
+    return actions.post(`/action/course/${id}/registration`, token, registration);
+  },
+
+  updateStudentRegistration: (courseId, registrationId, registration, token) => {
+    return actions.post(`/action/course/${courseId}/registration/${registrationId}`, token, registration);
   },
 
   removeStudentFromCourse: (courseId, registrationId, token) => {
-    return actions.delete(`/action/course/${courseId}/student/${registrationId}`, token);
+    return actions.delete(`/action/course/${courseId}/registration/${registrationId}`, token);
   },
 
   upload: (id, file, token) => {
     const form = new FormData();
     form.append('file', file);
 
-    return actions.submit(`/action/course/${id}/student/upload`, token, form);
+    return actions.submit(`/action/course/${id}/registrations/upload`, token, form);
   },
 
 };

@@ -94,20 +94,9 @@ class App extends React.Component {
           exact path={StaticRoutes.COURSES} component={CourseStudentExplorer}
         />
 
-        <SecureRoute exact path={StaticRoutes.COURSES_ADMIN} roles={[Roles.BETA_ACADEMIC, Roles.STANDARD_ACADEMIC]} render={() => (
-          <React.Fragment>
-            <div className="border-placeholder"></div>
-            <div>
-              <div>
-                <section className="main-results-page-content">
-                  <div className="results-main-content" style={{ flexDirection: 'column' }}>
-                    <CourseProfessorExplorer />
-                  </div>
-                </section>
-              </div>
-            </div>
-          </React.Fragment>
-        )} />
+        <SecureRoute roles={[Roles.BETA_ACADEMIC, Roles.STANDARD_ACADEMIC]}
+          exact path={StaticRoutes.COURSES_ADMIN} component={CourseProfessorExplorer}
+        />
 
         <SecureRoute exact path={StaticRoutes.FILESYSTEM} render={() => (
           <React.Fragment>

@@ -19,32 +19,45 @@ import {
   EnumCourseAction,
 } from '../../../model';
 
-class CourseDeleteModal extends React.Component {
+import {
+  FileSystem,
+} from '../../filesystem';
+
+class CourseSetFolderModal extends React.Component {
 
   constructor(props) {
     super(props);
 
+    const { course: { files = [] } } = props;
+    const path = files.length !== 0 ? files[0] : null;
+
     this.state = {
       loading: false,
+      path,
     };
   }
 
   static propTypes = {
     course: PropTypes.object,
-    message: PropTypes.string.isRequired,
-    removeCourse: PropTypes.func.isRequired,
     toggle: PropTypes.func.isRequired,
+    updateCourse: PropTypes.func.isRequired,
     visible: PropTypes.bool.isRequired,
   }
 
   onAccept(e) {
     e.preventDefault();
 
-    const { course } = this.props;
+    const { course, folder } = this.props;
+    const path = folder.path.substring(1);
 
-    this.props.removeCourse(course.id)
-      .then(() => this.onSuccess())
-      .catch((err) => this.onError(err));
+    const data = {
+      ...course,
+      files: [path],
+    };
+
+    this.props.updateCourse(course.id, data)
+      .then(course => this.onSuccess(course, path))
+      .catch(err => this.onError(err));
   }
 
   onCancel(e) {
@@ -53,13 +66,13 @@ class CourseDeleteModal extends React.Component {
     this.props.toggle();
   }
 
-  onSuccess() {
-    const { course: { title } } = this.props;
+  onSuccess(course, path) {
+    const { title } = course;
 
     toast.dismiss();
 
     toast.success(
-      <FormattedMessage id={`course.action.${EnumCourseAction.DELETE}.success`} values={{ title }}
+      <FormattedMessage id={`course.action.${EnumCourseAction.SET_FILES}.success`} values={{ title, path }}
       />
     );
 
@@ -77,49 +90,54 @@ class CourseDeleteModal extends React.Component {
       );
     } else {
       toast.error(
-        <FormattedMessage id={`course.action.${EnumCourseAction.DELETE}.failure`} />
+        <FormattedMessage id={`course.action.${EnumCourseAction.SET_FILES}.failure`} />
       );
     }
   }
 
   render() {
-    const { loading } = this.state;
-    const { course, message } = this.props;
+    const { loading, path } = this.state;
+    const { course, folder = null } = this.props;
 
     return (
       <Modal
-        centered={true}
+        centered={false}
         isOpen={this.props.visible}
         keyboard={false}
-        style={{ maxWidth: '500px' }}
+        style={{ maxWidth: '960px' }}
         toggle={this.props.toggle}>
 
-        <div className="course-modal course-delete-modal">
+        <div className="course-modal course-set-files-modal">
           <a href="" className="close" onClick={(e) => this.onCancel(e)}></a>
 
           <div className="form-title">
-            <FormattedMessage id={'course.modal.title.delete'} />
+            <FormattedMessage id={'course.modal.title.set-files'} values={{ title: course.title }} />
           </div>
 
           <form onSubmit={(e) => e.preventDefault()}>
             <div className="form-content">
-              <FormattedMessage id={message} values={{ title: course.title }} />
+              <FileSystem
+                defaultPath={path}
+                header={true}
+                serverButton={false}
+                showFoldersOnly={true}
+                upload={false}
+              />
             </div>
 
             <section className="footer">
               <button
                 type="button"
                 name="action-create"
-                className="action action-delete mr-4"
-                disabled={false}
+                className="action action-copy mr-4"
+                disabled={!folder}
                 onClick={(e) => this.onAccept(e)}>
-                <i className={loading ? 'fa fa-spin fa-spinner' : 'fa fa-trash'}></i>
+                <i className={loading ? 'fa fa-spin fa-spinner' : 'fa fa-save'}></i>
               </button>
               <button
                 type="button"
                 name="action-cancel"
                 className="action action-cancel"
-                disabled={false}
                 onClick={(e) => this.onCancel(e)}>
                 <i className="fa fa-times"></i>
               </button>
@@ -131,4 +149,4 @@ class CourseDeleteModal extends React.Component {
   }
 }
 
-export default injectIntl(CourseDeleteModal);
+export default injectIntl(CourseSetFolderModal);

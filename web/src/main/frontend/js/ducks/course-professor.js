@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import professorCourseService from '../service/course-professor';
 
 // Actions
@@ -17,6 +19,8 @@ const STUDENTS_REQUEST = 'course/professor/STUDENTS_REQUEST';
 const STUDENTS_RESPONSE = 'course/professor/STUDENTS_RESPONSE';
 const ADD_STUDENT_REQUEST = 'course/professor/ADD_STUDENT_REQUEST';
 const ADD_STUDENT_RESPONSE = 'course/professor/ADD_STUDENT_RESPONSE';
+const UPDATE_STUDENT_REQUEST = 'course/professor/UPDATE_STUDENT_REQUEST';
+const UPDATE_STUDENT_RESPONSE = 'course/professor/UPDATE_STUDENT_RESPONSE';
 const REMOVE_STUDENT_REQUEST = 'course/professor/REMOVE_STUDENT_REQUEST';
 const REMOVE_STUDENT_RESPONSE = 'course/professor/REMOVE_STUDENT_RESPONSE';
 
@@ -88,7 +92,14 @@ export default (state = initialState, action) => {
     case ADD_STUDENT_RESPONSE:
       return {
         ...state,
-        students: [action.student, ...state.courses],
+        students: [action.student, ...state.students],
+        selectedStudent: action.student,
+      };
+
+    case UPDATE_STUDENT_RESPONSE:
+      return {
+        ...state,
+        students: state.students.map(s => s.id === action.student.id ? action.student : s),
         selectedStudent: action.student,
       };
 
@@ -170,6 +181,15 @@ const addStudentSuccess = (student) => ({
   student,
 });
 
+const updateStudentRegistrationRequest = () => ({
+  type: UPDATE_STUDENT_REQUEST,
+});
+
+const updateStudentRegistrationSuccess = (student) => ({
+  type: UPDATE_STUDENT_RESPONSE,
+  student,
+});
+
 const removeStudentRequest = () => ({
   type: REMOVE_STUDENT_REQUEST,
 });
@@ -235,7 +255,13 @@ export const getCourseStudents = (id) => (dispatch, getState) => {
 
   return professorCourseService.getStudents(id)
     .then(students => {
-      dispatch(getStudentsSuccess(students));
+      const orderedStudents = _.orderBy(
+        students,
+        ['student.lastName', 'student.firstName', 'student.email'],
+        ['asc', 'asc', 'asc']
+      );
+
+      dispatch(getStudentsSuccess(orderedStudents));
 
       return students;
     });
@@ -249,6 +275,19 @@ export const addStudentToCourse = (courseId, registration) => (dispatch, getStat
   return professorCourseService.addStudentToCourse(courseId, registration, token)
     .then(student => {
       dispatch(addStudentSuccess(student));
+
+      return student;
+    });
+};
+
+export const updateStudentRegistration = (courseId, registrationId, data) => (dispatch, getState) => {
+  const { meta: { csrfToken: token } } = getState();
+
+  dispatch(updateStudentRegistrationRequest());
+
+  return professorCourseService.updateStudentRegistration(courseId, registrationId, data, token)
+    .then(student => {
+      dispatch(updateStudentRegistrationSuccess(student));
 
       return student;
     });

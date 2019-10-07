@@ -33,6 +33,10 @@ export const EnumAuthProvider = {
 };
 
 export const EnumCourseAction = {
-  COPY_FILES: 'copy-files',
+  CREATE: 'create',
+  UPDATE: 'update',
   DELETE: 'delete',
+  SET_FILES: 'set-files',
+  SET_STUDENTS: 'set-students',
+  COPY_FILES: 'copy-files',
 };

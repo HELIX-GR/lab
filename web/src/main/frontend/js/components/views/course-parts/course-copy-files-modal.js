@@ -17,7 +17,6 @@ import {
 
 import {
   EnumCourseAction,
-  ServerError,
 } from '../../../model';
 
 import {

@@ -1,4 +1,9 @@
 export { default as CourseAdvancedOptions } from './course-advanced-options';
+export { default as CourseAddCard } from './course-add-card';
+export { default as CourseAdminCard } from './course-admin-card';
 export { default as CourseCard } from './course-card';
 export { default as CourseCopyFilesModal } from './course-copy-files-modal';
 export { default as CourseDeleteModal } from './course-delete-modal';
+export { default as CourseEditModal } from './course-edit-modal';
+export { default as CourseSetFolderModal } from './course-set-folder-modal';
+export { default as CourseStudentsModal } from './course-students-modal';

@@ -4,13 +4,17 @@
   background-color: #FFF;
 }
 
+.table-wrapper {
+  font-size: 1rem;
+  margin: 15px 24px;
+}
+
 .filesystem-box {
   font-size: 1rem;
   margin: 15px;
-  border-width: 2px;
-  border-color: blue;
 }
 
+.toolbar-btn,
 .filesystem-btn {
   width: 36px;
   height: 36px;

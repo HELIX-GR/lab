@@ -79,12 +79,11 @@ const Featured = () => {
 
               <h2 className="main-lab-item-title">
                 A Data Science Laboratory in your browser
-
-                </h2>
+              </h2>
 
               <div className="main-lab-item-subtitle">
                 Create and share notebooks with live interactive code and visualizations over scientific data and large-scale computing infrastructures within your browser.
-                </div>
+              </div>
 
             </div>
           </div>

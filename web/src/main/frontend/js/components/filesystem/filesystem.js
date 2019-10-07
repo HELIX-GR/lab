@@ -26,12 +26,15 @@ class FileSystem extends Component {
     super(props);
 
     this.state = {
-      folder: this.findFolderFromPath() || this.props.filesystem,
+      folder: this.props.filesystem,
       folderName: 'Folder Name',
       updatedAt: this.props.updatedAt,
     };
 
     this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleRowClick = this.handleRowClick.bind(this);
+    this.handleRowDoubleClick = this.handleRowDoubleClick.bind(this);
+    this.handleCreateFolder = this.handleCreateFolder.bind(this);
   }
 
   static defaultProps = {
@@ -45,9 +48,25 @@ class FileSystem extends Component {
   componentWillMount() {
     if (this.props.user.profile !== null) {
       this.props.getFileSystem('')
-        .then(this.setState({
-          folder: this.props.filesystem
-        }));
+        .then(() => {
+          const { defaultPath = null, filesystem } = this.props;
+
+          this.setState({
+            folder: filesystem
+          });
+
+          if (defaultPath) {
+            let folder = filesystem;
+
+            defaultPath.split('/').slice(0, -2).forEach((name) => {
+              if (name) {
+                folder = folder.folders.find((f) => f.name === name);
+              }
+            });
+
+            this.props.setPath(folder, defaultPath.split('/').slice(0, -1).reverse()[0]);
+          }
+        });
     } else {
       this.props.history.push(StaticRoutes.HOME);
     }
@@ -61,7 +80,7 @@ class FileSystem extends Component {
   }
 
   findFolderFromPath(path = null) {
-    const currentPath = path || (this.state && this.state.folder && this.state.folder.path) || this.props.path || '/';
+    const currentPath = path || (this.state && this.state.folder && this.state.folder.path) || this.props.defaultPath || '/';
 
     let folder = this.props.filesystem;
 
@@ -70,6 +89,7 @@ class FileSystem extends Component {
         folder = folder.folders.find((f) => f.name === name);
       }
     });
+
     return folder;
   }
 
@@ -87,7 +107,7 @@ class FileSystem extends Component {
     return hierarchy;
   }
 
-  handleCreateFolder = (path) => {
+  handleCreateFolder(path) {
     toast.dismiss();
 
     this.props.createFolder(path)
@@ -102,16 +122,15 @@ class FileSystem extends Component {
       .catch(err => {
         toast.error(err.errors[0].description);
       });
-  };
+  }
 
-
-  handleRowClick = (event, index, type, name) => {
+  handleRowClick(event, index, type, name) {
     const folder = this.findFolderFromPath();
 
     this.props.setPath(folder, name);
-  };
+  }
 
-  handleRowDoubleClick = (event, index, type, name) => {
+  handleRowDoubleClick(event, index, type, name) {
     const folder = this.findFolderFromPath();
 
     if (type === 'file') {
@@ -127,7 +146,7 @@ class FileSystem extends Component {
       this.setState({ folder: folder.folders[index] });
       this.props.setPath(folder.folders[index], "");
     }
-  };
+  }
 
   renderHeader() {
     const folder = this.findFolderFromPath();
@@ -185,6 +204,11 @@ class FileSystem extends Component {
 
   render() {
     const { header = true, serverButton = true, upload = true } = this.props;
+    const folder = this.findFolderFromPath();
+
+    if (!folder) {
+      return null;
+    }
 
     return (
       <React.Fragment>

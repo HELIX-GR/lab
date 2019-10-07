@@ -122,7 +122,7 @@ class CourseStudentExplorer extends React.Component {
         this.search();
       })
       .catch(() => {
-        toast.error('course.error.load');
+        toast.error('course.error.load.course');
       });
   }
 
@@ -174,7 +174,8 @@ class CourseStudentExplorer extends React.Component {
         {showModal && action === EnumCourseAction.DELETE &&
           <CourseDeleteModal
             course={selected}
-            removeCourse={this.props.removeCourse}
+            message="course.modal.message.delete.student"
+            removeCourse={(id) => this.props.removeCourse(id).then(() => this.search())}
             toggle={() => this.hideModal()}
             visible={true}>
           </CourseDeleteModal>
