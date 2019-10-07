@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
-import org.springframework.batch.core.ExitStatus;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 
@@ -106,7 +105,7 @@ public class CommandExecutor {
     /**
      * Executes the command.
      *
-     * @return the {@link ExitStatus} of the command execution.
+     * @return the exit status of the command execution.
      * @throws Exception if command fails.
      */
     public Integer execute() throws Exception {
