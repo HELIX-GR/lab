@@ -15,7 +15,7 @@ import gr.helix.lab.web.domain.CourseStudentEntity;
 @Transactional(readOnly = true)
 public interface CourseStudentRepository extends JpaRepository<CourseStudentEntity, Integer> {
 
-    @Query("FROM CourseStudent c WHERE c.course.id = :id order by c.createdOn desc")
+    @Query("FROM CourseStudent c WHERE c.course.id = :id and c.course.active = true order by c.createdOn desc")
     public List<CourseStudentEntity> findAllByCourseId(@Param("id") int id);
 
     @Query("FROM CourseStudent c WHERE c.whiteListEntry.email = :email and c.course.id = :courseId")
