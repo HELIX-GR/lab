@@ -52,8 +52,8 @@ import gr.helix.lab.web.model.course.CourseErrorCode;
 import gr.helix.lab.web.model.course.CourseRegistrationRequest;
 import gr.helix.lab.web.model.course.CourseStudent;
 import gr.helix.lab.web.model.course.CourseStudentFileRow;
+import gr.helix.lab.web.model.course.CourseStudentImportResult;
 import gr.helix.lab.web.repository.CourseRepository;
-import gr.helix.lab.web.repository.CourseStudentImportResult;
 import gr.helix.lab.web.repository.CourseStudentRepository;
 import gr.helix.lab.web.repository.WhiteListRepository;
 
@@ -101,7 +101,6 @@ public class CourseProfessorController extends BaseController {
      * Create a new course for the authenticated professor
      *
      * @param course the course details
-     *
      * @return the instance {@link Course} instance
      */
     @PostMapping(value = "/action/course")
@@ -134,7 +133,6 @@ public class CourseProfessorController extends BaseController {
      *
      * @param id the course id
      * @param course the course details
-     *
      * @return the updated {@link Course} instance
      */
     @PostMapping(value = "/action/course/{id}")
@@ -187,7 +185,6 @@ public class CourseProfessorController extends BaseController {
      * true.
      *
      * @param id the course id
-     * @return the instance {@link Course} instance
      */
     @DeleteMapping(value = "/action/course/{id}")
     public RestResponse<?> removeCourse(@PathVariable int id) {
@@ -216,9 +213,10 @@ public class CourseProfessorController extends BaseController {
     /**
      * Get all students of a course for the authenticated professor
      *
-     * @return a list of {@link CourseRegistration} objects
+     * @param id the course id
+     * @return a list of {@link CourseStudent} objects
      */
-    @GetMapping(value = "/action/course/{id}/students")
+    @GetMapping(value = "/action/course/{id}/registrations")
     public RestResponse<?> findStudents(@PathVariable int id) {
         // Check if course exists and it is not deleted
         final Optional<CourseEntity> course = this.courseRepository.findById(id);
@@ -245,13 +243,16 @@ public class CourseProfessorController extends BaseController {
     /**
      * Add a student registration to a course
      *
-     * @param course the course details
+     * @param courseId the course id
+     * @param request the registration details
      *
-     * @return the instance {@link Course} instance
+     * @return the instance {@link CourseStudent} instance
      */
-    @PostMapping(value = "/action/course/{id}/student")
+    @PostMapping(value = "/action/course/{courseId}/registration")
     public RestResponse<?> addStudentToCourse(
-        @PathVariable int id, @RequestBody @Valid CourseRegistrationRequest request, BindingResult results
+        @PathVariable int courseId,
+        @RequestBody @Valid CourseRegistrationRequest request,
+        BindingResult results
     ) {
         // Validate request data
         if (results.hasErrors()) {
@@ -259,7 +260,7 @@ public class CourseProfessorController extends BaseController {
         }
 
         // Check if course exists and it is not deleted
-        final Optional<CourseEntity> course = this.courseRepository.findById(id);
+        final Optional<CourseEntity> course = this.courseRepository.findById(courseId);
 
         if (!course.isPresent() || course.get().isDeleted()) {
             return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course has not been found");
@@ -269,14 +270,21 @@ public class CourseProfessorController extends BaseController {
         if (course.get().getProfessor().getId() != this.currentUserId()) {
             logger.error(
                 "User [{}] has attempted to register student [{}] to course [{}].",
-                this.currentUserName(), request.getEmail(), id
+                this.currentUserName(), request.getEmail(), courseId
             );
 
             return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course has not been found");
         }
 
+        // Registration email and course must be unique
+        CourseStudentEntity registration =
+                this.courseStudentRepository.findByStudentEmailAndCourseId(request.getEmail(), courseId).orElse(null);
+        if (registration != null) {
+            return RestResponse.error(CourseErrorCode.REGISTRATION_ALREADY_EXISTS, "A registration already exists");
+        }
+
         // Create white list entry if one does not already exist
-        final CourseStudentEntity registration = this.addStudentToCourse(
+        registration = this.addStudentToCourse(
             course.get(), request.getEmail(), request.getFirstName(), request.getLastName()
         );
 
@@ -284,13 +292,62 @@ public class CourseProfessorController extends BaseController {
     }
 
     /**
-     * Add a student registration to a course
+     * Update an existing student registration to a course
      *
-     * @param course the course details
-     *
-     * @return the instance {@link Course} instance
+     * @param courseId the course id
+     * @param registrationId the registration id
+     * @param request the registration details
+     * @return the instance {@link CourseStudent} instance
      */
-    @DeleteMapping(value = "/action/course/{courseId}/student/{registrationId}")
+    @PostMapping(value = "/action/course/{courseId}/registration/{registrationId}")
+    public RestResponse<?> updateCourseStudent(
+        @PathVariable int courseId,
+        @PathVariable int registrationId,
+        @RequestBody @Valid CourseRegistrationRequest request,
+        BindingResult results
+    ) {
+        // Validate request data
+        if (results.hasErrors()) {
+            return RestResponse.invalid(results.getFieldErrors());
+        }
+
+        // Check if course exists and it is not deleted
+        final Optional<CourseEntity> course = this.courseRepository.findById(courseId);
+
+        if (!course.isPresent() || course.get().isDeleted()) {
+            return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course has not been found");
+        }
+
+        // Check if the authenticated user is also the owner of the course
+        if (course.get().getProfessor().getId() != this.currentUserId()) {
+            logger.error(
+                "User [{}] has attempted to register student [{}] to course [{}].",
+                this.currentUserName(), request.getEmail(), courseId
+            );
+
+            return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course has not been found");
+        }
+
+        // Check if registration exists
+        final Optional<CourseStudentEntity> registration = this.courseStudentRepository.findById(registrationId);
+
+        if(!registration.isPresent()) {
+            return RestResponse.error(CourseErrorCode.REGISTRATION_NOT_FOUND, "The student registartion has not been found");
+        }
+
+        registration.get().getWhiteListEntry().setFirstName(request.getFirstName());
+        registration.get().getWhiteListEntry().setLastName(request.getLastName());
+
+        return RestResponse.result(registration.get().toDto());
+    }
+
+    /**
+     * Remove a student registration from a course
+     *
+     * @param courseId the course id
+     * @param registrationId the registration id
+     */
+    @DeleteMapping(value = "/action/course/{courseId}/registration/{registrationId}")
     public RestResponse<?> removeStudentFromCourse(@PathVariable int courseId, @PathVariable int registrationId) {
         // Check if course exists and it is not deleted
         final Optional<CourseEntity> course = this.courseRepository.findById(courseId);
@@ -316,7 +373,6 @@ public class CourseProfessorController extends BaseController {
             return RestResponse.error(CourseErrorCode.REGISTRATION_NOT_FOUND, "The course student has not been found");
         }
 
-
         this.courseStudentRepository.delete(registration.get());
 
         return RestResponse.success();
@@ -327,7 +383,7 @@ public class CourseProfessorController extends BaseController {
      *
      * @param file uploaded CSV file
      */
-    @PostMapping(value = "/action/course/{id}/student/upload")
+    @PostMapping(value = "/action/course/{id}/registrations/upload")
     public RestResponse<?> importStudents(@PathVariable int id, @RequestPart("file") MultipartFile file) {
         // Check if course exists and it is not deleted
         final Optional<CourseEntity> course = this.courseRepository.findById(id);

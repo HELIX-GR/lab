@@ -11,6 +11,7 @@ public enum CourseErrorCode implements ErrorCode {
     COURSE_NOT_FOUND,
 
     REGISTRATION_NOT_FOUND,
+    REGISTRATION_ALREADY_EXISTS,
 
     RELATIVE_PATH_REQUIRED,
     PATH_EXISTS,

@@ -1,10 +1,9 @@
-package gr.helix.lab.web.repository;
+package gr.helix.lab.web.model.course;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import gr.helix.core.common.model.Error;
-import gr.helix.lab.web.model.course.CourseErrorCode;
 
 public class CourseStudentImportResult {
 
