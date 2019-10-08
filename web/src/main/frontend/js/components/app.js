@@ -84,7 +84,7 @@ class App extends React.Component {
 
         <Route exact path={StaticRoutes.HOME} render={() => (
           <div>
-            <Main changeLocale={() => { }} locale={'en'} logout={() => { }} />
+            <Main locale={'en'} />
           </div>
         )} />
 

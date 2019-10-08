@@ -11,10 +11,6 @@ import {
 } from 'redux';
 
 import {
-  logout,
-} from '../../ducks/user';
-
-import {
   StaticRoutes,
 } from '../../model';
 
@@ -195,7 +191,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   setText,
-  logout,
   searchAll,
   searchAutoComplete,
   setResultVisibility,
