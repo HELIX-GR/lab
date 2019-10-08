@@ -1,6 +1,3 @@
-import { toast, } from 'react-toastify';
-import moment from '../moment-localized';
-
 import notebookService from '../service/notebook';
 
 // Actions
@@ -17,7 +14,7 @@ export default (state = initialState, action) => {
     case PUBLISH_NOTEBOOK_SUCCESS:
       return {
         ...state,
-        ...action.publish,
+        ...action.resource,
       };
 
     default:
@@ -27,10 +24,9 @@ export default (state = initialState, action) => {
 
 // Action Creators
 
-const publishNotebookSuccess = (publish, timestamp) => ({
+const publishNotebookSuccess = (resource) => ({
   type: PUBLISH_NOTEBOOK_SUCCESS,
-  publish,
-  timestamp,
+  resource,
 });
 
 // Thunk actions
@@ -39,16 +35,12 @@ export const publishNotebook = (data) => (dispatch, getState) => {
   const { meta: { csrfToken: token } } = getState();
 
   return notebookService.publishNotebook(data, token)
-    .then((fs) => {
-      var t = moment().valueOf();
-      if (fs) {
-        dispatch(publishNotebookSuccess(fs, t))
-          .then(toast.success(<span>File Published! <a href={"/notebook/" + fs.package_id}> See it!</a></span>, {
-            autoClose: 50000,
-            closeOnClick: false,
-            pauseOnHover: true
-          }));
+    .then((resource) => {
+      if (resource) {
+        dispatch(publishNotebookSuccess(resource));
       }
+
+      return resource || null;
     });
 };
 

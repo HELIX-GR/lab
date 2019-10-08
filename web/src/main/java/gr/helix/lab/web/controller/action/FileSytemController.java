@@ -4,16 +4,20 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.RequestBuilder;
 import org.apache.velocity.shaded.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import gr.helix.core.common.model.ApplicationException;
 import gr.helix.core.common.model.BasicErrorCode;
 import gr.helix.core.common.model.RestResponse;
 import gr.helix.lab.web.model.FileSystemErrorCode;
@@ -49,12 +54,15 @@ public class FileSytemController extends BaseController {
     private final static String NOTEBOOK_EXTENSION = "ipynb";
 
     @Autowired
-    private CkanServiceProxy ckanServiceProxy;
+    private HttpClient          httpClient;
 
     @Autowired
-    public SearchService     searchService;
+    private CkanServiceProxy    ckanServiceProxy;
 
-    private long             maxUserSpace;
+    @Autowired
+    private SearchService       searchService;
+
+    private long                maxUserSpace;
 
     @Value("${lab.user.max-space:20971520}")
     public void setMaxUserSpace(String maxUserSpace) {
@@ -211,9 +219,12 @@ public class FileSytemController extends BaseController {
 
             final Package dataset = this.ckanServiceProxy.createDataset(request, userName);
 
-            final Resource resouce = this.ckanServiceProxy.createResource(request, file, dataset.getId());
+            // TODO: Check CKAN
+            TimeUnit.SECONDS.sleep(2);
 
-            return RestResponse.result(resouce);
+            final Resource resource = this.ckanServiceProxy.createResource(request, file, dataset.getId());
+
+            return RestResponse.result(resource);
         } catch (final Exception ex) {
             return RestResponse.error(BasicErrorCode.UNKNOWN, "An unknown error has occurred");
         }
@@ -246,10 +257,14 @@ public class FileSytemController extends BaseController {
 
             final Path target = this.fileNamingStrategy.resolvePath(userName, "Published/" + resource.getName());
 
-            final URL url = new URL(resource.getUrl());
+            final HttpUriRequest request = RequestBuilder.get(resource.getUrl()).build();
 
-            try (InputStream in = url.openStream()) {
-                Files.copy(in, target, StandardCopyOption.REPLACE_EXISTING);
+            try (CloseableHttpResponse response = (CloseableHttpResponse) this.httpClient.execute(request)) {
+                if (response.getStatusLine().getStatusCode() != 200) {
+                    throw ApplicationException.fromMessage("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+                }
+
+                Files.copy(response.getEntity().getContent(), target, StandardCopyOption.REPLACE_EXISTING);
             }
 
             return RestResponse.result(true);

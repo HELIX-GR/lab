@@ -21,20 +21,20 @@ public class DatasetForm {
 
     }
 
-    private String       name;
+    private String    name;
 
-    private String       title;
+    private String    title;
 
-    private String       notes;
+    private String    notes;
 
-    @JsonProperty("owner_org ")
-    private String       ownerOrganization;
+    @JsonProperty("owner_org")
+    private String    ownerOrganization;
 
     @JsonProperty("return_id_only")
-    private boolean      returnIdOnly;
+    private boolean   returnIdOnly;
 
-    @JsonProperty("maintainer_email ")
-    private String       maintainerEmail;
+    @JsonProperty("maintainer_email")
+    private String    maintainerEmail;
 
     private List<Tag> tags = new ArrayList<Tag>();
 

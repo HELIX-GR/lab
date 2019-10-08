@@ -3,6 +3,7 @@ import * as ReactRedux from 'react-redux';
 import * as PropTypes from 'prop-types';
 
 import moment from '../../moment-localized';
+import URI from 'urijs';
 
 import {
   bindActionCreators
@@ -132,13 +133,17 @@ class NotebookDetails extends React.Component {
   }
 
   getViewerUrl() {
-    const { search: { notebook: n } } = this.props;
+    const { ckan, search: { notebook: n } } = this.props;
     const url = n && n.resources && n.resources.length === 1 ? n.resources[0].url : null;
+
     if (!url) {
       return null;
     }
 
-    return (StaticRoutes.NOTEBOOK_VIEWER + "/url/" + url.replace("http://", "").replace("https://", ""));
+    const ckanHost = URI(ckan.host);
+    const target = URI(url);
+
+    return `${StaticRoutes.NOTEBOOK_VIEWER}/url/${ckanHost.authority()}${target.path()}`;
   }
 
   scrollToTop() {

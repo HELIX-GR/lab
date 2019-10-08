@@ -497,12 +497,15 @@ public class CkanServiceProxy {
             form.setReturnIdOnly(false);
             form.setMaintainerEmail(maintainerEmail);
 
-            for (final String tag: query.getTags()) {
-                form.addTag(tag);
+            if (query.getTags() != null) {
+                for (final String tag : query.getTags()) {
+                    form.addTag(tag);
+                }
             }
 
+            final String content = this.objectMapper.writeValueAsString(form);
             final StringEntity entity = new StringEntity(
-                this.objectMapper.writeValueAsString(form),
+                content,
                 ContentType.APPLICATION_JSON
             );
 
@@ -513,8 +516,9 @@ public class CkanServiceProxy {
                 .build();
 
             try (CloseableHttpResponse response = (CloseableHttpResponse) this.httpClient.execute(req)) {
+                final int status = response.getStatusLine().getStatusCode();
 
-                if (response.getStatusLine().getStatusCode() != 200) {
+                if (status != 200) {
                     throw ApplicationException.fromMessage("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
                 }
                 final Package dataset = this.parsePackage(response);
@@ -552,7 +556,7 @@ public class CkanServiceProxy {
             try (CloseableHttpResponse response = (CloseableHttpResponse) this.httpClient.execute(req)) {
                 final int status = response.getStatusLine().getStatusCode();
 
-                if (status >= 200 && status < 300) {
+                if (status != 200) {
                     throw ApplicationException.fromMessage("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
                 }
                 final Resource resource = this.parseResource(response);

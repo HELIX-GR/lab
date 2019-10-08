@@ -18,22 +18,30 @@ const tagOptions = [
   { value: 'GeoNotebook', label: 'GeoNotebook' },
   { value: 'scipy', label: 'scipy' },
 ];
+
 /**
  * A modal dialog can only be closed by selecting one of the actions.
  */
 class PublishModal extends React.Component {
-  state = {
-    title: '',
-    open: false,
-    filename: '',
-    filerename: '',
-    isPublishing: false,
-    path: this.props.path,
-    lang: "Python"
-  };
 
+  constructor(props) {
+    super(props);
 
-  toggle = () => {
+    this.state = {
+      title: '',
+      open: false,
+      filename: '',
+      filerename: '',
+      isPublishing: false,
+      path: this.props.path,
+      lang: "Python"
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleChangeTags = this.handleChangeTags.bind(this);
+  }
+
+  toggle() {
     if (this.state.open) {
       this.handleClose();
     }
@@ -41,16 +49,17 @@ class PublishModal extends React.Component {
       this.handleOpen();
     }
   }
-  handleOpen = () => {
+
+  handleOpen() {
     this.setState({
       open: true,
       path: this.props.path,
       filename: this.props.selectedFile,
       filerename: this.props.selectedFile,
     });
-  };
+  }
 
-  handleClose = () => {
+  handleClose() {
     this.setState({
       title: '',
       open: false,
@@ -58,13 +67,13 @@ class PublishModal extends React.Component {
       filerename: '',
       isPublishing: false,
     });
-  };
+  }
 
-  getFileExtension = (filename) => {
+  getFileExtension(filename) {
     return filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
-  };
+  }
 
-  handlePublish = () => {
+  handlePublish() {
     let path = this.props.path;
     if (path.startsWith('/')) {
       path = path.slice(1);
@@ -77,7 +86,19 @@ class PublishModal extends React.Component {
     let { title, filename, filerename, description, lang, tags } = this.state;
     if (this.getFileExtension(filename) == "ipynb") {
       this.props.publishNotebook({ title, path, filename, filerename, description, lang, tags })
-        .then((fs) => {
+        .then((result) => {
+          if (result) {
+            const style = { fontWeight: 'bold', textDecoration: 'underline', color: '#ffffff' };
+            const href = `/notebook/${result.package_id}`;
+
+            toast.success(
+              <span>File <a style={style} href={href}>{filename}</a> has been published successfully</span>, {
+              autoClose: 5000,
+              closeOnClick: false,
+              pauseOnHover: true
+            });
+          }
+
           this.handleClose();
         })
         .catch((err) => {
@@ -93,27 +114,27 @@ class PublishModal extends React.Component {
       });
 
     }
-  };
+  }
 
-  handleChange = (event) => {
+  handleChange(event) {
     this.setState({ [event.target.id]: event.target.value });
     // this.props.change(this.state);
   }
 
-  handleChangeTags = (newValue, actionMeta) => {
+  handleChangeTags(newValue) {
     var arr = [];
     newValue.map(s => { arr.push(s.value); });
     this.setState({ tags: arr });
-  };
+  }
 
   render() {
     const show = this.getFileExtension(this.props.selectedFile) == "ipynb";
     return (show &&
       <div className="filesystem-btn">
-        <a data="PUBLISH NOTEBOOK" onClick={this.handleOpen}>
+        <a data="PUBLISH NOTEBOOK" onClick={() => this.handleOpen()}>
           <img src="/images/svg/SVG/copy.svg" /></a>
-        <Modal isOpen={this.state.open} toggle={this.toggle} >
-          <ModalHeader toggle={this.toggle}>Publish a notebook</ModalHeader>
+        <Modal isOpen={this.state.open} toggle={() => this.toggle()} >
+          <ModalHeader toggle={() => this.toggle()}>Publish a notebook</ModalHeader>
 
           <ModalBody>
             <Form onClose={this.props.handleClose}>
@@ -151,7 +172,7 @@ class PublishModal extends React.Component {
             >Cancel </Btn>{' '}
             <Btn
               color="primary"
-              onClick={this.handlePublish}
+              onClick={(e) => this.handlePublish()}
               disabled={this.state.title == null}
             >Publish </Btn>
 
