@@ -9,6 +9,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,9 @@ import gr.helix.lab.web.service.JupyterHubClient;
 public class HubController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(HubController.class);
+
+    @Value("${helix.rpc-server.enabled}")
+    boolean                     isRpcServerEnabled;
 
     @Autowired
     AccountRepository           accountRepository;
@@ -110,13 +114,15 @@ public class HubController extends BaseController {
                 final String dataDir = this.fileNamingStrategy.getUserDir(username, true).toString();
                 final URIBuilder builder = new URIBuilder(hubServer.get().getUrl());
 
-                final NotebookServerRequest initRequest = new NotebookServerRequest(builder.getHost(), username, dataDir);
+                if (this.isRpcServerEnabled) {
+                    final NotebookServerRequest initRequest = new NotebookServerRequest(builder.getHost(), username, dataDir);
 
-                if(this.jupyterHubService.initializeNotebookServer(initRequest)) {
-                    this.jupyterHubClient.startServer(hubServer.get().getUrl(), hubServer.get().getToken(), username);
-                } else {
-                    return RestResponse.error(AdminErrorCode.NOTEBOOK_SERVER_INIT_FAILURE, "Failed to initialize notebook server");
+                    if (!this.jupyterHubService.initializeNotebookServer(initRequest)) {
+                        return RestResponse.error(AdminErrorCode.NOTEBOOK_SERVER_INIT_FAILURE, "Failed to initialize notebook server");
+                    }
                 }
+
+                this.jupyterHubClient.startServer(hubServer.get().getUrl(), hubServer.get().getToken(), username);
             }
 
             // Create new server registration and add account to the Jupyter Hub
@@ -157,9 +163,12 @@ public class HubController extends BaseController {
             // Stop notebook server
             this.jupyterHubClient.stopServer(hubServer.get().getUrl(), hubServer.get().getToken(), username);
 
-            // Remove user from Jupyter Hub to prevent creating new notebook
-            // servers without using lab application
-            this.jupyterHubClient.removeUser(hubServer.get().getUrl(),  hubServer.get().getToken(), username);
+            final HubUserInfo userInfo = this.jupyterHubClient.getUserInfo(hubServer.get().getUrl(), hubServer.get().getToken(), username);
+            if(!userInfo.isAdmin()) {
+                // Remove user from Jupyter Hub to prevent creating new notebook
+                // servers without using lab application
+                this.jupyterHubClient.removeUser(hubServer.get().getUrl(),  hubServer.get().getToken(), username);
+            }
 
             // Remove account to server registration
             final List<AccountServerEntity> accountServers = this.accountServerRepository.findAllServersByUserId(this.currentUserId());
