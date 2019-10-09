@@ -47,8 +47,5 @@ export const publishNotebook = (data) => (dispatch, getState) => {
 export const getNotebookToFilesystem = (id) => (dispatch, getState) => {
   const { meta: { csrfToken: token } } = getState();
 
-  return notebookService.getNotebook(id, token)
-    .then((fs) => {
-      //TODO handle
-    });
+  return notebookService.getNotebook(id, token);
 };

@@ -267,7 +267,7 @@ public class FileSytemController extends BaseController {
                 Files.copy(response.getEntity().getContent(), target, StandardCopyOption.REPLACE_EXISTING);
             }
 
-            return RestResponse.result(true);
+            return RestResponse.success();
         } catch (final Exception ex) {
             return RestResponse.error(BasicErrorCode.UNKNOWN, "An unknown error has occurred");
         }

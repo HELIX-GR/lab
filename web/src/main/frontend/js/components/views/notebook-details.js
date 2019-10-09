@@ -150,11 +150,9 @@ class NotebookDetails extends React.Component {
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
-  handleSaveBtn = (uuid) => {
-    this.props.getNotebookToFilesystem(uuid).then(toast.success("Saved in you filesystem!"));
-    this.setState({
-      active: false
-    });
+  getNotebookToFilesystem(id) {
+    this.props.getNotebookToFilesystem(id)
+      .then(toast.success("Notebook saved in you filesystem!"));
   }
 
   render() {
@@ -251,7 +249,7 @@ class NotebookDetails extends React.Component {
                     {this.props.username &&
                       <React.Fragment>
                         <div className="btn-save" id="img-btn-save">
-                          <a onClick={() => this.props.getNotebookToFilesystem(id)} data-toggle="tooltip" data-placement="bottom" title="">
+                          <a onClick={() => this.getNotebookToFilesystem(id)} data-toggle="tooltip" data-placement="bottom" title="">
                             <img src="/images/png/save.png" />
                           </a>
                         </div>
