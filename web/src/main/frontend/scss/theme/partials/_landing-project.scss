@@ -4,19 +4,23 @@
       border-left: 15px solid $main-black;
       border-right: 15px solid $main-black;
     }
+
     section.project-landing-page-content {
       margin: 0 15px 0px 15px;
       padding-bottom: 10px;
       background-color: $neutral-grey;
+
       .container-fluid {
         padding-top: 45px;
         padding-right: 25px;
         padding-left: 25px;
         padding-bottom: 0;
+
         .row {
           padding-right: -25px;
           padding-left: -25px;
         }
+
         .col-xs-1,
         .col-sm-1,
         .col-md-1,
@@ -68,9 +72,11 @@
           padding-right: 25px;
           padding-left: 25px;
         }
+
         &.about-helix-container {
           padding: 46px 130px 10px 130px;
           max-width: $layout-fixed-width;
+
           h4.about-header {
             margin: 0;
             padding-bottom: 10px;
@@ -79,6 +85,7 @@
             padding-top: 15px;
             font-size: 1.1rem;
           }
+
           h4.about-details-header {
             margin: 0;
             padding: 34px 0px 18px 52px;
@@ -87,23 +94,29 @@
           }
         }
       }
+
       .about-item {
         border-top: solid 10px $main-black;
+
         a {
           color: $main-black;
+
           &:hover {
             text-decoration: none;
             color: $main-black;
           }
+
           &.selected {
             h4 {
               font-weight: 600;
             }
           }
         }
+
         h3.about-title {
           margin: 37px 0px 0px 3px;
         }
+
         h4.about-title {
           margin: 0;
           line-height: 1;
@@ -117,15 +130,18 @@
           -webkit-transition: all .2s ease-in-out;
           -moz-transition: all .2s ease-in-out;
           -o-transition: all .2s ease-in-out;
+
           &:hover {
             opacity: .5;
           }
         }
+
         .about-text {
           padding: 25px 52px 0px 52px;
           font-weight: 300;
           line-height: 1.4;
         }
+
         .about-link {
           font-size: 18px;
           line-height: 1.3;
@@ -135,6 +151,7 @@
           -webkit-transition: all .2s ease-in-out;
           -moz-transition: all .2s ease-in-out;
           -o-transition: all .2s ease-in-out;
+
           &:hover {
             opacity: .5;
           }

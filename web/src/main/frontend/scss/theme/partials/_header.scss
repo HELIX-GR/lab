@@ -1,5 +1,6 @@
 #root {
   div {
+
     &.project,
     &.results-main,
     &.home {
@@ -8,51 +9,61 @@
           border-top: 15px solid $main-black;
         }
       }
+
       header .menu-wrapper nav.nav-menu ul.menu-items {
         li.menu-item.current-item a {
           border-color: $details-grey;
         }
+
         li.menu-item.has-sub-menu:hover {
           background-color: $main-black;
         }
+
         li.menu-item ul.sub-menu li {
           background-color: $main-black;
         }
       }
     }
+
     &.news {
       header {
         .logo-area {
           border-top: 15px solid $main-black;
         }
       }
+
       header .menu-wrapper nav.nav-menu ul.menu-items {
         li.menu-item.current-item a {
           border-color: $details-grey;
         }
+
         li.menu-item.has-sub-menu:hover {
           background-color: $main-black;
         }
+
         li.menu-item ul.sub-menu li {
           background-color: $main-black;
         }
       }
     }
+
     &.results-data,
     &.data {
       header .menu-wrapper nav.nav-menu ul.menu-items {
         li.menu-item.current-item a {
           border-color: $data-color;
         }
-        li.menu-item.has-sub-menu:hover,
-          {
+
+        li.menu-item.has-sub-menu:hover {
           background-color: $data-color;
         }
+
         li.menu-item ul.sub-menu li {
           background-color: $data-color;
         }
       }
     }
+
     &.results-pubs,
     &.pubs {
       header {
@@ -60,51 +71,63 @@
           border-top: 15px solid $pubs-color;
         }
       }
+
       header .menu-wrapper nav.nav-menu ul.menu-items {
         li.menu-item.current-item a {
           border-color: $pubs-color;
         }
+
         li.menu-item.has-sub-menu:hover {
           background-color: $pubs-color;
         }
+
         li.menu-item ul.sub-menu li {
           background-color: $pubs-color;
         }
       }
     }
+
     &.results-lab,
     &.lab {
       header .menu-wrapper nav.nav-menu ul.menu-items {
         li.menu-item.current-item a {
           border-color: $lab-color;
         }
+
         li.menu-item.has-sub-menu:hover {
           background-color: $lab-color;
         }
+
         li.menu-item ul.sub-menu li {
           background-color: $lab-color;
         }
       }
     }
   }
+
   header {
     .account-icon {
       border-radius: 15px;
     }
+
     z-index: 2;
     @include position(absolute, 0 0 null 0);
+
     img.logo-image {
       height: 103px;
       margin-top: 45px;
       margin-left: 50px;
     }
+
     .menu-wrapper {
       @include position(absolute, 0 0 null null);
       margin-top: 50px;
       margin-right: 20px;
       padding-right: 30px;
+
       nav.nav-menu {
         float: left;
+
         ul.menu-items {
           li.menu-item {
             font-weight: 400;
@@ -115,21 +138,25 @@
             padding-left: 10px;
             padding-right: 10px;
             position: relative;
+
             &.has-sub-menu {
               background-color: transparent;
               transition: all .1s ease-in-out;
               -webkit-transition: all .1s ease-in-out;
               -moz-transition: all .1s ease-in-out;
               -o-transition: all .1s ease-in-out;
+
               &:hover {
                 background-color: $main-black;
                 color: $footer-white;
               }
+
               &:hover ul.sub-menu {
                 display: block;
                 min-width: 170px;
               }
             }
+
             a {
               color: inherit;
               vertical-align: middle;
@@ -138,11 +165,13 @@
               -webkit-transition: all .1s ease-in-out;
               -moz-transition: all .1s ease-in-out;
               -o-transition: all .1s ease-in-out;
+
               &:hover {
                 text-decoration: none;
                 color: inherit;
               }
             }
+
             ul.sub-menu {
               display: none;
               position: absolute;
@@ -150,12 +179,14 @@
               top: 36px;
               right: 0;
               line-height: 18px;
+
               li {
                 padding-top: 11px;
                 padding-bottom: 11px;
                 padding-left: 10px;
                 padding-right: 10px;
                 margin-top: 1px;
+
                 a {
                   vertical-align: middle;
                   line-height: 1.2;
@@ -164,53 +195,67 @@
                 }
               }
             }
+
             &.current-item {
               a {
                 border-bottom: 2px solid $neutral-grey;
               }
             }
+
             &#menu-item-data {
               margin-right: 5px;
+
               a.active-link {
                 border-color: $data-color;
               }
             }
+
             &#menu-item-pubs {
               margin-left: 5px;
               margin-right: 5px;
+
               a.active-link {
                 border-color: $pubs-color;
               }
             }
+
             &#menu-item-lab {
               margin-left: 5px;
               margin-right: 20px;
+
               a.active-link {
                 border-color: $lab-color;
               }
             }
+
             &#menu-item-admin {
               margin-left: 5px;
               margin-right: 20px;
+
               a.active-link {
                 border-color: $lab-color;
               }
             }
+
             &#menu-item-project {
               margin-left: 20px;
               margin-right: 5px;
             }
+
             &#menu-item-news {
               margin-left: 5px;
               margin-right: 20px;
             }
+
             &#menu-item-lang {
               margin-left: 20px;
               margin-right: 20px;
+
               .sub-menu {
                 min-width: unset;
                 top: 32px;
                 width: 100%;
+
                 li {
                   a {
                     font-size: 20px;
@@ -218,17 +263,20 @@
                 }
               }
             }
+
             &#menu-item-account {
               padding: 0px;
             }
           }
         }
       }
+
       .account-item {
         float: left;
         position: relative;
         margin-left: 20px;
         margin-right: 5px;
+
         a {
           font-weight: 400;
           font-size: 20px;
@@ -240,24 +288,29 @@
           -moz-transition: all .2s ease-in-out;
           -o-transition: all .2s ease-in-out;
           line-height: 35px;
+
           img {
             height: 30px;
             margin-bottom: 2px;
           }
         }
+
         .account-icon {
           border-radius: 50px;
         }
+
         &.logged-off {
           .account-icon {
             opacity: 0.5;
           }
         }
       }
+
       .search-item {
         float: left;
         position: relative;
         margin-left: 15px;
+
         a {
           height: 35px;
           width: 35px;
@@ -273,6 +326,7 @@
           -webkit-transition: all .2s ease-in-out;
           -moz-transition: all .2s ease-in-out;
           -o-transition: all .2s ease-in-out;
+
           i {
             padding: 9px 10px 10px 10px;
           }

@@ -28,11 +28,16 @@ $transition_time: 0.2s;
 $transition_ease: ease-in-out;
 $transition: $transition_time $transition_ease;
 
-$body_font: 'Roboto', sans-serif;
+$body_font: 'Roboto',
+sans-serif;
 
-$serif_font: "Playfair Display", "Times New Roman", serif;
-$hand_font: "Amatic SC", cursive;
-$sans_font: 'Lato', sans-serif;
+$serif_font: "Playfair Display",
+"Times New Roman",
+serif;
+$hand_font: "Amatic SC",
+cursive;
+$sans_font: 'Lato',
+sans-serif;
 
 /* Font Sizes */
 $size_base: 1em;

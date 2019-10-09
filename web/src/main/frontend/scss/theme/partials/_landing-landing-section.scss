@@ -4,6 +4,7 @@
       section {
         div.landing-section {
           background: $neutral-grey;
+
           div.landing-section-background {
             background: white url('../images/jpg/CC_science and plants.jpg') center/cover no-repeat;
             opacity: 0.5;
@@ -14,24 +15,28 @@
         }
       }
     }
+
     &.data {
       section {
         div.landing-section {
           background: white url('../images/jpg/photo2-100.jpg') center/cover no-repeat;
-          &:after {}
+
           .search-form-wrapper .landing-search-form .main-form-content {
             border-bottom-color: $data-color;
           }
+
           .search-form-wrapper .landing-search-form button.landing-search-button {
             background-color: $data-color;
           }
         }
       }
     }
+
     &.pubs {
       section {
         div.landing-section {
           background: $neutral-grey;
+
           div.landing-section-background {
             background: white url('../images/jpg/read-open-wood-row-vintage-antique-660394.jpg') center/cover no-repeat;
             opacity: 0.5;
@@ -39,31 +44,36 @@
             height: 100%;
             width: 100%;
           }
+
           .search-form-wrapper .landing-search-form .main-form-content {
             border-bottom-color: $pubs-color;
           }
+
           .search-form-wrapper .landing-search-form button.landing-search-button {
             background-color: $pubs-color;
           }
         }
       }
     }
+
     &.lab {
       section {
         div.landing-section {
           height: 60vh;
           min-height: 615px;
           background: white url('../images/jpg/photo4-100.jpg') center/cover no-repeat;
-          &:after {}
+
           .search-form-wrapper .landing-search-form .main-form-content {
             border-bottom-color: $lab-color;
           }
+
           .search-form-wrapper .landing-search-form button.landing-search-button {
             background-color: $lab-color;
           }
         }
       }
     }
+
     section {
       div.landing-section.header {
         z-index: 1;
@@ -73,6 +83,7 @@
         margin: 0px 15px 0 15px;
         border-top: 15px solid $lab-color;
       }
+
       div.landing-section {
         z-index: 1;
         height: 60vh;
@@ -91,6 +102,7 @@
           background-repeat: no-repeat;
           opacity: .6;
         }
+
         .search-form-wrapper {
           position: relative;
           display: block;
@@ -99,18 +111,20 @@
           width: 955px;
           min-width: 400px;
           @include position(absolute,
-          57% null null 50%);
+            57% null null 50%);
           transform: translate(-50%, -50%);
           -webkit-transform: translate(-50%, -50%);
           -o-transform: translate(-50%, -50%);
           -moz-transform: translate(-50%, -50%);
           -ms-transform: translate(-50%, -50%);
+
           .landing-search-form {
             .main-form-content {
               width: calc(100% - 175px);
               border-bottom-style: solid;
               border-bottom-width: 3px;
               position: relative;
+
               input.landing-search-text {
                 outline: none;
                 border: none;
@@ -124,40 +138,49 @@
                 letter-spacing: .025em;
                 color: $main-black;
                 font-weight: 400;
+
                 &::-ms-input-placeholder {
                   font-weight: 400;
                   padding-bottom: 0;
                 }
+
                 &:-ms-input-placeholder {
                   font-weight: 400;
                   padding-bottom: 0;
                 }
+
                 &::placeholder {
                   font-weight: 400;
                   padding-bottom: 0;
                 }
+
                 &::-moz-selection {
                   color: white;
                   background-color: #BFBFBF;
                 }
+
                 &::selection {
                   color: white;
                   background-color: #BFBFBF;
                 }
+
                 &:focus {
                   border: none;
                 }
               }
+
               .domain-pills {
                 &.short {
                   width: 250px;
                 }
+
                 margin-left: 12px;
                 padding-top: 16px;
                 width: 100%;
                 z-index: 3;
                 position: absolute;
                 left: 0;
+
                 .filter-pill {
                   cursor: pointer;
                   user-select: none;
@@ -168,7 +191,6 @@
                   height: 25px;
                   line-height: 15px;
                   float: left;
-                  display: inline-block;
                   border-radius: 17.5px;
                   background-color: #BFBFBF;
                   position: relative;
@@ -176,9 +198,11 @@
                   -webkit-transition: all .2s ease-in-out;
                   -moz-transition: all .2s ease-in-out;
                   -o-transition: all .2s ease-in-out;
+
                   &:hover {
                     opacity: .5;
                   }
+
                   &:after {
                     content: '\f00d';
                     display: inline-block;
@@ -190,28 +214,35 @@
                     position: relative;
                     top: -1px;
                   }
+
                   &:last-child {
                     margin-right: none;
                   }
+
                   &.selected {
                     &:after {
                       content: '\f00c';
                     }
+
                     &.pill-data {
                       background-color: $data-color;
                     }
+
                     &.pill-pubs {
                       background-color: $pubs-color;
                     }
+
                     &.pill-lab {
                       background-color: $lab-color;
                     }
                   }
                 }
+
                 .advanced-search-link {
                   &.hidden {
                     display: none;
                   }
+
                   cursor: pointer;
                   user-select: none;
                   position: absolute;
@@ -228,22 +259,27 @@
                   -webkit-transition: all .2s ease-in-out;
                   -moz-transition: all .2s ease-in-out;
                   -o-transition: all .2s ease-in-out;
+
                   &:hover {
                     opacity: .5;
                   }
                 }
               }
+
               .closable {
                 display: none;
+
                 &.visible {
                   display: block;
                 }
+
                 z-index: 1;
                 position: absolute;
                 left: 0;
                 width: 100%;
                 top: 58px;
                 background-color: white;
+
                 .close-btn {
                   position: absolute;
                   top: 0;
@@ -259,18 +295,22 @@
                   -webkit-transition: all .2s ease-in-out;
                   -moz-transition: all .2s ease-in-out;
                   -o-transition: all .2s ease-in-out;
+
                   &:hover {
                     opacity: .5;
                   }
+
                   &:after {
                     content: 'X';
                   }
                 }
+
                 .search-options {
                   position: relative;
                   margin-top: 50px;
                   padding-left: 25px;
                   padding-right: 25px;
+
                   label {
                     float: left;
                     width: calc(50% - 50px);
@@ -282,9 +322,11 @@
                     margin-left: 25px;
                     margin-right: 25px;
                     position: relative;
+
                     .label-content {
                       padding-left: 10px;
                     }
+
                     input {
                       padding: 0 10px;
                       font-weight: 300;
@@ -300,6 +342,7 @@
                       margin-bottom: 28px;
                       height: 38px; //
                     }
+
                     a {
                       display: inline-block;
                       width: 36px;
@@ -314,9 +357,11 @@
                       -webkit-transition: all .2s ease-in-out;
                       -moz-transition: all .2s ease-in-out;
                       -o-transition: all .2s ease-in-out;
+
                       &:hover {
                         opacity: .5;
                       }
+
                       i {
                         display: inline-block;
                         color: $main-black;
@@ -327,6 +372,7 @@
                   }
                 }
               }
+
               .landing-live-search-container {
                 &.visible {
                   /* Fix height */
@@ -334,6 +380,7 @@
                   max-height: 35vh;
                   display: block;
                 }
+
                 display: none;
                 z-index: 5;
                 position: absolute;
@@ -342,16 +389,20 @@
                 background-color: white;
                 padding: 20px 15px 10px 15px;
                 width: 100%;
+
                 .landing-live-search-group {
                   padding-bottom: 20px;
                   background: none;
+
                   &.data {
                     .results-header {
                       border-bottom: 2px solid $data-color;
+
                       .results-title {
                         color: $data-color;
                       }
                     }
+
                     .search-results {
                       .result-entry {
                         .matched-text {
@@ -360,13 +411,16 @@
                       }
                     }
                   }
+
                   &.pubs {
                     .results-header {
                       border-bottom: 2px solid $pubs-color;
+
                       .results-title {
                         color: $pubs-color;
                       }
                     }
+
                     .search-results {
                       .result-entry {
                         .matched-text {
@@ -375,13 +429,16 @@
                       }
                     }
                   }
+
                   &.lab {
                     .results-header {
                       border-bottom: 2px solid $lab-color;
+
                       .results-title {
                         color: $lab-color;
                       }
                     }
+
                     .search-results {
                       .result-entry {
                         .matched-text {
@@ -390,14 +447,17 @@
                       }
                     }
                   }
+
                   &:last-child {
                     padding-bottom: 0;
                   }
+
                   .results-header {
                     width: 100%;
                     position: relative;
                     height: 15px;
                     padding-bottom: 4px;
+
                     .results-title {
                       padding-left: 4px;
                       position: absolute;
@@ -409,6 +469,7 @@
                       line-height: 1.4;
                       padding-right: 60px;
                     }
+
                     .all-link {
                       padding-right: 8px;
                       position: absolute;
@@ -422,13 +483,16 @@
                       line-height: 1.3;
                       cursor: pointer;
                       user-select: none;
+
                       &:hover {
                         text-decoration: none;
                       }
                     }
                   }
+
                   .search-results {
                     width: 100%;
+
                     a.result-entry {
                       display: block;
                       padding-left: 4px;
@@ -440,12 +504,15 @@
                       border-bottom: 1px solid #989898;
                       cursor: pointer;
                       overflow: hidden;
+
                       &:hover {
                         text-decoration: none;
                       }
+
                       &:last-child {
                         border-bottom: none;
                       }
+
                       .matched-text {
                         font-weight: 700;
                         font-size: 16px;
@@ -456,6 +523,7 @@
                 }
               }
             }
+
             button.landing-search-button {
               color: white;
               background-color: $main-black;
@@ -471,9 +539,11 @@
               -webkit-transition: all .2s ease-in-out;
               -moz-transition: all .2s ease-in-out;
               -o-transition: all .2s ease-in-out;
+
               &:hover i {
                 opacity: .5;
               }
+
               i {
                 font-size: 20px;
               }
