@@ -23,7 +23,7 @@ export default {
   },
 
   removeUserServer: (regId, token) => {
-    return actions.delete(`action/admin/server/registration/${regId}`, token);
+    return actions.delete(`/action/admin/server/registration/${regId}`, token);
   },
 
   grantUserRole: (userId, role, token) => {

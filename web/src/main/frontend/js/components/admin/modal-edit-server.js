@@ -52,11 +52,11 @@ class ModalEditServer extends React.Component {
       .then(this.setState({ show_modal: false }));
 
   }
-  
+
   render() {
     return (
-      <div>
-        <i className="fa fa-wrench" onClick={this.handleOpen}></i>
+      <div onClick={this.handleOpen}>
+        <i className="fa fa-wrench"></i>
 
         <Modal isOpen={this.state.show_modal} toggle={this.handleShow} className={this.props.className}>
           <ModalHeader toggle={this.handleShow}>Edit Server: {this.props.data.name}</ModalHeader>
@@ -68,11 +68,11 @@ class ModalEditServer extends React.Component {
             <Button color="primary" onClick={this.handleSubmit}>Submit</Button>
           </ModalFooter>
         </Modal>
-
       </div>
     );
   }
 }
+
 ModalEditServer.propTypes = {
   data: PropTypes.object,
 };

@@ -21,3 +21,12 @@ export const ALL = [
   BETA_ACADEMIC,
   BETA_STUDENT,
 ];
+
+export const LAB = [
+  STANDARD,
+  STANDARD_ACADEMIC,
+  STANDARD_STUDENT,
+  BETA,
+  BETA_ACADEMIC,
+  BETA_STUDENT,
+];

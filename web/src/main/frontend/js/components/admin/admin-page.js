@@ -7,13 +7,19 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import ModalAddServer from './modal-add-server';
 import { AdminTable } from './server-table';
-import { UserTable } from './user-table';
-import { U2sTable } from './u2s-table';
+import UserTable from './user-table';
+import U2sTable from './u2s-table';
 import { injectIntl } from 'react-intl';
 import Typography from '@material-ui/core/Typography';
-import { WhiteListTable } from "./white-list-table";
-import ModalAddWhiteList from './madal-add-white-list';
-import { withRouter, Redirect } from 'react-router-dom';
+import WhiteListTable from "./white-list-table";
+import ModalAddWhiteList from './modal-add-white-list';
+import { withRouter } from 'react-router-dom';
+
+import moment from '../../moment-localized';
+
+import Icon from '@mdi/react';
+import { mdiServer, mdiAccountGroup, mdiAccountKey, mdiMonitorDashboard } from '@mdi/js';
+
 import {
   StaticRoutes,
 } from '../../model';
@@ -25,7 +31,6 @@ function TabContainer(props) {
     </Typography>
   );
 }
-
 
 class AdminPage extends React.Component {
 
@@ -59,16 +64,6 @@ class AdminPage extends React.Component {
     const { value } = this.state;
     return (
       <React.Fragment>
-        <div className="breadcrumbs-pagination" >
-          <div className="breadcrumbs">
-            <a className="breadcrumbs-part">
-              <span className="fa fa-cogs mr-2"></span>
-              <span className="header-text">Admin Panel</span>
-            </a>
-          </div>
-
-        </div>
-
         <div className="top-border-lab" />
 
         <Paper className="mb-5">
@@ -77,7 +72,8 @@ class AdminPage extends React.Component {
             onChange={this.handleChange}
             indicatorColor="primary"
             textColor="primary"
-            centered
+            centered={false}
+            fullWidth={true}
           >
             <Tab label="Servers" />
             <Tab label="Users" />
@@ -87,48 +83,72 @@ class AdminPage extends React.Component {
 
           {value === 0 &&
             <TabContainer>
-              <h2><i className="fa fa-server mr-2" /> Servers</h2>
-              <a> {this.props.intl.formatRelative(this.props.serversLastUpdate)} </a>
-
-              <ModalAddServer />
+              <div className="d-flex align-items-center">
+                <div>
+                  <Icon path={mdiServer} size={'30px'} className="mr-2" />
+                </div>
+                <div style={{ fontSize: 30 }}>Servers</div>
+                <div className="mt-2" style={{ marginLeft: 'auto' }}>
+                  <ModalAddServer />
+                </div>
+              </div>
+              <div className="pl-1">
+                <a className="text-muted small">Last update before {moment.duration(Date.now() - this.props.serversLastUpdate).humanize()}</a>
+              </div>
               <AdminTable servers={this.props.servers} serverEdit={this.handleEdit} />
-
             </TabContainer>
           }
           {value === 1 &&
             <TabContainer>
-              <div>
-                <h2><i className="fa fa-users mr-2" /> Users</h2>
-                <a> {this.props.intl.formatRelative(this.props.usersLastUpdate)} </a>
-                <UserTable users={this.props.users} />
+              <div className="d-flex align-items-center">
+                <div>
+                  <Icon path={mdiAccountGroup} size={'40px'} className="mr-2" />
+                </div>
+                <div style={{ fontSize: 30 }}>Users</div>
               </div>
+              <div className="pl-1">
+                <a className="text-muted small">{moment.duration(Date.now() - this.props.usersLastUpdate).humanize()}</a>
+              </div>
+              <UserTable users={this.props.users} />
             </TabContainer>
           }
           {value === 2 &&
-            <TabContainer><div>
-              <h2><i className="fa fa-address-book-o mr-2" />White-List</h2>
-              <a> {this.props.intl.formatRelative(this.props.whitelistLastUpdate)} </a>
-              <ModalAddWhiteList />
+            <TabContainer>
+              <div className="d-flex align-items-center">
+                <div>
+                  <Icon path={mdiAccountKey} size={'40px'} className="mr-2" />
+                </div>
+                <div style={{ fontSize: 30 }}>White-List</div>
+                <div className="mt-2" style={{ marginLeft: 'auto' }}>
+                  <ModalAddWhiteList />
+                </div>
+              </div>
+              <div className="pl-1">
+                <a className="text-muted small">{moment.duration(Date.now() - this.props.whitelistLastUpdate).humanize()}</a>
+              </div>
               <WhiteListTable users={this.props.whitelist} />
-            </div>
             </TabContainer>
           }
           {value === 3 &&
-            <TabContainer><div>
-              <h2><i className="fa fa-heartbeat mr-2" />User to Servers Management
-                 <div className="pill data ml-2">
-                  {this.props.userServers.length} Running
-          </div>
-              </h2>
-              <a> {this.props.intl.formatRelative(this.props.userServersLastUpdate)} </a>
+            <TabContainer>
+              <div className="d-flex align-items-center">
+                <div>
+                  <Icon path={mdiMonitorDashboard} size={'40px'} className="mr-2" />
+                </div>
+                <div style={{ fontSize: 30 }}>Active Notebook Servers</div>
+                <div className="pill data ml-2" style={{ marginTop: 12 }}>
+                  {`${this.props.userServers.length} Running`}
+                </div>
+              </div>
+              <div className="pl-1">
+                <a className="text-muted small">{moment.duration(Date.now() - this.props.userServersLastUpdate).humanize()}</a>
+              </div>
               <U2sTable userServers={this.props.userServers} />
-
-            </div>
             </TabContainer>
           }
         </Paper>
 
-      </React.Fragment>
+      </React.Fragment >
     );
   }
 }

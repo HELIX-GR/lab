@@ -158,9 +158,9 @@ export const getUserServers = () => (dispatch) => {
 
 export const removeUserServer = (id) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
-  return adminService.removeUserServer(id, token).then(
-    () => {
-      this.getUserServers();
+  return adminService.removeUserServer(id, token)
+    .then(() => {
+      return dispatch(getUserServers());
     });
 };
 
