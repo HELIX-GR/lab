@@ -8,8 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import gr.helix.core.common.model.EnumRole;
-import gr.helix.lab.web.model.security.User;
-
+import gr.helix.core.common.model.security.User;
 
 @Component
 public class AuthenticationFacade implements IAuthenticationFacade {

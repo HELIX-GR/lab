@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import gr.helix.core.common.domain.AccountEntity;
 import gr.helix.core.common.model.EnumRole;
+import gr.helix.core.common.model.security.User;
 import gr.helix.core.common.repository.AccountRepository;
 import gr.helix.lab.web.domain.WhiteListEntryEntity;
 import gr.helix.lab.web.domain.WhiteListEntryRoleEntity;
-import gr.helix.lab.web.model.security.User;
 import gr.helix.lab.web.repository.WhiteListRepository;
 
 @Service
