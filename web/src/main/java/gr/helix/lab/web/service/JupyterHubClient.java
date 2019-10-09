@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gr.helix.core.common.model.ApplicationException;
 import gr.helix.core.common.model.BasicErrorCode;
+import gr.helix.lab.web.domain.HubServerEntity;
 import gr.helix.lab.web.model.admin.AdminErrorCode;
 import gr.helix.lab.web.model.hub.HubServerInfo;
 import gr.helix.lab.web.model.hub.HubUserInfo;
@@ -147,6 +148,10 @@ public class JupyterHubClient {
         }
     }
 
+    public HubUserInfo getUserInfo(HubServerEntity server, String username) throws ApplicationException {
+        return this.getUserInfo(server.getUrl(), server.getToken(), username);
+    }
+
     public HubUserInfo getUserInfo(String url, String token, String username) throws ApplicationException {
         try {
             final ClientResponse response = this.get(url, token, "users/" + username);
@@ -165,6 +170,10 @@ public class JupyterHubClient {
         } catch (final JsonProcessingException e) {
             throw ApplicationException.fromMessage(AdminErrorCode.HUB_SERVER_PARSE_ERROR, "Failed to parse server response");
         }
+    }
+
+    public boolean removeUser(HubServerEntity server, String username) throws ApplicationException {
+        return this.removeUser(server.getUrl(), server.getToken(), username);
     }
 
     public boolean removeUser(String url, String token, String username) throws ApplicationException {

@@ -6,9 +6,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import gr.helix.core.common.domain.AccountEntity;
@@ -19,6 +20,7 @@ import gr.helix.lab.web.domain.AccountServerEntity;
 import gr.helix.lab.web.domain.HubServerEntity;
 import gr.helix.lab.web.model.admin.AdminErrorCode;
 import gr.helix.lab.web.model.admin.ClientServerRegistration;
+import gr.helix.lab.web.model.hub.HubUserInfo;
 import gr.helix.lab.web.repository.AccountServerRepository;
 import gr.helix.lab.web.service.JupyterHubClient;
 
@@ -33,7 +35,7 @@ public class UserServerManagmentController extends BaseController {
     @Autowired
     JupyterHubClient        jupyterHubClient;
 
-    @RequestMapping(value = "action/admin/servers/activity", method = RequestMethod.GET)
+    @GetMapping(value = "action/admin/servers/activity")
     public RestResponse<?> getUsersToServers() {
         final List<ClientServerRegistration> accountServers = this.accountServerRepository.findAll().stream()
             .map(AccountServerEntity::toDto)
@@ -42,7 +44,7 @@ public class UserServerManagmentController extends BaseController {
         return RestResponse.result(accountServers);
     }
 
-    @RequestMapping(value = "action/admin/server/registration/{regId}", method = RequestMethod.POST)
+    @DeleteMapping(value = "action/admin/server/registration/{regId}")
     public RestResponse<?> deleteUserToServer(@PathVariable int regId) {
         // Check if registration exists
         final Optional<AccountServerEntity> accountServer = this.accountServerRepository.findById(regId);
@@ -52,19 +54,27 @@ public class UserServerManagmentController extends BaseController {
         }
 
         // Remove user from Jupyter Hub server
-        boolean userRemoved = false;
+        boolean result = false;
         try {
             final AccountEntity account = accountServer.get().getAccount();
             final HubServerEntity server = accountServer.get().getHubServer();
 
-            userRemoved = this.jupyterHubClient.removeUser(server.getUrl(), server.getUrl(), account.getUsername());
+            final HubUserInfo userInfo = this.jupyterHubClient.getUserInfo(server, account.getUsername());
+            if (!userInfo.isAdmin()) {
+                // Remove user from Jupyter Hub to prevent creating new notebook
+                // servers without using lab application
+                result = this.jupyterHubClient.removeUser(server, account.getUsername());
+            } else {
+                result = true;
+            }
         } catch (final ApplicationException ex) {
-            return RestResponse.result(ex.toError());
+            return RestResponse.error(ex.toError());
         }
 
+        // Remove registration
         this.accountServerRepository.deleteById(regId);
 
-        return RestResponse.result(userRemoved);
+        return RestResponse.result(result);
     }
 
 }
