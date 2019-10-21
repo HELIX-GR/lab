@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import gr.helix.core.common.domain.AccountEntity;
+import gr.helix.core.common.domain.HubKernelEntity;
 import gr.helix.lab.web.model.course.Course;
 
 @Entity(name = "Course")
@@ -77,7 +78,6 @@ public class CourseEntity {
     @Column(name = "`link`")
     String                    link;
 
-
     @OneToMany(
         targetEntity = CourseStudentEntity.class,
         mappedBy = "course",
@@ -95,6 +95,11 @@ public class CourseEntity {
         orphanRemoval = true
     )
     List<CourseFileEntity>    files    = new ArrayList<>();
+
+    @NotNull
+    @ManyToOne(targetEntity = HubKernelEntity.class)
+    @JoinColumn(name = "hub_kernel", nullable = false)
+    HubKernelEntity kernel;
 
     public AccountEntity getProfessor() {
         return this.professor;
@@ -188,6 +193,14 @@ public class CourseEntity {
         this.link = link;
     }
 
+    public HubKernelEntity getKernel() {
+        return this.kernel;
+    }
+
+    public void setKernel(HubKernelEntity kernel) {
+        this.kernel = kernel;
+    }
+
     public Course toDto() {
         final Course record = new Course();
 
@@ -202,6 +215,7 @@ public class CourseEntity {
         record.setTitle(this.title);
         record.setUpdatedOn(this.updatedOn);
         record.setYear(this.year);
+        record.setKernel(this.kernel.getName());
 
         this.students.stream().forEach(s -> record.getStudents().add(s.toDto()));
 

@@ -79,6 +79,15 @@ public class HubServerEntity {
     )
     List<HubServerTagEntity> tags = new ArrayList<>();
 
+    @OneToMany(
+        targetEntity = HubServerKernelEntity.class,
+        mappedBy = "server",
+        fetch = FetchType.LAZY,
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    List<HubServerKernelEntity> kernels = new ArrayList<>();
+
     public String getName() {
         return this.name;
     }
@@ -168,6 +177,19 @@ public class HubServerEntity {
         return false;
     }
 
+    public List<HubServerKernelEntity> getKernels() {
+        return this.kernels;
+    }
+
+    public boolean hasKernel(String name) {
+        for (final HubServerKernelEntity kernel : this.kernels) {
+            if (kernel.getKernel().getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public HubServerEntity() {
 
     }
@@ -221,6 +243,7 @@ public class HubServerEntity {
         record.setVirtualCores(this.virtualCores);
 
         this.tags.stream().forEach(tag -> record.getTags().add(tag.getValue()));
+        this.kernels.stream().forEach(kernel -> record.getKernels().add(kernel.getKernel().getName()));
 
         return record;
     }

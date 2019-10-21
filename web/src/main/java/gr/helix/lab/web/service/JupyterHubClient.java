@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.http.HttpHeaders;
@@ -79,7 +82,7 @@ public class JupyterHubClient {
                 .addHeader(HttpHeaders.AUTHORIZATION , "token " + token)
                 .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE);
 
-            if (method.equals("POST") && data != null) {
+            if ((method.equals("POST") || method.equals("DELETE")) && data != null) {
                 final StringEntity entity = new StringEntity(
                     this.objectMapper.writeValueAsString(data),
                     ContentType.APPLICATION_JSON
@@ -125,7 +128,6 @@ public class JupyterHubClient {
         return this.request(url, token, path, "POST", null);
     }
 
-    @SuppressWarnings("unused")
     private <T> ClientResponse post(
         String url, String token, String path, T data
     ) throws ApplicationException {
@@ -135,7 +137,13 @@ public class JupyterHubClient {
     private ClientResponse delete(
         String url, String token, String path
     ) throws ApplicationException {
-        return this.<Class<?>>request(url, token, path, "DELETE", null);
+        return this.request(url, token, path, "DELETE", null);
+    }
+
+    private <T> ClientResponse delete(
+        String url, String token, String path, T data
+    ) throws ApplicationException {
+        return this.<T>request(url, token, path, "DELETE", data);
     }
 
     public HubServerInfo getHubStatus(String url, String token) {
@@ -192,6 +200,34 @@ public class JupyterHubClient {
         final ClientResponse response = this.delete(url, token, "users/" + username + "/server");
 
         return response.status == HttpStatus.SC_NO_CONTENT;
+    }
+
+    public boolean removeUserFromGroups(
+        String url, String token, String username, List<String> groups
+    ) throws ApplicationException {
+        final Map<String, String[]> users = new HashMap<String, String[]>();
+        users.put("users", new String[]{username});
+
+        boolean result = true;
+
+        for(final String group: groups) {
+            final ClientResponse response = this.delete(url, token, "groups/" + group + "/users", users);
+
+            result = result && (response.status == HttpStatus.SC_OK);
+        }
+
+        return result;
+    }
+
+    public boolean addUserToGroup(
+        String url, String token, String username, String group
+    ) throws ApplicationException {
+        final Map<String, String[]> users = new HashMap<String, String[]>();
+        users.put("users", new String[]{username});
+
+        final ClientResponse response = this.post(url, token, "groups/" + group + "/users", users);
+
+        return (response.status == HttpStatus.SC_OK);
     }
 
     private RequestBuilder getBuilder(String method, URI uri) throws Exception {

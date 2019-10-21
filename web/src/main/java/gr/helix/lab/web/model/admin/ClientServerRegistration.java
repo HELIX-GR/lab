@@ -20,6 +20,8 @@ public class ClientServerRegistration {
 
     private String        state;
 
+    private String        kernel;
+
     public Integer getId() {
         return this.id;
     }
@@ -74,6 +76,14 @@ public class ClientServerRegistration {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getKernel() {
+        return this.kernel;
+    }
+
+    public void setKernel(String kernel) {
+        this.kernel = kernel;
     }
 
 }

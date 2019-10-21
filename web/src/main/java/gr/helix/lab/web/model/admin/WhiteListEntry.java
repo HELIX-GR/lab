@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import gr.helix.core.common.model.EnumRole;
@@ -27,7 +28,10 @@ public class WhiteListEntry {
     ZonedDateTime          registeredOn;
 
     @NotNull
-    private List<EnumRole> roles = new ArrayList<EnumRole>();
+    private List<EnumRole> roles   = new ArrayList<EnumRole>();
+
+    @NotEmpty
+    private List<String>   kernels = new ArrayList<String>();
 
     public Integer getId() {
         return this.id;
@@ -75,6 +79,14 @@ public class WhiteListEntry {
 
     public void setRoles(List<EnumRole> roles) {
         this.roles = roles;
+    }
+
+    public List<String> getKernels() {
+        return this.kernels;
+    }
+
+    public void setKernels(List<String> kernels) {
+        this.kernels = kernels;
     }
 
 }

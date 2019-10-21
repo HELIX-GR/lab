@@ -1,9 +1,9 @@
 package gr.helix.lab.web.controller.action.admin;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,23 +47,38 @@ public class UserServerManagmentController extends BaseController {
     @DeleteMapping(value = "action/admin/server/registration/{regId}")
     public RestResponse<?> deleteUserToServer(@PathVariable int regId) {
         // Check if registration exists
-        final Optional<AccountServerEntity> accountServer = this.accountServerRepository.findById(regId);
+        final AccountServerEntity accountServer = this.accountServerRepository.findById(regId).orElse(null);
 
-        if (!accountServer.isPresent()) {
+        if (accountServer == null) {
             return RestResponse.error(AdminErrorCode.REGISRATION_NOT_FOUND, "Account server registration was not found");
         }
 
         // Remove user from Jupyter Hub server
         boolean result = false;
         try {
-            final AccountEntity account = accountServer.get().getAccount();
-            final HubServerEntity server = accountServer.get().getHubServer();
+            final AccountEntity account = accountServer.getAccount();
+            final HubServerEntity server = accountServer.getHubServer();
 
             final HubUserInfo userInfo = this.jupyterHubClient.getUserInfo(server, account.getUsername());
+
+            // Stop existing notebook server
+            if (!StringUtils.isBlank(userInfo.getServer())) {
+                this.jupyterHubClient.stopServer(server.getUrl(), server.getToken(), account.getUsername());
+            }
+
             if (!userInfo.isAdmin()) {
+                // NOTE: Do not delete Jupyter Hub users. Instead reset their groups
+
                 // Remove user from Jupyter Hub to prevent creating new notebook
                 // servers without using lab application
-                result = this.jupyterHubClient.removeUser(server, account.getUsername());
+                // result = this.jupyterHubClient.removeUser(server, account.getUsername());
+
+                result = this.jupyterHubClient.removeUserFromGroups(
+                    server.getUrl(),
+                    server.getToken(),
+                    account.getUsername(),
+                    userInfo.getGroups()
+                );
             } else {
                 result = true;
             }

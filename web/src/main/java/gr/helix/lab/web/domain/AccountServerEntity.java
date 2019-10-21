@@ -15,6 +15,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import gr.helix.core.common.domain.AccountEntity;
+import gr.helix.core.common.domain.HubKernelEntity;
 import gr.helix.lab.web.model.admin.ClientServerRegistration;
 
 @Entity(name = "AccountServer")
@@ -49,6 +50,11 @@ public class AccountServerEntity {
     @ManyToOne(targetEntity = HubServerEntity.class)
     @JoinColumn(name = "server_id", nullable = false)
     HubServerEntity server;
+
+    @NotNull
+    @ManyToOne(targetEntity = HubKernelEntity.class)
+    @JoinColumn(name = "hub_kernel", nullable = false)
+    HubKernelEntity kernel;
 
     /**
      * The URL where the server can be accessed (typically
@@ -115,9 +121,17 @@ public class AccountServerEntity {
 		return this.state;
 	}
 
-	public void setState(String state) {
-		this.state = state;
-	}
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public void setKernel(HubKernelEntity kernel) {
+        this.kernel = kernel;
+    }
+
+    public HubKernelEntity getKernel() {
+        return this.kernel;
+    }
 
     public ClientServerRegistration toDto() {
         final ClientServerRegistration record = new ClientServerRegistration();
@@ -129,6 +143,7 @@ public class AccountServerEntity {
         record.setStartedAt(this.startedAt);
         record.setState(this.state);
         record.setUrl(this.url);
+        record.setKernel(this.kernel.getName());
 
         return record;
     }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import gr.helix.core.common.model.user.ClientKernel;
 import gr.helix.lab.web.model.EnumAuthProvider;
 import gr.helix.lab.web.model.ckan.CkanMetadata;
 
@@ -16,12 +17,13 @@ public class ClientConfiguration {
     private final List<EnumAuthProvider> authProviders     = new ArrayList<EnumAuthProvider>();
 
     @JsonIgnore
-    private final List<String> identityProviders = new ArrayList<String>();
+    private final List<String>           identityProviders = new ArrayList<String>();
 
-    private String defaultIdentityProvider;
+    private String                       defaultIdentityProvider;
 
-    private CkanMetadata ckan;
+    private CkanMetadata                 ckan;
 
+    private final List<ClientKernel>     kernels           = new ArrayList<ClientKernel>();
 
     public List<String> getIdentityProviders() {
         return this.identityProviders;
@@ -49,6 +51,10 @@ public class ClientConfiguration {
 
     public List<EnumAuthProvider> getAuthProviders() {
         return this.authProviders;
+    }
+
+    public List<ClientKernel> getKernels() {
+        return this.kernels;
     }
 
 }

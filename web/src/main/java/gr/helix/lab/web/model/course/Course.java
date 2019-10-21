@@ -43,6 +43,8 @@ public class Course {
 
     private String                    link;
 
+    private String                    kernel;
+
     @JsonProperty()
     public Integer getId() {
         return this.id;
@@ -152,6 +154,14 @@ public class Course {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getKernel() {
+        return this.kernel;
+    }
+
+    public void setKernel(String kernel) {
+        this.kernel = kernel;
     }
 
 }

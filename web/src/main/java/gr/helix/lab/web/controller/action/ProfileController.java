@@ -15,7 +15,7 @@ import gr.helix.lab.web.service.AuthenticationFacade;
  * Actions for querying and updating user data
  */
 @RestController
-@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+@Secured({"ROLE_USER"})
 @RequestMapping(produces = "application/json")
 public class ProfileController {
 
@@ -30,7 +30,7 @@ public class ProfileController {
      */
     @RequestMapping(value = "/action/user/profile", method = RequestMethod.GET)
     public RestResponse<?> getProfile(Authentication authentication) {
-    	
+
     	System.out.println("CurrentUser: "+this.authenticationFacade.getCurrentUser());
         final Account account = this.authenticationFacade.getCurrentUser().getAccount();
         return RestResponse.result(account);

@@ -18,14 +18,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import gr.helix.core.common.domain.AccountEntity;
+import gr.helix.core.common.domain.HubKernelEntity;
 import gr.helix.core.common.model.BasicErrorCode;
 import gr.helix.core.common.model.EnumRole;
 import gr.helix.core.common.model.RestResponse;
 import gr.helix.core.common.repository.AccountRepository;
 import gr.helix.lab.web.controller.action.BaseController;
 import gr.helix.lab.web.domain.WhiteListEntryEntity;
+import gr.helix.lab.web.domain.WhiteListEntryKernelEntity;
 import gr.helix.lab.web.model.admin.AdminErrorCode;
 import gr.helix.lab.web.model.admin.WhiteListEntry;
+import gr.helix.lab.web.repository.HubKernelRepository;
 import gr.helix.lab.web.repository.WhiteListRepository;
 
 @RestController
@@ -40,6 +43,9 @@ public class WhiteListController extends BaseController {
 
     @Autowired
     WhiteListRepository         whiteListRepository;
+
+    @Autowired
+    HubKernelRepository         hubKernelRepository;
 
     /**
      * Get all users from the white list
@@ -70,6 +76,9 @@ public class WhiteListController extends BaseController {
                 return RestResponse.invalid(results.getFieldErrors());
             }
 
+            // Get current account
+            final AccountEntity account = this.accountRepository.findById(this.currentUserId()).get();
+
             // Check if user already exists in the white list
             WhiteListEntryEntity entry = this.whiteListRepository.findOneByEmail(data.getEmail());
 
@@ -83,7 +92,22 @@ public class WhiteListController extends BaseController {
                 entry.setLastName(data.getLastName());
 
                 for (final EnumRole e : data.getRoles()) {
-                    entry.grant(e, this.accountRepository.findById(this.currentUserId()).get());
+                    entry.grant(e, account);
+                }
+
+                this.whiteListRepository.saveAndFlush(entry);
+
+                for (final String k : data.getKernels()) {
+                    final Optional<HubKernelEntity> kernel = this.hubKernelRepository.findByName(k);
+                    if (kernel.isPresent()) {
+                        final WhiteListEntryKernelEntity entryKernel = new WhiteListEntryKernelEntity();
+
+                        entryKernel.setEntry(entry);
+                        entryKernel.setGrantedBy(account);
+                        entryKernel.setKernel(kernel.get());
+
+                        entry.getKernels().add(entryKernel);
+                    }
                 }
 
                 this.whiteListRepository.save(entry);
@@ -107,20 +131,21 @@ public class WhiteListController extends BaseController {
     @RequestMapping(value = "action/admin/white-list/user/{userId}/role/{role}", method = RequestMethod.POST)
     public RestResponse<?> grantRole(@PathVariable int userId, @PathVariable EnumRole role) {
         try {
-            final Optional<WhiteListEntryEntity> entry = this.whiteListRepository.findById(userId);
-            if (!entry.isPresent()) {
+            final WhiteListEntryEntity entry = this.whiteListRepository.findById(userId).orElse(null);
+            if (entry == null) {
                 return RestResponse.error(AdminErrorCode.WHITE_LIST_ENTRY_NOT_FOUND, "White list entry was not found");
             }
 
-            final Optional<AccountEntity> grantedBy = this.accountRepository.findById(this.currentUserId());
-            if (!grantedBy.isPresent()) {
+            final AccountEntity grantedBy = this.accountRepository.findById(this.currentUserId()).orElse(null);
+            if (grantedBy == null) {
                 return RestResponse.error(AdminErrorCode.ACCOUNT_NOT_FOUND, "Account was not found");
             }
 
-            entry.get().grant(role, grantedBy.get());
-            this.whiteListRepository.save(entry.get());
+            entry.grant(role, grantedBy);
 
-            return RestResponse.result(entry.get().toDto());
+            this.whiteListRepository.save(entry);
+
+            return RestResponse.result(entry.toDto());
         } catch (final Exception ex) {
             logger.error(ex.getMessage(), ex);
 
@@ -131,20 +156,16 @@ public class WhiteListController extends BaseController {
     @RequestMapping(value = "action/admin/white-list/user/{userId}/role/{role}", method = RequestMethod.DELETE)
     public RestResponse<?> revokeRole(@PathVariable int userId, @PathVariable EnumRole role) {
         try {
-            final Optional<WhiteListEntryEntity> entry = this.whiteListRepository.findById(userId);
-            if (!entry.isPresent()) {
+            final WhiteListEntryEntity entry = this.whiteListRepository.findById(userId).orElse(null);
+            if (entry == null) {
                 return RestResponse.error(AdminErrorCode.WHITE_LIST_ENTRY_NOT_FOUND, "White list entry was not found");
             }
 
-            final Optional<AccountEntity> grantedBy = this.accountRepository.findById(this.currentUserId());
-            if (!grantedBy.isPresent()) {
-                return RestResponse.error(AdminErrorCode.ACCOUNT_NOT_FOUND, "Account was not found");
-            }
+            entry.revoke(role);
 
-            entry.get().revoke(role);
-            this.whiteListRepository.save(entry.get());
+            this.whiteListRepository.save(entry);
 
-            return RestResponse.result(entry.get().toDto());
+            return RestResponse.result(entry.toDto());
         } catch (final Exception ex) {
             logger.error(ex.getMessage(), ex);
 

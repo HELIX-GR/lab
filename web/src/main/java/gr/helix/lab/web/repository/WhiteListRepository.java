@@ -12,10 +12,10 @@ import gr.helix.lab.web.domain.WhiteListEntryEntity;
 @Transactional(readOnly = true)
 public interface WhiteListRepository extends JpaRepository<WhiteListEntryEntity, Integer> {
 
-    @Query("FROM WhiteListEntry a WHERE a.username = :username")
+    @Query("FROM WhiteListEntry a LEFT JOIN FETCH a.kernels k JOIN FETCH k.kernel WHERE a.username = :username")
     WhiteListEntryEntity findOneByUsername(@Param("username") String username);
 
-    @Query("FROM WhiteListEntry a WHERE a.email = :email")
+    @Query("FROM WhiteListEntry a LEFT JOIN FETCH a.kernels k JOIN FETCH k.kernel WHERE a.email = :email")
     WhiteListEntryEntity findOneByEmail(@Param("email") String email);
 
 }

@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import gr.helix.core.common.domain.HubKernelEntity;
 import gr.helix.core.common.model.RestResponse;
 import gr.helix.lab.web.config.SamlConfiguration;
 import gr.helix.lab.web.model.EnumAuthProvider;
 import gr.helix.lab.web.model.configuration.ClientConfiguration;
+import gr.helix.lab.web.repository.HubKernelRepository;
 import gr.helix.lab.web.service.CkanServiceProxy;
 
 @RestController
@@ -20,16 +22,19 @@ import gr.helix.lab.web.service.CkanServiceProxy;
 public class ConfigurationController extends BaseController {
 
     @Value("${helix.authentication-providers:forms}")
-    private String            authProviders;
+    private String              authProviders;
 
     @Autowired
-    private SamlConfiguration samlConfiguration;
+    private SamlConfiguration   samlConfiguration;
 
     @Autowired
-    private MetadataManager   metadata;
+    private MetadataManager     metadata;
 
     @Autowired
-    private CkanServiceProxy  ckanServiceProxy;
+    private CkanServiceProxy    ckanServiceProxy;
+
+    @Autowired
+    private HubKernelRepository hubKernelRepository;
 
     @RequestMapping(value = "/action/configuration/{locale}", method = RequestMethod.GET)
     public RestResponse<ClientConfiguration> getConfiguration(String locale) {
@@ -49,6 +54,10 @@ public class ConfigurationController extends BaseController {
             .forEach(s -> config.getAuthProviders().add(s));
 
         this.metadata.getIDPEntityNames().stream().forEach(config::addIdentityProvider);
+
+        this.hubKernelRepository.findAll().stream()
+            .map(HubKernelEntity::toDto)
+            .forEach(k -> config.getKernels().add(k));
 
         return config;
     }

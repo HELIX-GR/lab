@@ -4,6 +4,9 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import gr.helix.core.common.model.EnumRole;
 
 public class ClientServer {
@@ -28,7 +31,9 @@ public class ClientServer {
 
     private int           virtualCores;
 
-    private List<String>  tags = new ArrayList<>();
+    private List<String>  tags    = new ArrayList<>();
+
+    private List<String>  kernels = new ArrayList<>();
 
     public Integer getId() {
         return this.id;
@@ -116,6 +121,16 @@ public class ClientServer {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    @JsonProperty
+    public List<String> getKernels() {
+        return this.kernels;
+    }
+
+    @JsonIgnore
+    public void setKernels(List<String> kernels) {
+        this.kernels = kernels;
     }
 
 }

@@ -37,7 +37,11 @@ public class ClientServerRegistrationRequest {
 
     private int          virtualCores;
 
+    @NotEmpty
     private List<String> tags;
+
+    @NotEmpty
+    private List<String> kernels;
 
     public String getName() {
         return this.name;
@@ -109,6 +113,14 @@ public class ClientServerRegistrationRequest {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public List<String> getKernels() {
+        return this.kernels;
+    }
+
+    public void setKernels(List<String> kernels) {
+        this.kernels = kernels;
     }
 
 }

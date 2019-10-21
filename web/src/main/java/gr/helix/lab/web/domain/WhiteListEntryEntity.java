@@ -73,6 +73,15 @@ public class WhiteListEntryEntity {
     )
     List<WhiteListEntryRoleEntity> roles = new ArrayList<>();
 
+    @OneToMany(
+        targetEntity = WhiteListEntryKernelEntity.class,
+        mappedBy = "entry",
+        fetch = FetchType.LAZY,
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    List<WhiteListEntryKernelEntity> kernels = new ArrayList<>();
+
     public WhiteListEntryEntity() {
     }
 
@@ -128,6 +137,10 @@ public class WhiteListEntryEntity {
         return this.roles;
     }
 
+    public List<WhiteListEntryKernelEntity> getKernels() {
+        return this.kernels;
+    }
+
     public boolean hasRole(EnumRole role) {
         for (final WhiteListEntryRoleEntity r : this.roles) {
             if (r.getRole() == role) {
@@ -141,6 +154,14 @@ public class WhiteListEntryEntity {
         if (!this.hasRole(role)) {
             final WhiteListEntryRoleEntity r = new WhiteListEntryRoleEntity(this, role, null, grantedBy);
             this.roles.add(r);
+
+            // Handle role hierarchy
+            if (role == EnumRole.ROLE_BETA_STUDENT || role == EnumRole.ROLE_BETA_ACADEMIC) {
+                this.grant(EnumRole.ROLE_BETA, grantedBy);
+            }
+            if (role == EnumRole.ROLE_STANDARD_STUDENT || role == EnumRole.ROLE_STANDARD_ACADEMIC) {
+                this.grant(EnumRole.ROLE_STANDARD, grantedBy);
+            }
         }
     }
 
@@ -155,6 +176,16 @@ public class WhiteListEntryEntity {
         }
         if (target != null) {
             this.roles.remove(target);
+
+            // Handle role hierarchy
+            if (role == EnumRole.ROLE_BETA) {
+                this.revoke(EnumRole.ROLE_BETA_STUDENT);
+                this.revoke(EnumRole.ROLE_BETA_ACADEMIC);
+            }
+            if (role == EnumRole.ROLE_STANDARD) {
+                this.revoke(EnumRole.ROLE_STANDARD_STUDENT);
+                this.revoke(EnumRole.ROLE_STANDARD_ACADEMIC);
+            }
         }
     }
 
@@ -168,6 +199,7 @@ public class WhiteListEntryEntity {
         record.setRegisteredOn(this.registeredOn);
 
         this.roles.stream().forEach(r -> record.getRoles().add(r.getRole()));
+        this.kernels.stream().forEach(k -> record.getKernels().add(k.getKernel().getName()));
 
         return record;
     }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import gr.helix.core.common.domain.AccountEntity;
+import gr.helix.core.common.domain.HubKernelEntity;
 import gr.helix.core.common.model.ApplicationException;
 import gr.helix.core.common.model.BasicErrorCode;
 import gr.helix.core.common.model.EnumRole;
@@ -26,9 +27,11 @@ import gr.helix.core.common.model.user.Account;
 import gr.helix.core.common.repository.AccountRepository;
 import gr.helix.lab.web.controller.action.BaseController;
 import gr.helix.lab.web.domain.HubServerEntity;
+import gr.helix.lab.web.domain.HubServerKernelEntity;
 import gr.helix.lab.web.model.admin.AdminErrorCode;
 import gr.helix.lab.web.model.admin.ClientServer;
 import gr.helix.lab.web.model.admin.ClientServerRegistrationRequest;
+import gr.helix.lab.web.repository.HubKernelRepository;
 import gr.helix.lab.web.repository.HubServerRepository;
 import gr.helix.lab.web.service.JupyterHubClient;
 
@@ -44,6 +47,9 @@ public class AdminController extends BaseController {
 
     @Autowired
     HubServerRepository         hubServerRepository;
+
+    @Autowired
+    HubKernelRepository         hubKernelRepository;
 
     @Autowired
     JupyterHubClient            jupyterHubClient;
@@ -68,30 +74,35 @@ public class AdminController extends BaseController {
 
     @RequestMapping(value = "action/admin/user/{userId}/role/{role}", method = RequestMethod.POST)
     public RestResponse<?> grantUserRole(@PathVariable int userId, @PathVariable EnumRole role) {
-        final Optional<AccountEntity> account = this.accountRepository.findById(userId);
-        if (!account.isPresent()) {
+        final AccountEntity account = this.accountRepository.findById(userId).orElse(null);
+        if (account == null) {
             return RestResponse.error(AdminErrorCode.ACCOUNT_NOT_FOUND, "Account was not found");
         }
 
-        final Optional<AccountEntity> grantedBy = this.accountRepository.findById(this.currentUserId());
+        final AccountEntity grantedBy = this.accountRepository.findById(this.currentUserId()).orElse(null);
 
-        account.get().grant(role, grantedBy.get());
-        this.accountRepository.save(account.get());
+        account.grant(role, grantedBy);
 
-        return RestResponse.result(account.get().toDto());
+        this.accountRepository.save(account);
+
+        return RestResponse.result(account.toDto());
     }
 
     @RequestMapping(value = "action/admin/user/{userId}/role/{role}", method = RequestMethod.DELETE)
     public RestResponse<?> revokeUserRole(@PathVariable int userId, @PathVariable EnumRole role) {
-        final Optional<AccountEntity> account = this.accountRepository.findById(userId);
-        if (!account.isPresent()) {
+        final AccountEntity account = this.accountRepository.findById(userId).orElse(null);
+        if (account == null) {
             return RestResponse.error(AdminErrorCode.ACCOUNT_NOT_FOUND, "Account was not found");
         }
 
-        account.get().revoke(role);
-        this.accountRepository.save(account.get());
+        // Do not remove the default role
+        if (role != EnumRole.ROLE_USER) {
+            account.revoke(role);
 
-        return RestResponse.result(account.get().toDto());
+            this.accountRepository.save(account);
+        }
+
+        return RestResponse.result(account.toDto());
     }
 
     @RequestMapping(value = "action/admin/server", method = RequestMethod.POST)
@@ -105,9 +116,25 @@ public class AdminController extends BaseController {
             // Check server status
             this.jupyterHubClient.getHubStatus(request.getUrl(), request.getToken());
 
+            // Create server
             final HubServerEntity server = new HubServerEntity(request);
+            this.hubServerRepository.saveAndFlush(server);
 
-            this.hubServerRepository.save(server);
+            // Update kernels
+            for (final String name : request.getKernels()) {
+                final Optional<HubKernelEntity> kernel = this.hubKernelRepository.findByName(name);
+                // Ignore invalid kernel names
+                if (kernel.isPresent()) {
+                    final HubServerKernelEntity serverKernel = new HubServerKernelEntity();
+                    serverKernel.setKernel(kernel.get());
+                    serverKernel.setServer(server);
+
+                    server.getKernels().add(serverKernel);
+                }
+            }
+
+            // Save kernels
+            this.hubServerRepository.saveAndFlush(server);
 
             return RestResponse.result(server.toDto());
         } catch (final ApplicationException ex) {
@@ -141,7 +168,93 @@ public class AdminController extends BaseController {
 
             this.hubServerRepository.save(server.get());
 
+            // Delete existing kernels
+            server.get().getKernels().clear();
+            this.hubServerRepository.save(server.get());
+
+            // Add new kernels
+            for (final String name : request.getKernels()) {
+                final Optional<HubKernelEntity> kernel = this.hubKernelRepository.findByName(name);
+                // Ignore invalid kernel names
+                if (kernel.isPresent()) {
+                    final HubServerKernelEntity serverKernel = new HubServerKernelEntity();
+                    serverKernel.setKernel(kernel.get());
+                    serverKernel.setServer(server.get());
+
+                    server.get().getKernels().add(serverKernel);
+                }
+            }
+
+            // Save kernels
+            this.hubServerRepository.save(server.get());
+
             return RestResponse.result(server.get().toDto());
+        } catch (final ApplicationException ex) {
+            return RestResponse.error(ex.toError());
+        } catch (final Exception ex) {
+            logger.error(ex.getMessage(), ex);
+
+            return RestResponse.error(BasicErrorCode.UNKNOWN, "An unknown error has occurred");
+        }
+    }
+
+    @RequestMapping(value = "action/admin/user/{userId}", method = RequestMethod.POST)
+    public RestResponse<?> updateUser(
+        @PathVariable int userId, @RequestBody @Valid Account request, BindingResult results
+    ) {
+        try {
+            // Validate request data
+            if (results.hasErrors()) {
+                return RestResponse.invalid(results.getFieldErrors());
+            }
+
+            // Get authenticated account
+            final AccountEntity grantedBy = this.accountRepository.findById(this.currentUserId()).orElse(null);
+
+            // Get user
+            final AccountEntity user = this.accountRepository.findById(userId).orElse(null);
+            if(user == null) {
+                return RestResponse.error(AdminErrorCode.ACCOUNT_NOT_FOUND, "Account was not found");
+            }
+
+            // Delete existing roles
+            for(final EnumRole role : user.getRoles()) {
+                // Do not remove default role
+                if (role == EnumRole.ROLE_USER) {
+                    continue;
+                }
+                // An administrator cannot remove his own role
+                if (role == EnumRole.ROLE_ADMIN && userId == this.currentUserId()) {
+                    continue;
+                }
+                user.revoke(role);
+            }
+            this.accountRepository.save(user);
+
+            // Delete existing kernels
+            user.getKernels().clear();
+            this.accountRepository.save(user);
+
+            // Add new roles
+            for (final EnumRole role : request.getRoles()) {
+                if (!user.hasRole(role)) {
+                    user.grant(role, grantedBy);
+                }
+            }
+
+            // Add new kernels
+            for (final String name : request.getKernels()) {
+                final Optional<HubKernelEntity> kernel = this.hubKernelRepository.findByName(name);
+                // Ignore invalid kernel names
+                if (kernel.isPresent()) {
+                    user.grantKernel(kernel.get(), grantedBy);
+                }
+            }
+
+            // Save kernels
+            this.accountRepository.save(user);
+
+            return RestResponse.result(user.toDto());
         } catch (final ApplicationException ex) {
             return RestResponse.error(ex.toError());
         } catch (final Exception ex) {

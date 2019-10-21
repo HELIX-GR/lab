@@ -10,6 +10,7 @@ import gr.helix.core.common.model.EnumRole;
 import gr.helix.core.common.model.security.User;
 import gr.helix.core.common.repository.AccountRepository;
 import gr.helix.lab.web.domain.WhiteListEntryEntity;
+import gr.helix.lab.web.domain.WhiteListEntryKernelEntity;
 import gr.helix.lab.web.domain.WhiteListEntryRoleEntity;
 import gr.helix.lab.web.repository.WhiteListRepository;
 
@@ -37,13 +38,22 @@ public class DefaultUserDetailsService implements CustomUserDetailsService {
     public User createUser(AccountEntity account) {
         final WhiteListEntryEntity entry = this.whiteListRepository.findOneByEmail(account.getEmail());
 
-        if (entry == null) {
-            account.grant(EnumRole.ROLE_USER, null);
-        } else {
+        if (entry != null) {
+            // Grant roles from the white list entry
             for (final WhiteListEntryRoleEntity role : entry.getRoles()) {
                 account.grant(role.getRole(), null);
             }
+            // Assign kernels from the white list entry
+            for (final WhiteListEntryKernelEntity kernel : entry.getKernels()) {
+                account.grantKernel(kernel.getKernel(), kernel.getGrantedBy());
+            }
         }
+
+        // Always grant the default role
+        if (!account.hasRole(EnumRole.ROLE_USER)) {
+            account.grant(EnumRole.ROLE_USER, null);
+        }
+
         this.accountRepository.save(account);
 
         return new User(account.toDto(), account.getPassword());
