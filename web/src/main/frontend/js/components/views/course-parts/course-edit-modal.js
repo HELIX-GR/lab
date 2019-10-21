@@ -37,7 +37,7 @@ class CourseEditModal extends React.Component {
     const { action } = this.state;
     const id = this.props.course ? this.props.course.id : null;
 
-    const { title, description, year, semester, link, active } = course;
+    const { active, description, link, semester, title, year, kernel } = course;
     const data = {
       id,
       active,
@@ -46,6 +46,7 @@ class CourseEditModal extends React.Component {
       semester,
       title,
       year,
+      kernel,
     };
 
     (action === EnumCourseAction.CREATE ? this.props.addCourse(data) : this.props.updateCourse(id, data))
@@ -90,7 +91,7 @@ class CourseEditModal extends React.Component {
   }
 
   render() {
-    const { course = null, toggle, visible } = this.props;
+    const { course = null, kernels, toggle, visible } = this.props;
 
     return (
       <Modal
@@ -107,12 +108,13 @@ class CourseEditModal extends React.Component {
             {course ? (
               <FormattedMessage id={'course.modal.title.update'} values={{ title: course.title }} />
             ) : (
-              <FormattedMessage id={'course.modal.title.create'} />
-            )}
+                <FormattedMessage id={'course.modal.title.create'} />
+              )}
           </div>
 
           <CourseForm
             course={course}
+            kernels={kernels}
             onAccept={(course) => this.onAccept(course)}
             onCancel={() => this.onCancel()}
           />

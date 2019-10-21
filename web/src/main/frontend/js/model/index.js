@@ -1,4 +1,6 @@
-import * as RoleNames from './role';
+import {
+
+} from './role';
 
 export {
   buildPath,
@@ -26,6 +28,35 @@ export {
   ServerError,
 } from './error';
 
-export const Roles = {
-  ...RoleNames,
+import {
+  ALL,
+  LAB,
+  ADMIN,
+  DEVELOPER,
+  STANDARD,
+  STANDARD_STUDENT,
+  STANDARD_ACADEMIC,
+  BETA,
+  BETA_STUDENT,
+  BETA_ACADEMIC,
+} from './role';
+
+export const RoleGroups = {
+  ALL,
+  LAB,
 };
+
+export const Roles = {
+  ADMIN,
+  DEVELOPER,
+  STANDARD,
+  STANDARD_STUDENT,
+  STANDARD_ACADEMIC,
+  BETA,
+  BETA_STUDENT,
+  BETA_ACADEMIC,
+};
+
+export {
+  RoleNames,
+} from './role';

@@ -13,7 +13,7 @@ const ErrorLevelValues = {
 export class ServerError extends Error {
 
   constructor(errors) {
-    super(errors[0].description);
+    super(errors[0].description || '');
 
     this.code = errors[0].code;
     this.name = 'ServerError';

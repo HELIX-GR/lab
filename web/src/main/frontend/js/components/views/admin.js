@@ -1,24 +1,34 @@
 import React from "react";
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { getServers, getUsers, getUserServers, getWhiteList } from '../../ducks/admin';
-import Paper from '@material-ui/core/Paper';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import ModalAddServer from './modal-add-server';
-import { AdminTable } from './server-table';
-import UserTable from './user-table';
-import U2sTable from './u2s-table';
-import { injectIntl } from 'react-intl';
-import Typography from '@material-ui/core/Typography';
-import WhiteListTable from "./white-list-table";
-import ModalAddWhiteList from './modal-add-white-list';
-import { withRouter } from 'react-router-dom';
 
 import moment from '../../moment-localized';
 
-import Icon from '@mdi/react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 import { mdiServer, mdiAccountGroup, mdiAccountKey, mdiMonitorDashboard } from '@mdi/js';
+import { withRouter } from 'react-router-dom';
+
+import Icon from '@mdi/react';
+import Paper from '@material-ui/core/Paper';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Typography from '@material-ui/core/Typography';
+
+import {
+  getServers,
+  getUsers,
+  getUserServers,
+  getWhiteList,
+} from '../../ducks/admin';
+
+import {
+  ModalAddServer,
+  ModalAddWhiteList,
+  UserServerTable,
+  UserTable,
+  ServerTable,
+  WhiteListTable,
+} from './admin-parts';
 
 import {
   StaticRoutes,
@@ -32,43 +42,41 @@ function TabContainer(props) {
   );
 }
 
-class AdminPage extends React.Component {
+class Admin extends React.Component {
 
   state = {
-    value: 0,
+    tabIndex: 0,
   };
 
-  handleChange = (event, value) => {
-    this.setState({ value });
+  handleChange = (event, tabIndex) => {
+    this.setState({ tabIndex });
   };
-
-  handleEdit = (e) => {
-
-  }
 
   componentWillMount() {
     if (this.props.profile.roles.includes('ROLE_ADMIN')) {
-      this._getServers();
+      this.getData();
     } else {
       this.props.history.push(StaticRoutes.HOME);
     }
   }
-  _getServers() {
+
+  getData() {
     this.props.getServers();
     this.props.getUsers();
     this.props.getWhiteList();
     this.props.getUserServers();
   }
-  render() {
 
-    const { value } = this.state;
+  render() {
+    const { tabIndex } = this.state;
+
     return (
       <React.Fragment>
         <div className="top-border-lab" />
 
         <Paper className="mb-5">
           <Tabs
-            value={this.state.value}
+            value={tabIndex}
             onChange={this.handleChange}
             indicatorColor="primary"
             textColor="primary"
@@ -81,7 +89,7 @@ class AdminPage extends React.Component {
             <Tab label="Monitoring" />
           </Tabs>
 
-          {value === 0 &&
+          {tabIndex === 0 &&
             <TabContainer>
               <div className="d-flex align-items-center">
                 <div>
@@ -95,10 +103,10 @@ class AdminPage extends React.Component {
               <div className="pl-1">
                 <a className="text-muted small">Last update before {moment.duration(Date.now() - this.props.serversLastUpdate).humanize()}</a>
               </div>
-              <AdminTable servers={this.props.servers} serverEdit={this.handleEdit} />
+              <ServerTable kernels={this.props.kernels} servers={this.props.servers} />
             </TabContainer>
           }
-          {value === 1 &&
+          {tabIndex === 1 &&
             <TabContainer>
               <div className="d-flex align-items-center">
                 <div>
@@ -112,7 +120,7 @@ class AdminPage extends React.Component {
               <UserTable users={this.props.users} />
             </TabContainer>
           }
-          {value === 2 &&
+          {tabIndex === 2 &&
             <TabContainer>
               <div className="d-flex align-items-center">
                 <div>
@@ -129,7 +137,7 @@ class AdminPage extends React.Component {
               <WhiteListTable users={this.props.whitelist} />
             </TabContainer>
           }
-          {value === 3 &&
+          {tabIndex === 3 &&
             <TabContainer>
               <div className="d-flex align-items-center">
                 <div>
@@ -143,7 +151,7 @@ class AdminPage extends React.Component {
               <div className="pl-1">
                 <a className="text-muted small">{moment.duration(Date.now() - this.props.userServersLastUpdate).humanize()}</a>
               </div>
-              <U2sTable userServers={this.props.userServers} />
+              <UserServerTable userServers={this.props.userServers} />
             </TabContainer>
           }
         </Paper>
@@ -153,9 +161,9 @@ class AdminPage extends React.Component {
   }
 }
 
-
 function mapStateToProps(state) {
   return {
+    kernels: state.config.kernels,
     servers: state.admin.servers,
     serversLastUpdate: state.admin.serversLastUpdate,
     users: state.admin.users,
@@ -168,7 +176,15 @@ function mapStateToProps(state) {
   };
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ getServers, getUsers, getUserServers, getWhiteList }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  getServers,
+  getUsers,
+  getUserServers,
+  getWhiteList,
+}, dispatch);
 
-AdminPage = connect(mapStateToProps, mapDispatchToProps)(injectIntl(AdminPage));
-export default withRouter(AdminPage);
+const localizedComponent = injectIntl(Admin);
+
+const componentWithState = connect(mapStateToProps, mapDispatchToProps)(localizedComponent);
+
+export default withRouter(componentWithState);

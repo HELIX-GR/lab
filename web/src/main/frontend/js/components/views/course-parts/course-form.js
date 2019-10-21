@@ -34,7 +34,14 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'flex-end',
     padding: '10px 0px',
-  }
+  },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  chip: {
+    margin: 2,
+  },
 });
 
 class CourseForm extends React.Component {
@@ -69,6 +76,7 @@ class CourseForm extends React.Component {
 
   static propTypes = {
     classes: PropTypes.object.isRequired,
+    kernels: PropTypes.arrayOf(PropTypes.object),
     course: PropTypes.object,
     onAccept: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
@@ -139,7 +147,7 @@ class CourseForm extends React.Component {
 
   render() {
     const { course, errors } = this.state;
-    const { classes } = this.props;
+    const { classes, kernels } = this.props;
     const now = new Date();
     const years = [now.getFullYear(), now.getFullYear() + 1];
     const _t = this.context.intl.formatMessage;
@@ -225,6 +233,26 @@ class CourseForm extends React.Component {
             {errors['link'] &&
               <FormHelperText id="link" className={classes.helperText}>{errors['link']}</FormHelperText>
             }
+          </div>
+          <div className="mb-4">
+            <div>
+              <TextField
+                id="kernel"
+                name="kernel"
+                className={classes.textField}
+                select
+                label={_t({ id: 'course.form.kernel' })}
+                value={course.kernel || kernels[0].name}
+                onChange={(e) => this.setValue(e.target.name, e.target.value)}
+                fullWidth={true}
+              >
+                {kernels.map(k => (
+                  <MenuItem key={k.name} value={k.name}>
+                    {k.tag}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
           </div>
           <div className="mb-4 pl-2">
             <FormControlLabel

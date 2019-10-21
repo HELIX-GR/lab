@@ -261,7 +261,7 @@ class CourseProfessorExplorer extends React.Component {
 
   render() {
     const { action, courses, orderBy, selected = null, showModal, text, years } = this.state;
-    const { courses: allCourses } = this.props;
+    const { courses: allCourses, kernels } = this.props;
 
     const _t = this.context.intl.formatMessage;
 
@@ -271,6 +271,7 @@ class CourseProfessorExplorer extends React.Component {
           <CourseEditModal
             addCourse={(course) => this.addCourse(course)}
             course={selected || null}
+            kernels={kernels}
             toggle={() => this.hideModal()}
             updateCourse={(id, course) => this.updateCourse(id, course)}
             visible={true}>
@@ -398,6 +399,7 @@ class CourseProfessorExplorer extends React.Component {
                     />
                     {courses.map(c => (
                       <CourseAdminCard
+                        kernels={kernels}
                         key={c.id}
                         course={c}
                         handleAction={(action, course) => this.handleAction(action, course)}>
@@ -426,6 +428,7 @@ class CourseProfessorExplorer extends React.Component {
 const mapStateToProps = (state) => ({
   courses: state.courses.professor.courses,
   filesystem: state.filesystem,
+  kernels: state.config.kernels,
   selectedCourse: state.courses.professor.selectedCourse,
   selectedFolder: state.filesystem.selectedFolder,
   students: state.courses.professor.students,

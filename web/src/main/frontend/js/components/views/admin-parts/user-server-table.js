@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { FormattedTime } from 'react-intl';
-import { removeUserServer } from '../../ducks/admin';
+import { removeUserServer } from '../../../ducks/admin';
 import { toast } from 'react-toastify';
 
 import ReactTable from 'react-table';
 
-export class U2sTable extends React.Component {
+class UserServerTable extends React.Component {
 
   removeUserServer(event, id) {
     event.preventDefault();
@@ -20,7 +20,7 @@ export class U2sTable extends React.Component {
   }
 
   render() {
-    const data = this.props.userServers;
+    const { kernels, userServers: data } = this.props;
 
     const columns = [{
       Header: 'id',
@@ -40,13 +40,25 @@ export class U2sTable extends React.Component {
       headerStyle: { textAlign: 'left' },
       width: 200,
     }, {
+      Header: 'Kernel',
+      accessor: 'kernel',
+      headerStyle: { textAlign: 'left' },
+      width: 200,
+      Cell: props => (
+        <span>{kernels.find(k => k.name === props.value).tag}</span>
+      ),
+    }, {
       Header: 'URL',
       accessor: 'url',
       headerStyle: { textAlign: 'left' },
+      Cell: props => (
+        <a href={props.value} target="_blank">{props.value}</a>
+      ),
     }, {
       Header: 'Started At',
       id: 'startedAt',
       accessor: 'startedAt',
+      style: { textAlign: 'center' },
       headerStyle: { textAlign: 'center' },
       Cell: props => (
         <FormattedTime value={props.value} day='numeric' month='numeric' year='numeric' />
@@ -78,11 +90,12 @@ export class U2sTable extends React.Component {
   }
 }
 
-const mapStateToProps = () => ({
+const mapStateToProps = (state) => ({
+  kernels: state.config.kernels,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   removeUserServer,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(U2sTable);
+export default connect(mapStateToProps, mapDispatchToProps)(UserServerTable);

@@ -11,6 +11,11 @@ const USERS_SUCCESS = 'admin/USERS_SUCCESS';
 const WHITE_LIST_ROLE_SUCCESS = 'admin/WHITE_LIST_ROLE_SUCCESS';
 const WHITELIST_SUCCESS = 'admin/WHITELIST_SUCCESS';
 
+const SERVER_CREATE_SUCCESS = 'admin/SERVER_CREATE_SUCCESS';
+const SERVER_UPDATE_SUCCESS = 'admin/SERVER_UPDATE_SUCCESS';
+
+const USER_UPDATE_SUCCESS = 'admin/USER_UPDATE_SUCCESS';
+
 // Reducer
 
 const initialState = {
@@ -34,11 +39,29 @@ export default (state = initialState, action) => {
         serversLastUpdate: action.timestamp,
       };
 
+    case SERVER_CREATE_SUCCESS:
+      return {
+        ...state,
+        servers: [...state.servers, action.server],
+      };
+
+    case SERVER_UPDATE_SUCCESS:
+      return {
+        ...state,
+        servers: state.servers.map(s => s.id === action.server.id ? action.server : s),
+      };
+
     case USERS_SUCCESS:
       return {
         ...state,
         users: action.users,
         usersLastUpdate: action.timestamp,
+      };
+
+    case USER_UPDATE_SUCCESS:
+      return {
+        ...state,
+        users: state.users.map(u => u.id === action.user.id ? action.user : u),
       };
 
     case WHITELIST_SUCCESS:
@@ -118,6 +141,21 @@ const updateWhiteListRoleSuccess = (user, index) => ({
   index,
 });
 
+const addServerSuccess = (server) => ({
+  type: SERVER_CREATE_SUCCESS,
+  server,
+});
+
+const updateServerSuccess = (server) => ({
+  type: SERVER_UPDATE_SUCCESS,
+  server,
+});
+
+const updateUserSuccess = (user) => ({
+  type: USER_UPDATE_SUCCESS,
+  user,
+});
+
 // Thunk actions
 
 export const getServers = () => (dispatch) => {
@@ -128,16 +166,26 @@ export const getServers = () => (dispatch) => {
     });
 };
 
-export const addServer = (server_data) => (dispatch, getState) => {
+export const addServer = (server) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
 
-  return adminService.addServer(server_data, token);
+  return adminService.addServer(server, token)
+    .then((result) => {
+      dispatch(addServerSuccess(result));
+
+      return result;
+    });
 };
 
-export const updateServer = (id, server_data) => (dispatch, getState) => {
+export const updateServer = (id, server) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
 
-  return adminService.updateServer(id, server_data, token);
+  return adminService.updateServer(id, server, token)
+    .then((result) => {
+      dispatch(updateServerSuccess(result));
+
+      return result;
+    });
 };
 
 export const getUsers = () => (dispatch) => {
@@ -148,11 +196,22 @@ export const getUsers = () => (dispatch) => {
     });
 };
 
+export const updateUser = (id, user) => (dispatch, getState) => {
+  var { meta: { csrfToken: token } } = getState();
+
+  return adminService.updateUser(id, user, token)
+    .then((result) => {
+      dispatch(updateUserSuccess(result));
+
+      return result;
+    });
+};
+
 export const getUserServers = () => (dispatch) => {
   return adminService.getUserServers().then(
-    (r) => {
+    (servers) => {
       var t = moment().valueOf();
-      dispatch(getUserServersSuccess(r, t));
+      dispatch(getUserServersSuccess(servers, t));
     });
 };
 

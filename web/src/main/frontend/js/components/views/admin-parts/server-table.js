@@ -5,23 +5,34 @@ import { FormattedTime } from 'react-intl';
 import ReactTable from 'react-table';
 
 import ModalEditServer from './modal-edit-server';
+import Icon from '@mdi/react';
+import { mdiServerNetwork, mdiServerNetworkOff } from '@mdi/js';
 
-export class AdminTable extends React.Component {
+class ServerTable extends React.Component {
 
   static propTypes = {
+    kernels: PropTypes.array,
     servers: PropTypes.array,
-    serverEdit: PropTypes.func.isRequired,
   }
 
   render() {
-    const data = this.props.servers;
+    const { kernels, servers: data } = this.props;
 
     const columns = [{
+      Header: '',
+      accessor: 'available',
+      headerStyle: { textAlign: 'center' },
+      style: { textAlign: 'center' },
+      maxWidth: 33,
+      Cell: props => (
+        <Icon path={props.value ? mdiServerNetwork : mdiServerNetworkOff} size={'16px'} color={props.value ? '#1B5E20' : '#b71c1c'} />
+      ),
+    }, {
       Header: '',
       maxWidth: 33,
       style: { textAlign: 'center', cursor: 'pointer' },
       Cell: props => (
-        <ModalEditServer data={this.props.servers.filter(srv => srv.id == props.original.id)[0]} />
+        <ModalEditServer server={this.props.servers.find(s => s.id == props.original.id)} />
       ),
     }, {
       Header: 'Name',
@@ -31,13 +42,9 @@ export class AdminTable extends React.Component {
       Header: 'URL',
       accessor: 'url',
       headerStyle: { textAlign: 'left' },
-    }, {
-      Header: 'Available',
-      accessor: 'available',
-      headerStyle: { textAlign: 'center' },
-      style: { textAlign: 'center' },
-      maxWidth: 80,
-      Cell: props => (props.value ? <i className="fa fa-check"></i> : <i className="fa fa-times"></i>),
+      Cell: props => (
+        <a href={props.value} target="_blank">{props.value}</a>
+      ),
     }, {
       Header: 'Last Modified',
       id: 'startedAt',
@@ -57,6 +64,23 @@ export class AdminTable extends React.Component {
       Cell: props => (
         <span>{props.value.split('_')[1]}</span>
       ),
+    }, {
+      Header: 'Supported Kernels',
+      headerStyle: { textAlign: 'left' },
+      accessor: 'kernels',
+      style: { display: 'flex', alignItems: 'center', flexWrap: 'wrap' },
+      Cell: props => (
+        <React.Fragment>
+          {props.original.kernels.map(name => {
+            const kernel = kernels.find(k => k.name === name);
+            return (
+              <a key={kernel.name} className="tag-box tag-box-other">
+                {kernel.tag}
+              </a>
+            );
+          })}
+        </React.Fragment>
+      )
     }];
 
     return (
@@ -72,3 +96,5 @@ export class AdminTable extends React.Component {
     );
   }
 }
+
+export default ServerTable;

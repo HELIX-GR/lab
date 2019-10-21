@@ -22,7 +22,8 @@ class CourseCard extends React.Component {
   }
 
   render() {
-    const { course: c = null } = this.props;
+    const { course: c, kernels } = this.props;
+    const kernel = kernels.find(k => k.name === c.kernel);
     const _t = this.context.intl.formatMessage;
 
     return (
@@ -31,8 +32,8 @@ class CourseCard extends React.Component {
           {c.link ? (
             <a href={c.link} target="_blank">{c.title}</a>
           ) : (
-            <a>{c.title}</a>
-          )}
+              <a>{c.title}</a>
+            )}
         </div>
         <div className="description pt-4 text-justify text-secondary">
           {c.description}
@@ -47,6 +48,9 @@ class CourseCard extends React.Component {
           <div className="action" onClick={() => this.props.handleAction(EnumCourseAction.DELETE, c)}>
             <i className="fa fa-trash"></i>
           </div>
+        </div>
+        <div className="kernel">
+          <a className="tag-box tag-box-other">{kernel.tag}</a>
         </div>
         <div className="date">
           <FormattedMessage id={'course.last-modified'} values={{ when: moment(c.updatedOn).fromNow() }} />

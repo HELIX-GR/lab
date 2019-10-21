@@ -22,7 +22,8 @@ class CourseAdminCard extends React.Component {
   }
 
   render() {
-    const { course: c = null } = this.props;
+    const { course: c, kernels } = this.props;
+    const kernel = kernels.find(k => k.name === c.kernel);
     const _t = this.context.intl.formatMessage;
 
     return (
@@ -50,6 +51,9 @@ class CourseAdminCard extends React.Component {
           <div className="action action-delete" onClick={() => this.props.handleAction(EnumCourseAction.DELETE, c)}>
             <i className="fa fa-trash"></i>
           </div>
+        </div>
+        <div className="kernel">
+          <a className="tag-box tag-box-other">{kernel.tag}</a>
         </div>
         <div className="date">
           <FormattedMessage id={'course.last-modified'} values={{ when: moment(c.updatedOn).fromNow() }} />

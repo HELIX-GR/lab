@@ -154,7 +154,7 @@ class CourseStudentExplorer extends React.Component {
 
   render() {
     const { action, courses, orderBy, selected = null, showModal, text, years } = this.state;
-    const { courses: allCourses } = this.props;
+    const { courses: allCourses, kernels } = this.props;
 
     const _t = this.context.intl.formatMessage;
 
@@ -264,6 +264,7 @@ class CourseStudentExplorer extends React.Component {
                   <div className="course-list">
                     {courses.map(c => (
                       <CourseCard
+                        kernels={kernels}
                         key={c.id}
                         course={c}
                         handleAction={(action, course) => this.handleAction(action, course)}>
@@ -292,6 +293,7 @@ class CourseStudentExplorer extends React.Component {
 const mapStateToProps = (state) => ({
   courses: state.courses.student.courses,
   filesystem: state.filesystem,
+  kernels: state.config.kernels,
   selectedFolder: state.filesystem.selectedFolder,
 });
 

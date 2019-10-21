@@ -20,6 +20,7 @@ var initialState = {
   endpoint: null,
   error: null,
   selectedHub: null,
+  selectedKernel: null,
   serverStage: EnumServerStatus.NONE,
   statistics: null,
   status: null,
@@ -47,12 +48,14 @@ export default (state = initialState, action) => {
         endpoint: action.endpoint,
         serverStage: action.serverStage,
         selectedHub: action.server,
+        selectedKernel: action.kernel,
       };
 
     case SET_SELECTED_HUB:
       return {
         ...state,
         selectedHub: action.selectedHub,
+        selectedKernel: action.selectedKernel,
         serverStage: EnumServerStatus.CONFIGURATION,
       };
 
@@ -63,15 +66,17 @@ export default (state = initialState, action) => {
 
 // Actions
 
-export const setSelectedHub = (selectedHub) => ({
+export const setSelectedHub = (selectedHub, selectedKernel) => ({
   type: SET_SELECTED_HUB,
   selectedHub,
+  selectedKernel,
 });
 
-const getUserServerSuccess = (server, endpoint, serverStage) => ({
+const getUserServerSuccess = (server, kernel, endpoint, serverStage) => ({
   type: SERVER_STATUS_SUCCESS,
   endpoint,
   server,
+  kernel,
   serverStage,
 });
 
@@ -91,20 +96,20 @@ export const getUserServer = () => (dispatch, getState) => {
   return appService.getUserServer().then(
     (r) => {
       if (r) {
-        dispatch(getUserServerSuccess(r.server, r.endpoint, EnumServerStatus.RUNNING));
+        dispatch(getUserServerSuccess(r.server, r.kernel, r.endpoint, EnumServerStatus.RUNNING));
       }
       else {
-        dispatch(getUserServerSuccess(null, null, EnumServerStatus.NONE));
+        dispatch(getUserServerSuccess(null, null, null, EnumServerStatus.NONE));
       }
     });
 };
 
-export const startNotebookServer = (serverId) => (dispatch, getState) => {
+export const startNotebookServer = (serverId, kernel) => (dispatch, getState) => {
   var { meta: { csrfToken: token } } = getState();
 
   dispatch(setStartupStage(EnumServerStatus.STARTING));
 
-  return appService.startNotebookServer(serverId, token).then(
+  return appService.startNotebookServer(serverId, kernel, token).then(
     (endpoint) => {
       dispatch(setEndpoint(endpoint));
     },

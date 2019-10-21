@@ -10,6 +10,7 @@ import {
   ErrorPages,
   Pages,
   Roles,
+  RoleGroups,
   StaticRoutes,
 } from '../model';
 
@@ -35,12 +36,10 @@ import {
   MainResults,
 } from './views';
 
-import { AdminPage } from './admin';
 import { FileSystem } from './filesystem';
-import { NotebookDetails } from './views';
+import { Admin, NotebookDetails } from './views';
 
 import { toggleLoginDialog } from '../ducks/user';
-import { startNotebookServer } from '../ducks/server';
 
 class App extends React.Component {
 
@@ -98,7 +97,7 @@ class App extends React.Component {
           exact path={StaticRoutes.COURSES_ADMIN} component={CourseProfessorExplorer}
         />
 
-        <SecureRoute exact path={StaticRoutes.FILESYSTEM} render={() => (
+        <SecureRoute exact roles={RoleGroups.LAB} path={StaticRoutes.FILESYSTEM} render={() => (
           <React.Fragment>
             <div className="border-placeholder"></div>
             <div>
@@ -118,7 +117,7 @@ class App extends React.Component {
             <div className="border-placeholder"></div>
             <section className="main-results-page-content">
               <div className="results-main-content" style={{ flexDirection: 'column' }}>
-                <AdminPage />
+                <Admin />
               </div>
             </section>
           </React.Fragment>
@@ -168,7 +167,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  startNotebookServer,
   toggleLoginDialog,
 }, dispatch);
 

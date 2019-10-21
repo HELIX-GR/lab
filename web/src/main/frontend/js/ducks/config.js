@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import configurationService from '../service/configuration';
 
 // Actions
@@ -15,6 +17,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         ...action.configuration,
+        // Sort kernels by index
+        kernels: _.sortBy(action.configuration.kernels, ['index']),
       };
 
     default:

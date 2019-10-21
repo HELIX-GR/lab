@@ -8,19 +8,21 @@ import { setSelectedHub } from '../../ducks/server';
 import { FormattedMessage } from 'react-intl';
 
 import { startNotebookServer, stopNotebookServer, getUserServer } from '../../ducks/server';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 
 class ServerButton extends React.Component {
+
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
 
     this.state = {
       popoverOpen: false,
-      selectedIndex: 0,
+      server: null,
+      kernel: null,
     };
   }
+
   componentWillMount() {
     if (this.props.user !== null) {
       this.props.getServers();
@@ -28,12 +30,13 @@ class ServerButton extends React.Component {
     }
   }
 
-  handleServerClick = (event, index) => {
-    const selected = this.props.servers.find(e => e.id == index);
-    this.props.setSelectedHub(selected);
+  onSelectServer(server, kernel) {
+    this.props.setSelectedHub(server, kernel);
+
     this.setState({
-      selectedIndex: index,
       popoverOpen: false,
+      server,
+      kernel,
     });
   }
 
@@ -45,6 +48,7 @@ class ServerButton extends React.Component {
 
   render() {
     const { serverStage } = this.props;
+
     return (
       <div>
         {serverStage == 0 &&
@@ -56,25 +60,21 @@ class ServerButton extends React.Component {
               <ModalHeader toggle={this.toggle}><FormattedMessage id="server-list.servers" defaultMessage="Avaliable Servers" /></ModalHeader>
 
               <ModalBody>
-                <ServerList servers={this.props.servers} onClick={this.handleServerClick} selectedIndex={this.state.selectedIndex} />
+                <ServerList kernels={this.props.kernels} servers={this.props.servers} selectServer={(server, kernel) => this.onSelectServer(server, kernel)} />
               </ModalBody>
             </Modal>
-            {/* <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
-              <PopoverHeader><FormattedMessage id="server-list.servers" defaultMessage="Avaliable Servers" /></PopoverHeader>
-              <PopoverBody className="" ><ServerList servers={this.props.servers} onClick={this.handleServerClick} selectedIndex={this.state.selectedIndex} /></PopoverBody>
-              </Popover>*/}
           </div>
 
         }
         {serverStage == 1 &&
-          <div className="button-notebook" onClick={() => this.props.startNotebookServer(this.props.selectedHub.id)}>
-            {this.props.selectedHub && this.props.selectedHub.name}
+          <div className="button-notebook" onClick={() => this.props.startNotebookServer(this.props.selectedHub.id, this.props.selectedKernel.name)}>
+            {this.props.selectedHub && `${this.props.selectedHub.name} | ${this.props.selectedKernel.tag}`}
             <i className="fa fa-play"></i>
           </div>
         }
 
-        {serverStage == 2 && <div className="button-notebook animation" onClick={() => this.props.startNotebookServer(this.props.selectedHub.id)}>
-          {this.props.selectedHub.name}
+        {serverStage == 2 && <div className="button-notebook animation">
+          {`${this.props.selectedHub.name} | ${this.props.selectedKernel.tag}`}
           <i className="fa fa-server"></i>
         </div>
         }
@@ -93,7 +93,9 @@ class ServerButton extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    kernels: state.config.kernels,
     selectedHub: state.server.selectedHub,
+    selectedKernel: state.server.selectedKernel,
     serverStage: state.server.serverStage,
     servers: state.user.servers,
     user: state.user,

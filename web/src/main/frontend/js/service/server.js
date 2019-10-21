@@ -6,8 +6,8 @@ export default {
     return actions.get('/action/user/server');
   },
 
-  startNotebookServer: (serverId, token) => {
-    return actions.post(`/action/server/start/${serverId}`, token);
+  startNotebookServer: (serverId, kernel, token) => {
+    return actions.post(`/action/server/start/${serverId}/${kernel}`, token);
   },
 
   stopNotebookServer: (serverId, token) => {

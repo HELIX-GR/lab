@@ -13,6 +13,7 @@ import {
   DynamicRoutes,
   EnumLocale,
   Roles,
+  RoleGroups,
   StaticRoutes,
   WordPressPages,
 } from '../../../model';
@@ -74,7 +75,7 @@ class Header extends React.Component {
                   Lab
                 </NavLink>
                 <ul className="sub-menu">
-                  <SecureContent roles={Roles.ALL}>
+                  <SecureContent roles={RoleGroups.LAB}>
                     <li><Link to={StaticRoutes.FILESYSTEM}><FormattedMessage id="header.files" /></Link></li>
                   </SecureContent>
                   <SecureContent roles={[Roles.BETA_STUDENT, Roles.STANDARD_STUDENT]}>

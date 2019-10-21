@@ -14,16 +14,20 @@ export default {
     return actions.get('/action/admin/servers/activity');
   },
 
-  addServer: (serverData, token) => {
-    return actions.post('/action/admin/server', token, serverData);
+  addServer: (server, token) => {
+    return actions.post('/action/admin/server', token, server);
   },
 
-  updateServer: (id, serverData, token) => {
-    return actions.post(`/action/admin/server/${id}`, token, serverData);
+  updateServer: (id, server, token) => {
+    return actions.post(`/action/admin/server/${id}`, token, server);
   },
 
   removeUserServer: (regId, token) => {
     return actions.delete(`/action/admin/server/registration/${regId}`, token);
+  },
+
+  updateUser: (id, user, token) => {
+    return actions.post(`/action/admin/user/${id}`, token, user);
   },
 
   grantUserRole: (userId, role, token) => {

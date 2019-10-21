@@ -289,6 +289,10 @@
       }
     }
 
+    &.lab.server {
+      cursor: default;
+    }
+
     &:after {
       content: '';
       position: absolute;
