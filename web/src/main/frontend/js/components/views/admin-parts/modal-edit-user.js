@@ -8,9 +8,27 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import Button from '@material-ui/core/Button';
 
+import { formatErrors } from '../../../model/error';
 import { updateUser } from '../../../ducks/admin';
 
 import UserForm from './user-form';
+
+const fieldMapper = (field) => {
+  switch (field) {
+    case 'email':
+      return 'Email';
+    case 'familyName':
+      return 'Last Name';
+    case 'givenName':
+      return 'First Name';
+    case 'roles':
+      return 'Roles';
+    case 'kernels':
+      return 'Kernels';
+    default:
+      return null;
+  }
+};
 
 class ModalAddUser extends React.Component {
 
@@ -53,7 +71,7 @@ class ModalAddUser extends React.Component {
         this.toggleModal();
       })
       .catch((err) => {
-        toast.error(err.errors[0].description);
+        toast.error(formatErrors(err.errors, fieldMapper));
       });
   }
 

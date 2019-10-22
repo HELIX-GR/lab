@@ -1,6 +1,5 @@
 import React from "react";
 
-import { addWhiteListUser } from '../../../ducks/admin';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -9,6 +8,26 @@ import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 
 import Button from '@material-ui/core/Button';
 import WhiteListForm from './white-list-form';
+
+import { addWhiteListUser } from '../../../ducks/admin';
+import { formatErrors } from '../../../model/error';
+
+const fieldMapper = (field) => {
+  switch (field) {
+    case 'email':
+      return 'Email';
+    case 'lastName':
+      return 'Last Name';
+    case 'firstName':
+      return 'First Name';
+    case 'roles':
+      return 'Roles';
+    case 'kernels':
+      return 'Kernels';
+    default:
+      return null;
+  }
+};
 
 class ModalAddWhiteList extends React.Component {
 
@@ -39,7 +58,7 @@ class ModalAddWhiteList extends React.Component {
         this.onClose();
       })
       .catch(err => {
-        toast.error(err.errors[0].description);
+        toast.error(formatErrors(err.errors, fieldMapper));
         throw err;
       });
   }

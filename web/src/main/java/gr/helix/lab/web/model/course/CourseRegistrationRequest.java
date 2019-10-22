@@ -41,5 +41,4 @@ public class CourseRegistrationRequest {
         this.email = email;
     }
 
-
 }

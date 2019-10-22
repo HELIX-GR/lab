@@ -8,9 +8,37 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import Button from '@material-ui/core/Button';
 
+import { formatErrors } from '../../../model/error';
 import { updateServer } from '../../../ducks/admin';
 
 import ServerForm from './server-form';
+
+const fieldMapper = (field) => {
+  switch (field) {
+    case 'available':
+      return 'Available';
+    case 'description':
+      return 'Description';
+    case 'eligibleRole':
+      return 'Eligible Role';
+    case 'kernels':
+      return 'Kernels';
+    case 'memory':
+      return 'Ram';
+    case 'name':
+      return 'Name';
+    case 'tags':
+      return 'Tags';
+    case 'token':
+      return 'Admin token';
+    case 'url':
+      return 'URL';
+    case 'virtualCores':
+      return 'Virtual CPUs';
+    default:
+      return null;
+  }
+};
 
 class ModalEditServer extends React.Component {
 
@@ -53,7 +81,7 @@ class ModalEditServer extends React.Component {
         this.toggleModal();
       })
       .catch((err) => {
-        toast.error(err.errors[0].description);
+        toast.error(formatErrors(err.errors, fieldMapper));
       });
   }
 

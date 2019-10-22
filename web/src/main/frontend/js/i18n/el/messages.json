@@ -4,6 +4,16 @@
     "learn-more": "Learn more",
     "accept": "Accept"
   },
+  "error": {
+    "generic":"Unknown error has occurred",
+    "validation": {
+      "Default": "Field {field} value is invalid",
+      "Email": "Field {field} must be a valid email",
+      "NotBlank": "Field {field} is required",
+      "NotEmpty": "Field {field} is required",
+      "Size": "Field {field} size must be in the interval {min} to {max}"
+    }
+  },
   "locales": {
     "en": "Αγγλικά",
     "el": "Ελληνικά"

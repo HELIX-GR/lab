@@ -7,7 +7,6 @@ import java.util.List;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import gr.helix.core.common.model.EnumRole;
 
@@ -27,7 +26,7 @@ public class WhiteListEntry {
 
     ZonedDateTime          registeredOn;
 
-    @NotNull
+    @NotEmpty
     private List<EnumRole> roles   = new ArrayList<EnumRole>();
 
     @NotEmpty

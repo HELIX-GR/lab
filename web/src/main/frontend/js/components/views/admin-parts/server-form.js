@@ -100,7 +100,7 @@ class ServerForm extends Component {
         <Row >
           <Col md={6}>
             <FormGroup>
-              <Label for="eligibleRole">Select role eligible</Label>
+              <Label for="eligibleRole">Eligible Role</Label>
               <Select
                 id="eligibleRole"
                 title="Choose the role a user must have to see this server?"
