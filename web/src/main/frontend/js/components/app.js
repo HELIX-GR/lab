@@ -1,13 +1,13 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { injectIntl } from 'react-intl';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import {
   DynamicRoutes,
   EnumAuthProvider,
-  ErrorPages,
   Pages,
   Roles,
   RoleGroups,
@@ -20,8 +20,6 @@ import {
 
 import {
   LoginForm,
-  Page403,
-  Page404,
 } from './pages';
 
 import {
@@ -66,10 +64,6 @@ class App extends React.Component {
   render() {
     const routes = (
       <Switch>
-        {/* Handle errors first */}
-        <Route path={ErrorPages.Forbidden} component={Page403} exact />
-        <Route path={ErrorPages.NotFound} component={Page404} exact />
-
         {/* 
           Redirect for authenticated users. Navigation after a successful login operation
           occurs after the component hierarchy is rendered due to state change and causes
@@ -170,4 +164,6 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   toggleLoginDialog,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+const localizedComponent = injectIntl(App);
+
+export default connect(mapStateToProps, mapDispatchToProps)(localizedComponent);

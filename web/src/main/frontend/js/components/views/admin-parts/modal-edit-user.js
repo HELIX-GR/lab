@@ -62,9 +62,10 @@ class ModalAddUser extends React.Component {
     const { kernels } = this.props;
 
     return (
-      <div onClick={() => this.toggleModal()}>
-        <i className="fa fa-wrench"></i>
-
+      <React.Fragment>
+        <div onClick={() => this.toggleModal()}>
+          <i className="fa fa-pencil"></i>
+        </div >
         {this.state.visible &&
           <Modal
             isOpen={this.state.visible}
@@ -84,8 +85,7 @@ class ModalAddUser extends React.Component {
             </ModalFooter>
           </Modal>
         }
-
-      </div >
+      </React.Fragment>
     );
   }
 }

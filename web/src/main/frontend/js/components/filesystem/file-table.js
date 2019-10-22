@@ -6,34 +6,37 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import TableFooter from '@material-ui/core/TableFooter';
 import formatFileSize from '../../util/file-size';
-import { FormattedMessage } from 'react-intl';
+
+import { FormattedMessage, FormattedTime } from 'react-intl';
+
+import moment from '../../moment-localized';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import _ from 'lodash';
-
 
 export default function FileTable({ props }) {
   const {
     data,
     folder,
     folderName,
-    formatRelative,
     handleCreateFolder,
     handleNameChange,
     handleRowClick,
     handleRowDoubleClick,
-    last_update,
     newFolder,
     selectedFile,
     setNewFolder,
     showFoldersOnly,
+    updatedAt,
   } = props;
 
   return (
     <div className="filesystem-box">
+      {updatedAt &&
+        <a className="text-muted small">Last update before {moment.duration(Date.now() - updatedAt).humanize()}</a>
+      }
       <Table >
         <TableHead>
           <TableRow  >
@@ -73,7 +76,7 @@ export default function FileTable({ props }) {
                   <TableCell>{row.type}</TableCell>
                   <TableCell>{formatFileSize(row.size)}</TableCell>
                   <TableCell>
-                    {formatRelative(row.createdOn)}
+                    <FormattedTime value={row.createdOn} day='numeric' month='numeric' year='numeric' />
                   </TableCell>
                 </TableRow>
               )))}
@@ -90,14 +93,21 @@ export default function FileTable({ props }) {
                 />
               </TableCell>
               <TableCell>
-                <Button variant="fab" mini={true} style={{
-                  marginRight: 20,
-                }} onClick={(e) => { handleCreateFolder(folder.path + folderName); }} >
+                <Button
+                  variant="fab"
+                  mini={true}
+                  style={{
+                    marginRight: 20,
+                  }}
+                  onClick={(e) => { handleCreateFolder(folder.path + folderName); }}>
                   <ActionDone />
                 </Button>
-                <Button variant="fab" mini={true} style={{
-                  marginRight: 20,
-                }}
+                <Button
+                  variant="fab"
+                  mini={true}
+                  style={{
+                    marginRight: 20,
+                  }}
                   onClick={(e) => {
                     setNewFolder(false);
                   }} >
@@ -108,17 +118,6 @@ export default function FileTable({ props }) {
             : null
           }
         </TableBody>
-
-        <TableFooter >
-          <TableRow >
-            <TableCell />
-            <TableCell width="300px">
-              {last_update && <FormattedMessage id="filetable.LastUpdate" defaultMessage="Last Update: " />}
-              {last_update && formatRelative(last_update)}
-            </TableCell>
-          </TableRow>
-
-        </TableFooter>
       </Table>
     </div>
   );

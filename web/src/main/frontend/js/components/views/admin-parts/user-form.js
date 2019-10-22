@@ -2,8 +2,8 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import * as PropTypes from 'prop-types';
 import { Form, FormGroup, Label, Input } from 'reactstrap';
-import CreatableSelect from 'react-select/lib/Creatable';
 
+import Select from 'react-select';
 
 import {
   RoleGroups,
@@ -32,14 +32,14 @@ class UserForm extends Component {
   handleChangeRoles(value) {
     const { change } = this.props;
     change({
-      roles: value.map(role => role.value),
+      roles: value ? value.map(role => role.value) : [],
     });
   }
 
   handleChangeKernels(value) {
     const { change } = this.props;
     change({
-      kernels: value.map(kernel => kernel.value),
+      kernels: value ? value.map(kernel => kernel.value) : [],
     });
   }
 
@@ -79,7 +79,7 @@ class UserForm extends Component {
 
         <FormGroup>
           <Label for="roles">Select roles</Label>
-          <CreatableSelect
+          <Select
             isClearable
             isMulti
             name="roles"
@@ -91,7 +91,7 @@ class UserForm extends Component {
 
         <FormGroup>
           <Label for="kernels">Select Kernels</Label>
-          <CreatableSelect
+          <Select
             isClearable
             isMulti
             name="kernels"

@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { mdiServer, mdiAccountGroup, mdiAccountKey, mdiMonitorDashboard } from '@mdi/js';
 import { withRouter } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
 
 import Icon from '@mdi/react';
 import Paper from '@material-ui/core/Paper';
@@ -33,6 +34,12 @@ import {
 import {
   StaticRoutes,
 } from '../../model';
+
+const styles = theme => ({
+  tab: {
+    fontSize: 16,
+  },
+});
 
 function TabContainer(props) {
   return (
@@ -69,6 +76,7 @@ class Admin extends React.Component {
 
   render() {
     const { tabIndex } = this.state;
+    const { classes } = this.props;
 
     return (
       <React.Fragment>
@@ -80,13 +88,12 @@ class Admin extends React.Component {
             onChange={this.handleChange}
             indicatorColor="primary"
             textColor="primary"
-            centered={false}
-            fullWidth={true}
+            variant="fullWidth"
           >
-            <Tab label="Servers" />
-            <Tab label="Users" />
-            <Tab label="White-List" />
-            <Tab label="Monitoring" />
+            <Tab label="Servers" className={classes.tab} />
+            <Tab label="Users" className={classes.tab} />
+            <Tab label="White-List" className={classes.tab} />
+            <Tab label="Monitoring" className={classes.tab} />
           </Tabs>
 
           {tabIndex === 0 &&
@@ -187,4 +194,6 @@ const localizedComponent = injectIntl(Admin);
 
 const componentWithState = connect(mapStateToProps, mapDispatchToProps)(localizedComponent);
 
-export default withRouter(componentWithState);
+const styledComponent = withStyles(styles)(componentWithState);
+
+export default withRouter(styledComponent);

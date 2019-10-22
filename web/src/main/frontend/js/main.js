@@ -5,17 +5,17 @@ import { changeLocale } from './ducks/i18n';
 import { refreshProfile } from './ducks/user';
 import { getConfiguration } from './ducks/config';
 
-var rootSelector = document.currentScript.getAttribute('data-root') || '#root';
+const rootSelector = document.currentScript.getAttribute('data-root') || '#root';
 
 // Bind top-level event handlers
 
 document.addEventListener("DOMContentLoaded", function () {
-  var rootEl = document.querySelector(rootSelector);
+  const rootEl = document.querySelector(rootSelector);
 
   // TODO: read from non-httponly "locale" cookie
   const locale = "en-GB";
 
-  var token = document.querySelector("meta[name=_csrf]")
+  const token = document.querySelector("meta[name=_csrf]")
     .getAttribute('content');
 
   // Chain preliminary actions before initial rendering

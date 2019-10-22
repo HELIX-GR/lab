@@ -1,6 +1,7 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 
+import { injectIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 import { FormattedMessage } from 'react-intl';
 
@@ -48,10 +49,6 @@ class StudentTable extends React.Component {
       errors: {},
     };
   }
-
-  static contextTypes = {
-    intl: PropTypes.object,
-  };
 
   static propTypes = {
     addStudent: PropTypes.func.isRequired,
@@ -169,7 +166,7 @@ class StudentTable extends React.Component {
   }
 
   validate(property, value) {
-    const _t = this.context.intl.formatMessage;
+    const _t = this.props.intl.formatMessage;
 
     switch (property) {
       case 'email':
@@ -515,4 +512,6 @@ class StudentTable extends React.Component {
   }
 }
 
-export default withStyles(styles)(StudentTable);
+const localizedComponent = injectIntl(StudentTable);
+
+export default withStyles(styles)(localizedComponent);

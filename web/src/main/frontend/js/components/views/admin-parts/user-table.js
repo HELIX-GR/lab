@@ -36,7 +36,7 @@ class UserTable extends React.Component {
     }, {
       Header: '',
       maxWidth: 33,
-      style: { display: 'flex', alignItems: 'center', textAlign: 'center', cursor: 'pointer' },
+      style: { display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' },
       Cell: props => (
         <ModalAddUser user={this.props.users.find(s => s.id == props.original.id)} />
       ),
@@ -102,6 +102,7 @@ class UserTable extends React.Component {
         Header: <img className="account-icon" src={"/images/png/" + name + ".png"} height="35" width="35" />,
         id: name,
         accessor: 'roles',
+        style: { textAlign: 'center', fontSize: 22 },
         Cell: props => (<Checkbox
           checked={props.value.includes(name)}
           onChange={(e, checked) => { this.onRoleChange(checked, name, props.row.id); }}

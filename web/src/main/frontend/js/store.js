@@ -2,14 +2,15 @@ import * as Redux from 'redux';
 import * as ReduxLogger from 'redux-logger';
 import * as ReduxThunk from 'redux-thunk';
 
-import { routerMiddleware } from 'react-router-redux';
-import rootReducer from './reducers';
+import { routerMiddleware } from 'connected-react-router';
+
 import { history } from './history';
 
+import createRootReducer from './reducers';
 
 // Create and configure store
 
-var middleware = [
+const middleware = [
   // Support dispatching of functions
   ReduxThunk.default,
   // Intercept navigation actions
@@ -17,14 +18,18 @@ var middleware = [
 ];
 
 /* global process */
+
 if (process.env.NODE_ENV != 'production') {
   // The logger middleware should always be last
   middleware.push(ReduxLogger.createLogger({ colors: {} }));
 }
 
-var initialState = {};
-var store = Redux.createStore(
-  rootReducer, initialState, Redux.applyMiddleware(...middleware)
+const initialState = {};
+
+const store = Redux.createStore(
+  createRootReducer(history),
+  initialState,
+  Redux.applyMiddleware(...middleware)
 );
 
 export default store;

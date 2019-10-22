@@ -1,6 +1,6 @@
-import {
-  combineReducers,
-} from "redux";
+import * as Redux from 'redux';
+
+import { connectRouter } from 'connected-react-router';
 
 import admin from './ducks/admin';
 import courseProfessor from './ducks/course-professor';
@@ -15,10 +15,10 @@ import server from "./ducks/server";
 import user from './ducks/user';
 import viewport from './ducks/viewport';
 
-export default combineReducers({
+export default (history) => Redux.combineReducers({
   admin,
   config,
-  courses: combineReducers({
+  courses: Redux.combineReducers({
     professor: courseProfessor,
     student: courseStudent,
   }),
@@ -26,8 +26,9 @@ export default combineReducers({
   i18n,
   meta,
   notebook,
+  router: connectRouter(history),
   server,
-  ui: combineReducers({
+  ui: Redux.combineReducers({
     search,
     viewport,
   }),

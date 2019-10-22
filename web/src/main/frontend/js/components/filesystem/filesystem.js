@@ -189,7 +189,6 @@ class FileSystem extends Component {
         newFolder: this.props.newFolder,
         handleRowClick: this.handleRowClick,
         handleRowDoubleClick: this.handleRowDoubleClick,
-        formatRelative: this.props.intl.formatRelative,
         handleCreateFolder: this.handleCreateFolder,
         setNewFolder: this.props.setNewFolder,
         folder,

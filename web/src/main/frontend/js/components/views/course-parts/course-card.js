@@ -1,5 +1,6 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
+
+import { injectIntl } from 'react-intl';
 
 import moment from '../../../moment-localized';
 
@@ -13,10 +14,6 @@ import {
 
 class CourseCard extends React.Component {
 
-  static contextTypes = {
-    intl: PropTypes.object,
-  };
-
   static defaultProps = {
     course: null,
   }
@@ -24,7 +21,7 @@ class CourseCard extends React.Component {
   render() {
     const { course: c, kernels } = this.props;
     const kernel = kernels.find(k => k.name === c.kernel);
-    const _t = this.context.intl.formatMessage;
+    const _t = this.props.intl.formatMessage;
 
     return (
       <div className="course-card">
@@ -32,8 +29,8 @@ class CourseCard extends React.Component {
           {c.link ? (
             <a href={c.link} target="_blank">{c.title}</a>
           ) : (
-              <a>{c.title}</a>
-            )}
+            <a>{c.title}</a>
+          )}
         </div>
         <div className="description pt-4 text-justify text-secondary">
           {c.description}
@@ -61,4 +58,4 @@ class CourseCard extends React.Component {
 
 }
 
-export default CourseCard;
+export default injectIntl(CourseCard);

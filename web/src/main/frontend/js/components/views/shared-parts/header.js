@@ -136,7 +136,7 @@ class Header extends React.Component {
 
           {!authenticated &&
             <div className="account-item">
-              <a onClick={(e) => this.props.toggleLoginDialog()}>
+              <a onClick={() => this.props.toggleLoginDialog()}>
                 <img className="account-icon" src="/images/svg/Avatar.svg" alt="Account tab" />
               </a>
             </div>

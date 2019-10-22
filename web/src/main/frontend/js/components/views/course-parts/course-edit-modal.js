@@ -54,7 +54,7 @@ class CourseEditModal extends React.Component {
       .catch((err) => this.onError(err));
   }
 
-  onCancel(e) {
+  onCancel() {
     this.props.toggle();
   }
 
@@ -108,8 +108,8 @@ class CourseEditModal extends React.Component {
             {course ? (
               <FormattedMessage id={'course.modal.title.update'} values={{ title: course.title }} />
             ) : (
-                <FormattedMessage id={'course.modal.title.create'} />
-              )}
+              <FormattedMessage id={'course.modal.title.create'} />
+            )}
           </div>
 
           <CourseForm

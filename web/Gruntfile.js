@@ -51,8 +51,69 @@ module.exports = function (grunt) {
     // Transpile and bundle JavaScript files
     browserify: {
       options: {
-        /* moved to package.json */
+         /*
+          Browserify and Babel configuration has been moved here from .babelrc and
+          package.json files. The global and ignore options where ignored when an
+          external .balelrc file was used.
+        */
         watch: true,
+        transform: [
+          ["babelify", {
+            /* Required for building libraries using es6 */
+            global: true,
+            presets: [
+              "@babel/preset-env",
+              "@babel/preset-react",
+            ],
+            plugins: [
+              "@babel/plugin-syntax-dynamic-import",
+              "@babel/plugin-syntax-import-meta",
+              [
+                "@babel/plugin-proposal-decorators",
+                {
+                  legacy: true
+                }
+              ],
+              "@babel/plugin-proposal-class-properties",
+              "@babel/plugin-proposal-json-strings",
+              "@babel/plugin-proposal-function-sent",
+              "@babel/plugin-proposal-export-namespace-from",
+              "@babel/plugin-proposal-numeric-separator",
+              "@babel/plugin-proposal-throw-expressions",
+              "@babel/plugin-proposal-export-default-from",
+              "@babel/plugin-proposal-logical-assignment-operators",
+              "@babel/plugin-proposal-optional-chaining",
+              [
+                "@babel/plugin-proposal-pipeline-operator",
+                {
+                  proposal: "minimal"
+                }
+              ],
+              "@babel/plugin-proposal-nullish-coalescing-operator",
+              "@babel/plugin-proposal-do-expressions",
+              "@babel/plugin-proposal-function-bind"
+            ],
+            ignore: [
+              filename => {
+                if (!/\/node_modules\//.test(filename)) {
+                  // Compile LAB site source code
+                  return false;
+                } else if (/\/node_modules\/(flat)\//.test(filename)) {
+                  // The following external libraries that are
+                  // using ES6 should be compiled too:
+                  //
+                  // flat
+
+                  return false;
+                }
+                // Anything else should be ignored
+                return true;
+              },
+            ],
+          }],
+          "envify",
+          "browserify-shim"
+        ]
       },
       'helix-lab': {
         options: {
@@ -62,7 +123,6 @@ module.exports = function (grunt) {
             'fetch',
             'flat',
             'history',
-            'immutable',
             'intl-messageformat',
             'lodash',
             'moment',
@@ -71,17 +131,15 @@ module.exports = function (grunt) {
             'react',
             'react-dom',
             'react-intl',
-            'react-intl/locale-data/el',
-            'react-intl/locale-data/en',
             'react-redux',
+            'react-router',
             'react-router-dom',
-            'react-router-redux',
             'react-transition-group',
             'reactstrap',
             'redux',
             'redux-logger',
             'redux-thunk',
-            'url-search-params',
+            'connected-react-router',
           ]
         },
         files: {
@@ -96,12 +154,10 @@ module.exports = function (grunt) {
           require: [
             'flat',
             'history',
-            'immutable',
             'intl-messageformat',
             'lodash',
             'moment',
             'moment/locale/el',
-            'url-search-params',
           ],
         },
         files: {
@@ -118,17 +174,15 @@ module.exports = function (grunt) {
             'react',
             'react-dom',
             'react-intl',
-            'react-intl/locale-data/el',
-            'react-intl/locale-data/en',
             'react-redux',
+            'react-router',
             'react-router-dom',
-            'react-router-redux',
             'react-transition-group',
             'reactstrap',
             'redux',
             'redux-logger',
             'redux-thunk',
-            'url-search-params',
+            'connected-react-router',
           ],
         },
         files: {
@@ -290,17 +344,17 @@ module.exports = function (grunt) {
     grunt.log.writeln('Building in [' + (process.env.NODE_ENV || 'development') + '] mode');
   });
 
-  grunt.registerTask('browserify:vendor', [
-    'browserify:vendor-util', 'browserify:vendor-react',
-  ]);
-
   grunt.registerTask('build:helix-lab', develop ?
     ['sass:helix-lab', 'eslint:helix-lab', 'browserify:helix-lab',] :
     ['sass:helix-lab', 'eslint:helix-lab', 'browserify:helix-lab', 'uglify:helix-lab']);
 
+  grunt.registerTask('browserify:vendor', [
+    'browserify:vendor-util', 'browserify:vendor-react',
+  ]);
+
   grunt.registerTask('build:vendor', develop ?
-    ['browserify:vendor-util', 'browserify:vendor-react'] :
-    ['browserify:vendor-util', 'browserify:vendor-react', 'uglify:vendor']);
+    ['browserify:vendor'] :
+    ['browserify:vendor', 'uglify:vendor']);
 
   grunt.registerTask('build', ['build:helix-lab', 'build:vendor', 'copy:assets', 'copy:helix-lab-i18n-data', 'copy:helix-lab-fonts']);
 

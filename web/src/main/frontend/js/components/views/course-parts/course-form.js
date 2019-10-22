@@ -5,6 +5,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { withStyles } from '@material-ui/core/styles';
 
+import { injectIntl } from 'react-intl';
+
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -70,10 +72,6 @@ class CourseForm extends React.Component {
     this.inputRef = React.createRef();
   }
 
-  static contextTypes = {
-    intl: PropTypes.object,
-  };
-
   static propTypes = {
     classes: PropTypes.object.isRequired,
     kernels: PropTypes.arrayOf(PropTypes.object),
@@ -127,7 +125,7 @@ class CourseForm extends React.Component {
   }
 
   validate(property, value) {
-    const _t = this.context.intl.formatMessage;
+    const _t = this.props.intl.formatMessage;
 
     switch (property) {
       case 'description':
@@ -150,7 +148,7 @@ class CourseForm extends React.Component {
     const { classes, kernels } = this.props;
     const now = new Date();
     const years = [now.getFullYear(), now.getFullYear() + 1];
-    const _t = this.context.intl.formatMessage;
+    const _t = this.props.intl.formatMessage;
 
     return (
       <React.Fragment>
@@ -288,4 +286,6 @@ class CourseForm extends React.Component {
   }
 }
 
-export default withStyles(styles)(CourseForm);
+const localizedComponent = injectIntl(CourseForm);
+
+export default withStyles(styles)(localizedComponent);

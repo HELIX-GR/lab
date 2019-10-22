@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import * as PropTypes from 'prop-types';
 import { Col, Row, Form, FormGroup, Label, Input } from 'reactstrap';
 import Select from 'react-select';
-import CreatableSelect from 'react-select/lib/Creatable';
 
 const roles = [
   { value: 'ROLE_STANDARD', label: 'Standard' },
@@ -57,14 +56,14 @@ class ServerForm extends Component {
   handleChangeTags(value) {
     const { change } = this.props;
     change({
-      tags: value.map(tag => tag.value),
+      tags: value ? value.map(tag => tag.value) : [],
     });
   }
 
   handleChangeKernels(value) {
     const { change } = this.props;
     change({
-      kernels: value.map(kernel => kernel.value),
+      kernels: value ? value.map(kernel => kernel.value) : [],
     });
   }
 
@@ -127,7 +126,7 @@ class ServerForm extends Component {
 
         <FormGroup>
           <Label for="tags">Select tags</Label>
-          <CreatableSelect
+          <Select
             isClearable
             isMulti
             name="tags"
@@ -139,7 +138,7 @@ class ServerForm extends Component {
 
         <FormGroup>
           <Label for="kernels">Select Kernels</Label>
-          <CreatableSelect
+          <Select
             isClearable
             isMulti
             name="kernels"

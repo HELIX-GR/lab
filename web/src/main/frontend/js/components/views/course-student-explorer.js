@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
-import * as PropTypes from 'prop-types';
 
 import { bindActionCreators } from 'redux';
+import { injectIntl } from 'react-intl';
 import { toast, } from 'react-toastify';
 
 import {
@@ -42,10 +42,6 @@ class CourseStudentExplorer extends React.Component {
 
     this.onYearSelect = this.onYearSelect.bind(this);
   }
-
-  static contextTypes = {
-    intl: PropTypes.object,
-  };
 
   handleAction(action, course = null) {
     switch (action) {
@@ -156,7 +152,7 @@ class CourseStudentExplorer extends React.Component {
     const { action, courses, orderBy, selected = null, showModal, text, years } = this.state;
     const { courses: allCourses, kernels } = this.props;
 
-    const _t = this.context.intl.formatMessage;
+    const _t = this.props.intl.formatMessage;
 
     return (
       <React.Fragment>
@@ -304,4 +300,6 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
 }, dispatch);
 
 
-export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(CourseStudentExplorer);
+const localizedComponent = injectIntl(CourseStudentExplorer);
+
+export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(localizedComponent);
