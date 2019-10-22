@@ -12,9 +12,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import gr.helix.core.common.domain.AccountEntity;
@@ -66,7 +68,7 @@ public class HubController extends BaseController {
     @Autowired
     JupyterHubService           jupyterHubService;
 
-    @RequestMapping(value = "/action/server/start/{hubId}/{kernel}", method = RequestMethod.POST)
+    @PostMapping(value = "/action/server/start/{hubId}/{kernel}")
     public RestResponse<Object> startServer(@PathVariable int hubId, @PathVariable String kernel) {
         try {
             final String username = this.currentUserName();
@@ -179,7 +181,7 @@ public class HubController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "action/server/stop/{hubId}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "action/server/stop/{hubId}")
     public RestResponse<Void> stopServer(@PathVariable int hubId) {
         try {
             final String userName = this.currentUserName();
@@ -225,7 +227,7 @@ public class HubController extends BaseController {
         return RestResponse.success();
     }
 
-    @RequestMapping(value = "action/user/servers", method = RequestMethod.GET)
+    @GetMapping(value = "action/user/servers")
     public RestResponse<?> getEligibleServers() {
         final Account account = this.accountRepository.findById(this.currentUserId()).get().toDto();
         final List<ClientServer> records = new ArrayList<ClientServer>();
@@ -250,7 +252,7 @@ public class HubController extends BaseController {
         return RestResponse.result(records);
     }
 
-    @RequestMapping(value = "/action/user/server", method = RequestMethod.GET)
+    @GetMapping(value = "/action/user/server")
     public RestResponse<?> getUserServer() {
         final List<AccountServerEntity> accountServers = this.accountServerRepository.findAllServersByUserId(this.currentUserId());
 

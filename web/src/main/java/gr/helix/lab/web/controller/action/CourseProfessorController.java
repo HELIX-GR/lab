@@ -61,7 +61,7 @@ import gr.helix.lab.web.repository.HubKernelRepository;
 import gr.helix.lab.web.repository.WhiteListRepository;
 
 @RestController
-@Secured({"ROLE_STANDARD_ACADEMIC", "ROLE_BETA_ACADEMIC"})
+@Secured({"ROLE_STANDARD_ACADEMIC"})
 @RequestMapping(produces = "application/json")
 public class CourseProfessorController extends BaseController {
 

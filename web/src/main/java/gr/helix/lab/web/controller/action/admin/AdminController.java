@@ -73,7 +73,7 @@ public class AdminController extends BaseController {
     }
 
     @RequestMapping(value = "action/admin/user/{userId}/role/{role}", method = RequestMethod.POST)
-    public RestResponse<?> grantUserRole(@PathVariable int userId, @PathVariable EnumRole role) {
+    public RestResponse<?> grantRoleToUser(@PathVariable int userId, @PathVariable EnumRole role) {
         final AccountEntity account = this.accountRepository.findById(userId).orElse(null);
         if (account == null) {
             return RestResponse.error(AdminErrorCode.ACCOUNT_NOT_FOUND, "Account was not found");
@@ -89,7 +89,7 @@ public class AdminController extends BaseController {
     }
 
     @RequestMapping(value = "action/admin/user/{userId}/role/{role}", method = RequestMethod.DELETE)
-    public RestResponse<?> revokeUserRole(@PathVariable int userId, @PathVariable EnumRole role) {
+    public RestResponse<?> revokeRoleFromUser(@PathVariable int userId, @PathVariable EnumRole role) {
         final AccountEntity account = this.accountRepository.findById(userId).orElse(null);
         if (account == null) {
             return RestResponse.error(AdminErrorCode.ACCOUNT_NOT_FOUND, "Account was not found");

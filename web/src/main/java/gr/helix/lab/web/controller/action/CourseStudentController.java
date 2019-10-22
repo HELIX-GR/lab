@@ -33,7 +33,7 @@ import gr.helix.lab.web.repository.CourseRepository;
 import gr.helix.lab.web.repository.CourseStudentRepository;
 
 @RestController
-@Secured({"ROLE_STANDARD_STUDENT", "ROLE_BETA_STUDENT"})
+@Secured({"ROLE_STANDARD_STUDENT"})
 @RequestMapping(produces = "application/json")
 public class CourseStudentController extends BaseController {
 

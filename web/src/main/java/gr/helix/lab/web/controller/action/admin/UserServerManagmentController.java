@@ -36,7 +36,7 @@ public class UserServerManagmentController extends BaseController {
     JupyterHubClient        jupyterHubClient;
 
     @GetMapping(value = "action/admin/servers/activity")
-    public RestResponse<?> getUsersToServers() {
+    public RestResponse<?> getUserServers() {
         final List<ClientServerRegistration> accountServers = this.accountServerRepository.findAll().stream()
             .map(AccountServerEntity::toDto)
             .collect(Collectors.toList());
@@ -45,7 +45,7 @@ public class UserServerManagmentController extends BaseController {
     }
 
     @DeleteMapping(value = "action/admin/server/registration/{regId}")
-    public RestResponse<?> deleteUserToServer(@PathVariable int regId) {
+    public RestResponse<?> deleteUserServer(@PathVariable int regId) {
         // Check if registration exists
         final AccountServerEntity accountServer = this.accountServerRepository.findById(regId).orElse(null);
 

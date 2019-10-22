@@ -5,8 +5,8 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.saml.metadata.MetadataManager;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import gr.helix.core.common.domain.HubKernelEntity;
@@ -36,7 +36,7 @@ public class ConfigurationController extends BaseController {
     @Autowired
     private HubKernelRepository hubKernelRepository;
 
-    @RequestMapping(value = "/action/configuration/{locale}", method = RequestMethod.GET)
+    @GetMapping(value = "/action/configuration/{locale}")
     public RestResponse<ClientConfiguration> getConfiguration(String locale) {
         return RestResponse.result(this.createConfiguration());
     }

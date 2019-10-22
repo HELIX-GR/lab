@@ -153,6 +153,13 @@ public class WhiteListController extends BaseController {
         }
     }
 
+    /**
+     * Revoke role from white list user
+     *
+     * @param userId
+     * @param role
+     * @return
+     */
     @RequestMapping(value = "action/admin/white-list/user/{userId}/role/{role}", method = RequestMethod.DELETE)
     public RestResponse<?> revokeRole(@PathVariable int userId, @PathVariable EnumRole role) {
         try {

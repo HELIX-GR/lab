@@ -24,10 +24,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -76,7 +78,7 @@ public class FileSytemController extends BaseController {
      * @param path the path to search
      * @return all files and folders
      */
-    @RequestMapping(value = "/action/file-system",  method = RequestMethod.GET)
+    @GetMapping(value = "/action/file-system")
     public RestResponse<?> browserDirectory() {
         try {
             return RestResponse.result(this.fileNamingStrategy.getUserDirectoryInfo(this.currentUserName()));
@@ -91,7 +93,7 @@ public class FileSytemController extends BaseController {
      * @param request a request with the new folder's name
      * @return the updated file system
      */
-    @RequestMapping(value = "/action/file-system", method = RequestMethod.POST)
+    @PostMapping(value = "/action/file-system")
     public RestResponse<?> createFolder(@RequestBody FileSystemPathRequest request) {
         try {
             if (StringUtils.isEmpty(request.getPath())) {
@@ -119,7 +121,7 @@ public class FileSytemController extends BaseController {
      * @param request a request with file or folder to delete
      * @return the updated file system
      */
-    @RequestMapping(value = "/action/file-system", params = { "path" }, method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/action/file-system", params = { "path" })
     public RestResponse<?> deletePath(@RequestParam("path") String relativePath) {
         try {
             if (StringUtils.isEmpty(relativePath)) {
@@ -153,7 +155,7 @@ public class FileSytemController extends BaseController {
      * @param request request with the file name
      * @throws InvalidProcessDefinitionException
      */
-    @RequestMapping(value = "/action/file-system/upload", method = RequestMethod.POST)
+    @PostMapping(value = "/action/file-system/upload")
     public RestResponse<?> upload(@RequestPart("file") MultipartFile file, @RequestPart("data") UploadRequest request) {
 
         try {
@@ -193,7 +195,7 @@ public class FileSytemController extends BaseController {
      * @param request request with the file name
      * @throws InvalidProcessDefinitionException
      */
-    @RequestMapping(value = "/action/file-system/notebook", method = RequestMethod.POST)
+    @PostMapping(value = "/action/file-system/notebook")
     public RestResponse<?> publish(Authentication authentication, @RequestBody @Valid PublishRequest request) throws IOException {
         try {
             if (StringUtils.isEmpty(request.getFilename())) {
@@ -237,7 +239,7 @@ public class FileSytemController extends BaseController {
      * @param request request with the file name
      * @throws InvalidProcessDefinitionException
      */
-    @RequestMapping(value = "/action/file-system/notebook/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/action/file-system/notebook/{id}")
     public RestResponse<?> getNotebook(Authentication authentication, @PathVariable("id") String id) throws IOException {
         try {
             if (StringUtils.isEmpty(id)) {
