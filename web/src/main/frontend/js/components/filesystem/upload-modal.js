@@ -82,7 +82,13 @@ class UploadModal extends React.Component {
       <div className="filesystem-btn">
         <a data="UPLOAD FILE" onClick={this.handleOpen}>
           <img src="/images/svg/SVG/upload.svg" />
-          <Modal isOpen={this.state.open} toggle={this.toggle} >
+          <Modal
+            isOpen={this.state.open}
+            toggle={this.toggle}
+            centered={true}
+            backdrop={false}
+            keyboard={false}
+          >
             <ModalHeader toggle={this.toggle}>Upload a file</ModalHeader>
 
             <div>
@@ -99,13 +105,6 @@ class UploadModal extends React.Component {
 
 
                 }}
-                style={{
-                  textAlign: 'center',
-                  fontSize: '3em',
-                  color: '#656565',
-                  border: '1px dotted #656565',
-                  height: '12rem',
-                }}
                 disableClick={false}
                 multiple={false}
                 disabled={this.state.isUploading}
@@ -116,7 +115,6 @@ class UploadModal extends React.Component {
                       textAlign: 'center',
                       fontSize: '3em',
                       color: '#656565',
-                      border: '1px dotted #656565',
                       height: '12rem',
                       paddingTop: '1rem',
                     }}>

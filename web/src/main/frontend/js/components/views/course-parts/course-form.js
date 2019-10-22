@@ -21,8 +21,8 @@ const styles = theme => ({
     padding: '10px 18px',
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     flex: '1 1 100%'
   },
   helperText: {
@@ -50,19 +50,19 @@ class CourseForm extends React.Component {
 
   constructor(props) {
     super(props);
-
-    const { course = null } = props;
+    const { course = null, kernels } = props;
 
     this.state = {
       course: course ? ({
         ...course,
       }) : ({
-        title: '',
-        description: '',
-        year: (new Date()).getFullYear(),
-        semester: 'FALL',
-        link: '',
         active: false,
+        description: '',
+        kernel: kernels[0].name,
+        link: '',
+        semester: 'FALL',
+        title: '',
+        year: (new Date()).getFullYear(),
       }),
       errors: {
 

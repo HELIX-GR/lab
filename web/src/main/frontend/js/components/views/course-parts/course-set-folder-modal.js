@@ -125,7 +125,7 @@ class CourseSetFolderModal extends React.Component {
               />
             </div>
 
-            <section className="footer">
+            <section className="footer" style={{ position: 'inherit', paddingBottom: 10 }}>
               <button
                 type="button"
                 name="action-create"

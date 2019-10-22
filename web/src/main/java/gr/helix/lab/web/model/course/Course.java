@@ -4,6 +4,9 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -17,12 +20,16 @@ public class Course {
     @JsonIgnore()
     private AccountInfo               professor;
 
+    @NotBlank
     private String                    title;
 
+    @NotBlank
     private String                    description;
 
-    private int                       year;
+    @NotNull
+    private Integer                   year;
 
+    @NotBlank
     private String                    semester;
 
     @JsonIgnore()
@@ -43,6 +50,7 @@ public class Course {
 
     private String                    link;
 
+    @NotBlank
     private String                    kernel;
 
     @JsonProperty()
@@ -86,11 +94,11 @@ public class Course {
         this.description = description;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return this.year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 

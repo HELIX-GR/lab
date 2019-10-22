@@ -110,14 +110,20 @@ public class CourseProfessorController extends BaseController {
      * @return the instance {@link Course} instance
      */
     @PostMapping(value = "/action/course")
-    public RestResponse<?> addCourse(@RequestBody Course course) {
-        final Optional<AccountEntity> professor = this.accountRepository.findById(this.currentUserId());
+    public RestResponse<?> addCourse(@RequestBody @Valid Course course, BindingResult results) {
+        // Validate request data
+        if (results.hasErrors()) {
+            return RestResponse.invalid(results.getFieldErrors());
+        }
+
+        // Get professor
+        final AccountEntity professor = this.accountRepository.findById(this.currentUserId()).orElse(null);
 
         final CourseEntity entity = new CourseEntity();
 
         entity.merge(course);
         entity.setDeleted(false);
-        entity.setProfessor(professor.get());
+        entity.setProfessor(professor);
 
         // Currently only a single file is supported
         if(!course.getFiles().isEmpty()) {
@@ -148,53 +154,57 @@ public class CourseProfessorController extends BaseController {
      * @return the updated {@link Course} instance
      */
     @PostMapping(value = "/action/course/{id}")
-    public RestResponse<?> updateCourse(@PathVariable int id, @RequestBody Course course) {
-        final Optional<CourseEntity> entity = this.courseRepository.findById(id);
+    public RestResponse<?> updateCourse(@PathVariable int id, @RequestBody @Valid Course course, BindingResult results) {
+        // Validate request data
+        if (results.hasErrors()) {
+            return RestResponse.invalid(results.getFieldErrors());
+        }
 
         // Check if course exists and is not already deleted
-        if (!entity.isPresent() || entity.get().isDeleted()) {
+        final CourseEntity entity = this.courseRepository.findById(id).orElse(null);
+        if (entity == null || entity.isDeleted()) {
             return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course has not been found");
         }
 
         // Check if the authenticated user is also the owner of the course
-        if (entity.get().getProfessor().getId() != this.currentUserId()) {
+        if (entity.getProfessor().getId() != this.currentUserId()) {
             logger.error("User [{}] has attempted to update course [{}].", this.currentUserName(), course.getId());
 
             return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course has not been found");
         }
 
-        entity.get().merge(course);
-        entity.get().setDeleted(false);
-        entity.get().setUpdatedOn(ZonedDateTime.now());
+        entity.merge(course);
+        entity.setDeleted(false);
+        entity.setUpdatedOn(ZonedDateTime.now());
 
         // Currently only a single file is supported
         if (course.getFiles() == null || course.getFiles().isEmpty()) {
             // Remove existing files
-            entity.get().getFiles().clear();
+            entity.getFiles().clear();
         } else {
-            if (entity.get().getFiles().isEmpty()) {
+            if (entity.getFiles().isEmpty()) {
                 // Add new file
                 final CourseFileEntity file = new CourseFileEntity();
 
-                file.setCourse(entity.get());
+                file.setCourse(entity);
                 file.setPath(course.getFiles().get(0));
 
-                entity.get().getFiles().add(file);
+                entity.getFiles().add(file);
             } else {
                 // Update existing file
-                entity.get().getFiles().get(0).setPath(course.getFiles().get(0));
+                entity.getFiles().get(0).setPath(course.getFiles().get(0));
             }
         }
 
         // Set kernel
-        final Optional<HubKernelEntity> kernel = this.hubKernelRepository.findByName(course.getKernel());
-        if (kernel.isPresent()) {
-            entity.get().setKernel(kernel.get());
+        final HubKernelEntity kernel = this.hubKernelRepository.findByName(course.getKernel()).orElse(null);
+        if (kernel != null) {
+            entity.setKernel(kernel);
         }
 
-        this.courseRepository.saveAndFlush(entity.get());
+        this.courseRepository.saveAndFlush(entity);
 
-        return RestResponse.result(entity.get().toDto());
+        return RestResponse.result(entity.toDto());
     }
 
     /**

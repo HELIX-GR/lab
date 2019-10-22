@@ -243,7 +243,7 @@ class StudentTable extends React.Component {
   renderNoData() {
     return (
       <TableRow>
-        <TableCell className="p-0" colSpan={4} style={{ textAlign: 'center' }}> No Data </TableCell>
+        <TableCell className="p-2" colSpan={4} style={{ textAlign: 'center' }}> No Data </TableCell>
       </TableRow>
     );
   }
@@ -254,10 +254,9 @@ class StudentTable extends React.Component {
 
     return (
       <TableRow>
-        <TableCell className="p-0" width="100px" >
+        <TableCell className="p-2" width="100px" >
           <Button
             style={{ minWidth: 20, width: 40, borderRadius: 30 }}
-            variant="flat"
             disabled={Object.keys(errors).length !== 0}
             onClick={() => this.onCreateConfirm(course.id, values)}
           >
@@ -265,13 +264,12 @@ class StudentTable extends React.Component {
           </Button>
           <Button
             style={{ minWidth: 20, width: 40, borderRadius: 30 }}
-            variant="flat"
             onClick={() => this.onCreateReject()}
           >
             <ClearIcon />
           </Button>
         </TableCell>
-        <TableCell className="p-0">
+        <TableCell className="p-2">
           <TextField
             id="email"
             name="email"
@@ -282,7 +280,7 @@ class StudentTable extends React.Component {
             onChange={event => { this.onPropertyChange(event.target.id, event.target.value); }}
           />
         </TableCell>
-        <TableCell className="p-0">
+        <TableCell className="p-2">
           <TextField
             id="firstName"
             name="firstName"
@@ -293,7 +291,7 @@ class StudentTable extends React.Component {
             onChange={event => { this.onPropertyChange(event.target.id, event.target.value); }}
           />
         </TableCell>
-        <TableCell className="p-0">
+        <TableCell className="p-2">
           <TextField
             id="lastName"
             name="lastName"
@@ -320,35 +318,32 @@ class StudentTable extends React.Component {
           key={r.id}>
           {deleteRegistration && deleteRegistration.id === r.id &&
             <React.Fragment>
-              <TableCell className="p-0" width="100px" >
+              <TableCell className="p-2" width="100px" >
                 <Button
                   style={{ minWidth: 20, width: 40, borderRadius: 30 }}
-                  variant="flat"
                   onClick={() => this.onRemoveConfirm(course.id, r.id)}
                 >
                   <DoneIcon />
                 </Button>
                 <Button
                   style={{ minWidth: 20, width: 40, borderRadius: 30 }}
-                  variant="flat"
                   onClick={() => this.onRemoveReject()}
                 >
                   <ClearIcon />
                 </Button>
               </TableCell>
-              <TableCell colSpan={3} className="p-0">
+              <TableCell colSpan={3} className="p-2">
                 <FormattedMessage id="student.message.delete.confirm" values={{ email: r.student.email }} />
               </TableCell>
             </React.Fragment>
           }
           {editRegistration && editRegistration.id === r.id &&
             <React.Fragment>
-              <TableCell className="p-0" width="100px" >
+              <TableCell className="p-2" width="100px" >
                 {!deleteRegistration &&
                   <React.Fragment>
                     <Button
                       style={{ minWidth: 20, width: 40, borderRadius: 30 }}
-                      variant="flat"
                       disabled={Object.keys(errors).length !== 0}
                       onClick={() => this.onEditConfirm(course.id, r.id, values)}
                     >
@@ -356,7 +351,6 @@ class StudentTable extends React.Component {
                     </Button>
                     <Button
                       style={{ minWidth: 20, width: 40, borderRadius: 30 }}
-                      variant="flat"
                       onClick={() => this.onEditReject()}
                     >
                       <ClearIcon />
@@ -364,10 +358,10 @@ class StudentTable extends React.Component {
                   </React.Fragment>
                 }
               </TableCell>
-              <TableCell className="p-0">
+              <TableCell className="p-2">
                 {r.student.email}
               </TableCell>
-              <TableCell className="p-0">
+              <TableCell className="p-2">
                 <TextField
                   id="firstName"
                   name="firstName"
@@ -378,7 +372,7 @@ class StudentTable extends React.Component {
                   onChange={event => { this.onPropertyChange(event.target.id, event.target.value); }}
                 />
               </TableCell>
-              <TableCell className="p-0">
+              <TableCell className="p-2">
                 <TextField
                   id="lastName"
                   name="lastName"
@@ -393,19 +387,17 @@ class StudentTable extends React.Component {
           }
           {(!editRegistration || editRegistration.id !== r.id) && (!deleteRegistration || deleteRegistration.id !== r.id) &&
             <React.Fragment>
-              <TableCell className="p-0" width="100px" >
+              <TableCell className="p-2" width="100px" >
                 {!createRegistration && !deleteRegistration && !editRegistration &&
                   <React.Fragment>
                     <Button
                       style={{ minWidth: 20, width: 40, borderRadius: 30 }}
-                      variant="flat"
                       onClick={() => this.onEdit(r)}
                     >
                       <EditIcon />
                     </Button>
                     <Button
                       style={{ minWidth: 20, width: 40, borderRadius: 30 }}
-                      variant="flat"
                       onClick={() => this.onRemove(r)}
                     >
                       <DeleteIcon />
@@ -413,9 +405,9 @@ class StudentTable extends React.Component {
                   </React.Fragment>
                 }
               </TableCell>
-              <TableCell className="p-0">{r.student.email}</TableCell>
-              <TableCell className="p-0">{r.student.firstName}</TableCell>
-              <TableCell className="p-0">{r.student.lastName}</TableCell>
+              <TableCell className="p-2">{r.student.email}</TableCell>
+              <TableCell className="p-2">{r.student.firstName}</TableCell>
+              <TableCell className="p-2">{r.student.lastName}</TableCell>
             </React.Fragment>
           }
         </TableRow>
@@ -444,13 +436,13 @@ class StudentTable extends React.Component {
 
         <div className="d-flex flex-column">
           <div style={{ marginLeft: 10 }}>
-            <div className="filesystem-btn">
-              <a href="" onClick={(e) => this.onCreate(e)}>
-                <img src="/images/svg/SVG/add.svg" />
-              </a>
-            </div>
             {!createRegistration && !editRegistration && !deleteRegistration &&
               <React.Fragment>
+                <div className="filesystem-btn">
+                  <a href="" onClick={(e) => this.onCreate(e)}>
+                    <img src="/images/svg/SVG/add.svg" />
+                  </a>
+                </div>
                 <div className="toolbar-btn">
                   <a href="" onClick={(e) => this.openFileDialog(e)}>
                     <img src="/images/svg/SVG/upload.svg" />
@@ -469,11 +461,11 @@ class StudentTable extends React.Component {
             <Table >
               <TableHead>
                 <TableRow  >
-                  <TableCell className="p-0" width="100px">
+                  <TableCell className="p-2" width="100px">
                   </TableCell>
-                  <TableCell className="p-0"><FormattedMessage id="student.table.email" /></TableCell>
-                  <TableCell className="p-0"><FormattedMessage id="student.table.firstName" /></TableCell>
-                  <TableCell className="p-0"><FormattedMessage id="student.table.lastName" /></TableCell>
+                  <TableCell className="p-2"><FormattedMessage id="student.table.email" /></TableCell>
+                  <TableCell className="p-2"><FormattedMessage id="student.table.firstName" /></TableCell>
+                  <TableCell className="p-2"><FormattedMessage id="student.table.lastName" /></TableCell>
                 </TableRow>
               </TableHead>
 
@@ -484,8 +476,8 @@ class StudentTable extends React.Component {
                 {students.length === 0 ? (
                   this.renderNoData()
                 ) : (
-                  this.renderStudentRows(page, rowsPerPage)
-                )}
+                    this.renderStudentRows(page, rowsPerPage)
+                  )}
               </TableBody>
             </Table>
             <TablePagination
