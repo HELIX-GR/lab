@@ -1,17 +1,21 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { injectIntl } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
+import CookieConsent from "react-cookie-consent";
+
 import {
+  buildPath,
   DynamicRoutes,
   EnumAuthProvider,
   Pages,
   Roles,
   RoleGroups,
   StaticRoutes,
+  WordPressPages,
 } from '../model';
 
 import {
@@ -62,6 +66,8 @@ class App extends React.Component {
   }
 
   render() {
+    const _t = this.props.intl.formatMessage;
+
     const routes = (
       <Switch>
         {/* 
@@ -125,29 +131,48 @@ class App extends React.Component {
       </Switch>
     );
     return (
-      <div className="lab">
-        <ToastContainer
-          className="helix-toastify"
-          position="bottom-center"
-          type="default"
-          autoClose={5000}
-          hideProgressBar={true}
-          newestOnTop={false}
-          closeOnClick
-          pauseOnHover
-        />
+      <React.Fragment>
+        <div className="lab">
+          <ToastContainer
+            className="helix-toastify"
+            position="bottom-center"
+            type="default"
+            autoClose={5000}
+            hideProgressBar={true}
+            newestOnTop={false}
+            closeOnClick
+            pauseOnHover
+          />
 
-        <LoginForm
-          toggle={this.toggleLoginDialog}
-          visible={this.props.showLoginForm}
-        />
+          <LoginForm
+            toggle={this.toggleLoginDialog}
+            visible={this.props.showLoginForm}
+          />
 
-        <Header />
+          <Header />
 
-        {routes}
+          {routes}
 
-        <Footer />
-      </div>
+          <Footer />
+        </div>
+        <CookieConsent
+          location="none"
+          disableStyles={true}
+          containerClasses="cookie-consent"
+          buttonClasses="cookie-consent-button"
+          cookieName="helix-cookie-consent"
+          buttonText={_t({ id: 'cookie.accept' })}
+        >
+          <div>
+            <FormattedMessage id="cookie.consent" />
+          </div>
+          <div className="cookie-consent-learn-more">
+            <a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.TermsOfUse])}>
+              <FormattedMessage id="cookie.learn-more" />
+            </a>
+          </div>
+        </CookieConsent>
+      </React.Fragment>
     );
   }
 }

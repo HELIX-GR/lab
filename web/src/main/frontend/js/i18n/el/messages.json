@@ -1,4 +1,9 @@
 {
+  "cookie": {
+    "consent": "This website uses cookies to enhance the user experience.",
+    "learn-more": "Learn more",
+    "accept": "Accept"
+  },
   "locales": {
     "en": "Αγγλικά",
     "el": "Ελληνικά"
