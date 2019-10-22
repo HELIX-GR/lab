@@ -151,23 +151,23 @@
     },
     "action": {
       "create": {
-        "success": "Course '{title}' has been created",
+        "success": "Course ''{title}'' has been created",
         "failure": "Create operation has failed"
       },
       "update": {
-        "success": "Course '{title}' has been updated",
+        "success": "Course ''{title}'' has been updated",
         "failure": "Update operation has failed"
       },
       "set-files": {
-        "success": "Data folder course '{title}' was set to '{path}'",
+        "success": "Data folder course ''{title}'' was set to ''{path}''",
         "failure": "Failed to set data folder"
       },
       "delete": {
-        "success": "Course '{title}' has been deleted",
+        "success": "Course ''{title}'' has been deleted",
         "failure": "Delete operation has failed"
       },
       "copy-files": {
-        "success": "Copied {count} files for course '{title}'",
+        "success": "Copied {count} files for course ''{title}''",
         "failure": "Copy operation has failed"
       }
     },
@@ -202,8 +202,8 @@
         "delete": "Delete Course"
       },
       "message": {
-        "delete.professor": "Do you want to delete course '{title}' permanently?",
-        "delete.student": "Do you want to delete your registration for course '{title}' permanently?"
+        "delete.professor": "Do you want to delete course ''{title}'' permanently?",
+        "delete.student": "Do you want to delete your registration for course ''{title}'' permanently?"
       }
     },
     "last-modified": "lasted saved {when}",
@@ -234,7 +234,7 @@
       "lastName": "Last Name"
     },
     "message": {
-      "delete.confirm": "Delete the student registration '{email}'?"
+      "delete.confirm": "Delete the student registration ''{email}''?"
     }
   }
 }
