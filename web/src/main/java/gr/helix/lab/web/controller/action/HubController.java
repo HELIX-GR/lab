@@ -23,7 +23,6 @@ import gr.helix.core.common.domain.HubKernelEntity;
 import gr.helix.core.common.model.ApplicationException;
 import gr.helix.core.common.model.BasicErrorCode;
 import gr.helix.core.common.model.EnumRole;
-import gr.helix.core.common.model.NotebookServerRequest;
 import gr.helix.core.common.model.RestResponse;
 import gr.helix.core.common.model.user.Account;
 import gr.helix.core.common.model.user.AccountInfo;
@@ -148,7 +147,6 @@ public class HubController extends BaseController {
                 this.jupyterHubClient.stopServer(ctx);
             }
 
-            final String dataDir = this.fileNamingStrategy.getUserDir(username, true).toString();
             final URIBuilder builder = new URIBuilder(hubServer.getUrl());
 
             if (this.isRpcServerEnabled) {

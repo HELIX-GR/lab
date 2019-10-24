@@ -14,8 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import gr.helix.lab.web.model.DirectoryInfo;
-import gr.helix.lab.web.model.FileInfo;
+import gr.helix.core.common.model.DirectoryInfo;
+import gr.helix.core.common.model.FileInfo;
+import gr.helix.core.common.service.FileNamingStrategy;
 
 @Service
 public class DefaultFileNamingStrategy implements FileNamingStrategy

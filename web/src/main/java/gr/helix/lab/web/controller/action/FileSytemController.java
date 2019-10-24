@@ -37,8 +37,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import gr.helix.core.common.model.ApplicationException;
 import gr.helix.core.common.model.BasicErrorCode;
+import gr.helix.core.common.model.FileSystemErrorCode;
 import gr.helix.core.common.model.RestResponse;
-import gr.helix.lab.web.model.FileSystemErrorCode;
 import gr.helix.lab.web.model.FileSystemPathRequest;
 import gr.helix.lab.web.model.NotebookErrorCode;
 import gr.helix.lab.web.model.PublishRequest;
