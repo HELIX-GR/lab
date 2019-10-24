@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
+import { injectIntl } from 'react-intl';
+
 import {
   EnumCkanFacet,
 } from '../../../model';
@@ -17,10 +19,6 @@ class CkanAdvancedOptions extends React.Component {
     this.state = {
       more: Object.keys(EnumCkanFacet).reduce((result, key) => { result[EnumCkanFacet[key]] = false; return result; }, {}),
     };
-  }
-
-  static contextTypes = {
-    intl: PropTypes.object,
   }
 
   static propTypes = {
@@ -49,7 +47,7 @@ class CkanAdvancedOptions extends React.Component {
   }
 
   renderParameters(key, title, items, valueProperty, textProperty, prefix, minOptions, showAll) {
-    const _t = this.context.intl.formatMessage;
+    const _t = this.props.intl.formatMessage;
     const size = Array.isArray(items) ? showAll ? items.length : Math.min(items.length, minOptions) : 0;
 
     if (size === 0) {
@@ -102,7 +100,7 @@ class CkanAdvancedOptions extends React.Component {
         [EnumCkanFacet.Tag]: showAllTags
       },
     } = this.state;
-    const _t = this.context.intl.formatMessage;
+    const _t = this.props.intl.formatMessage;
 
     return (
       <div className="fields">
@@ -136,4 +134,4 @@ class CkanAdvancedOptions extends React.Component {
   }
 }
 
-export default CkanAdvancedOptions;
+export default injectIntl(CkanAdvancedOptions);

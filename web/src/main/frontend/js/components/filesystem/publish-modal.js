@@ -4,10 +4,11 @@ import { bindActionCreators } from 'redux';
 import { Button as Btn } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Form, FormGroup, Label, Input } from 'reactstrap';
+import Select from 'react-select';
 
 import { publishNotebook } from '../../ducks/notebook';
 import { toast, } from 'react-toastify';
-import CreatableSelect from 'react-select/lib/Creatable';
+
 
 
 const tagOptions = [
@@ -91,8 +92,7 @@ class PublishModal extends React.Component {
             const style = { fontWeight: 'bold', textDecoration: 'underline', color: '#ffffff' };
             const href = `/notebook/${result.package_id}`;
 
-            toast.success(
-              <span>File <a style={style} href={href}>{filename}</a> has been published successfully</span>, {
+            toast.success(<span>File <a style={style} href={href}>{filename}</a> has been published successfully</span>, {
               autoClose: 5000,
               closeOnClick: false,
               pauseOnHover: true
@@ -155,7 +155,7 @@ class PublishModal extends React.Component {
               <FormGroup>
 
                 <Label for="tags">Select tags</Label>
-                <CreatableSelect
+                <Select
                   isClearable
                   isMulti
                   name="tags"

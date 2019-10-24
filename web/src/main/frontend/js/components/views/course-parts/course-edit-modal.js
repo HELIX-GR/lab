@@ -54,7 +54,7 @@ class CourseEditModal extends React.Component {
       .catch((err) => this.onError(err));
   }
 
-  onCancel(e) {
+  onCancel() {
     this.props.toggle();
   }
 
@@ -65,8 +65,7 @@ class CourseEditModal extends React.Component {
     toast.dismiss();
 
     toast.success(
-      <FormattedMessage id={`course.action.${action}.success`} values={{ title }}
-      />
+      <FormattedMessage id={`course.action.${action}.success`} values={{ title }} />
     );
 
     this.props.toggle();

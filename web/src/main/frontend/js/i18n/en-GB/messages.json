@@ -1,4 +1,30 @@
 {
+  "cookie": {
+    "consent": "This website uses cookies to enhance the user experience.",
+    "learn-more": "Learn more",
+    "accept": "Accept"
+  },
+  "error": {
+    "file-system": {
+      "no-server-selected": "You need to start a Notebook Server First"
+    },
+    "generic": "Unknown error has occurred",
+    "validation": {
+      "Default": "Field {field} value is invalid",
+      "Email": "Field {field} must be a valid email",
+      "NotBlank": "Field {field} is required",
+      "NotEmpty": "Field {field} is required",
+      "Size": "Field {field} size must be in the interval {min} to {max}"
+    }
+  },
+  "file-system": {
+    "headers": {
+      "name": "Name",
+      "type": "Type",
+      "size": "Size",
+      "modified": "Last Modified"
+    }
+  },
   "locales": {
     "en": "English",
     "el": "Greek"
@@ -9,15 +35,65 @@
     "subtitle": "Sign-in into your account",
     "failure": "The username or password is incorrect"
   },
+  "server-selection": {
+    "title": "Available Servers",
+    "buttons": {
+      "select": "Servers",
+      "stop-server": "Stop Server"
+    }
+  },
   "header": {
-    "courses-professor": "Manage Courses",
-    "courses-student": "My Courses",
-    "files": "My Files",
-    "guides": "Guides",
-    "courses": "Courses",
-    "whatislab": "What is Helix Lab?",
-    "about": "About",
-    "news": "News"
+    "menu": {
+      "courses": "Courses",
+      "courses-professor": "Manage Courses",
+      "courses-student": "My Courses",
+      "data": {
+        "title": "Data"
+      },
+      "files": "My Files",
+      "guides": "Guides",
+      "pubs": {
+        "title": "Pubs"
+      },
+      "lab": {
+        "title": "Lab"
+      },
+      "project": {
+        "title": "About",
+        "items": {
+          "about": "About",
+          "what-is-helix": "What is HELIX?",
+          "services": "Services",
+          "faq": "FAQ",
+          "publish-data": "Publish Data",
+          "software": "Software",
+          "the-project": "The project",
+          "media": "Media",
+          "acknowledge-helix": "Acknowledge HELIX",
+          "contact": "Contact",
+          "terms-of-use": "Terms of use",
+          "subjects": "Subjects"
+        }
+      },
+      "news": {
+        "title": "News",
+        "items": {
+          "news": "News",
+          "events": "Events",
+          "actions": "Actions"
+        }
+      },
+      "login": {
+        "items": {
+          "signed-in": "Signed in as {username}",
+          "account": "Account Settings",
+          "collections": "My Collections",
+          "favorites": "Favorites",
+          "help": "Help",
+          "logout": "Log out"
+        }
+      }
+    }
   },
   "footer": {
     "columns": {
@@ -57,16 +133,6 @@
   },
   "results": {
     "advanced-search": "Advanced Search"
-  },
-  "server-list": {
-    "servers": "Available Servers"
-  },
-  "filetable": {
-    "FileName": "File Name",
-    "FileType": "File Type",
-    "FileSize": "File Size",
-    "LastModified": "Last Modified",
-    "LastUpdate": "Last Update: "
   },
   "featured": {
     "first": {
@@ -136,23 +202,23 @@
     },
     "action": {
       "create": {
-        "success": "Course '{title}' has been created",
+        "success": "Course ''{title}'' has been created",
         "failure": "Create operation has failed"
       },
       "update": {
-        "success": "Course '{title}' has been updated",
+        "success": "Course ''{title}'' has been updated",
         "failure": "Update operation has failed"
       },
       "set-files": {
-        "success": "Data folder course '{title}' was set to '{path}'",
+        "success": "Data folder course ''{title}'' was set to ''{path}''",
         "failure": "Failed to set data folder"
       },
       "delete": {
-        "success": "Course '{title}' has been deleted",
+        "success": "Course ''{title}'' has been deleted",
         "failure": "Delete operation has failed"
       },
       "copy-files": {
-        "success": "Copied {count} files for course '{title}'",
+        "success": "Copied {count} files for course ''{title}''",
         "failure": "Copy operation has failed"
       }
     },
@@ -187,8 +253,8 @@
         "delete": "Delete Course"
       },
       "message": {
-        "delete.professor": "Do you want to delete course '{title}' permanently?",
-        "delete.student": "Do you want to delete your registration for course '{title}' permanently?"
+        "delete.professor": "Do you want to delete course ''{title}'' permanently?",
+        "delete.student": "Do you want to delete your registration for course ''{title}'' permanently?"
       }
     },
     "last-modified": "lasted saved {when}",
@@ -219,7 +285,7 @@
       "lastName": "Last Name"
     },
     "message": {
-      "delete.confirm": "Delete the student registration '{email}'?"
+      "delete.confirm": "Delete the student registration ''{email}''?"
     }
   }
 }

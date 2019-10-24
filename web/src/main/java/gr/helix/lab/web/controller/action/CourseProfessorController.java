@@ -61,7 +61,7 @@ import gr.helix.lab.web.repository.HubKernelRepository;
 import gr.helix.lab.web.repository.WhiteListRepository;
 
 @RestController
-@Secured({"ROLE_STANDARD_ACADEMIC", "ROLE_BETA_ACADEMIC"})
+@Secured({"ROLE_STANDARD_ACADEMIC"})
 @RequestMapping(produces = "application/json")
 public class CourseProfessorController extends BaseController {
 
@@ -110,14 +110,20 @@ public class CourseProfessorController extends BaseController {
      * @return the instance {@link Course} instance
      */
     @PostMapping(value = "/action/course")
-    public RestResponse<?> addCourse(@RequestBody Course course) {
-        final Optional<AccountEntity> professor = this.accountRepository.findById(this.currentUserId());
+    public RestResponse<?> addCourse(@RequestBody @Valid Course course, BindingResult results) {
+        // Validate request data
+        if (results.hasErrors()) {
+            return RestResponse.invalid(results.getFieldErrors());
+        }
+
+        // Get professor
+        final AccountEntity professor = this.accountRepository.findById(this.currentUserId()).orElse(null);
 
         final CourseEntity entity = new CourseEntity();
 
         entity.merge(course);
         entity.setDeleted(false);
-        entity.setProfessor(professor.get());
+        entity.setProfessor(professor);
 
         // Currently only a single file is supported
         if(!course.getFiles().isEmpty()) {
@@ -148,53 +154,57 @@ public class CourseProfessorController extends BaseController {
      * @return the updated {@link Course} instance
      */
     @PostMapping(value = "/action/course/{id}")
-    public RestResponse<?> updateCourse(@PathVariable int id, @RequestBody Course course) {
-        final Optional<CourseEntity> entity = this.courseRepository.findById(id);
+    public RestResponse<?> updateCourse(@PathVariable int id, @RequestBody @Valid Course course, BindingResult results) {
+        // Validate request data
+        if (results.hasErrors()) {
+            return RestResponse.invalid(results.getFieldErrors());
+        }
 
         // Check if course exists and is not already deleted
-        if (!entity.isPresent() || entity.get().isDeleted()) {
+        final CourseEntity entity = this.courseRepository.findById(id).orElse(null);
+        if (entity == null || entity.isDeleted()) {
             return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course has not been found");
         }
 
         // Check if the authenticated user is also the owner of the course
-        if (entity.get().getProfessor().getId() != this.currentUserId()) {
+        if (entity.getProfessor().getId() != this.currentUserId()) {
             logger.error("User [{}] has attempted to update course [{}].", this.currentUserName(), course.getId());
 
             return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course has not been found");
         }
 
-        entity.get().merge(course);
-        entity.get().setDeleted(false);
-        entity.get().setUpdatedOn(ZonedDateTime.now());
+        entity.merge(course);
+        entity.setDeleted(false);
+        entity.setUpdatedOn(ZonedDateTime.now());
 
         // Currently only a single file is supported
         if (course.getFiles() == null || course.getFiles().isEmpty()) {
             // Remove existing files
-            entity.get().getFiles().clear();
+            entity.getFiles().clear();
         } else {
-            if (entity.get().getFiles().isEmpty()) {
+            if (entity.getFiles().isEmpty()) {
                 // Add new file
                 final CourseFileEntity file = new CourseFileEntity();
 
-                file.setCourse(entity.get());
+                file.setCourse(entity);
                 file.setPath(course.getFiles().get(0));
 
-                entity.get().getFiles().add(file);
+                entity.getFiles().add(file);
             } else {
                 // Update existing file
-                entity.get().getFiles().get(0).setPath(course.getFiles().get(0));
+                entity.getFiles().get(0).setPath(course.getFiles().get(0));
             }
         }
 
         // Set kernel
-        final Optional<HubKernelEntity> kernel = this.hubKernelRepository.findByName(course.getKernel());
-        if (kernel.isPresent()) {
-            entity.get().setKernel(kernel.get());
+        final HubKernelEntity kernel = this.hubKernelRepository.findByName(course.getKernel()).orElse(null);
+        if (kernel != null) {
+            entity.setKernel(kernel);
         }
 
-        this.courseRepository.saveAndFlush(entity.get());
+        this.courseRepository.saveAndFlush(entity);
 
-        return RestResponse.result(entity.get().toDto());
+        return RestResponse.result(entity.toDto());
     }
 
     /**
@@ -206,24 +216,24 @@ public class CourseProfessorController extends BaseController {
      */
     @DeleteMapping(value = "/action/course/{id}")
     public RestResponse<?> removeCourse(@PathVariable int id) {
-        final Optional<CourseEntity> course = this.courseRepository.findById(id);
+        final CourseEntity course = this.courseRepository.findById(id).orElse(null);
 
         // Check if course exists and is not already deleted
-        if (!course.isPresent() || course.get().isDeleted()) {
+        if (course == null || course.isDeleted()) {
             return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course has not been found");
         }
 
         // Check if the authenticated user is also the owner of the course
-        if (course.get().getProfessor().getId() != this.currentUserId()) {
+        if (course.getProfessor().getId() != this.currentUserId()) {
             logger.error("User [{}] has attempted to delete course [{}].", this.currentUserName(), id);
 
             return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course has not been found");
         }
 
         // Mark course as deleted
-        course.get().setDeleted(true);
+        course.setDeleted(true);
 
-        this.courseRepository.save(course.get());
+        this.courseRepository.save(course);
 
         return RestResponse.success();
     }
@@ -278,14 +288,14 @@ public class CourseProfessorController extends BaseController {
         }
 
         // Check if course exists and it is not deleted
-        final Optional<CourseEntity> course = this.courseRepository.findById(courseId);
+        final CourseEntity course = this.courseRepository.findById(courseId).orElse(null);
 
-        if (!course.isPresent() || course.get().isDeleted()) {
+        if (course == null || course.isDeleted()) {
             return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course has not been found");
         }
 
         // Check if the authenticated user is also the owner of the course
-        if (course.get().getProfessor().getId() != this.currentUserId()) {
+        if (course.getProfessor().getId() != this.currentUserId()) {
             logger.error(
                 "User [{}] has attempted to register student [{}] to course [{}].",
                 this.currentUserName(), request.getEmail(), courseId
@@ -303,7 +313,7 @@ public class CourseProfessorController extends BaseController {
 
         // Create white list entry if one does not already exist
         registration = this.addStudentToCourse(
-            course.get(), request.getEmail(), request.getFirstName(), request.getLastName()
+            course, request.getEmail(), request.getFirstName(), request.getLastName()
         );
 
         return RestResponse.result(registration.toDto());
@@ -330,14 +340,14 @@ public class CourseProfessorController extends BaseController {
         }
 
         // Check if course exists and it is not deleted
-        final Optional<CourseEntity> course = this.courseRepository.findById(courseId);
+        final CourseEntity course = this.courseRepository.findById(courseId).orElse(null);
 
-        if (!course.isPresent() || course.get().isDeleted()) {
+        if (course == null || course.isDeleted()) {
             return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course has not been found");
         }
 
         // Check if the authenticated user is also the owner of the course
-        if (course.get().getProfessor().getId() != this.currentUserId()) {
+        if (course.getProfessor().getId() != this.currentUserId()) {
             logger.error(
                 "User [{}] has attempted to register student [{}] to course [{}].",
                 this.currentUserName(), request.getEmail(), courseId
@@ -347,16 +357,16 @@ public class CourseProfessorController extends BaseController {
         }
 
         // Check if registration exists
-        final Optional<CourseStudentEntity> registration = this.courseStudentRepository.findById(registrationId);
+        final CourseStudentEntity registration = this.courseStudentRepository.findById(registrationId).orElse(null);
 
-        if(!registration.isPresent()) {
+        if (registration == null) {
             return RestResponse.error(CourseErrorCode.REGISTRATION_NOT_FOUND, "The student registartion has not been found");
         }
 
-        registration.get().getWhiteListEntry().setFirstName(request.getFirstName());
-        registration.get().getWhiteListEntry().setLastName(request.getLastName());
+        registration.getWhiteListEntry().setFirstName(request.getFirstName());
+        registration.getWhiteListEntry().setLastName(request.getLastName());
 
-        return RestResponse.result(registration.get().toDto());
+        return RestResponse.result(registration.toDto());
     }
 
     /**
@@ -368,14 +378,14 @@ public class CourseProfessorController extends BaseController {
     @DeleteMapping(value = "/action/course/{courseId}/registration/{registrationId}")
     public RestResponse<?> removeStudentFromCourse(@PathVariable int courseId, @PathVariable int registrationId) {
         // Check if course exists and it is not deleted
-        final Optional<CourseEntity> course = this.courseRepository.findById(courseId);
+        final CourseEntity course = this.courseRepository.findById(courseId).orElse(null);
 
-        if (!course.isPresent() || course.get().isDeleted()) {
+        if (course == null || course.isDeleted()) {
             return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course has not been found");
         }
 
         // Check if the authenticated user is also the owner of the course
-        if (course.get().getProfessor().getId() != this.currentUserId()) {
+        if (course.getProfessor().getId() != this.currentUserId()) {
             logger.error(
                 "User [{}] has attempted to remove student [{}] from course [{}].",
                 this.currentUserName(), registrationId, courseId
@@ -385,13 +395,13 @@ public class CourseProfessorController extends BaseController {
         }
 
         // Get student registration
-        final Optional<CourseStudentEntity> registration = this.courseStudentRepository.findById(registrationId);
+        final CourseStudentEntity registration = this.courseStudentRepository.findById(registrationId).orElse(null);
 
-        if(!registration.isPresent()) {
+        if (registration == null) {
             return RestResponse.error(CourseErrorCode.REGISTRATION_NOT_FOUND, "The course student has not been found");
         }
 
-        this.courseStudentRepository.delete(registration.get());
+        this.courseStudentRepository.delete(registration);
 
         return RestResponse.success();
     }
@@ -404,14 +414,14 @@ public class CourseProfessorController extends BaseController {
     @PostMapping(value = "/action/course/{id}/registrations/upload")
     public RestResponse<?> importStudents(@PathVariable int id, @RequestPart("file") MultipartFile file) {
         // Check if course exists and it is not deleted
-        final Optional<CourseEntity> course = this.courseRepository.findById(id);
+        final CourseEntity course = this.courseRepository.findById(id).orElse(null);
 
-        if (!course.isPresent() || course.get().isDeleted()) {
+        if (course == null || course.isDeleted()) {
             return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course has not been found");
         }
 
         // Check if the authenticated user is also the owner of the course
-        if (course.get().getProfessor().getId() != this.currentUserId()) {
+        if (course.getProfessor().getId() != this.currentUserId()) {
             logger.error(
                 "User [{}] has attempted to upload a file with student registrations from course [{}].",
                 this.currentUserName(), id
@@ -465,7 +475,7 @@ public class CourseProfessorController extends BaseController {
                         String.format("Email %S in row %d is invalid", row.getEmail(), row.getIndex())
                     );
                 } else {
-                    this.addStudentToCourse(course.get(), row.getEmail(), row.getFirstName(), row.getLastName());
+                    this.addStudentToCourse(course, row.getEmail(), row.getFirstName(), row.getLastName());
                     result.add();
                 }
             }
@@ -495,6 +505,8 @@ public class CourseProfessorController extends BaseController {
     }
 
     private CourseStudentEntity addStudentToCourse(CourseEntity course, String email, String firstName, String lastName) {
+        final AccountEntity grantedBy = this.accountRepository.findById(this.currentUserId()).orElse(null);
+
         // Create white list entry if one does not already exist
         WhiteListEntryEntity entry = this.whiteListRepository.findOneByEmail(email);
 
@@ -510,7 +522,7 @@ public class CourseProfessorController extends BaseController {
         entry.setLastName(lastName);
 
         if (!entry.hasRole(EnumRole.ROLE_STANDARD_STUDENT)) {
-            entry.grant(EnumRole.ROLE_STANDARD_STUDENT, this.accountRepository.findById(this.currentUserId()).get());
+            entry.grant(EnumRole.ROLE_STANDARD_STUDENT, grantedBy);
         }
 
         // Create/Update course student registration
@@ -531,17 +543,30 @@ public class CourseProfessorController extends BaseController {
             .orElse(null);
 
         if(registrationKernel == null) {
-            final Optional<AccountEntity> grantedBy = this.accountRepository.findById(this.currentUserId());
-
             final WhiteListEntryKernelEntity newKernel = new WhiteListEntryKernelEntity();
+
             newKernel.setEntry(registration.getWhiteListEntry());
             newKernel.setKernel(kernel);
-            newKernel.setGrantedBy(grantedBy.get());
+            newKernel.setGrantedBy(grantedBy);
 
             registration.getWhiteListEntry().getKernels().add(newKernel);
         }
 
         this.courseStudentRepository.saveAndFlush(registration);
+
+        // If the user already exists, update roles/kernels
+        final AccountEntity account = this.accountRepository.findOneByEmail(entry.getEmail());
+
+        if (account != null) {
+            // Set role
+            if (!account.hasRole(EnumRole.ROLE_STANDARD_STUDENT)) {
+                account.grant(EnumRole.ROLE_STANDARD_STUDENT, grantedBy);
+            }
+            // Set kernel
+            account.grantKernel(kernel, grantedBy);
+
+            this.accountRepository.save(account);
+        }
 
         return registration;
     }

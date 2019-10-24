@@ -72,7 +72,7 @@ class LoginForm extends React.Component {
         <div id="login-form">
           <a href="" className="close" onClick={(e) => { e.preventDefault(); this.props.toggle(); }}></a>
           <div className="title">
-            <FormattedMessage id="login.subtitle" defaultMessage="Sign-in into your account" />
+            <FormattedMessage id="login.subtitle" />
           </div>
           <div className="text-center">
 
@@ -96,13 +96,13 @@ class LoginForm extends React.Component {
 
                   <div className="text-center forgot-password" >
                     <NavLink className="forgot-password" to={Pages.ResetPassword}>
-                      <FormattedMessage id="login.forgot-password" defaultMessage="Forgot your password?" />
+                      <FormattedMessage id="login.forgot-password" />
                     </NavLink>
                   </div>
 
                   <div className="login-helix">
                     <button type="submit" name="helix" className="helix">
-                      <FormattedMessage id="login.login" defaultMessage="Login" />
+                      <FormattedMessage id="login.login" />
                     </button>
                   </div>
 

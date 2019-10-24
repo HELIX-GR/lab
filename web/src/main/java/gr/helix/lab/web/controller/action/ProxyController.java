@@ -22,11 +22,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-//@RestController
-@Secured({ "ROLE_STANDARD", "ROLE_ADMIN" })
+@Secured({"ROLE_ADMIN"})
 @RequestMapping(produces = "application/json")
 public class ProxyController {
 
@@ -39,7 +38,7 @@ public class ProxyController {
 	@Value("${vector-data.default.geometry-column:the_geom}")
 	private String defaultGeometryColumn;
 
-	@RequestMapping(value = "/action/proxy", method = RequestMethod.GET)
+	@GetMapping(value = "/action/proxy")
 	public void geoserverProxy(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			this.proxyRequest(request, response, "");
@@ -62,8 +61,9 @@ public class ProxyController {
 		}
 	}
 
-	private HttpUriRequest createHttpUriRequest(HttpServletRequest request, String targetUrl)
-			throws URISyntaxException {
+	private HttpUriRequest createHttpUriRequest(
+        HttpServletRequest request, String targetUrl
+    ) throws URISyntaxException {
 		final URI uri = new URI(targetUrl);
 		final Map<String, String[]> parameterMap = request.getParameterMap();
 

@@ -140,12 +140,21 @@ class FileSystem extends Component {
         window.open(this.props.endpoint + "/notebooks/" + this.props.path + this.props.selectedFile, "_blank");
       }
       else {
-        toast.warn(<FormattedMessage id="Toast.NoServer" defaultMessage="You need to start a Notebook Server First" />);
+        toast.warn(<FormattedMessage id="error.file-system.no-server-selected" />);
       }
     } else if (type === 'Folder') {
       this.setState({ folder: folder.folders[index] });
       this.props.setPath(folder.folders[index], "");
     }
+  }
+
+  setFolderFromBreadcrumb(item) {
+    this.setState({
+      folder: item.folder
+    }, () => {
+      const folder = this.findFolderFromPath();
+      this.props.setPath(item.folder, item.folder.name);
+    });
   }
 
   renderHeader() {
@@ -163,7 +172,7 @@ class FileSystem extends Component {
                   key={i}
                   onClick={(e) => {
                     if (item && item.folder) {
-                      this.setState({ folder: item.folder });
+                      this.setFolderFromBreadcrumb(item);
                     }
                   }}
                   className="breadcrumbs-part">{item.name}
@@ -189,7 +198,6 @@ class FileSystem extends Component {
         newFolder: this.props.newFolder,
         handleRowClick: this.handleRowClick,
         handleRowDoubleClick: this.handleRowDoubleClick,
-        formatRelative: this.props.intl.formatRelative,
         handleCreateFolder: this.handleCreateFolder,
         setNewFolder: this.props.setNewFolder,
         folder,

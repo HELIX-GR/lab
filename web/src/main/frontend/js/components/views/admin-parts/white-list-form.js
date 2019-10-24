@@ -1,10 +1,9 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import * as PropTypes from 'prop-types';
-import { Col, Row, Form, FormGroup, Label, Input } from 'reactstrap';
-import Select from 'react-select';
-import CreatableSelect from 'react-select/lib/Creatable';
+import { Form, FormGroup, Label, Input } from 'reactstrap';
 import Button from '@material-ui/core/Button';
+import Select from 'react-select';
 
 const roles = [
   { value: 'ROLE_STANDARD', label: 'Standard' },
@@ -106,7 +105,7 @@ class WhiteListForm extends Component {
           </FormGroup>
           <FormGroup>
             <Label for="kernels">Select Kernels</Label>
-            <CreatableSelect
+            <Select
               isClearable
               isMulti
               name="kernels"

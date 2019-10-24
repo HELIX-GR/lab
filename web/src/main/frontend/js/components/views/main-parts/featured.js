@@ -7,19 +7,19 @@ import { StaticRoutes } from '../../../model/routes';
 
 const cardInfo = [
   {
-    title: <FormattedMessage id="featured.first.title" defaultMessage="What is HELIX Lab?" />,
-    description: <FormattedMessage id="featured.first.description" defaultMessage="It’s your own private data infrastructure for learning, sharing, and building with data. You can bring your own data or use our open scientific data, interactively code in your language of choice, experiment over dedicated Big Data clusters or our HPC, and share your work with others. " />,
+    title: <FormattedMessage id="featured.first.title" />,
+    description: <FormattedMessage id="featured.first.description" />,
     link: {
       ref: StaticRoutes.CORE + "/news/view/300",
-      text: <FormattedMessage id="featured.first.text" defaultMessage="Learn more about Lab and how to use it." />,
+      text: <FormattedMessage id="featured.first.text" />,
     },
   },
   {
-    title: <FormattedMessage id="featured.second.title" defaultMessage="Academic Support" />,
-    description: <FormattedMessage id="featured.second.description" defaultMessage="Integrate Lab in your official undergraduate, postgraduate or seminar curricula. Organize courses with your own data, exercises, and tests.  Your students can learn about statistics, data management, and machine learning. No infrastructure, installation, or setup costs! " />,
+    title: <FormattedMessage id="featured.second.title" />,
+    description: <FormattedMessage id="featured.second.description" />,
     link: {
       ref: StaticRoutes.CORE + "/project/page/contact",
-      text: <FormattedMessage id="featured.second.text" defaultMessage="See the list of courses." />,
+      text: <FormattedMessage id="featured.second.text" />,
     },
   }
 ];

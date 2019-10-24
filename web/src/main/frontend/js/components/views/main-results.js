@@ -1,8 +1,9 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
-import * as PropTypes from 'prop-types';
 
 import moment from '../../moment-localized';
+
+import { injectIntl } from 'react-intl';
 
 import {
   bindActionCreators
@@ -62,10 +63,6 @@ class Results extends React.Component {
     this.onFacetChanged = this.onFacetChanged.bind(this);
     this.toggleFavorite = this.toggleFavorite.bind(this);
   }
-
-  static contextTypes = {
-    intl: PropTypes.object,
-  };
 
   isTextValid(text) {
     return ((text) && (text.length > 2));
@@ -196,7 +193,7 @@ class Results extends React.Component {
     const {
       search: { result, loading, text }
     } = this.props;
-    const _t = this.context.intl.formatMessage;
+    const _t = this.props.intl.formatMessage;
 
     return (
       <div className="results-lab">
@@ -329,4 +326,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
 });
 
-export default ReactRedux.connect(mapStateToProps, mapDispatchToProps, mergeProps)(Results);
+const localizedComponent = injectIntl(Results);
+
+export default ReactRedux.connect(mapStateToProps, mapDispatchToProps, mergeProps)(localizedComponent);

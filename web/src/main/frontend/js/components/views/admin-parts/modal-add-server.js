@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
 
-import { addServer } from '../../../ducks/admin';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -10,6 +9,36 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import Button from '@material-ui/core/Button';
 import ServerForm from './server-form';
+
+import { addServer } from '../../../ducks/admin';
+import { formatErrors } from '../../../model/error';
+
+const fieldMapper = (field) => {
+  switch (field) {
+    case 'available':
+      return 'Available';
+    case 'description':
+      return 'Description';
+    case 'eligibleRole':
+      return 'Eligible Role';
+    case 'kernels':
+      return 'Kernels';
+    case 'memory':
+      return 'Ram';
+    case 'name':
+      return 'Name';
+    case 'tags':
+      return 'Tags';
+    case 'token':
+      return 'Admin token';
+    case 'url':
+      return 'URL';
+    case 'virtualCores':
+      return 'Virtual CPUs';
+    default:
+      return null;
+  }
+};
 
 class ModalAddServer extends React.Component {
 
@@ -60,7 +89,7 @@ class ModalAddServer extends React.Component {
         this.toggleModal();
       })
       .catch((err) => {
-        toast.error(err.errors[0].description);
+        toast.error(formatErrors(err.errors, fieldMapper));
       });
   }
 

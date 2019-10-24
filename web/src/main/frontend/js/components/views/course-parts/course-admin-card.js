@@ -1,7 +1,8 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 
 import moment from '../../../moment-localized';
+
+import { injectIntl } from 'react-intl';
 
 import {
   FormattedMessage,
@@ -13,10 +14,6 @@ import {
 
 class CourseAdminCard extends React.Component {
 
-  static contextTypes = {
-    intl: PropTypes.object,
-  };
-
   static defaultProps = {
     course: null,
   }
@@ -24,7 +21,7 @@ class CourseAdminCard extends React.Component {
   render() {
     const { course: c, kernels } = this.props;
     const kernel = kernels.find(k => k.name === c.kernel);
-    const _t = this.context.intl.formatMessage;
+    const _t = this.props.intl.formatMessage;
 
     return (
       <div className="course-card course-card-admin">
@@ -32,8 +29,8 @@ class CourseAdminCard extends React.Component {
           {c.link ? (
             <a href={c.link} target="_blank">{c.title}</a>
           ) : (
-              <a>{c.title}</a>
-            )}
+            <a>{c.title}</a>
+          )}
         </div>
         <div className="description pt-4 text-justify text-secondary">
           {_t({ id: `course.enum.semester.${c.semester}` })} {c.year}
@@ -64,4 +61,4 @@ class CourseAdminCard extends React.Component {
 
 }
 
-export default CourseAdminCard;
+export default injectIntl(CourseAdminCard);

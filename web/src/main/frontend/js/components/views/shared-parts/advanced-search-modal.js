@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
+import { injectIntl } from 'react-intl';
+
 import {
   Modal,
 } from 'reactstrap';
@@ -36,10 +38,6 @@ class AdvancedSearchModal extends React.Component {
     minOptions: 4,
   }
 
-  static contextTypes = {
-    intl: PropTypes.object,
-  }
-
   onTextChanged(text) {
     this.props.setText(text);
   }
@@ -52,7 +50,7 @@ class AdvancedSearchModal extends React.Component {
 
   render() {
     const { data: { facets, loading, text } } = this.props;
-    const _t = this.context.intl.formatMessage;
+    const _t = this.props.intl.formatMessage;
 
     const catalogs = _t({ id: 'advanced-search.placeholder.lab' });
 
@@ -68,7 +66,7 @@ class AdvancedSearchModal extends React.Component {
           <a href="" className="close" onClick={(e) => { e.preventDefault(); this.props.toggle(); }}></a>
 
           <div className="form-title">
-            <FormattedMessage id="advanced-search.title" defaultMessage="Advanced Search" />
+            <FormattedMessage id="advanced-search.title" />
           </div>
 
           <form>
@@ -109,4 +107,4 @@ class AdvancedSearchModal extends React.Component {
   }
 }
 
-export default AdvancedSearchModal;
+export default injectIntl(AdvancedSearchModal);

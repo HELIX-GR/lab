@@ -89,6 +89,7 @@ class WhiteListTable extends React.Component {
         Header: <img className="account-icon" src={"/images/png/" + name + ".png"} height="35" width="35" />,
         id: name,
         accessor: 'roles',
+        style: { textAlign: 'center', fontSize: 22 },
         Cell: props => (<Checkbox
           checked={props.value.includes(name)}
           onChange={(e, is) => { this.updateCheck(is, name, props.row.id); }}

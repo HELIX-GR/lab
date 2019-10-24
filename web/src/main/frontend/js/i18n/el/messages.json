@@ -1,4 +1,30 @@
 {
+  "cookie": {
+    "consent": "This website uses cookies to enhance the user experience.",
+    "learn-more": "Learn more",
+    "accept": "Accept"
+  },
+  "error": {
+    "file-system": {
+      "no-server-selected": "You need to start a Notebook Server First"
+    },
+    "generic": "Unknown error has occurred",
+    "validation": {
+      "Default": "Field {field} value is invalid",
+      "Email": "Field {field} must be a valid email",
+      "NotBlank": "Field {field} is required",
+      "NotEmpty": "Field {field} is required",
+      "Size": "Field {field} size must be in the interval {min} to {max}"
+    }
+  },
+  "file-system": {
+    "headers": {
+      "name": "Όνομα Αρχείου",
+      "type": "Τύπος Αρχείου",
+      "size": "Μέγεθος Αρχείου",
+      "modified": "Τροποποιήθηκε"
+    }
+  },
   "locales": {
     "en": "Αγγλικά",
     "el": "Ελληνικά"
@@ -9,15 +35,65 @@
     "subtitle": "Εισοδος στο λογαριασμό σας",
     "failure": "Το όνομα χρήστη ή/και ο κωδικός είναι λάθος"
   },
+  "server-selection": {
+    "title": "Διαθέσιμοι Servers",
+    "buttons": {
+      "select": "Servers",
+      "stop-server": "Stop Server"
+    }
+  },
   "header": {
-    "courses-professor": "Διαχείριση Μαθημάτων",
-    "courses-student": "Τα Μαθήματα μου",
-    "files": "Τα Αρχεία μου",
-    "guides": "Οδηγοί",
-    "courses": "Μαθήματα",
-    "whatislab": "Τι είναι το Lab?",
-    "about": "Το έργο",
-    "news": "Νέα"
+    "menu": {
+      "courses": "Μαθήματα",
+      "courses-professor": "Διαχείριση Μαθημάτων",
+      "courses-student": "Τα Μαθήματα μου",
+      "data": {
+        "title": "Data"
+      },
+      "files": "Τα Αρχεία μου",
+      "guides": "Οδηγοί",
+      "pubs": {
+        "title": "Pubs"
+      },
+      "lab": {
+        "title": "Lab"
+      },
+      "project": {
+        "title": "Σχετικά",
+        "items": {
+          "about": "Σχετικά",
+          "what-is-helix": "Τί είναι το HELIX;",
+          "services": "Υπηρεσίες",
+          "faq": "FAQ",
+          "publish-data": "Δημοσιεύστε Δεδομένα",
+          "software": "Λογισμικό",
+          "the-project": "Το έργο",
+          "media": "Μέσα",
+          "acknowledge-helix": "Αναφέρετε το HELIX",
+          "contact": "Επικοινωνία",
+          "terms-of-use": "Όροι χρήσης",
+          "subjects": "Θεματικές κατηγορίες"
+        }
+      },
+      "news": {
+        "title": "Νέα",
+        "items": {
+          "news": "Νέα",
+          "events": "Εκδηλώσεις",
+          "actions": "Δράσεις"
+        }
+      },
+      "login": {
+        "items": {
+          "signed-in": "Είσοδος ως {username}",
+          "account": "Λογαριασμός",
+          "collections": "Οι συλλογές μου",
+          "favorites": "Σελιδοδείκτες",
+          "help": "Βοήθεια",
+          "logout": "Έξοδος"
+        }
+      }
+    }
   },
   "footer": {
     "columns": {
@@ -57,16 +133,6 @@
   },
   "results": {
     "advanced-search": "Σύνθετη Αναζήτηση"
-  },
-  "server-list": {
-    "servers": "Διαθέσιμοι Kernels"
-  },
-  "filetable": {
-    "FileName": "Όνομα Αρχείου",
-    "FileType": "Τύπος Αρχείου",
-    "FileSize": "Μέγεθος Αρχείου",
-    "LastModified": "Τροποποιήθηκε",
-    "LastUpdate": "Τελευταία ενημέρωση: "
   },
   "featured": {
     "first": {
@@ -136,23 +202,23 @@
     },
     "action": {
       "create": {
-        "success": "Course '{title}' has been created",
+        "success": "Course ''{title}'' has been created",
         "failure": "Create operation has failed"
       },
       "update": {
-        "success": "Course '{title}' has been updated",
+        "success": "Course ''{title}'' has been updated",
         "failure": "Update operation has failed"
       },
       "set-files": {
-        "success": "Data folder course '{title}' was set to '{path}'",
+        "success": "Data folder course ''{title}'' was set to ''{path}''",
         "failure": "Failed to set data folder"
       },
       "delete": {
-        "success": "Course '{title}' has been deleted",
+        "success": "Course ''{title}'' has been deleted",
         "failure": "Delete operation has failed"
       },
       "copy-files": {
-        "success": "Copied {count} files for course '{title}'",
+        "success": "Copied {count} files for course ''{title}''",
         "failure": "Copy operation has failed"
       }
     },
@@ -187,8 +253,8 @@
         "delete": "Διαγραφή Μαθήματος"
       },
       "message": {
-        "delete.professor": "Θέλετε να γίνει διαγραφή του μαθήματος '{title}';",
-        "delete.student": "Θέλετε να γίνει διαγραφή της καταχώρησης για το μάθημα '{title}';"
+        "delete.professor": "Θέλετε να γίνει διαγραφή του μαθήματος ''{title}'';",
+        "delete.student": "Θέλετε να γίνει διαγραφή της καταχώρησης για το μάθημα ''{title}'';"
       }
     },
     "last-modified": "Τελευταία ενημέρωση {when}",
@@ -219,7 +285,7 @@
       "lastName": "Last Name"
     },
     "message": {
-      "delete.confirm": "Delete the student registration '{email}'?"
+      "delete.confirm": "Delete the student registration ''{email}''?"
     }
   }
 }

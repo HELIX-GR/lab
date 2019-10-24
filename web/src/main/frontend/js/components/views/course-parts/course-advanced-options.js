@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
+import { injectIntl } from 'react-intl';
+
 import {
   Checkbox,
 } from '../../helpers';
@@ -13,10 +15,6 @@ class CourseAdvancedOptions extends React.Component {
     this.state = {
       more: false,
     };
-  }
-
-  static contextTypes = {
-    intl: PropTypes.object,
   }
 
   static propTypes = {
@@ -45,7 +43,7 @@ class CourseAdvancedOptions extends React.Component {
     const { more } = this.state;
     const { minOptions, years } = this.props;
 
-    const _t = this.context.intl.formatMessage;
+    const _t = this.props.intl.formatMessage;
 
     const keys = Object.keys(years);
     const size = more ? keys.length : Math.min(keys.length, minOptions);
@@ -100,4 +98,4 @@ class CourseAdvancedOptions extends React.Component {
   }
 }
 
-export default CourseAdvancedOptions;
+export default injectIntl(CourseAdvancedOptions);

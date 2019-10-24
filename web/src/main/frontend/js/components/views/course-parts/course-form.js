@@ -5,6 +5,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { withStyles } from '@material-ui/core/styles';
 
+import { injectIntl } from 'react-intl';
+
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -19,8 +21,8 @@ const styles = theme => ({
     padding: '10px 18px',
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     flex: '1 1 100%'
   },
   helperText: {
@@ -48,19 +50,19 @@ class CourseForm extends React.Component {
 
   constructor(props) {
     super(props);
-
-    const { course = null } = props;
+    const { course = null, kernels } = props;
 
     this.state = {
       course: course ? ({
         ...course,
       }) : ({
-        title: '',
-        description: '',
-        year: (new Date()).getFullYear(),
-        semester: 'FALL',
-        link: '',
         active: false,
+        description: '',
+        kernel: kernels[0].name,
+        link: '',
+        semester: 'FALL',
+        title: '',
+        year: (new Date()).getFullYear(),
       }),
       errors: {
 
@@ -69,10 +71,6 @@ class CourseForm extends React.Component {
 
     this.inputRef = React.createRef();
   }
-
-  static contextTypes = {
-    intl: PropTypes.object,
-  };
 
   static propTypes = {
     classes: PropTypes.object.isRequired,
@@ -127,7 +125,7 @@ class CourseForm extends React.Component {
   }
 
   validate(property, value) {
-    const _t = this.context.intl.formatMessage;
+    const _t = this.props.intl.formatMessage;
 
     switch (property) {
       case 'description':
@@ -150,7 +148,7 @@ class CourseForm extends React.Component {
     const { classes, kernels } = this.props;
     const now = new Date();
     const years = [now.getFullYear(), now.getFullYear() + 1];
-    const _t = this.context.intl.formatMessage;
+    const _t = this.props.intl.formatMessage;
 
     return (
       <React.Fragment>
@@ -288,4 +286,6 @@ class CourseForm extends React.Component {
   }
 }
 
-export default withStyles(styles)(CourseForm);
+const localizedComponent = injectIntl(CourseForm);
+
+export default withStyles(styles)(localizedComponent);

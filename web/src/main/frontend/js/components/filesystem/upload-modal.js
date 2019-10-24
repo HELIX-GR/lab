@@ -82,7 +82,13 @@ class UploadModal extends React.Component {
       <div className="filesystem-btn">
         <a data="UPLOAD FILE" onClick={this.handleOpen}>
           <img src="/images/svg/SVG/upload.svg" />
-          <Modal isOpen={this.state.open} toggle={this.toggle} >
+          <Modal
+            isOpen={this.state.open}
+            toggle={this.toggle}
+            centered={true}
+            backdrop={false}
+            keyboard={false}
+          >
             <ModalHeader toggle={this.toggle}>Upload a file</ModalHeader>
 
             <div>
@@ -99,26 +105,32 @@ class UploadModal extends React.Component {
 
 
                 }}
-                style={{
-                  textAlign: 'center',
-                  fontSize: '3em',
-                  color: '#656565',
-                  border: '1px dotted #656565',
-                  height: '12rem',
-                }}
                 disableClick={false}
                 multiple={false}
                 disabled={this.state.isUploading}
               >
-                {this.state.isUploading ?
-                  <div style={{ paddingTop: '3rem' }}>
-                    <CircularProgress size={80} thickness={5} />
-                  </div>
-                  :
-                  <div>
-                    <i className="fa fa-cloud-upload fa-4x"></i>
-                  </div>
-                }
+                {({ getRootProps, getInputProps }) => {
+                  return (
+                    <div {...getRootProps()} style={{
+                      textAlign: 'center',
+                      fontSize: '3em',
+                      color: '#656565',
+                      height: '12rem',
+                      paddingTop: '1rem',
+                    }}>
+                      <input {...getInputProps()} />
+                      {this.state.isUploading ?
+                        <div style={{ paddingTop: '3rem' }}>
+                          <CircularProgress size={80} thickness={5} />
+                        </div>
+                        :
+                        <div>
+                          <i className="fa fa-cloud-upload fa-4x"></i>
+                        </div>
+                      }
+                    </div>
+                  );
+                }}
               </Dropzone>
               {this.state.file && this.state.file.name}
               {this.state.file && ` (${formatFileSize(this.state.file.size)})`}

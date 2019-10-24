@@ -1,0 +1,39 @@
+.cookie-consent {
+  background: #757575;
+  color: #ffffff;
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  padding: 2em;
+  max-width: 24em;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  line-height: 1.5em;
+  flex-wrap: nowrap;
+  z-index: 9999;
+  font-size: 1.2rem;
+
+  .cookie-consent-button {
+    border: 2px solid #ffffff;
+    background: #757575;
+    color: #ffffff;
+    font-size: 1.2rem;
+    padding: 10px;
+    line-height: 1.5em;
+  }
+
+  .cookie-consent-learn-more {
+    margin: 10px 0px;
+    font-size: 1rem;
+    text-decoration: underline;
+  }
+
+  a {
+    color: #ffffff;
+
+    &:hover {
+      color: #ffffff;
+    }
+  }
+}

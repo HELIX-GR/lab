@@ -1,9 +1,10 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
-import * as PropTypes from 'prop-types';
 
 import moment from '../../moment-localized';
 import URI from 'urijs';
+
+import { injectIntl } from 'react-intl';
 
 import {
   bindActionCreators
@@ -55,10 +56,6 @@ class NotebookDetails extends React.Component {
     this.toggleTooltip = this.toggleTooltip.bind(this);
     this.toggleFavorite = this.toggleFavorite.bind(this);
   }
-
-  static contextTypes = {
-    intl: PropTypes.object,
-  };
 
   componentWillMount() {
     const { match: { params: { [PARAM_ID]: id } } } = this.props;
@@ -157,7 +154,7 @@ class NotebookDetails extends React.Component {
 
   render() {
     const { search: { notebook: n }, match: { params: { [PARAM_ID]: id } } } = this.props;
-    const _t = this.context.intl.formatMessage;
+    const _t = this.props.intl.formatMessage;
 
     if (this.isLoading) {
       return (
@@ -342,4 +339,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
 });
 
-export default NotebookDetails = ReactRedux.connect(mapStateToProps, mapDispatchToProps, mergeProps)(NotebookDetails);
+const localizedComponent = injectIntl(NotebookDetails);
+
+export default NotebookDetails = ReactRedux.connect(mapStateToProps, mapDispatchToProps, mergeProps)(localizedComponent);

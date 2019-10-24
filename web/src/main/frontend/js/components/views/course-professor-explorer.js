@@ -1,11 +1,9 @@
 import _ from 'lodash';
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
-import * as PropTypes from 'prop-types';
-
-import Dropzone from 'react-dropzone';
 
 import { bindActionCreators } from 'redux';
+import { injectIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 
 import {
@@ -55,10 +53,6 @@ class CourseProfessorExplorer extends React.Component {
 
     this.onYearSelect = this.onYearSelect.bind(this);
   }
-
-  static contextTypes = {
-    intl: PropTypes.object,
-  };
 
   handleAction(action, course = null) {
     switch (action) {
@@ -204,7 +198,7 @@ class CourseProfessorExplorer extends React.Component {
   }
 
   addStudentToCourse(courseId, data) {
-    const _t = this.context.intl.formatMessage;
+    const _t = this.props.intl.formatMessage;
 
     return this.props.addStudentToCourse(courseId, data)
       .then(() => {
@@ -263,7 +257,7 @@ class CourseProfessorExplorer extends React.Component {
     const { action, courses, orderBy, selected = null, showModal, text, years } = this.state;
     const { courses: allCourses, kernels } = this.props;
 
-    const _t = this.context.intl.formatMessage;
+    const _t = this.props.intl.formatMessage;
 
     return (
       <React.Fragment>
@@ -449,5 +443,6 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   upload,
 }, dispatch);
 
+const localizedComponent = injectIntl(CourseProfessorExplorer);
 
-export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(CourseProfessorExplorer);
+export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(localizedComponent);

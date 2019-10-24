@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
-import * as PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import { injectIntl } from 'react-intl';
 import { withRouter } from 'react-router';
 
 import {
@@ -43,10 +43,6 @@ class SearchPage extends React.Component {
     this.searchAutoComplete = _.debounce(this.props.searchAutoComplete, KEYSTROKE_INTERVAL);
 
     this.textInput = React.createRef();
-  }
-
-  static contextTypes = {
-    intl: PropTypes.object,
   }
 
   componentDidMount() {
@@ -100,7 +96,7 @@ class SearchPage extends React.Component {
 
   render() {
     const { advanced, loading, partialResult: { visible }, text } = this.props.search;
-    const _t = this.context.intl.formatMessage;
+    const _t = this.props.intl.formatMessage;
 
     return (
       <div>
@@ -204,6 +200,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
 });
 
-SearchPage = ReactRedux.connect(mapStateToProps, mapDispatchToProps, mergeProps)(SearchPage);
+const componentWithState = ReactRedux.connect(mapStateToProps, mapDispatchToProps, mergeProps)(SearchPage);
 
-export default withRouter(SearchPage);
+const localizedComponent = injectIntl(componentWithState);
+
+export default withRouter(localizedComponent);

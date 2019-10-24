@@ -3,8 +3,8 @@ package gr.helix.lab.web.controller.action;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import gr.helix.core.common.model.RestResponse;
@@ -28,11 +28,10 @@ public class ProfileController {
      * @param authentication the authenticated principal
      * @return user profile data
      */
-    @RequestMapping(value = "/action/user/profile", method = RequestMethod.GET)
+    @GetMapping(value = "/action/user/profile")
     public RestResponse<?> getProfile(Authentication authentication) {
-
-    	System.out.println("CurrentUser: "+this.authenticationFacade.getCurrentUser());
         final Account account = this.authenticationFacade.getCurrentUser().getAccount();
+
         return RestResponse.result(account);
     }
 

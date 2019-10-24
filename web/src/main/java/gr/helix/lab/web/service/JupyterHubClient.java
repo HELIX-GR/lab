@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -24,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -38,6 +40,36 @@ import gr.helix.lab.web.model.hub.HubUserInfo;
 
 @Service
 public class JupyterHubClient {
+
+    public static class Context {
+
+        private final String url;
+        private final String token;
+        private final String userName;
+
+        public Context(String url, String token, String userName) {
+            Assert.isTrue(!StringUtils.isBlank(url), "Expected a non-empty url");
+            Assert.isTrue(!StringUtils.isBlank(token), "Expected a non-empty token");
+            Assert.isTrue(!StringUtils.isBlank(userName), "Expected a non-empty username");
+
+            this.url = url;
+            this.token = token;
+            this.userName = userName;
+        }
+
+        public String getUrl() {
+            return this.url;
+        }
+
+        public String getToken() {
+            return this.token;
+        }
+
+        public String getUserName() {
+            return this.userName;
+        }
+
+    }
 
     public static class ClientResponse {
 
@@ -156,8 +188,8 @@ public class JupyterHubClient {
         }
     }
 
-    public HubUserInfo getUserInfo(HubServerEntity server, String username) throws ApplicationException {
-        return this.getUserInfo(server.getUrl(), server.getToken(), username);
+    public HubUserInfo getUserInfo(Context ctx) throws ApplicationException {
+        return this.getUserInfo(ctx.url, ctx.token, ctx.userName);
     }
 
     public HubUserInfo getUserInfo(String url, String token, String username) throws ApplicationException {
@@ -168,6 +200,10 @@ public class JupyterHubClient {
         } catch (final JsonProcessingException e) {
             throw ApplicationException.fromMessage(AdminErrorCode.HUB_SERVER_PARSE_ERROR, "Failed to parse server response");
         }
+    }
+
+    public HubUserInfo addUser(Context context) throws ApplicationException {
+        return this.addUser(context.getUrl(), context.getToken(), context.getUserName());
     }
 
     public HubUserInfo addUser(String url, String token, String username) throws ApplicationException {
@@ -190,16 +226,30 @@ public class JupyterHubClient {
         return response.status == HttpStatus.SC_NO_CONTENT;
     }
 
+    public boolean startServer(Context context) throws ApplicationException {
+        return this.startServer(context.getUrl(), context.getToken(), context.getUserName());
+    }
+
     public boolean startServer(String url, String token, String username) throws ApplicationException {
         final ClientResponse response = this.post(url, token, "users/" + username + "/server");
 
         return response.status == HttpStatus.SC_CREATED;
     }
 
+    public boolean stopServer(Context context) throws ApplicationException {
+        return this.stopServer(context.getUrl(), context.getToken(), context.getUserName());
+    }
+
     public boolean stopServer(String url, String token, String username) throws ApplicationException {
         final ClientResponse response = this.delete(url, token, "users/" + username + "/server");
 
         return response.status == HttpStatus.SC_NO_CONTENT;
+    }
+
+    public boolean removeUserFromGroups(Context context, List<String> groups) throws ApplicationException {
+        return this.removeUserFromGroups(
+            context.getUrl(), context.getToken(), context.getUserName(), groups
+        );
     }
 
     public boolean removeUserFromGroups(
@@ -217,6 +267,10 @@ public class JupyterHubClient {
         }
 
         return result;
+    }
+
+    public boolean addUserToGroup(Context context, String group) throws ApplicationException {
+        return this.addUserToGroup(context.getUrl(), context.getToken(), context.getUserName(), group);
     }
 
     public boolean addUserToGroup(
