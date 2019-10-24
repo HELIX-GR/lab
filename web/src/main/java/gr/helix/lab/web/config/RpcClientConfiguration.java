@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
 
-import gr.helix.core.common.service.JupyterHubService;
+import gr.helix.core.common.service.UserDataManagementService;
 
 @Configuration
 public class RpcClientConfiguration
@@ -27,7 +27,7 @@ public class RpcClientConfiguration
         final String serviceUrl = this.rootUrl.resolve("jupyter-hub-service").toString();
 
         final HttpInvokerProxyFactoryBean factory = new HttpInvokerProxyFactoryBean();
-        factory.setServiceInterface(JupyterHubService.class);
+        factory.setServiceInterface(UserDataManagementService.class);
         factory.setServiceUrl(serviceUrl);
         return factory;
     }

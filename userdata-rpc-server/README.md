@@ -1,4 +1,6 @@
-# Lab -- RPC Service
+# Lab -- User-Data RPC Server
+
+An RPC-style server for managing user data directories
 
 ## Quickstart ##
 

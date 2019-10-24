@@ -1,4 +1,4 @@
-package gr.helix.lab.rpc;
+package gr.helix.lab.userdata.rpc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,9 +11,9 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
         gr.helix.core.common.config._Marker.class,
         gr.helix.core.common.repository._Marker.class,
         gr.helix.core.common.service._Marker.class,
-        gr.helix.lab.rpc.config._Marker.class,
-        gr.helix.lab.rpc.service._Marker.class,
-        gr.helix.lab.rpc.controller._Marker.class,
+        gr.helix.lab.userdata.rpc.config._Marker.class,
+        gr.helix.lab.userdata.rpc.service._Marker.class,
+        gr.helix.lab.userdata.rpc.controller._Marker.class,
     }
 )
 @EntityScan(

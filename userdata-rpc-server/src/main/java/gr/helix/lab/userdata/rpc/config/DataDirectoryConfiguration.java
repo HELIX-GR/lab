@@ -1,4 +1,4 @@
-package gr.helix.lab.rpc.config;
+package gr.helix.lab.userdata.rpc.config;
 
 import java.io.IOException;
 import java.nio.file.Files;

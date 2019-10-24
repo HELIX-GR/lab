@@ -4,8 +4,8 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>helix-lab-rpc-server</artifactId>
-	<name>[helix-lab] RPC Server</name>
+    <artifactId>helix-lab-userdata-rpc-server</artifactId>
+	<name>[helix-lab] User-Data RPC Server</name>
 
     <packaging>jar</packaging>
 
@@ -21,6 +21,12 @@
 			<groupId>gr.helix</groupId>
 			<artifactId>helix-core-common</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>gr.helix</groupId>
+			<artifactId>xfs-utils</artifactId>
+			<version>${helix-xfs-utils.version}</version>
 		</dependency>
 
         <!-- Spring-Boot starter dependencies -->

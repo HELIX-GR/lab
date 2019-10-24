@@ -1,4 +1,4 @@
-package gr.helix.lab.rpc.service;
+package gr.helix.lab.userdata.rpc.service;
 
 import java.io.BufferedReader;
 import java.io.File;

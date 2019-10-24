@@ -25,8 +25,9 @@ import gr.helix.core.common.model.EnumRole;
 import gr.helix.core.common.model.NotebookServerRequest;
 import gr.helix.core.common.model.RestResponse;
 import gr.helix.core.common.model.user.Account;
+import gr.helix.core.common.model.user.AccountInfo;
 import gr.helix.core.common.repository.AccountRepository;
-import gr.helix.core.common.service.JupyterHubService;
+import gr.helix.core.common.service.UserDataManagementService;
 import gr.helix.lab.web.domain.AccountServerEntity;
 import gr.helix.lab.web.domain.HubServerEntity;
 import gr.helix.lab.web.model.admin.AdminErrorCode;
@@ -44,10 +45,12 @@ import gr.helix.lab.web.service.JupyterHubClient;
 public class HubController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(HubController.class);
-
+    
     @Value("${helix.rpc-server.enabled}")
     boolean                     isRpcServerEnabled;
-
+    
+    Long                        defaultSpaceQuota = 18L * 1024L * 1024L * 1024L;
+    
     @Autowired
     AccountRepository           accountRepository;
 
@@ -64,7 +67,7 @@ public class HubController extends BaseController {
     JupyterHubClient            jupyterHubClient;
 
     @Autowired
-    JupyterHubService           jupyterHubService;
+    UserDataManagementService           jupyterHubService;
 
     @RequestMapping(value = "/action/server/start/{hubId}/{kernel}", method = RequestMethod.POST)
     public RestResponse<Object> startServer(@PathVariable int hubId, @PathVariable String kernel) {
@@ -145,10 +148,9 @@ public class HubController extends BaseController {
             final URIBuilder builder = new URIBuilder(hubServer.get().getUrl());
 
             if (this.isRpcServerEnabled) {
-                final NotebookServerRequest initRequest = new NotebookServerRequest(builder.getHost(), username, dataDir);
-
-                if (!this.jupyterHubService.initializeNotebookServer(initRequest)) {
-                    return RestResponse.error(AdminErrorCode.NOTEBOOK_SERVER_INIT_FAILURE, "Failed to initialize notebook server");
+                final AccountInfo accountInfo = new AccountInfo(currentUserId(), currentUserName());
+                if (!this.jupyterHubService.setupDirs(accountInfo, builder.getHost(), defaultSpaceQuota)) {
+                    return RestResponse.error(AdminErrorCode.NOTEBOOK_SERVER_INIT_FAILURE, "Failed to setup user directory!");
                 }
             }
 

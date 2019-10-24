@@ -31,6 +31,7 @@
 		<log4j2.version>2.12.1</log4j2.version>
 		<postgresql.version>42.2.6</postgresql.version>
 		<spring-boot.version>2.1.7.RELEASE</spring-boot.version>
+		<helix-xfs-utils.version>0.0.1-SNAPSHOT</helix-xfs-utils.version>
 
 		<!-- Plugin versions -->
 		<maven-failsafe-plugin.version>3.0.0-M3</maven-failsafe-plugin.version>
@@ -61,7 +62,8 @@
     <modules>
         <module>common</module>
         <module>cli</module>
-		<module>rpc-server</module>
+        <module>xfs-utils</module>
+		<module>userdata-rpc-server</module>
         <module>web</module>
     </modules>
 

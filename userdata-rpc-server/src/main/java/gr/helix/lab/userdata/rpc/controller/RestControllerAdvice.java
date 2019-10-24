@@ -1,4 +1,4 @@
-package gr.helix.lab.rpc.controller;
+package gr.helix.lab.userdata.rpc.controller;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
