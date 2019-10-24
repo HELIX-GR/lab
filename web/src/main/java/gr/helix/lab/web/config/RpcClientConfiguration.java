@@ -23,8 +23,8 @@ public class RpcClientConfiguration
     }
 
     @Bean
-    public HttpInvokerProxyFactoryBean echoServiceFactory() {
-        final String serviceUrl = this.rootUrl.resolve("jupyter-hub-service").toString();
+    public HttpInvokerProxyFactoryBean userDataManagementServiceFactory() {
+        final String serviceUrl = this.rootUrl.resolve("/userDataManagementService").toString();
 
         final HttpInvokerProxyFactoryBean factory = new HttpInvokerProxyFactoryBean();
         factory.setServiceInterface(UserDataManagementService.class);
