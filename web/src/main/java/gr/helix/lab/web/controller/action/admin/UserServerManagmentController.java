@@ -53,17 +53,25 @@ public class UserServerManagmentController extends BaseController {
             return RestResponse.error(AdminErrorCode.REGISRATION_NOT_FOUND, "Account server registration was not found");
         }
 
-        // Remove user from Jupyter Hub server
         boolean result = false;
+
         try {
             final AccountEntity account = accountServer.getAccount();
             final HubServerEntity server = accountServer.getHubServer();
 
-            final HubUserInfo userInfo = this.jupyterHubClient.getUserInfo(server, account.getUsername());
+            // Create client context
+            final JupyterHubClient.Context ctx = new JupyterHubClient.Context(
+                server.getUrl(),
+                server.getToken(),
+                account.getUsername()
+            );
+
+
+            final HubUserInfo userInfo = this.jupyterHubClient.getUserInfo(ctx);
 
             // Stop existing notebook server
             if (!StringUtils.isBlank(userInfo.getServer())) {
-                this.jupyterHubClient.stopServer(server.getUrl(), server.getToken(), account.getUsername());
+                this.jupyterHubClient.stopServer(ctx);
             }
 
             if (!userInfo.isAdmin()) {
@@ -73,12 +81,7 @@ public class UserServerManagmentController extends BaseController {
                 // servers without using lab application
                 // result = this.jupyterHubClient.removeUser(server, account.getUsername());
 
-                result = this.jupyterHubClient.removeUserFromGroups(
-                    server.getUrl(),
-                    server.getToken(),
-                    account.getUsername(),
-                    userInfo.getGroups()
-                );
+                result = this.jupyterHubClient.removeUserFromGroups(ctx, userInfo.getGroups());
             } else {
                 result = true;
             }

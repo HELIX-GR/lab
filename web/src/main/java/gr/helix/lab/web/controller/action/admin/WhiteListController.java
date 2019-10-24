@@ -77,7 +77,7 @@ public class WhiteListController extends BaseController {
             }
 
             // Get current account
-            final AccountEntity account = this.accountRepository.findById(this.currentUserId()).get();
+            final AccountEntity grantedBy = this.accountRepository.findById(this.currentUserId()).orElse(null);
 
             // Check if user already exists in the white list
             WhiteListEntryEntity entry = this.whiteListRepository.findOneByEmail(data.getEmail());
@@ -92,7 +92,7 @@ public class WhiteListController extends BaseController {
                 entry.setLastName(data.getLastName());
 
                 for (final EnumRole e : data.getRoles()) {
-                    entry.grant(e, account);
+                    entry.grant(e, grantedBy);
                 }
 
                 this.whiteListRepository.saveAndFlush(entry);
@@ -103,7 +103,7 @@ public class WhiteListController extends BaseController {
                         final WhiteListEntryKernelEntity entryKernel = new WhiteListEntryKernelEntity();
 
                         entryKernel.setEntry(entry);
-                        entryKernel.setGrantedBy(account);
+                        entryKernel.setGrantedBy(grantedBy);
                         entryKernel.setKernel(kernel.get());
 
                         entry.getKernels().add(entryKernel);

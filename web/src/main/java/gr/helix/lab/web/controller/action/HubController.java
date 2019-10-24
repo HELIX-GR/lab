@@ -2,7 +2,6 @@ package gr.helix.lab.web.controller.action;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -74,24 +73,24 @@ public class HubController extends BaseController {
             final String username = this.currentUserName();
 
             // Check if server exists
-            final Optional<HubServerEntity> hubServer = this.hubServerRepository.findById(hubId);
-            if (!hubServer.isPresent()) {
+            final HubServerEntity hubServer = this.hubServerRepository.findById(hubId).orElse(null);
+            if (hubServer == null) {
                 return RestResponse.error(AdminErrorCode.HUB_SERVER_NOT_FOUND, "Server was not found");
             }
 
-            // Check if server supports the selected kernel
-            if (!hubServer.get().hasKernel(kernel)) {
-                return RestResponse.error(AdminErrorCode.HUB_KERNEL_NOT_SUPPORTED, "Kernel is not supported");
-            }
-
             // Check if kernel exists
-            final Optional<HubKernelEntity> hubKernel = this.hubKernelRepository.findByName(kernel);
-            if (!hubKernel.isPresent()) {
+            final HubKernelEntity hubKernel = this.hubKernelRepository.findByName(kernel).orElse(null);
+            if (hubKernel == null) {
                 return RestResponse.error(AdminErrorCode.HUB_KERNEL_NOT_FOUND, "Kernel was not found");
             }
 
+            // Check if server supports the selected kernel
+            if (!hubServer.hasKernel(kernel)) {
+                return RestResponse.error(AdminErrorCode.HUB_KERNEL_NOT_SUPPORTED, "Kernel is not supported");
+            }
+
             // Check if the user has permission to access this server
-            final boolean isEligible = this.hasRole(hubServer.get().getEligibleRole());
+            final boolean isEligible = this.hasRole(hubServer.getEligibleRole());
             if (!isEligible) {
                 return RestResponse.error(AdminErrorCode.HUB_SERVER_ACCESS_DENIED, "Cannot connect to this server");
             }
@@ -101,8 +100,14 @@ public class HubController extends BaseController {
                 return RestResponse.error(AdminErrorCode.HUB_KERNEL_ACCESS_DENIED, "Cannot start this kernel");
             }
 
-            // Compose user endpoint
-            final String endpoint = hubServer.get().getUrl() + "/user/" + username;
+            // Compose user endpoint and client context
+            final String endpoint = hubServer.getUrl() + "/user/" + username;
+
+            final JupyterHubClient.Context ctx = new JupyterHubClient.Context(
+                hubServer.getUrl(),
+                hubServer.getToken(),
+                username
+            );
 
             // Remove existing server registration
             final List<AccountServerEntity> accountServers = this.accountServerRepository.findAllServersByUserId(this.currentUserId());
@@ -115,24 +120,21 @@ public class HubController extends BaseController {
 
             // Get (and optionally create user)
             try {
-                hubUser = this.jupyterHubClient.getUserInfo(hubServer.get().getUrl(), hubServer.get().getToken(), username);
+                hubUser = this.jupyterHubClient.getUserInfo(ctx);
             } catch (final ApplicationException ex) {
                 // Ignore exception
+                logger.info("User {} does not exists on server {}. A new user will be created", username, hubServer.getName());
             }
             if(hubUser == null) {
-                hubUser = this.jupyterHubClient.addUser(hubServer.get().getUrl(), hubServer.get().getToken(), username);
+                hubUser = this.jupyterHubClient.addUser(ctx);
             }
             // Set groups
             boolean removeSuccess = true;
             if (!hubUser.getGroups().isEmpty()) {
-                removeSuccess = this.jupyterHubClient.removeUserFromGroups(
-                    hubServer.get().getUrl(), hubServer.get().getToken(), username, hubUser.getGroups()
-                );
+                removeSuccess = this.jupyterHubClient.removeUserFromGroups(ctx, hubUser.getGroups());
             }
 
-            final boolean addSuccess = this.jupyterHubClient.addUserToGroup(
-                hubServer.get().getUrl(), hubServer.get().getToken(), username, kernel
-            );
+            final boolean addSuccess = this.jupyterHubClient.addUserToGroup(ctx, kernel);
 
             if(!removeSuccess || !addSuccess) {
                 return RestResponse.error(AdminErrorCode.HUB_USER_INIT_FAILED, "Cannot set user groups");
@@ -140,11 +142,11 @@ public class HubController extends BaseController {
 
             // Stop existing notebook server
             if (!StringUtils.isBlank(hubUser.getServer())) {
-                this.jupyterHubClient.stopServer(hubServer.get().getUrl(), hubServer.get().getToken(), username);
+                this.jupyterHubClient.stopServer(ctx);
             }
 
             final String dataDir = this.fileNamingStrategy.getUserDir(username, true).toString();
-            final URIBuilder builder = new URIBuilder(hubServer.get().getUrl());
+            final URIBuilder builder = new URIBuilder(hubServer.getUrl());
 
             if (this.isRpcServerEnabled) {
                 final NotebookServerRequest initRequest = new NotebookServerRequest(builder.getHost(), username, dataDir);
@@ -154,7 +156,7 @@ public class HubController extends BaseController {
                 }
             }
 
-            this.jupyterHubClient.startServer(hubServer.get().getUrl(), hubServer.get().getToken(), username);
+            this.jupyterHubClient.startServer(ctx);
 
             // Create new server registration and add account to the Jupyter Hub
             // server user list
@@ -163,10 +165,10 @@ public class HubController extends BaseController {
             final AccountServerEntity accountServer = new AccountServerEntity();
 
             accountServer.setAccount(account);
-            accountServer.setHubServer(hubServer.get());
-            accountServer.setName(hubServer.get().getName());
+            accountServer.setHubServer(hubServer);
+            accountServer.setName(hubServer.getName());
             accountServer.setUrl(endpoint);
-            accountServer.setKernel(hubKernel.get());
+            accountServer.setKernel(hubKernel);
             accountServer.setState("Active");
 
             this.accountServerRepository.save(accountServer);
@@ -187,15 +189,26 @@ public class HubController extends BaseController {
             final String userName = this.currentUserName();
 
             // Check if server exists
-            final Optional<HubServerEntity> hubServer= this.hubServerRepository.findById(hubId);
-            if (!hubServer.isPresent()) {
+            final HubServerEntity hubServer = this.hubServerRepository.findById(hubId).orElse(null);
+            if (hubServer == null) {
                 return RestResponse.error(AdminErrorCode.HUB_SERVER_NOT_FOUND, "Server was not found");
             }
 
-            // Stop notebook server
-            this.jupyterHubClient.stopServer(hubServer.get().getUrl(), hubServer.get().getToken(), userName);
+            // Create client context
+            final JupyterHubClient.Context ctx = new JupyterHubClient.Context(
+                hubServer.getUrl(),
+                hubServer.getToken(),
+                userName
+            );
 
-            final HubUserInfo userInfo = this.jupyterHubClient.getUserInfo(hubServer.get().getUrl(), hubServer.get().getToken(), userName);
+            // Get user
+            final HubUserInfo userInfo = this.jupyterHubClient.getUserInfo(ctx);
+
+            // Stop notebook server
+            if (!StringUtils.isBlank(userInfo.getServer())) {
+                this.jupyterHubClient.stopServer(ctx);
+            }
+
             if(!userInfo.isAdmin()) {
                 // NOTE: Do not delete Jupyter Hub users. Instead reset their groups
 
@@ -203,12 +216,7 @@ public class HubController extends BaseController {
                 // servers without using lab application
                 // this.jupyterHubClient.removeUser(hubServer.get().getUrl(),  hubServer.get().getToken(), userName);
 
-                this.jupyterHubClient.removeUserFromGroups(
-                    hubServer.get().getUrl(),
-                    hubServer.get().getToken(),
-                    userName,
-                    userInfo.getGroups()
-                );
+                this.jupyterHubClient.removeUserFromGroups(ctx, userInfo.getGroups());
             }
 
             // Remove account to server registration

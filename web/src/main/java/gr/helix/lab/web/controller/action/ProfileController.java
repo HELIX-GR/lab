@@ -30,9 +30,8 @@ public class ProfileController {
      */
     @GetMapping(value = "/action/user/profile")
     public RestResponse<?> getProfile(Authentication authentication) {
-
-    	System.out.println("CurrentUser: "+this.authenticationFacade.getCurrentUser());
         final Account account = this.authenticationFacade.getCurrentUser().getAccount();
+
         return RestResponse.result(account);
     }
 

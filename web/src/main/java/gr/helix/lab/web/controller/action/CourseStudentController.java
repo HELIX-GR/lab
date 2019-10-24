@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
@@ -69,22 +68,22 @@ public class CourseStudentController extends BaseController {
      */
     @DeleteMapping(value = "/action/user/course/{id}")
     public RestResponse<?> removeCourse(@PathVariable int id) {
-        final Optional<CourseStudentEntity> registration =
-            this.courseStudentRepository.findByStudentEmailAndCourseId(this.currentUserName(), id);
+        final CourseStudentEntity registration =
+            this.courseStudentRepository.findByStudentEmailAndCourseId(this.currentUserName(), id).orElse(null);
 
         // Check if registration exists and is not already deleted
-        if (!registration.isPresent()) {
+        if (registration == null) {
             return RestResponse.error(CourseErrorCode.REGISTRATION_NOT_FOUND, "The course registration has not been found");
         }
 
         // Check if the authenticated user is also the owner of the course registration
-        if (!registration.get().getWhiteListEntry().getEmail().equals(this.currentUserName())) {
+        if (!registration.getWhiteListEntry().getEmail().equals(this.currentUserName())) {
             logger.error("Student [{}] has attempted to delete course registration [{}].", this.currentUserName(), id);
 
             return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course registration has not been found");
         }
 
-        this.courseStudentRepository.deleteById(registration.get().getId());
+        this.courseStudentRepository.deleteById(registration.getId());
 
         return RestResponse.success();
     }
@@ -98,17 +97,15 @@ public class CourseStudentController extends BaseController {
      */
     @PostMapping(value = "/action/user/course/{id}/file-copy")
     public RestResponse<?> copyCourseFiles(@PathVariable int id, @RequestBody CourseCopyFileRequest request) {
-        final Optional<CourseStudentEntity> entity =
-            this.courseStudentRepository.findByStudentEmailAndCourseId(this.currentUserName(), id);
+        final CourseStudentEntity registration =
+            this.courseStudentRepository.findByStudentEmailAndCourseId(this.currentUserName(), id).orElse(null);
 
         // Check if course exists and is not already deleted
-        if (!entity.isPresent() || entity.get().getCourse().isDeleted()) {
+        if (registration == null || registration.getCourse().isDeleted()) {
             return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course has not been found");
         }
 
-        final CourseStudentEntity registration = entity.get();
         final CourseEntity course = registration.getCourse();
-
 
         // Resolve course file paths
         if (course.getFiles().size() == 0) {
