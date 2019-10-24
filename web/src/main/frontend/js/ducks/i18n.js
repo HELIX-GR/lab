@@ -1,6 +1,8 @@
 import i18n from '../service/i18n';
 import moment from '../moment-localized';
 
+import { setCookieValue } from '../util/cookie';
+
 // Actions
 
 const MESSAGES_REQUEST = 'locale/MESSAGES_REQUEST';
@@ -55,5 +57,7 @@ const getMessages = (locale) => (dispatch) => {
 };
 
 export const changeLocale = (locale) => (dispatch) => {
+  setCookieValue('helix-cookie-locale', locale);
+
   return dispatch(getMessages(locale));
 };

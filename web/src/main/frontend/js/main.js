@@ -1,5 +1,7 @@
 import store from './store';
 import renderRoot from './root';
+import { getCookieValue } from './util/cookie';
+
 import { setCsrfToken } from './ducks/meta';
 import { changeLocale } from './ducks/i18n';
 import { refreshProfile } from './ducks/user';
@@ -13,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const rootEl = document.querySelector(rootSelector);
 
   // TODO: read from non-httponly "locale" cookie
-  const locale = "en-GB";
+  const locale = getCookieValue('helix-cookie-locale') || 'en-GB';
 
   const token = document.querySelector("meta[name=_csrf]")
     .getAttribute('content');
