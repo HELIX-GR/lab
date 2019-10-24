@@ -148,6 +148,15 @@ class FileSystem extends Component {
     }
   }
 
+  setFolderFromBreadcrumb(item) {
+    this.setState({
+      folder: item.folder
+    }, () => {
+      const folder = this.findFolderFromPath();
+      this.props.setPath(item.folder, item.folder.name);
+    });
+  }
+
   renderHeader() {
     const folder = this.findFolderFromPath();
     const hierarchy = this.getFolderHierarchy(folder.path);
@@ -163,7 +172,7 @@ class FileSystem extends Component {
                   key={i}
                   onClick={(e) => {
                     if (item && item.folder) {
-                      this.setState({ folder: item.folder });
+                      this.setFolderFromBreadcrumb(item);
                     }
                   }}
                   className="breadcrumbs-part">{item.name}
