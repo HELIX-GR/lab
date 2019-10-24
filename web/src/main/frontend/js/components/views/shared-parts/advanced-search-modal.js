@@ -66,7 +66,7 @@ class AdvancedSearchModal extends React.Component {
           <a href="" className="close" onClick={(e) => { e.preventDefault(); this.props.toggle(); }}></a>
 
           <div className="form-title">
-            <FormattedMessage id="advanced-search.title" defaultMessage="Advanced Search" />
+            <FormattedMessage id="advanced-search.title" />
           </div>
 
           <form>

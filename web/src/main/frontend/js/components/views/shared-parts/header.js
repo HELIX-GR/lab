@@ -84,13 +84,13 @@ class Header extends React.Component {
                   <SecureContent roles={[Roles.BETA_ACADEMIC, Roles.STANDARD_ACADEMIC]}>
                     <li><Link to={StaticRoutes.COURSES_ADMIN}><FormattedMessage id="header.courses-professor" /></Link></li>
                   </SecureContent>
-                  <li><a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/" target="_blank"><FormattedMessage id="header.guides" defaultMessage="Guides" /></a></li>
-                  <li><a href="https://jupyterlab.readthedocs.io/en/latest/user/interface.html" target="_blank"><FormattedMessage id="header.courses" defaultMessage="Courses" /></a></li>
+                  <li><a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/" target="_blank"><FormattedMessage id="header.guides" /></a></li>
+                  <li><a href="https://jupyterlab.readthedocs.io/en/latest/user/interface.html" target="_blank"><FormattedMessage id="header.courses" /></a></li>
                 </ul>
               </li>
               <li id="menu-item-project" className="menu-item aux-item has-sub-menu">
                 <a href="#">
-                  <FormattedMessage id="header.about" defaultMessage="About" />
+                  <FormattedMessage id="header.about" />
                 </a>
                 <ul className="sub-menu">
                   <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.WhatIsHelix])}><span>What is HELIX?</span></a></li>
@@ -107,7 +107,7 @@ class Header extends React.Component {
               </li>
               <li id="menu-item-news" className="menu-item aux-item has-sub-menu">
                 <a href="#">
-                  <FormattedMessage id="header.news" defaultMessage="News" />
+                  <FormattedMessage id="header.news" />
                 </a>
                 <ul className="sub-menu">
                   <li><a href="https://hellenicdataservice.gr/news/"><span>News </span></a></li>

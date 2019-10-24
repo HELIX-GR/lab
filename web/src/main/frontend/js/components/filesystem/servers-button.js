@@ -53,11 +53,11 @@ class ServerButton extends React.Component {
       <div>
         {serverStage == 0 &&
           <div id="Popover1" className="button-notebook" onClick={this.toggle}>
-            <FormattedMessage id="Server.ChoseBtn" defaultMessage="Servers" />
+            <FormattedMessage id="server-selection.buttons.select" />
             <i className="fa fa-crosshairs"></i>
 
             <Modal isOpen={this.state.popoverOpen} toggle={this.toggle} >
-              <ModalHeader toggle={this.toggle}><FormattedMessage id="server-list.servers" defaultMessage="Avaliable Servers" /></ModalHeader>
+              <ModalHeader toggle={this.toggle}><FormattedMessage id="server-selection.title" /></ModalHeader>
 
               <ModalBody>
                 <ServerList kernels={this.props.kernels} servers={this.props.servers} selectServer={(server, kernel) => this.onSelectServer(server, kernel)} />
@@ -81,7 +81,7 @@ class ServerButton extends React.Component {
 
         {serverStage == 3 &&
           <div className="button-notebook" onClick={() => this.props.stopNotebookServer(this.props.selectedHub.id)}>
-            <FormattedMessage id="Server.StopBtn" defaultMessage="Close Server" />
+            <FormattedMessage id="server-selection.buttons.stop-server" />
             <i className="fa fa-stop"></i>
           </div>}
 

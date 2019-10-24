@@ -5,13 +5,24 @@
     "accept": "Accept"
   },
   "error": {
-    "generic":"Unknown error has occurred",
+    "file-system": {
+      "no-server-selected": "You need to start a Notebook Server First"
+    },
+    "generic": "Unknown error has occurred",
     "validation": {
       "Default": "Field {field} value is invalid",
       "Email": "Field {field} must be a valid email",
       "NotBlank": "Field {field} is required",
       "NotEmpty": "Field {field} is required",
       "Size": "Field {field} size must be in the interval {min} to {max}"
+    }
+  },
+  "file-system": {
+    "headers": {
+      "name": "Όνομα Αρχείου",
+      "type": "Τύπος Αρχείου",
+      "size": "Μέγεθος Αρχείου",
+      "modified": "Τροποποιήθηκε"
     }
   },
   "locales": {
@@ -23,6 +34,13 @@
     "login": "Είσοδος",
     "subtitle": "Εισοδος στο λογαριασμό σας",
     "failure": "Το όνομα χρήστη ή/και ο κωδικός είναι λάθος"
+  },
+  "server-selection": {
+    "title": "Διαθέσιμοι Servers",
+    "buttons": {
+      "select": "Servers",
+      "stop-server": "Stop Server"
+    }
   },
   "header": {
     "courses-professor": "Διαχείριση Μαθημάτων",
@@ -72,16 +90,6 @@
   },
   "results": {
     "advanced-search": "Σύνθετη Αναζήτηση"
-  },
-  "server-list": {
-    "servers": "Διαθέσιμοι Kernels"
-  },
-  "filetable": {
-    "FileName": "Όνομα Αρχείου",
-    "FileType": "Τύπος Αρχείου",
-    "FileSize": "Μέγεθος Αρχείου",
-    "LastModified": "Τροποποιήθηκε",
-    "LastUpdate": "Τελευταία ενημέρωση: "
   },
   "featured": {
     "first": {

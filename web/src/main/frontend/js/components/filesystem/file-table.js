@@ -54,10 +54,10 @@ export default function FileTable({ props }) {
           <TableHead>
             <TableRow  >
               <TableCell width="66px"></TableCell>
-              <TableCell tooltip="File Name"><FormattedMessage id="filetable.FileName" defaultMessage="File Name" /></TableCell>
-              <TableCell tooltip="File type"><FormattedMessage id="filetable.FileType" defaultMessage="File Type" /></TableCell>
-              <TableCell tooltip="File Size"><FormattedMessage id="filetable.FileSize" defaultMessage="File Size" /></TableCell>
-              <TableCell tooltip="Last Modified"><FormattedMessage id="filetable.LastModified" defaultMessage="Last Modified" /></TableCell>
+              <TableCell tooltip="File Name"><FormattedMessage id="file-system.headers.name" /></TableCell>
+              <TableCell tooltip="File type"><FormattedMessage id="file-system.headers.type" /></TableCell>
+              <TableCell tooltip="File Size"><FormattedMessage id="file-system.headers.size" /></TableCell>
+              <TableCell tooltip="Last Modified"><FormattedMessage id="file-system.headers.modified" /></TableCell>
             </TableRow>
           </TableHead>
 

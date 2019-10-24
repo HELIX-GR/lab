@@ -5,6 +5,9 @@
     "accept": "Accept"
   },
   "error": {
+    "file-system": {
+      "no-server-selected": "You need to start a Notebook Server First"
+    },
     "generic": "Unknown error has occurred",
     "validation": {
       "Default": "Field {field} value is invalid",
@@ -12,6 +15,14 @@
       "NotBlank": "Field {field} is required",
       "NotEmpty": "Field {field} is required",
       "Size": "Field {field} size must be in the interval {min} to {max}"
+    }
+  },
+  "file-system": {
+    "headers": {
+      "name": "Name",
+      "type": "Type",
+      "size": "Size",
+      "modified": "Last Modified"
     }
   },
   "locales": {
@@ -23,6 +34,13 @@
     "login": "Login",
     "subtitle": "Sign-in into your account",
     "failure": "The username or password is incorrect"
+  },
+  "server-selection": {
+    "title": "Available Servers",
+    "buttons": {
+      "select": "Servers",
+      "stop-server": "Stop Server"
+    }
   },
   "header": {
     "courses-professor": "Manage Courses",
@@ -72,16 +90,6 @@
   },
   "results": {
     "advanced-search": "Advanced Search"
-  },
-  "server-list": {
-    "servers": "Available Servers"
-  },
-  "filetable": {
-    "FileName": "File Name",
-    "FileType": "File Type",
-    "FileSize": "File Size",
-    "LastModified": "Last Modified",
-    "LastUpdate": "Last Update: "
   },
   "featured": {
     "first": {

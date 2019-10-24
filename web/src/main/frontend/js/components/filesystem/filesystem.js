@@ -140,7 +140,7 @@ class FileSystem extends Component {
         window.open(this.props.endpoint + "/notebooks/" + this.props.path + this.props.selectedFile, "_blank");
       }
       else {
-        toast.warn(<FormattedMessage id="Toast.NoServer" defaultMessage="You need to start a Notebook Server First" />);
+        toast.warn(<FormattedMessage id="error.file-system.no-server-selected" />);
       }
     } else if (type === 'Folder') {
       this.setState({ folder: folder.folders[index] });
