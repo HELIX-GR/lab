@@ -43,14 +43,57 @@
     }
   },
   "header": {
-    "courses-professor": "Manage Courses",
-    "courses-student": "My Courses",
-    "files": "My Files",
-    "guides": "Guides",
-    "courses": "Courses",
-    "whatislab": "What is Helix Lab?",
-    "about": "About",
-    "news": "News"
+    "menu": {
+      "courses": "Courses",
+      "courses-professor": "Manage Courses",
+      "courses-student": "My Courses",
+      "data": {
+        "title": "Data"
+      },
+      "files": "My Files",
+      "guides": "Guides",
+      "pubs": {
+        "title": "Pubs"
+      },
+      "lab": {
+        "title": "Lab"
+      },
+      "project": {
+        "title": "About",
+        "items": {
+          "about": "About",
+          "what-is-helix": "What is HELIX?",
+          "services": "Services",
+          "faq": "FAQ",
+          "publish-data": "Publish Data",
+          "software": "Software",
+          "the-project": "The project",
+          "media": "Media",
+          "acknowledge-helix": "Acknowledge HELIX",
+          "contact": "Contact",
+          "terms-of-use": "Terms of use",
+          "subjects": "Subjects"
+        }
+      },
+      "news": {
+        "title": "News",
+        "items": {
+          "news": "News",
+          "events": "Events",
+          "actions": "Actions"
+        }
+      },
+      "login": {
+        "items": {
+          "signed-in": "Signed in as {username}",
+          "account": "Account Settings",
+          "collections": "My Collections",
+          "favorites": "Favorites",
+          "help": "Help",
+          "logout": "Log out"
+        }
+      }
+    }
   },
   "footer": {
     "columns": {

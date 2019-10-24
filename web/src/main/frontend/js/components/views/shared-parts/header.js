@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 import { bindActionCreators } from 'redux';
+import { injectIntl } from 'react-intl';
 import { Link, NavLink } from 'react-router-dom';
 import { FormattedMessage, } from 'react-intl';
 
@@ -26,15 +27,22 @@ class Header extends React.Component {
 
   constructor(props) {
     super(props);
-    this.changeLocale = this.changeLocale.bind(this);
 
+    this.onLocaleChange = this.onLocaleChange.bind(this);
+    this.onLogout = this.onLogout.bind(this);
   }
 
   static defaultProps = {
     locale: 'en-GB',
   }
 
-  changeLocale(e, locale) {
+  onLogout(e) {
+    e.preventDefault();
+
+    this.props.logout();
+  }
+
+  onLocaleChange(e, locale) {
     e.preventDefault();
 
     this.props.changeLocale(locale);
@@ -45,7 +53,10 @@ class Header extends React.Component {
   }
 
   render() {
-    const authenticated = (this.props.profile != null);
+    const { profile } = this.props;
+    const authenticated = (profile != null);
+
+    const _t = this.props.intl.formatMessage;
 
     return (
       <header className="header">
@@ -76,45 +87,54 @@ class Header extends React.Component {
                 </NavLink>
                 <ul className="sub-menu">
                   <SecureContent roles={RoleGroups.LAB}>
-                    <li><Link to={StaticRoutes.FILESYSTEM}><FormattedMessage id="header.files" /></Link></li>
+                    <li><Link to={StaticRoutes.FILESYSTEM}><FormattedMessage id="header.menu.files" /></Link></li>
                   </SecureContent>
                   <SecureContent roles={[Roles.BETA_STUDENT, Roles.STANDARD_STUDENT]}>
-                    <li><Link to={StaticRoutes.COURSES}><FormattedMessage id="header.courses-student" /></Link></li>
+                    <li><Link to={StaticRoutes.COURSES}><FormattedMessage id="header.menu.courses-student" /></Link></li>
                   </SecureContent>
                   <SecureContent roles={[Roles.BETA_ACADEMIC, Roles.STANDARD_ACADEMIC]}>
-                    <li><Link to={StaticRoutes.COURSES_ADMIN}><FormattedMessage id="header.courses-professor" /></Link></li>
+                    <li><Link to={StaticRoutes.COURSES_ADMIN}><FormattedMessage id="header.menu.courses-professor" /></Link></li>
                   </SecureContent>
-                  <li><a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/" target="_blank"><FormattedMessage id="header.guides" /></a></li>
-                  <li><a href="https://jupyterlab.readthedocs.io/en/latest/user/interface.html" target="_blank"><FormattedMessage id="header.courses" /></a></li>
+                  <li>
+                    <a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/" target="_blank">
+                      <FormattedMessage id="header.menu.guides" />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://jupyterlab.readthedocs.io/en/latest/user/interface.html" target="_blank">
+                      <FormattedMessage id="header.menu.courses" />
+                    </a>
+                  </li>
                 </ul>
               </li>
               <li id="menu-item-project" className="menu-item aux-item has-sub-menu">
                 <a href="#">
-                  <FormattedMessage id="header.about" />
+                  <FormattedMessage id="header.menu.project.title" />
                 </a>
                 <ul className="sub-menu">
-                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.WhatIsHelix])}><span>What is HELIX?</span></a></li>
-                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Services])}><span> Services </span></a></li>
-                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.FAQ])}><span>FAQ</span></a></li>
-                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.PublishData])}><span>Publish Data </span></a></li>
-                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Software])}><span>Software </span></a></li>
-                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Project])}><span>The project </span></a></li>
-                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Media])}><span>Media </span></a></li>
-                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.AcknowledgeHelix])}><span>Acknowledge Helix </span></a></li>
-                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Contact])}><span>Contact </span></a></li>
-                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.TermsOfUse])}><span>Terms of use </span></a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.WhatIsHelix])}>{_t({ id: 'header.menu.project.items.what-is-helix' })}</a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Services])}>{_t({ id: 'header.menu.project.items.services' })}</a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.FAQ])}>{_t({ id: 'header.menu.project.items.faq' })}</a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.PublishData])}>{_t({ id: 'header.menu.project.items.publish-data' })}</a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Software])}>{_t({ id: 'header.menu.project.items.software' })}</a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Project])}>{_t({ id: 'header.menu.project.items.the-project' })}</a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Media])}>{_t({ id: 'header.menu.project.items.media' })}</a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.AcknowledgeHelix])}>{_t({ id: 'header.menu.project.items.acknowledge-helix' })}</a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.Contact])}>{_t({ id: 'header.menu.project.items.contact' })}</a></li>
+                  <li><a href={buildPath(DynamicRoutes.PROJECT_PAGE, [WordPressPages.TermsOfUse])}>{_t({ id: 'header.menu.project.items.terms-of-use' })}</a></li>
                 </ul>
               </li>
               <li id="menu-item-news" className="menu-item aux-item has-sub-menu">
                 <a href="#">
-                  <FormattedMessage id="header.news" />
+                  <FormattedMessage id="header.menu.news.title" />
                 </a>
                 <ul className="sub-menu">
-                  <li><a href="https://hellenicdataservice.gr/news/"><span>News </span></a></li>
-                  <li><a href="https://hellenicdataservice.gr/news/events/"><span>Events</span></a></li>
+                  <li><a href={StaticRoutes.NEWS}>{_t({ id: 'header.menu.news.items.news' })}</a></li>
+                  <li><a href={StaticRoutes.EVENTS}>{_t({ id: 'header.menu.news.items.events' })}</a></li>
+                  <li><a href={StaticRoutes.ACTIONS}>{_t({ id: 'header.menu.news.items.actions' })}</a></li>
                 </ul>
               </li>
-              {authenticated && this.props.profile.roles.includes('ROLE_ADMIN') &&
+              {authenticated && profile.roles.includes('ROLE_ADMIN') &&
                 <li id="menu-item-admin" className="menu-item aux-item">
                   <NavLink to='/admin/'> Admin </NavLink>
                 </li>
@@ -124,7 +144,7 @@ class Header extends React.Component {
                 <a href="" onClick={(e) => e.preventDefault()}>{this.locale}</a>
                 <ul className="sub-menu">
                   <li>
-                    <a href="" onClick={(e) => this.changeLocale(e, this.props.locale === EnumLocale.EL ? EnumLocale.EN : EnumLocale.EL)}>
+                    <a href="" onClick={(e) => this.onLocaleChange(e, this.props.locale === EnumLocale.EL ? EnumLocale.EN : EnumLocale.EL)}>
                       {this.props.locale === EnumLocale.EL ? 'EN' : 'ΕΛ'}
                     </a>
                   </li>
@@ -148,16 +168,17 @@ class Header extends React.Component {
                 <ul className="menu-items">
                   <li id="menu-item-account" className="menu-item aux-item has-sub-menu">
                     <a>
-                      <img className="account-icon" src={this.props.profile.imageUrl || '/images/svg/Avatar.svg'} alt="Account tab" />
+                      <img className="account-icon" src={profile.imageUrl || '/images/svg/Avatar.svg'} alt="Account tab" />
                     </a>
                     <ul className="sub-menu">
                       {authenticated &&
-                        <li><a href="#">Signed in as {this.props.profile.username}</a></li>
+                        <li><a>{_t({ id: 'header.menu.login.items.signed-in' }, { username: profile.username })}</a></li>
                       }
-                      <li><a href="#">Account</a></li>
-                      <li><a href="#">Help</a></li>
-                      <li><a href="#">Settings</a></li>
-                      <li><a href="#" onClick={(e) => { e.preventDefault(); this.props.logout(); }}>Log out</a></li>
+                      <li><a href={StaticRoutes.PROFILE}>{_t({ id: 'header.menu.login.items.account' })}</a></li>
+                      <li><a href={StaticRoutes.FAVORITES}>{_t({ id: 'header.menu.login.items.favorites' })}</a></li>
+                      <li><a href={StaticRoutes.COLLECTIONS}>{_t({ id: 'header.menu.login.items.collections' })}</a></li>
+                      <li><a href={StaticRoutes.PROJECT}>{_t({ id: 'header.menu.login.items.help' })}</a></li>
+                      <li><a href="#" onClick={this.onLogout}>{_t({ id: 'header.menu.login.items.logout' })}</a></li>
                       <li><a href="https://goo.gl/forms/BusjilnDlJhIDrN32" target="_blank"> Report a bug <i className="fa fa-bug"></i></a></li>
                     </ul>
                   </li>
@@ -196,4 +217,4 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
 });
 
-export default ReactRedux.connect(mapStateToProps, mapDispatchToProps, mergeProps)(Header);
+export default ReactRedux.connect(mapStateToProps, mapDispatchToProps, mergeProps)(injectIntl(Header));

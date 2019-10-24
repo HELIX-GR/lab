@@ -43,14 +43,57 @@
     }
   },
   "header": {
-    "courses-professor": "Διαχείριση Μαθημάτων",
-    "courses-student": "Τα Μαθήματα μου",
-    "files": "Τα Αρχεία μου",
-    "guides": "Οδηγοί",
-    "courses": "Μαθήματα",
-    "whatislab": "Τι είναι το Lab?",
-    "about": "Το έργο",
-    "news": "Νέα"
+    "menu": {
+      "courses": "Μαθήματα",
+      "courses-professor": "Διαχείριση Μαθημάτων",
+      "courses-student": "Τα Μαθήματα μου",
+      "data": {
+        "title": "Data"
+      },
+      "files": "Τα Αρχεία μου",
+      "guides": "Οδηγοί",
+      "pubs": {
+        "title": "Pubs"
+      },
+      "lab": {
+        "title": "Lab"
+      },
+      "project": {
+        "title": "Σχετικά",
+        "items": {
+          "about": "Σχετικά",
+          "what-is-helix": "Τί είναι το HELIX;",
+          "services": "Υπηρεσίες",
+          "faq": "FAQ",
+          "publish-data": "Δημοσιεύστε Δεδομένα",
+          "software": "Λογισμικό",
+          "the-project": "Το έργο",
+          "media": "Μέσα",
+          "acknowledge-helix": "Αναφέρετε το HELIX",
+          "contact": "Επικοινωνία",
+          "terms-of-use": "Όροι χρήσης",
+          "subjects": "Θεματικές κατηγορίες"
+        }
+      },
+      "news": {
+        "title": "Νέα",
+        "items": {
+          "news": "Νέα",
+          "events": "Εκδηλώσεις",
+          "actions": "Δράσεις"
+        }
+      },
+      "login": {
+        "items": {
+          "signed-in": "Είσοδος ως {username}",
+          "account": "Λογαριασμός",
+          "collections": "Οι συλλογές μου",
+          "favorites": "Σελιδοδείκτες",
+          "help": "Βοήθεια",
+          "logout": "Έξοδος"
+        }
+      }
+    }
   },
   "footer": {
     "columns": {

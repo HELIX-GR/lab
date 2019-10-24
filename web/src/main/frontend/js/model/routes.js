@@ -15,15 +15,20 @@ export const ExternalRoutes = {
 /**
  * Static routes
  */
+const ACTIONS = 'https://hellenicdataservice.gr/news/actions/';
 const ADMIN = '/admin/';
+const COLLECTIONS = 'https://hellenicdataservice.gr/collections/';
 const CORE = 'https://hellenicdataservice.gr';
 const COURSES = '/courses';
 const COURSES_ADMIN = '/courses/admin';
+const EVENTS = 'https://hellenicdataservice.gr/news/events/';
+const FAVORITES = 'https://hellenicdataservice.gr/favorites/';
 const FILESYSTEM = '/filesystem/';
 const HOME = '/';
-const NEWS = '/news/';
+const PROFILE = 'https://hellenicdataservice.gr/profile/';
+const NEWS = 'https://hellenicdataservice.gr/news/';
 const NOTEBOOK_VIEWER = 'http://nbviewer.jupyter.org';
-const PROJECT = '/project/*';
+const PROJECT = 'https://hellenicdataservice.gr/project/';
 const RESULTS = '/results/';
 
 const GOOGLE = '/login/google';
@@ -32,10 +37,14 @@ const HELIX = '/login/helix';
 const SAML = '/saml/login';
 
 export const StaticRoutes = {
+  ACTIONS,
   ADMIN,
+  COLLECTIONS,
   CORE,
   COURSES,
   COURSES_ADMIN,
+  EVENTS,
+  FAVORITES,
   FILESYSTEM,
   HOME,
   LOGIN: {
@@ -46,6 +55,7 @@ export const StaticRoutes = {
   },
   NEWS,
   NOTEBOOK_VIEWER,
+  PROFILE,
   PROJECT,
   RESULTS,
 };
