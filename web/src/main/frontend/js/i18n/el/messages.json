@@ -1,4 +1,22 @@
 {
+  "collections": {
+    "create.title": "Create Collection",
+    "create.text.placeholder": "Enter a name for the collection ...",
+    "create.success": "Collection {title} has been created",
+    "create.failure": "Collection creation has failed",
+    "update.title": "Update Collection",
+    "update.text.placeholder": "Enter a new name for the collection ...",
+    "update.success": "Collection {title} has been updated",
+    "update.failure": "Collection update has failed",
+    "delete.title": "Delete Collection",
+    "delete.text.placeholder": "Do you want to delete collection {title} permanently?",
+    "delete.success": "Collection {title} has been deleted",
+    "delete.failure": "Collection deletion has failed",
+    "last-modified": "lasted saved {when}",
+    "manager.title": "Select Collections",
+    "add-favorite.failure": "Failed to add favorite to collection",
+    "remove-favorite.failure": "Failed to remove favorite from collection"
+  },
   "cookie": {
     "consent": "This website uses cookies to enhance the user experience.",
     "learn-more": "Learn more",
@@ -41,6 +59,13 @@
       "select": "Servers",
       "stop-server": "Stop Server"
     }
+  },
+  "tooltip": {
+    "add-favorite": "Προσθήκη στα αγαπημένα",
+    "add-to-user-folder": "Προσθήκη στα αρχεία μου",
+    "manage-collections": "Manage collections",
+    "remove-favorite": "Διαγραφή από τα αγαπημένα",
+    "view-publication": "Προβολή δημοσίευσης"
   },
   "header": {
     "menu": {
@@ -165,11 +190,6 @@
     "login-required": "Παρακαλώ συνδεθείτε για να προσθέσετε το αποτέλεσμα στα αγαπημένα σας",
     "add-error-notebook": "Αποτυχία προσθήκης notebook δεδομένων στα αγαπημένα",
     "remove-error-notebook": "Αποτυχία διαγραφής notebook από τα αγαπημένα"
-  },
-  "tooltip": {
-    "add-favorite": "Προσθήκη στα αγαπημένα",
-    "remove-favorite": "Διαγραφή από τα αγαπημένα",
-    "add-to-user-folder": "Προσθήκη στα αρχεία μου"
   },
   "advanced-search": {
     "title": "Προχωρημένη Αναζήτηση",

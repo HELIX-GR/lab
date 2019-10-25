@@ -181,7 +181,6 @@ class SearchPage extends React.Component {
 const mapStateToProps = (state) => ({
   config: state.config,
   locale: state.i18n.locale,
-  profile: state.user.profile,
   search: state.ui.search,
 });
 

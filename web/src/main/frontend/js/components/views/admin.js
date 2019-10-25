@@ -60,7 +60,7 @@ class Admin extends React.Component {
   };
 
   componentWillMount() {
-    if (this.props.profile.roles.includes('ROLE_ADMIN')) {
+    if (this.props.account.roles.includes('ROLE_ADMIN')) {
       this.getData();
     } else {
       this.props.history.push(StaticRoutes.HOME);
@@ -170,6 +170,7 @@ class Admin extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    account: state.user.profile ? state.user.profile.account : null,
     kernels: state.config.kernels,
     servers: state.admin.servers,
     serversLastUpdate: state.admin.serversLastUpdate,
@@ -179,7 +180,6 @@ function mapStateToProps(state) {
     whitelistLastUpdate: state.admin.whitelistLastUpdate,
     userServers: state.admin.userServers,
     userServersLastUpdate: state.admin.userServersLastUpdate,
-    profile: state.user.profile,
   };
 }
 

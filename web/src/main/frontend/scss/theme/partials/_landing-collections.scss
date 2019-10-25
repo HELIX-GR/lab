@@ -1,0 +1,94 @@
+.collection-manager-modal {
+  height: 450px;
+
+  .form-title {
+    font-size: 25px;
+    font-weight: 500;
+    line-height: 29px;
+    color: #262626;
+    margin: 24px 0px 0px 24px;
+  }
+
+  .fields {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+
+    .fields-group {
+      flex: 1 1 25%;
+      margin-left: 10px;
+      margin-right: 36px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .param-box {
+
+    .switches {
+      margin-top: 10px;
+      max-height: 160px;
+
+      .checkbox-text {
+        font-size: 12px;
+        line-height: 14px;
+        font-weight: 400;
+        padding-left: 15px;
+        margin-top: 2px;
+        color: #67676A;
+      }
+
+      label {
+        display: block;
+        margin-left: 10px;
+        padding: 7px 0;
+        position: relative;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 14px;
+        color: rgb(103, 103, 106);
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        margin-bottom: 5px;
+
+        input {
+          position: relative;
+          top: 2px;
+          background-color: white;
+          border: 1px solid $main-black;
+          border-radius: 2px;
+          margin-right: 10px;
+        }
+      }
+    }
+
+  }
+
+  .close {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    width: 25px;
+    height: 25px;
+  }
+
+  .close:before,
+  .close:after {
+    position: absolute;
+    left: 12px;
+    content: ' ';
+    height: 20px;
+    width: 1px;
+    background-color: #707070;
+    top: 2px;
+  }
+
+  .close:before {
+    transform: rotate(45deg);
+  }
+
+  .close:after {
+    transform: rotate(-45deg);
+  }
+
+}

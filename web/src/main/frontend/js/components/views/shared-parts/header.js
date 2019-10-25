@@ -53,9 +53,8 @@ class Header extends React.Component {
   }
 
   render() {
-    const { profile } = this.props;
-    const authenticated = (profile != null);
-
+    const { account } = this.props;
+    const authenticated = (account != null);
     const _t = this.props.intl.formatMessage;
 
     return (
@@ -134,7 +133,7 @@ class Header extends React.Component {
                   <li><a href={StaticRoutes.ACTIONS}>{_t({ id: 'header.menu.news.items.actions' })}</a></li>
                 </ul>
               </li>
-              {authenticated && profile.roles.includes('ROLE_ADMIN') &&
+              {authenticated && account.roles.includes('ROLE_ADMIN') &&
                 <li id="menu-item-admin" className="menu-item aux-item">
                   <NavLink to='/admin/'> Admin </NavLink>
                 </li>
@@ -168,11 +167,11 @@ class Header extends React.Component {
                 <ul className="menu-items">
                   <li id="menu-item-account" className="menu-item aux-item has-sub-menu">
                     <a>
-                      <img className="account-icon" src={profile.imageUrl || '/images/svg/Avatar.svg'} alt="Account tab" />
+                      <img className="account-icon" src={account.imageUrl || '/images/svg/Avatar.svg'} alt="Account tab" />
                     </a>
                     <ul className="sub-menu">
                       {authenticated &&
-                        <li><a>{_t({ id: 'header.menu.login.items.signed-in' }, { username: profile.username })}</a></li>
+                        <li><a>{_t({ id: 'header.menu.login.items.signed-in' }, { username: account.username })}</a></li>
                       }
                       <li><a href={StaticRoutes.PROFILE}>{_t({ id: 'header.menu.login.items.account' })}</a></li>
                       <li><a href={StaticRoutes.FAVORITES}>{_t({ id: 'header.menu.login.items.favorites' })}</a></li>
@@ -202,7 +201,7 @@ class Header extends React.Component {
 
 const mapStateToProps = (state) => ({
   locale: state.i18n.locale,
-  profile: state.user.profile,
+  account: state.user.profile ? state.user.profile.account : null,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({

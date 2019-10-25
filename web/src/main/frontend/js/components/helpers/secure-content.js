@@ -29,13 +29,13 @@ class SecureContent extends React.Component {
       return false;
     }
 
-    const user = this.props.user;
-    if (!user) {
+    const account = this.props.account;
+    if (!account) {
       return false;
     }
 
     for (let role of roles) {
-      if (user.roles.indexOf(role) !== -1) {
+      if (account.roles.indexOf(role) !== -1) {
         return true;
       }
     }
@@ -59,7 +59,7 @@ class SecureContent extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user.profile
+    account: state.user.profile ? state.user.profile.account : null,
   };
 };
 

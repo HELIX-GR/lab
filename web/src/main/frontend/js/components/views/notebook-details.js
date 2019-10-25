@@ -20,10 +20,16 @@ import {
 } from '../../ducks/search';
 
 import {
+  addFavorite,
+  removeFavorite,
+} from '../../ducks/user';
+
+import {
   FormattedMessage,
 } from 'react-intl';
 
 import {
+  EnumCatalog,
   StaticRoutes,
 } from '../../model';
 
@@ -90,22 +96,8 @@ class NotebookDetails extends React.Component {
     return ((!n) || (loading));
   }
 
-  onSearchTag(e, tag) {
-    e.preventDefault();
-
-    this.props.searchAll(tag);
-    this.props.history.push(StaticRoutes.RESULTS);
-  }
-
   isFavoriteActive(handle) {
-    return false;
-    //return !!this.props.favorites.find(f => f.catalog === "LAB" && f.handle === handle);
-  }
-
-  toggleTooltip() {
-    this.setState({
-      tooltipOpen: !this.state.tooltipOpen
-    });
+    return !!this.props.favorites.find(f => f.catalog === EnumCatalog.LAB && f.handle === handle);
   }
 
   toggleFavorite(data) {
@@ -121,12 +113,25 @@ class NotebookDetails extends React.Component {
           }
 
           toast.dismiss();
-          toast.error(<FormattedMessage id={`favorite.${active ? 'remove' : 'add'}-error-notebook`} />);
+          toast.error(<FormattedMessage id={`favorite.${active ? 'remove' : 'add'}-error-publication`} />);
         });
     } else {
       toast.dismiss();
       toast.error(<FormattedMessage id='favorite.login-required' />);
     }
+  }
+
+  onSearchTag(e, tag) {
+    e.preventDefault();
+
+    this.props.searchAll(tag);
+    this.props.history.push(StaticRoutes.RESULTS);
+  }
+
+  toggleTooltip() {
+    this.setState({
+      tooltipOpen: !this.state.tooltipOpen
+    });
   }
 
   getViewerUrl() {
@@ -153,7 +158,7 @@ class NotebookDetails extends React.Component {
   }
 
   render() {
-    const { search: { notebook: n }, match: { params: { [PARAM_ID]: id } } } = this.props;
+    const { ckan, search: { notebook: n }, match: { params: { [PARAM_ID]: id } } } = this.props;
     const _t = this.props.intl.formatMessage;
 
     if (this.isLoading) {
@@ -237,11 +242,12 @@ class NotebookDetails extends React.Component {
                   <div className="result-icons">
                     <Favorite
                       active={this.isFavoriteActive(n.id)}
+                      catalog={EnumCatalog.LAB}
                       description={n.notes}
                       handle={n.id}
                       onClick={this.toggleFavorite}
                       title={n.title}
-                      url={`https://lab.hellenicdataservice.gr/notebook/${n.id}`}
+                      url={`${ckan.host}/dataset/${n.id}`}
                     />
                     {this.props.username &&
                       <React.Fragment>
@@ -323,12 +329,16 @@ class NotebookDetails extends React.Component {
 
 const mapStateToProps = (state) => ({
   ckan: state.config.ckan,
+  favorites: state.user.profile ? state.user.profile.favorites : [],
+  profile: state.user.profile,
   search: state.ui.search,
   username: state.user.username,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
+  addFavorite,
   getNotebookToFilesystem,
+  removeFavorite,
   searchAll,
   searchById,
 }, dispatch);
