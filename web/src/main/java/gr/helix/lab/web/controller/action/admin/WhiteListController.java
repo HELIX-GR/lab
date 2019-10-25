@@ -19,17 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gr.helix.core.common.domain.AccountEntity;
 import gr.helix.core.common.domain.HubKernelEntity;
+import gr.helix.core.common.domain.WhiteListEntryEntity;
+import gr.helix.core.common.domain.WhiteListEntryKernelEntity;
 import gr.helix.core.common.model.BasicErrorCode;
 import gr.helix.core.common.model.EnumRole;
 import gr.helix.core.common.model.RestResponse;
+import gr.helix.core.common.model.admin.WhiteListEntry;
 import gr.helix.core.common.repository.AccountRepository;
+import gr.helix.core.common.repository.WhiteListRepository;
 import gr.helix.lab.web.controller.action.BaseController;
-import gr.helix.lab.web.domain.WhiteListEntryEntity;
-import gr.helix.lab.web.domain.WhiteListEntryKernelEntity;
 import gr.helix.lab.web.model.admin.AdminErrorCode;
-import gr.helix.lab.web.model.admin.WhiteListEntry;
 import gr.helix.lab.web.repository.HubKernelRepository;
-import gr.helix.lab.web.repository.WhiteListRepository;
 
 @RestController
 @Secured({"ROLE_ADMIN"})

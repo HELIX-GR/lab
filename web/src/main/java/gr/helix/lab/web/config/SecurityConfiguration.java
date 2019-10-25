@@ -101,11 +101,12 @@ import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.CompositeFilter;
 
+import gr.helix.core.common.config.OAuthUserInfoDetailResolver;
 import gr.helix.core.common.repository.AccountRepository;
+import gr.helix.core.common.service.CustomUserDetailsService;
+import gr.helix.core.common.service.OAuthUserInfoTokenServices;
+import gr.helix.core.common.service.SAMLUserDetailsServiceImpl;
 import gr.helix.lab.web.logging.filter.MappedDiagnosticContextFilter;
-import gr.helix.lab.web.service.CustomUserDetailsService;
-import gr.helix.lab.web.service.OAuthUserInfoTokenServices;
-import gr.helix.lab.web.service.SAMLUserDetailsServiceImpl;
 
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true)

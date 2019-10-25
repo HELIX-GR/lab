@@ -41,14 +41,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import gr.helix.core.common.domain.AccountEntity;
 import gr.helix.core.common.domain.HubKernelEntity;
+import gr.helix.core.common.domain.WhiteListEntryEntity;
+import gr.helix.core.common.domain.WhiteListEntryKernelEntity;
 import gr.helix.core.common.model.EnumRole;
 import gr.helix.core.common.model.RestResponse;
 import gr.helix.core.common.repository.AccountRepository;
+import gr.helix.core.common.repository.WhiteListRepository;
 import gr.helix.lab.web.domain.CourseEntity;
 import gr.helix.lab.web.domain.CourseFileEntity;
 import gr.helix.lab.web.domain.CourseStudentEntity;
-import gr.helix.lab.web.domain.WhiteListEntryEntity;
-import gr.helix.lab.web.domain.WhiteListEntryKernelEntity;
 import gr.helix.lab.web.model.course.Course;
 import gr.helix.lab.web.model.course.CourseErrorCode;
 import gr.helix.lab.web.model.course.CourseRegistrationRequest;
@@ -58,7 +59,6 @@ import gr.helix.lab.web.model.course.CourseStudentImportResult;
 import gr.helix.lab.web.repository.CourseRepository;
 import gr.helix.lab.web.repository.CourseStudentRepository;
 import gr.helix.lab.web.repository.HubKernelRepository;
-import gr.helix.lab.web.repository.WhiteListRepository;
 
 @RestController
 @Secured({"ROLE_STANDARD_ACADEMIC"})
