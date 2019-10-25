@@ -1,4 +1,4 @@
-package gr.helix.lab.rpc.tests;
+package gr.helix.lab.userdata.rpc.tests;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -6,8 +6,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(properties = {"spring.profiles.active=testing"})
-public class ApplicationTests 
+@SpringBootTest(
+    properties = {
+        "spring.profiles.active=testing",
+        "spring.main.allow-bean-definition-overriding=true"
+    }
+)
+public class ApplicationTests
 {
 	@Test
 	public void contextLoads() {
