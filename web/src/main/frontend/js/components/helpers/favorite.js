@@ -10,6 +10,8 @@ import {
   EnumCatalog
 } from '../../model';
 
+const catalogs = Object.keys(EnumCatalog).map(k => EnumCatalog[k]);
+
 class Favorite extends React.Component {
 
   constructor(props) {
@@ -24,9 +26,13 @@ class Favorite extends React.Component {
 
   static propTypes = {
     active: PropTypes.bool.isRequired,
+    activeClass: PropTypes.string,
+    activeImage: PropTypes.string,
+    catalog: PropTypes.oneOf(catalogs).isRequired,
     description: PropTypes.string,
     handle: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
+    inactiveImage: PropTypes.string,
+    onClick: PropTypes.func,
     title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
   }
@@ -40,35 +46,47 @@ class Favorite extends React.Component {
   onClick(e) {
     e.preventDefault();
 
-    const { handle, title, description, url } = this.props;
+    const { catalog, handle, title, description, url } = this.props;
 
-    this.props.onClick({
-      catalog: EnumCatalog.LAB,
-      description,
-      handle,
-      title,
-      url,
-    });
+    if (this.props.onClick) {
+      this.props.onClick({
+        catalog,
+        description,
+        handle,
+        title,
+        url,
+      });
+    }
+  }
+
+  resolveImage() {
+    const { active, activeImage, inactiveImage } = this.props;
+
+    if ((active && !activeImage) || (!active && !inactiveImage)) {
+      return `/images/icons/various/Favorite_${active ? 'active' : 'inactive'}.svg`;
+    }
+
+    return active ? activeImage : inactiveImage;
   }
 
   render() {
-    const { active } = this.props;
+    const { active, activeClass = null } = this.props;
     const _t = this.props.intl.formatMessage;
 
     return (
-      <React.Fragment>
-        <div className={`btn-favorite ${active ? 'active' : ''}`} id={this.id}>
+      <>
+        <div className={`btn-favorite ${active ? activeClass ? activeClass : 'active' : ''}`} id={this.id}>
           <a onClick={(e) => this.onClick(e)}  >
             <img
-              src={`/images/icons/various/Favorite_${active ? 'active' : 'inactive'}.svg`}
-              style={{ width: (active ? 20 : 22), marginTop: 7 }}
+              src={this.resolveImage()}
+              style={{ width: 20, marginTop: 8 }}
             />
           </a>
         </div>
         <Tooltip placement="bottom" isOpen={this.state.tooltipOpen} target={this.id} toggle={this.toggle}>
           {_t({ id: active ? 'tooltip.remove-favorite' : 'tooltip.add-favorite' })}
         </Tooltip>
-      </React.Fragment>
+      </>
     );
   }
 }

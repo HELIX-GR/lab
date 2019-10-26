@@ -6,6 +6,9 @@ import { FormattedTime } from 'react-intl';
 import { removeUserServer } from '../../../ducks/admin';
 import { toast } from 'react-toastify';
 
+import { mdiPower } from '@mdi/js';
+
+import Icon from '@mdi/react';
 import ReactTable from 'react-table';
 
 class UserServerTable extends React.Component {
@@ -69,7 +72,7 @@ class UserServerTable extends React.Component {
       style: { textAlign: 'center', cursor: 'pointer' },
       Cell: props => (
         <a onClick={(e) => this.removeUserServer(e, props.original.id)}>
-          <i className="fa fa-trash"></i>
+          <Icon path={mdiPower} size={'16px'} color={'#d50000'} />
         </a>
       ),
       width: 30,

@@ -30,7 +30,7 @@
 		<jts.version>1.13</jts.version>
 		<log4j2.version>2.12.1</log4j2.version>
 		<postgresql.version>42.2.6</postgresql.version>
-		<spring-boot.version>2.1.7.RELEASE</spring-boot.version>
+		<spring-boot.version>2.1.8.RELEASE</spring-boot.version>
 		<helix-xfs-utils.version>0.0.1-SNAPSHOT</helix-xfs-utils.version>
 
 		<!-- Plugin versions -->

@@ -4,7 +4,7 @@ import java.time.ZonedDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import gr.helix.lab.web.model.admin.WhiteListEntry;
+import gr.helix.core.common.model.admin.WhiteListEntry;
 
 public class CourseStudent {
 

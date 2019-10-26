@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import gr.helix.core.common.domain.WhiteListEntryEntity;
 import gr.helix.lab.web.model.course.CourseStudent;
 
 @Entity(name = "CourseStudent")

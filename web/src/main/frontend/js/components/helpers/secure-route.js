@@ -20,18 +20,18 @@ class SecureRoute extends React.Component {
   }
 
   hasAnyRole(roles) {
-    const user = this.props.user;
+    const account = this.props.account;
 
     if ((!roles) || (roles.length === 0)) {
-      return (user != null);
+      return (account != null);
     }
 
-    if (!user) {
+    if (!account) {
       return false;
     }
 
     for (let role of roles) {
-      if (user.roles.indexOf(role) !== -1) {
+      if (account.roles.indexOf(role) !== -1) {
         return true;
       }
     }
@@ -39,8 +39,8 @@ class SecureRoute extends React.Component {
   }
 
   render() {
-    let { roles, user, ...rest } = this.props;
-    let authenticated = (user != null);
+    let { roles, account, ...rest } = this.props;
+    let authenticated = (account != null);
 
     if (!authenticated) {
       return (
@@ -64,7 +64,7 @@ class SecureRoute extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user.profile
+    account: state.user.profile ? state.user.profile.account : null,
   };
 };
 

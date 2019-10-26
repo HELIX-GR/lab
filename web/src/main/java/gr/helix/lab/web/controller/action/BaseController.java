@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import gr.helix.core.common.model.EnumRole;
 import gr.helix.core.common.model.security.User;
 import gr.helix.core.common.service.FileNamingStrategy;
-import gr.helix.lab.web.service.IAuthenticationFacade;
+import gr.helix.core.common.service.IAuthenticationFacade;
 
 public abstract class BaseController {
 
@@ -24,6 +24,10 @@ public abstract class BaseController {
     }
 
     protected String currentUserName() {
+        return this.authenticationFacade.getCurrentUser().getUsername();
+    }
+
+    protected String currentUserEmail() {
         return this.authenticationFacade.getCurrentUserEmail();
     }
 

@@ -1,4 +1,22 @@
 {
+  "collections": {
+    "create.title": "Create Collection",
+    "create.text.placeholder": "Enter a name for the collection ...",
+    "create.success": "Collection {title} has been created",
+    "create.failure": "Collection creation has failed",
+    "update.title": "Update Collection",
+    "update.text.placeholder": "Enter a new name for the collection ...",
+    "update.success": "Collection {title} has been updated",
+    "update.failure": "Collection update has failed",
+    "delete.title": "Delete Collection",
+    "delete.text.placeholder": "Do you want to delete collection {title} permanently?",
+    "delete.success": "Collection {title} has been deleted",
+    "delete.failure": "Collection deletion has failed",
+    "last-modified": "lasted saved {when}",
+    "manager.title": "Select Collections",
+    "add-favorite.failure": "Failed to add favorite to collection",
+    "remove-favorite.failure": "Failed to remove favorite from collection"
+  },
   "cookie": {
     "consent": "This website uses cookies to enhance the user experience.",
     "learn-more": "Learn more",
@@ -41,6 +59,13 @@
       "select": "Servers",
       "stop-server": "Stop Server"
     }
+  },
+  "tooltip": {
+    "add-favorite": "Add to favorites",
+    "add-to-user-folder": "Add to my folder",
+    "manage-collections": "Manage collections",
+    "remove-favorite": "Remove from favorite",
+    "view-publication": "View publication"
   },
   "header": {
     "menu": {
@@ -165,11 +190,6 @@
     "login-required": "Please login to add result to favorites",
     "add-error-notebook": "Failed to add notebook to favorites",
     "remove-error-notebook": "Failed to remove notebook from favorites"
-  },
-  "tooltip": {
-    "add-favorite": "Add to favorites",
-    "remove-favorite": "Remove from favorite",
-    "add-to-user-folder": "Add to my folder"
   },
   "advanced-search": {
     "title": "Advanced Search",
