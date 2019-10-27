@@ -49,8 +49,6 @@ public class HubController extends BaseController {
     @Value("${helix.rpc-server.enabled}")
     boolean                     isRpcServerEnabled;
     
-    Long                        defaultSpaceQuota = 18L * 1024L * 1024L * 1024L;
-    
     @Autowired
     AccountRepository           accountRepository;
 
@@ -69,6 +67,10 @@ public class HubController extends BaseController {
     @Autowired
     UserDataManagementService           jupyterHubService;
 
+    Long                        quotaForSpace = null; /* use defaults */
+    
+    Long                        quotaForNumberOfFiles = null; /* use defaults */
+    
     @PostMapping(value = "/action/server/start/{hubId}/{kernel}")
     public RestResponse<Object> startServer(@PathVariable int hubId, @PathVariable String kernel) {
         try {
@@ -151,7 +153,7 @@ public class HubController extends BaseController {
 
             if (this.isRpcServerEnabled) {
                 final AccountInfo accountInfo = new AccountInfo(currentUserId(), currentUserName());
-                if (!this.jupyterHubService.setupDirs(accountInfo, builder.getHost(), defaultSpaceQuota)) {
+                if (!this.jupyterHubService.setupDirs(accountInfo, builder.getHost(), quotaForSpace, quotaForNumberOfFiles)) {
                     return RestResponse.error(AdminErrorCode.NOTEBOOK_SERVER_INIT_FAILURE, "Failed to setup user directory!");
                 }
             }

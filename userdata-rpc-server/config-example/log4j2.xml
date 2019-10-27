@@ -10,7 +10,7 @@
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%-8t] %-5p %c{1.}:%L - %m%n" />
         </Console>
 
-        <RollingFile name="file" filename="${baseDir}/lab-rpc-server.log"
+        <RollingFile name="file" filename="${baseDir}/server.log"
             filepattern="${baseDir}/lab-rpc-server-%d{MM-dd-yyyy}-%i.log.gz">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1.}:%L - %m%n" />
             <Policies>
