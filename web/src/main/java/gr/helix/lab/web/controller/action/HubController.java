@@ -69,7 +69,7 @@ public class HubController extends BaseController {
 
     Long                        quotaForSpace = null; /* use defaults */
     
-    Long                        quotaForNumberOfFiles = null; /* use defaults */
+    Integer                     quotaForNumberOfFiles = null; /* use defaults */
     
     @PostMapping(value = "/action/server/start/{hubId}/{kernel}")
     public RestResponse<Object> startServer(@PathVariable int hubId, @PathVariable String kernel) {
@@ -150,10 +150,10 @@ public class HubController extends BaseController {
             }
 
             final URIBuilder builder = new URIBuilder(hubServer.getUrl());
-
+            
             if (this.isRpcServerEnabled) {
                 final AccountInfo accountInfo = new AccountInfo(currentUserId(), currentUserName());
-                if (!this.jupyterHubService.setupDirs(accountInfo, builder.getHost(), quotaForSpace, quotaForNumberOfFiles)) {
+                if (!this.jupyterHubService.setupDirectory(accountInfo, builder.getHost(), quotaForSpace, quotaForNumberOfFiles)) {
                     return RestResponse.error(AdminErrorCode.NOTEBOOK_SERVER_INIT_FAILURE, "Failed to setup user directory!");
                 }
             }

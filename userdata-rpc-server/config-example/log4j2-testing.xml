@@ -22,7 +22,7 @@
     
     <Loggers>
         
-        <Logger name="gr.helix.lab.rpc.tests" level="DEBUG" additivity="false">
+        <Logger name="gr.helix.lab" level="DEBUG" additivity="false">
             <AppenderRef ref="console" />
         </Logger>
         

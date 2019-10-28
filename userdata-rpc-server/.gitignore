@@ -19,6 +19,7 @@ docker-compose.yml
 /config/*.yml
 /.config-data/
 
+Scratch.java
 ScratchController.java
 ScratchTests.java
 Scratch*Tests.java

@@ -12,6 +12,7 @@ public class DefaultProjectNamingStrategy implements ProjectNamingStrategy
     public String getProjectName(String userName)
     {
         Assert.isTrue(!StringUtils.isEmpty(userName), "Expected a non-empty user name");
-        return userName.replaceAll("@", "__at__").replace('.', '_');
+        String projectName = userName.replaceAll("@", "__at__").replaceAll("[-.]", "_");
+        return projectName;
     }
 }
