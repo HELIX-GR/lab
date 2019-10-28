@@ -1,6 +1,7 @@
 /target/
 /logs/
 /.secrets/
+/data/
 
 /.factorypath
 /.apt_generated/
