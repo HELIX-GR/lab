@@ -1,105 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <artifactId>helix-lab-userdata-rpc-server</artifactId>
+	<artifactId>helix-lab-userdata-rpc-server</artifactId>
 	<name>[helix-lab] User-Data RPC Server</name>
 
-    <packaging>jar</packaging>
+	<packaging>jar</packaging>
 
-    <parent>
-        <groupId>gr.helix</groupId>
-        <artifactId>helix-lab-parent</artifactId>
-        <version>1.0.0</version>
-    </parent>
+	<parent>
+		<groupId>gr.helix</groupId>
+		<artifactId>helix-lab-parent</artifactId>
+		<version>1.0.0</version>
+	</parent>
 
-    <dependencies>
-        
+	<dependencies>
+
 		<dependency>
 			<groupId>gr.helix</groupId>
 			<artifactId>helix-core-common</artifactId>
 			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+          			<groupId>org.springframework.security.extensions</groupId>
+        			<artifactId>spring-security-saml2-core</artifactId>
+        		</exclusion>
+        		<exclusion>
+          			<groupId>org.springframework.security.oauth.boot</groupId>
+					<artifactId>spring-security-oauth2-autoconfigure</artifactId>
+        		</exclusion>
+			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>gr.helix</groupId>
 			<artifactId>xfs-utils</artifactId>
 			<version>${helix-xfs-utils.version}</version>
 		</dependency>
 
-        <!-- Spring-Boot starter dependencies -->
+		<!-- Spring-Boot starter dependencies -->
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- If packaging to WAR, mark dependency on embedded server as provided -->
-        <!--
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
-        </dependency> 
-        -->
-
-        <!-- log4j2 lifecycle hooks in web context  -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-web</artifactId>
-        </dependency>
-		
 		<dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        
-    </dependencies>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
 
-    <build>
-        <plugins>
-           
-            <!-- Use Spring-Boot to package as standalone executable JAR -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>exec</classifier>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            
-        </plugins>
-    </build>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- If packaging to WAR, mark dependency on embedded server as provided -->
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-tomcat</artifactId> 
+			<scope>provided</scope> </dependency> -->
+
+		<!-- log4j2 lifecycle hooks in web context -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+
+			<!-- Use Spring-Boot to package as standalone executable JAR -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>repackage</id>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<classifier>exec</classifier>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<systemProperties>
+						<property>
+							<name>log4j.configurationFile</name>
+							<value>classpath:config/log4j2-testing.xml</value>
+						</property>
+					</systemProperties>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
 
 </project>
