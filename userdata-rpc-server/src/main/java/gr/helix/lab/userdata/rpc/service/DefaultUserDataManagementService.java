@@ -5,19 +5,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
-import java.nio.file.attribute.FileAttribute;
-import java.nio.file.attribute.PosixFilePermission;
-import java.nio.file.attribute.PosixFilePermissions;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.EnumSet;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,22 +41,38 @@ public class DefaultUserDataManagementService implements UserDataManagementServi
     @Value("${helix.userdata.quota.space.default-hard-limit}")
     private long defaultHardLimitForSpace;
     
-    @Value("${helix.userdata.quota.space.soft-limit-percentage:90}")
-    private int softLimitPercentageForSpace;
-    
     @Value("${helix.userdata.quota.inodes.default-hard-limit}")
     private int defaultHardLimitForInodes;
-    
-    @Value("${helix.userdata.quota.inodes.soft-limit-percentage:90}")
-    private int softLimitPercentageForInodes;
 
+    private int softLimitPercentageForSpace;
+    
+    @Autowired
+    private void setSoftLimitPercentageForSpace(
+        @Value("${helix.userdata.quota.space.soft-limit-percentage:90}") int value)
+    {
+        Assert.isTrue(value > 0 && value <= 100, 
+            "Expected a percentage: should be a integer between 1 and 100 (inclusive)");
+        this.softLimitPercentageForSpace = value;
+    }
+    
+    private int softLimitPercentageForInodes;
+    
+    @Autowired
+    private void setSoftLimitPercentageForInodes(
+        @Value("${helix.userdata.quota.inodes.soft-limit-percentage:90}") int value)
+    {
+        Assert.isTrue(value > 0 && value <= 100, 
+            "Expected a percentage: should be a integer between 1 and 100 (inclusive)");
+        this.softLimitPercentageForInodes = value;
+    }
+    
     @Autowired
     private FileNamingStrategy fileNamingStrategy;
     
     @Autowired
     private ProjectNamingStrategy projectNamingStrategy;
     
-    void validateUserAccount(AccountInfo userAccount)
+    private void validateUserAccount(AccountInfo userAccount)
     {
         Assert.notNull(userAccount, "Expected an AccountInfo object");
         Assert.isTrue(userAccount.getId() != null && userAccount.getId() > 0, 
@@ -72,7 +81,7 @@ public class DefaultUserDataManagementService implements UserDataManagementServi
             "Expected a non-empty user name");
     }
     
-    Project resolveAsProject(AccountInfo userAccount)
+    private Project resolveAsProject(AccountInfo userAccount)
     {
         final String userName = userAccount.getName();
         final Path path = fileNamingStrategy.getUserDir(userName);
@@ -82,7 +91,7 @@ public class DefaultUserDataManagementService implements UserDataManagementServi
         return Project.of(projectId, projectName, path, userDataMountpoint);
     }
     
-    UserDataReport createReport(ProjectReport r)
+    private UserDataReport createReport(ProjectReport r)
     {
         Assert.notNull(r, "Expected a ProjectReport object");
         return new UserDataReport(

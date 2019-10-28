@@ -3,6 +3,10 @@ package gr.helix.lab.userdata.rpc.service;
 import java.nio.file.Path;
 import java.util.regex.Pattern;
 
+import javax.annotation.PostConstruct;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -13,6 +17,8 @@ import gr.helix.core.common.service.FileNamingStrategy;
 @Service
 public class DefaultFileNamingStrategy implements FileNamingStrategy
 {
+    private static final Logger logger = LoggerFactory.getLogger(DefaultFileNamingStrategy.class);
+    
     /**
      * A simple and quite restrictive pattern to validate user names as emails
      */
@@ -27,7 +33,13 @@ public class DefaultFileNamingStrategy implements FileNamingStrategy
     
     @Autowired
     private Path userDataDirectory;
-   
+
+    @PostConstruct
+    void onInitialized()
+    {
+        logger.info("Using {} as parent for user directories", userDataDirectory);
+    }
+    
     private void validateUserName(String userName)
     {
         Assert.isTrue(!StringUtils.isEmpty(userName), "The user name cannot be empty!");
