@@ -39,4 +39,5 @@ export const EnumCourseAction = {
   SET_FILES: 'set-files',
   SET_STUDENTS: 'set-students',
   COPY_FILES: 'copy-files',
+  SYNC: 'sync',
 };

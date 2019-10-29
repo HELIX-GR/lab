@@ -37,16 +37,19 @@ class CourseAdminCard extends React.Component {
         </div>
         <div className="actions">
           <div className="action action-edit" onClick={() => this.props.handleAction(EnumCourseAction.UPDATE, c)}>
-            <i className="fa fa-pencil"></i>
+            <i className="fa fa-pencil" title="Edit course"></i>
           </div>
           <div className="action action-users" onClick={() => this.props.handleAction(EnumCourseAction.SET_STUDENTS, c)}>
-            <i className="fa fa-users"></i>
+            <i className="fa fa-users" title="Manage course registrations"></i>
           </div>
           <div className="action action-set-files" onClick={() => this.props.handleAction(EnumCourseAction.SET_FILES, c)}>
-            <i className="fa fa-folder-open-o"></i>
+            <i className="fa fa-folder-open-o" title="Set course folder"></i>
+          </div>
+          <div className="action action-refresh" onClick={() => this.props.handleAction(EnumCourseAction.SYNC, c)}>
+            <i className="fa fa-refresh" title="Refresh roles and kernels for course registrations"></i>
           </div>
           <div className="action action-delete" onClick={() => this.props.handleAction(EnumCourseAction.DELETE, c)}>
-            <i className="fa fa-trash"></i>
+            <i className="fa fa-trash" title="Delete course"></i>
           </div>
         </div>
         <div className="kernel">

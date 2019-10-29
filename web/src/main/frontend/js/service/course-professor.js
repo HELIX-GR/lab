@@ -41,4 +41,8 @@ export default {
     return actions.submit(`/action/course/${id}/registrations/upload`, token, form);
   },
 
+  syncCourseRolesAndKernel: (id, token) => {
+    return actions.post(`/action/course/${id}/sync`, token, {});
+  },
+
 };

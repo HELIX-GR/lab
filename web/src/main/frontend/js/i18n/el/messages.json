@@ -240,6 +240,10 @@
       "copy-files": {
         "success": "Copied {count} files for course ''{title}''",
         "failure": "Copy operation has failed"
+      },
+      "sync": {
+        "success": "Role and kernel settings have been applied to course students successfully",
+        "failure": "Failed to set role and kernel to course students"
       }
     },
     "button": {

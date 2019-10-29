@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 import { bindActionCreators } from 'redux';
-import { injectIntl } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { toast, } from 'react-toastify';
 
 import {
@@ -118,7 +118,7 @@ class CourseStudentExplorer extends React.Component {
         this.search();
       })
       .catch(() => {
-        toast.error('course.error.load.course');
+        toast.error(<FormattedMessage id="course.error.load.course" />);
       });
   }
 
