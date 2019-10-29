@@ -45,10 +45,10 @@ import gr.helix.lab.web.service.JupyterHubClient;
 public class HubController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(HubController.class);
-    
+
     @Value("${helix.rpc-server.enabled}")
     boolean                     isRpcServerEnabled;
-    
+
     @Autowired
     AccountRepository           accountRepository;
 
@@ -65,12 +65,18 @@ public class HubController extends BaseController {
     JupyterHubClient            jupyterHubClient;
 
     @Autowired
-    UserDataManagementService           jupyterHubService;
+    UserDataManagementService   jupyterHubService;
 
-    Long                        quotaForSpace = null; /* use defaults */
-    
-    Integer                     quotaForNumberOfFiles = null; /* use defaults */
-    
+    /**
+     * Use defaults
+     */
+    Long                        quotaForSpace         = null;
+
+    /**
+     * Use defaults
+     */
+    Integer                     quotaForNumberOfFiles = null;
+
     @PostMapping(value = "/action/server/start/{hubId}/{kernel}")
     public RestResponse<Object> startServer(@PathVariable int hubId, @PathVariable String kernel) {
         try {
@@ -132,6 +138,12 @@ public class HubController extends BaseController {
             if(hubUser == null) {
                 hubUser = this.jupyterHubClient.addUser(ctx);
             }
+
+            // Stop existing notebook server
+            if (!StringUtils.isBlank(hubUser.getServer())) {
+                this.jupyterHubClient.stopServer(ctx);
+            }
+
             // Set groups
             boolean removeSuccess = true;
             if (!hubUser.getGroups().isEmpty()) {
@@ -144,16 +156,13 @@ public class HubController extends BaseController {
                 return RestResponse.error(AdminErrorCode.HUB_USER_INIT_FAILED, "Cannot set user groups");
             }
 
-            // Stop existing notebook server
-            if (!StringUtils.isBlank(hubUser.getServer())) {
-                this.jupyterHubClient.stopServer(ctx);
-            }
-
-            final URIBuilder builder = new URIBuilder(hubServer.getUrl());
-            
+            // Setup user directory
             if (this.isRpcServerEnabled) {
-                final AccountInfo accountInfo = new AccountInfo(currentUserId(), currentUserName());
-                if (!this.jupyterHubService.setupDirectory(accountInfo, builder.getHost(), quotaForSpace, quotaForNumberOfFiles)) {
+                final URIBuilder builder = new URIBuilder(hubServer.getUrl());
+
+                final AccountInfo accountInfo = new AccountInfo(this.currentUserId(), this.currentUserEmail());
+
+                if (!this.jupyterHubService.setupDirectory(accountInfo, builder.getHost(), this.quotaForSpace, this.quotaForNumberOfFiles)) {
                     return RestResponse.error(AdminErrorCode.NOTEBOOK_SERVER_INIT_FAILURE, "Failed to setup user directory!");
                 }
             }
