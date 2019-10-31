@@ -155,10 +155,10 @@ class NotebookDetails extends React.Component {
   getNotebookToFilesystem(id) {
     this.props.getNotebookToFilesystem(id)
       .then(() => {
-        toast.success("Notebook saved in you filesystem!")
+        toast.success("Notebook saved in you filesystem!");
       })
       .catch(() => {
-        toast.error("Failed to save notebook in you filesystem!")
+        toast.error("Failed to save notebook in you filesystem!");
       });
   }
 
