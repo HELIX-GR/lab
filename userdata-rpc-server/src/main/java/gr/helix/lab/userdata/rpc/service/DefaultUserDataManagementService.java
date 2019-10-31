@@ -6,10 +6,11 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +35,6 @@ public class DefaultUserDataManagementService implements UserDataManagementServi
     
     @Autowired
     private Path userDataMountpoint;
-     
-    @Autowired
-    private Path userDataDirectory;
     
     @Value("${helix.userdata.quota.space.default-hard-limit}")
     private long defaultHardLimitForSpace;
@@ -72,6 +70,9 @@ public class DefaultUserDataManagementService implements UserDataManagementServi
     @Autowired
     private ProjectNamingStrategy projectNamingStrategy;
     
+    @Autowired
+    private ProjectIdentifierStrategy projectIdentifierStrategy;
+    
     private void validateUserAccount(AccountInfo userAccount)
     {
         Assert.notNull(userAccount, "Expected an AccountInfo object");
@@ -85,8 +86,8 @@ public class DefaultUserDataManagementService implements UserDataManagementServi
     {
         final String userName = userAccount.getName();
         final Path path = fileNamingStrategy.getUserDir(userName);
-        final int projectId = userAccount.getId();
-        final String projectName = projectNamingStrategy.getProjectName(userName);
+        final int projectId = projectIdentifierStrategy.toProjectId(userAccount);
+        final String projectName = projectNamingStrategy.getProjectName(userAccount);
         
         return Project.of(projectId, projectName, path, userDataMountpoint);
     }
@@ -198,17 +199,33 @@ public class DefaultUserDataManagementService implements UserDataManagementServi
     }
 
     @Override
-    public Optional<UserDataReport> getReport(AccountInfo userAccount)
+    public Optional<UserDataReport> getReport(int accountId, String serverHost)
     {
-        validateUserAccount(userAccount);
-        final Project project = resolveAsProject(userAccount);
+        final int projectId = projectIdentifierStrategy.toProjectId(new AccountInfo(accountId, null));
         Optional<ProjectReport> r = null; 
         try {
-            r = ProjectQuota.getReportForProject(project);
+            r = ProjectQuota.getReportForProject(projectId, userDataMountpoint);
         } catch (InterruptedException | IOException ex) {
-            logger.error("Failed to get report for project #" + project.id(), ex);
+            String errMessage = String.format(
+                "Failed to get report for project #%d (for account #%d)", projectId, accountId);
+            logger.error(errMessage, ex);
             r = Optional.empty();
         }
         return r.map(this::createReport);
+    }
+
+    @Override
+    public List<Integer> listAccounts(String serverHost)
+    {
+        Map<Integer, Project> projectsMap = null;
+        try {
+            projectsMap = ProjectQuota.listProjects(userDataMountpoint);
+        } catch (IOException | InterruptedException ex) {
+            throw new IllegalStateException(ex);
+        }
+        return projectsMap.keySet().stream()
+            .map(projectIdentifierStrategy::fromProjectId)
+            .map(AccountInfo::getId)
+            .collect(Collectors.toList());
     } 
 }

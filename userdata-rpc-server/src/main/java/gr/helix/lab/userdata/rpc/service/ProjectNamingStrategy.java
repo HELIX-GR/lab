@@ -1,8 +1,8 @@
 package gr.helix.lab.userdata.rpc.service;
 
-import java.util.function.Function;
+import gr.helix.core.common.model.user.AccountInfo;
 
 public interface ProjectNamingStrategy
 {
-    String getProjectName(String userName);
+    String getProjectName(AccountInfo userAccount);
 }
