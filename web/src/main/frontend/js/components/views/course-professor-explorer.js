@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 import { bindActionCreators } from 'redux';
-import { injectIntl } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
 
 import {
@@ -19,6 +19,7 @@ import {
   selectStudent,
   removeCourse,
   removeStudentFromCourse,
+  syncCourseRolesAndKernel,
   updateCourse,
   updateStudentRegistration,
   upload,
@@ -66,15 +67,24 @@ class CourseProfessorExplorer extends React.Component {
         this.showModal(action, course);
         break;
 
-      case EnumCourseAction.SET_STUDENTS: {
+      case EnumCourseAction.SET_STUDENTS:
         this.props.getCourseStudents(course.id)
           .then(() => {
             this.showModal(action, course);
           })
           .catch(() => {
-            toast.error('course.error.load.students');
+            toast.error(<FormattedMessage id="course.error.load.students" />);
           });
-      }
+        break;
+
+      case EnumCourseAction.SYNC:
+        this.props.syncCourseRolesAndKernel(course.id)
+          .then(() => {
+            toast.success(<FormattedMessage id="course.action.sync.success" />);
+          })
+          .catch(() => {
+            toast.error(<FormattedMessage id="course.action.sync.failure" />);
+          });
         break;
     }
   }
@@ -143,7 +153,7 @@ class CourseProfessorExplorer extends React.Component {
         this.search();
       })
       .catch(() => {
-        toast.error('course.error.load.course');
+        toast.error(<FormattedMessage id="course.error.load.course" />);
       });
   }
 
@@ -244,7 +254,7 @@ class CourseProfessorExplorer extends React.Component {
 
         return this.props.getCourseStudents(course.id)
           .catch(() => {
-            toast.error('course.error.load.students');
+            toast.error(<FormattedMessage id="course.error.load.students" />);
             this.hideModal();
           });
       })
@@ -438,6 +448,7 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   selectStudent,
   removeCourse,
   removeStudentFromCourse,
+  syncCourseRolesAndKernel,
   updateCourse,
   updateStudentRegistration,
   upload,

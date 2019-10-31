@@ -13,6 +13,8 @@ const ADD_COURSE_REQUEST = 'course/professor/ADD_COURSE_REQUEST';
 const ADD_COURSE_RESPONSE = 'course/professor/ADD_COURSE_RESPONSE';
 const UPDATE_COURSE_REQUEST = 'course/professor/UPDATE_COURSE_REQUEST';
 const UPDATE_COURSE_RESPONSE = 'course/professor/UPDATE_COURSE_RESPONSE';
+const SYNC_COURSE_REQUEST = 'course/professor/SYNC_COURSE_REQUEST';
+const SYNC_COURSE_RESPONSE = 'course/professor/SYNC_COURSE_RESPONSE';
 const REMOVE_COURSE_REQUEST = 'course/professor/REMOVE_COURSE_REQUEST';
 const REMOVE_COURSE_RESPONSE = 'course/professor/REMOVE_COURSE_RESPONSE';
 const STUDENTS_REQUEST = 'course/professor/STUDENTS_REQUEST';
@@ -147,6 +149,15 @@ const updateCourseRequest = () => ({
 const updateCourseResponse = (course) => ({
   type: UPDATE_COURSE_RESPONSE,
   course,
+});
+
+const syncCourseRolesAndKernelRequest = (id) => ({
+  type: SYNC_COURSE_REQUEST,
+  id,
+});
+
+const syncCourseRolesAndKernelSuccess = () => ({
+  type: SYNC_COURSE_RESPONSE,
 });
 
 const removeCourseRequest = () => ({
@@ -308,4 +319,17 @@ export const upload = (id, file) => (dispatch, getState) => {
   const { meta: { csrfToken: token } } = getState();
 
   return professorCourseService.upload(id, file, token);
-}; 
+};
+
+export const syncCourseRolesAndKernel = (id) => (dispatch, getState) => {
+  const { meta: { csrfToken: token } } = getState();
+
+  dispatch(syncCourseRolesAndKernelRequest());
+
+  return professorCourseService.syncCourseRolesAndKernel(id, token)
+    .then(course => {
+      dispatch(syncCourseRolesAndKernelSuccess());
+
+      return course;
+    });
+};

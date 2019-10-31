@@ -495,6 +495,64 @@ public class CourseProfessorController extends BaseController {
         }
     }
 
+
+    /**
+     * Refresh role and kernel for course students. If a user already exists,
+     * both the white list entry and the account are updated.
+     *
+     * @param id the course id
+     */
+    @PostMapping(value = "/action/course/{id}/sync")
+    public RestResponse<?> syncCourseRolesAndKernel(@PathVariable int id) {
+        // Check if course exists and is not already deleted
+        final CourseEntity course = this.courseRepository.findById(id).orElse(null);
+        if (course == null || course.isDeleted()) {
+            return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course has not been found");
+        }
+
+        // Check if the authenticated user is also the owner of the course
+        if (course.getProfessor().getId() != this.currentUserId()) {
+            logger.error("User [{}] has attempted to sync roles and kernels for course [{}].", this.currentUserName(), course.getId());
+
+            return RestResponse.error(CourseErrorCode.COURSE_NOT_FOUND, "The course has not been found");
+        }
+
+
+        // Update all students
+        final EnumRole requiredRole = EnumRole.ROLE_STANDARD_STUDENT;
+        final HubKernelEntity requiredKernel = course.getKernel();
+
+        final AccountEntity grantedBy = this.accountRepository.findById(this.currentUserId()).orElse(null);
+        final List<CourseStudentEntity> registrations = this.courseStudentRepository.findAllByCourseId(id);
+
+        for (final CourseStudentEntity registration : registrations) {
+            // Set required role
+            if (!registration.getWhiteListEntry().hasRole(requiredRole)) {
+                registration.getWhiteListEntry().grant(requiredRole, grantedBy);
+            }
+            // Set required kernel
+            if (!registration.getWhiteListEntry().hasKernel(requiredKernel.getName())) {
+                registration.getWhiteListEntry().grantKernel(requiredKernel, grantedBy);
+            }
+
+            // Update existing user
+            final AccountEntity account = this.accountRepository.findOneByEmail(registration.getWhiteListEntry().getEmail());
+
+            if (account != null) {
+                // Set role
+                if (!account.hasRole(EnumRole.ROLE_STANDARD_STUDENT)) {
+                    account.grant(EnumRole.ROLE_STANDARD_STUDENT, grantedBy);
+                }
+                // Set kernel
+                account.grantKernel(requiredKernel, grantedBy);
+
+                this.accountRepository.save(account);
+            }
+        }
+
+        return RestResponse.success();
+    }
+
     private Path createTemporaryFile(byte[] data, String prefix, String extension) throws IOException {
         final Path path = Files.createTempFile(this.tempDataDirectory, prefix, "." + (extension == null ? "dat" : extension));
 

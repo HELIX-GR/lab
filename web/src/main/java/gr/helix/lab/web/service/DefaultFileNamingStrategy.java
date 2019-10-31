@@ -1,7 +1,5 @@
 package gr.helix.lab.web.service;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -10,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import gr.helix.core.common.model.DirectoryInfo;
 import gr.helix.core.common.service.FileNamingStrategy;
 
 @Service
@@ -20,7 +17,7 @@ public class DefaultFileNamingStrategy implements FileNamingStrategy
 
     @Autowired
     private Path userDataDirectory;
-    
+
     @Override
     public Path getUserDir(String userName)
     {
