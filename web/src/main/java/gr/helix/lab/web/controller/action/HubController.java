@@ -221,13 +221,12 @@ public class HubController extends BaseController {
             }
 
             if(!userInfo.isAdmin()) {
-                // NOTE: Do not delete Jupyter Hub users. Instead reset their groups
+                // Remove user from all groups
+                this.jupyterHubClient.removeUserFromGroups(ctx, userInfo.getGroups());
 
                 // Remove user from Jupyter Hub to prevent creating new notebook
                 // servers without using lab application
-                // this.jupyterHubClient.removeUser(hubServer.get().getUrl(),  hubServer.get().getToken(), userName);
-
-                this.jupyterHubClient.removeUserFromGroups(ctx, userInfo.getGroups());
+                this.jupyterHubClient.removeUser(ctx);
             }
 
             // Remove account to server registration

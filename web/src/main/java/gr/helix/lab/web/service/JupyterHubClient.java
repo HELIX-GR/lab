@@ -33,7 +33,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gr.helix.core.common.model.ApplicationException;
 import gr.helix.core.common.model.BasicErrorCode;
-import gr.helix.lab.web.domain.HubServerEntity;
 import gr.helix.lab.web.model.admin.AdminErrorCode;
 import gr.helix.lab.web.model.hub.HubServerInfo;
 import gr.helix.lab.web.model.hub.HubUserInfo;
@@ -216,8 +215,8 @@ public class JupyterHubClient {
         }
     }
 
-    public boolean removeUser(HubServerEntity server, String username) throws ApplicationException {
-        return this.removeUser(server.getUrl(), server.getToken(), username);
+    public boolean removeUser(Context context) throws ApplicationException {
+        return this.removeUser(context.getUrl(), context.getToken(), context.getUserName());
     }
 
     public boolean removeUser(String url, String token, String username) throws ApplicationException {

@@ -24,7 +24,7 @@ public abstract class BaseController {
     }
 
     protected String currentUserName() {
-        return this.authenticationFacade.getCurrentUser().getUsername();
+        return this.authenticationFacade.getCurrentUserEmail();
     }
 
     protected String currentUserEmail() {
