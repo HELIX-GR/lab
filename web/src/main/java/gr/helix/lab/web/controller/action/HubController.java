@@ -46,7 +46,7 @@ public class HubController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(HubController.class);
 
-    @Value("${helix.rpc-server.enabled}")
+    @Value("${helix.userdata.rpc-server.enabled}")
     boolean                     isRpcServerEnabled;
 
     @Autowired
