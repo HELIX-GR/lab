@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class HttpClientConfiguration {
@@ -74,6 +75,7 @@ public class HttpClientConfiguration {
     }
 
     @Bean
+    @Primary
     public HttpClient defaultHttpClient() {
         final HttpClientBuilder builder = HttpClients.custom();
 
