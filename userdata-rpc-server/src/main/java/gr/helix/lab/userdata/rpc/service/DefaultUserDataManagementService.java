@@ -73,6 +73,12 @@ public class DefaultUserDataManagementService implements UserDataManagementServi
     @Autowired
     private ProjectIdentifierStrategy projectIdentifierStrategy;
     
+    /**
+     * The skeleton of every project given as (relative) names of folders
+     */
+    @Value("${helix.userdata.project-folders}")
+    private String[] projectFolders;
+    
     private void validateUserAccount(AccountInfo userAccount)
     {
         Assert.notNull(userAccount, "Expected an AccountInfo object");
@@ -92,12 +98,23 @@ public class DefaultUserDataManagementService implements UserDataManagementServi
         return Project.of(projectId, projectName, path, userDataMountpoint);
     }
     
-    private UserDataReport createReport(ProjectReport r)
+    private UserDataReport toReport(ProjectReport r)
     {
         Assert.notNull(r, "Expected a ProjectReport object");
         return new UserDataReport(
             r.getUsedBytes(), r.getHardLimitForBytes(),r.getSoftLimitForBytes(),
             r.getUsedNumberOfFiles(), r.getHardLimitForInodes(), r.getSoftLimitForInodes());
+    }
+    
+    private void createDirectories(Project project) throws IOException
+    {
+        final Path projectPath = project.path();
+        
+        Files.createDirectories(projectPath);
+        
+        for (String folderName: projectFolders) {
+            Files.createDirectories(projectPath.resolve(folderName));
+        }
     }
     
     @Override
@@ -110,7 +127,7 @@ public class DefaultUserDataManagementService implements UserDataManagementServi
         // Create directories
         
         try {
-            Files.createDirectories(project.path());
+            createDirectories(project);
         } catch (IOException ex) {
             logger.error("Failed to create directory for project #%d" + project.id(), ex);
             return false;
@@ -211,7 +228,7 @@ public class DefaultUserDataManagementService implements UserDataManagementServi
             logger.error(errMessage, ex);
             r = Optional.empty();
         }
-        return r.map(this::createReport);
+        return r.map(this::toReport);
     }
 
     @Override
