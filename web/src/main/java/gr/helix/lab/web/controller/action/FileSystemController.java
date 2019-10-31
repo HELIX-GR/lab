@@ -39,10 +39,13 @@ import gr.helix.core.common.model.ApplicationException;
 import gr.helix.core.common.model.BasicErrorCode;
 import gr.helix.core.common.model.FileSystemErrorCode;
 import gr.helix.core.common.model.RestResponse;
+import gr.helix.core.common.model.user.AccountInfo;
+import gr.helix.core.common.service.UserDataManagementService;
 import gr.helix.lab.web.model.FileSystemPathRequest;
 import gr.helix.lab.web.model.NotebookErrorCode;
 import gr.helix.lab.web.model.PublishRequest;
 import gr.helix.lab.web.model.UploadRequest;
+import gr.helix.lab.web.model.admin.AdminErrorCode;
 import gr.helix.lab.web.model.ckan.Package;
 import gr.helix.lab.web.model.ckan.Resource;
 import gr.helix.lab.web.service.CkanServiceProxy;
@@ -51,9 +54,15 @@ import gr.helix.lab.web.service.SearchService;
 @RestController
 @Secured({ "ROLE_STANDARD", "ROLE_ADMIN" })
 @RequestMapping(produces = "application/json")
-public class FileSytemController extends BaseController {
+public class FileSystemController extends BaseController {
 
     private final static String NOTEBOOK_EXTENSION = "ipynb";
+
+    @Value("${helix.userdata.rpc-server.enabled}")
+    boolean                     isRpcServerEnabled;
+
+    @Autowired
+    UserDataManagementService   jupyterHubService;
 
     @Autowired
     private HttpClient          httpClient;
@@ -81,9 +90,13 @@ public class FileSytemController extends BaseController {
     @GetMapping(value = "/action/file-system")
     public RestResponse<?> browserDirectory() {
         try {
+            this.checkUserDirectory();
+
             return RestResponse.result(this.fileNamingStrategy.getUserDirectoryInfo(this.currentUserName()));
         } catch (final IOException ex) {
             return RestResponse.error(BasicErrorCode.IO_ERROR, "An unknown error has occurred");
+        } catch (final Exception ex) {
+            return RestResponse.error(BasicErrorCode.UNKNOWN, "Cannot access user file system");
         }
     }
 
@@ -246,6 +259,8 @@ public class FileSytemController extends BaseController {
                 return RestResponse.error(NotebookErrorCode.NOTEBOOK_ID_MISSING, "Notebook id is required");
             }
 
+            this.checkUserDirectory();
+
             final String userName = this.currentUserName();
 
             final Path dir = this.fileNamingStrategy.resolvePath(userName, "Published");
@@ -272,6 +287,22 @@ public class FileSytemController extends BaseController {
             return RestResponse.success();
         } catch (final Exception ex) {
             return RestResponse.error(BasicErrorCode.UNKNOWN, "An unknown error has occurred");
+        }
+    }
+
+    private void checkUserDirectory() throws ApplicationException {
+        final Path path = this.fileNamingStrategy.getUserDir(this.currentUserName());
+
+        if (!Files.exists(path) && this.isRpcServerEnabled) {
+            final AccountInfo accountInfo = new AccountInfo(this.currentUserId(), this.currentUserEmail());
+
+            if (!this.jupyterHubService.setupDirectory(accountInfo, null, null, null)) {
+                throw ApplicationException.fromPattern(AdminErrorCode.NOTEBOOK_SERVER_INIT_FAILURE, "Failed to setup user directory!");
+            }
+        }
+
+        if(!Files.exists(path)) {
+            throw ApplicationException.fromPattern(BasicErrorCode.IO_ERROR, "User file system is not initialized");
         }
     }
 

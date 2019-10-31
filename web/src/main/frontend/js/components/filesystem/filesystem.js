@@ -51,6 +51,12 @@ class FileSystem extends Component {
         .then(() => {
           const { defaultPath = null, filesystem } = this.props;
 
+          if (!filesystem || Object.keys(filesystem).length === 0) {
+            toast.error(<FormattedMessage id="error.file-system.init-failed" />);
+            this.props.history.push(StaticRoutes.HOME);
+
+            return;
+          }
           this.setState({
             folder: filesystem
           });
@@ -66,11 +72,14 @@ class FileSystem extends Component {
 
             this.props.setPath(folder, defaultPath.split('/').slice(0, -1).reverse()[0]);
           }
+        })
+        .catch(err => {
+          toast.error(err.errors[0].description);
+          this.props.history.push(StaticRoutes.HOME);
         });
     } else {
       this.props.history.push(StaticRoutes.HOME);
     }
-
   }
 
   handleNameChange(value) {
@@ -152,13 +161,16 @@ class FileSystem extends Component {
     this.setState({
       folder: item.folder
     }, () => {
-      const folder = this.findFolderFromPath();
       this.props.setPath(item.folder, item.folder.name);
     });
   }
 
   renderHeader() {
     const folder = this.findFolderFromPath();
+    if (!folder || !folder.path) {
+      return null;
+    }
+
     const hierarchy = this.getFolderHierarchy(folder.path);
 
     return (
@@ -188,6 +200,9 @@ class FileSystem extends Component {
   renderBrowser() {
     const { folderName } = this.state;
     const folder = this.findFolderFromPath();
+    if (!folder || !folder.path) {
+      return null;
+    }
 
     return (
       <FileTable props={{

@@ -24,7 +24,8 @@
   },
   "error": {
     "file-system": {
-      "no-server-selected": "You need to start a Notebook Server First"
+      "no-server-selected": "You need to start a Notebook Server First",
+      "init-failed": "Cannot access user file system"
     },
     "generic": "Unknown error has occurred",
     "validation": {
