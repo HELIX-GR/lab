@@ -52,6 +52,16 @@ class Header extends React.Component {
     return (this.props.locale === 'el' ? 'ΕΛ' : 'EN');
   }
 
+  get avatarImage() {
+    const { profile = null, imageUrl = null } = this.props.account;
+
+    if (profile && profile.image && profile.imageMimeType) {
+      return `data:${profile.imageMimeType};base64,${profile.image}`;
+    }
+
+    return imageUrl || '/images/svg/Avatar.svg';
+  }
+
   render() {
     const { account } = this.props;
     const authenticated = (account != null);
@@ -167,7 +177,7 @@ class Header extends React.Component {
                 <ul className="menu-items">
                   <li id="menu-item-account" className="menu-item aux-item has-sub-menu">
                     <a>
-                      <img className="account-icon" src={account.imageUrl || '/images/svg/Avatar.svg'} alt="Account tab" />
+                      <img className="account-icon" src={this.avatarImage} alt="Account tab" />
                     </a>
                     <ul className="sub-menu">
                       {authenticated &&

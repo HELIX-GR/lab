@@ -107,7 +107,7 @@
 
   header {
     .account-icon {
-      border-radius: 15px;
+      border-radius: 50%;
     }
 
     z-index: 2;
@@ -291,6 +291,7 @@
 
           img {
             height: 30px;
+            width: 30px;
             margin-bottom: 2px;
           }
         }
