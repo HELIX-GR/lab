@@ -23,7 +23,7 @@
 
 		<!-- Dependency versions -->
 		<geotools.version>21.1</geotools.version>
-		<hibernate.version>5.4.4.Final</hibernate.version>
+		<hibernate.version>5.4.24.Final</hibernate.version>
 		<hibernate-spatial.version>5.4.4.Final</hibernate-spatial.version>
 		<jackson.version>2.9.9</jackson.version>
 		<jackson-datatype-jts.version>2.4</jackson-datatype-jts.version>
