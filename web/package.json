@@ -81,7 +81,7 @@
     "connected-react-router": "^6.5.2",
     "css-loader": "^3.2.0",
     "es6-promise": "^4.2.8",
-    "flat": "^5.0.0",
+    "flat": "^5.0.1",
     "font-awesome": "^4.7.0",
     "history": "^4.10.1",
     "intl-messageformat": "^7.3.2",
